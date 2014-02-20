@@ -14,9 +14,9 @@ Inside of composer.json specify the following:
 
 ````
 {
-    "require": {
-        "zendesk/zendesk_api_client_php": "dev-master"
-    }
+  "require": {
+    "zendesk/zendesk_api_client_php": "dev-master"
+  }
 }
 ````
 
