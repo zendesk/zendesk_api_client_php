@@ -40,9 +40,45 @@ $client->setAuth('token', $token); // set either token or password
 ## Usage
 
 ### Basic Operations
+
+````
+// Get all tickets
+$tickets = $client->tickets()->findAll();
+print_r ($tickets);
+
+// Create a new ticket
+$newTicket = $client->tickets()->create(array (
+  'subject' => 'The quick brown fox jumps over the lazy dog',
+  'comment' => array (
+    'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+  ),
+  'priority' => 'normal'
+));
+print_r ($newTicket);
+
+// Update multiple tickets
+$client->ticket(array (123, 456))->update(array (
+  'status' => 'urgent'
+));
+
+// Delete a ticket
+$client->ticket(123)->delete();
+````
+
 ### Attachments
+
+````
+$attachment = $this->client->attachments()->upload(array(
+            'file' => getcwd().'/tests/assets/UK.png',
+            'type' => 'image/png'
+        ));
+````
+
 ### Side-loading
-### Pagination
+
+````
+$tickets = $this->client->tickets()->sideload(array('users', 'groups'))->findAll();
+````
 
 ## Note on Patches/Pull Requests
 1. Fork the project.
