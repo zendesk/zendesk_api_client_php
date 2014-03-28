@@ -45,6 +45,15 @@ class Http {
             $curl = curl_init($url);
             curl_setopt($curl, CURLOPT_POST, true);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
+            if(isset($json['filename'])) {
+							$file = fopen($json['filename'], 'r');
+							$size = filesize($json['filename']);
+							$filedata = fread($file, $size);
+							curl_setopt($curl, CURLOPT_POSTFIELDS, $filedata);
+							curl_setopt($curl, CURLOPT_INFILE, $file);
+							curl_setopt($curl, CURLOPT_INFILESIZE, $size);
+							curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-type: application/binary'));
+						}
         } else
         if($method == 'PUT') {
             $curl = curl_init($url);
@@ -76,8 +85,8 @@ class Http {
         $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
         $responseBody = substr($response, $headerSize);
         $client->setDebug(
-            curl_getinfo($curl, CURLINFO_HEADER_OUT), 
-            curl_getinfo($curl, CURLINFO_HTTP_CODE), 
+            curl_getinfo($curl, CURLINFO_HEADER_OUT),
+            curl_getinfo($curl, CURLINFO_HTTP_CODE),
             substr($response, 0, $headerSize)
         );
         curl_close($curl);
@@ -121,8 +130,8 @@ class Http {
         $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
         $responseBody = substr($response, $headerSize);
         $client->setDebug(
-            curl_getinfo($curl, CURLINFO_HEADER_OUT), 
-            curl_getinfo($curl, CURLINFO_HTTP_CODE), 
+            curl_getinfo($curl, CURLINFO_HEADER_OUT),
+            curl_getinfo($curl, CURLINFO_HTTP_CODE),
             substr($response, 0, $headerSize)
         );
         curl_close($curl);
