@@ -68,7 +68,7 @@ $client->ticket(123)->delete();
 ### Attachments
 
 ````
-$attachment = $this->client->attachments()->upload(array(
+$attachment = $client->attachments()->upload(array(
             'file' => getcwd().'/tests/assets/UK.png',
             'type' => 'image/png'
         ));

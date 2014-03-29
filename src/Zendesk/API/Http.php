@@ -79,6 +79,9 @@ class Http {
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
         $response = curl_exec($curl);
+        if($file) {
+	        fclose($file);
+        }
         if ($response === false) {
             throw new \Exception('No response from curl_exec in '.__METHOD__);
         }
