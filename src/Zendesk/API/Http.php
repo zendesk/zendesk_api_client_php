@@ -35,7 +35,7 @@ class Http {
     /*
      * Use the send method to call every endpoint except for oauth/tokens
      */
-    public static function send($client, $endPoint, $json = null, $method = 'GET', $contentType = 'application/json') {
+    public static function send($client, $endPoint, $json = null, $method = 'GET', $contentType = 'application/json', $urlEncode = false) {
 
         $url = $client->getApiUrl().$endPoint;
         $method = strtoupper($method);
