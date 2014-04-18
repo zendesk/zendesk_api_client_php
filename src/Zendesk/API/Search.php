@@ -11,12 +11,11 @@ class Search extends ClientAbstract {
      * Perform a search
      */
     public function search(array $params) {
-        $urlEncode = (isset($params['urlEncode'])) ? $params['urlEncode'] : true;
         if(!$this->hasKeys($params, array('query'))) {
             throw new MissingParametersException(__METHOD__, array('query'));
         }
         $endPoint = Http::prepare('search.json', null, $params);
-        $response = Http::send($this->client, $endPoint, $params, 'GET', 'application/json', $urlEncode);
+        $response = Http::send($this->client, $endPoint, $params, 'GET');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
