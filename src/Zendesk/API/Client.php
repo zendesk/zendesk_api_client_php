@@ -22,7 +22,6 @@ class Client {
     protected $sideload;
 
     protected $tickets;
-    protected $ticketAudits;
     protected $ticketFields;
     protected $ticketForms;
     protected $twitter;
@@ -63,7 +62,6 @@ class Client {
         $this->apiUrl = 'https://'.$subdomain.'.zendesk.com/api/'.$this->apiVer.'/';
         $this->debug = new Debug();
         $this->tickets = new Tickets($this);
-        $this->ticketAudits = new TicketAudits($this);
         $this->ticketFields = new TicketFields($this);
         $this->ticketForms = new TicketForms($this);
         $this->twitter = new Twitter($this);
