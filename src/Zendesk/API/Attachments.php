@@ -11,9 +11,11 @@ class Attachments extends ClientAbstract {
      * Upload an attachment
      * $params must include:
      *    'file' - an attribute with the absolute local file path on the server
+     *    'filename' - Name to send to the API
      *    'type' - the MIME type of the file
      * Optional:
      *    'optional_token' - an existing token
+     *		'name' - preferred filename  Note: this is not used at all, not sure why it's here.
      */
     public function upload(array $params) {
         if(!$this->hasKeys($params, array('file'))) {
@@ -22,8 +24,13 @@ class Attachments extends ClientAbstract {
         if(!file_exists($params['file'])) {
             throw new CustomException('File '.$params['file'].' could not be found in '.__METHOD__);
         }
-        $endPoint = Http::prepare('uploads.json?filename='.$params['file'].(isset($params['optional_token']) ? '&token='.$params['optional_token'] : ''));
-        $response = Http::send($this->client, $endPoint, array('filename' => '@'.$params['file']), 'POST', (isset($params['type']) ? $params['type'] : 'application/binary'));
+        if(!isset($params['name'])) {
+          $path_array = explode('/', $params['file']);
+          $file_index = count($path_array) - 1;
+          $params['name'] = $path_array[$file_index];
+        }
+        $endPoint = Http::prepare('uploads.json?filename='.$params['filename'].(isset($params['optional_token']) ? '&token='.$params['optional_token'] : ''));
+        $response = Http::send($this->client, $endPoint, array('file' => $params['file'], 'filename'=>$params['filename']), 'POST', (isset($params['type']) ? $params['type'] : 'application/binary'));
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
             throw new ResponseException(__METHOD__);
         }

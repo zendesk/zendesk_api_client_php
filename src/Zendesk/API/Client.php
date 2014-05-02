@@ -56,10 +56,15 @@ class Client {
     protected $locales;
     protected $debug;
 
-    public function __construct($subdomain, $username) {
+   /***
+    * @param $secure boolean,  defaults to true.  99.999% of users will not need to use this.
+    *       Just for those of us across the pond where it's 1.2-1.5 seconds faster to fiddle a hosts file entry and
+    *       talk HTTP to a machine in the US which then talks HTTPs to the Zendesk API
+    * */
+    public function __construct($subdomain, $username, $secure=true) {
         $this->subdomain = $subdomain;
         $this->username = $username;
-        $this->apiUrl = 'https://'.$subdomain.'.zendesk.com/api/'.$this->apiVer.'/';
+        $this->apiUrl = 'http'.($secure?'s':'').'://'.$subdomain.'.zendesk.com/api/'.$this->apiVer.'/';
         $this->debug = new Debug();
         $this->tickets = new Tickets($this);
         $this->ticketFields = new TicketFields($this);
