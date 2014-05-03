@@ -200,7 +200,7 @@ class Client {
     public function activities($id = null) { return ($id != null ? $this->activityStream()->setLastId($id) : $this->activityStream()); }
     public function activity($id) { return $this->activityStream()->setLastId($id); }
     public function jobStatus($id) { return $this->jobStatuses()->setLastId($id); }
-    public function search(array $params) { return $this->search->search($params); }
+    public function search(array $params) { return $this->search->performSearch($params); }
     public function anonymousSearch(array $params) { return $this->search->anonymousSearch($params); }
 
 }
