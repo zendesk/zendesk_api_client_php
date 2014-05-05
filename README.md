@@ -70,7 +70,8 @@ $client->ticket(123)->delete();
 ````
 $attachment = $client->attachments()->upload(array(
             'file' => getcwd().'/tests/assets/UK.png',
-            'type' => 'image/png'
+            'type' => 'image/png',
+            'name' => 'UK.png'    // Optional parameter, will default to filename.ext 
         ));
 ````
 

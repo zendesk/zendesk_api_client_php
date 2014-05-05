@@ -42,18 +42,18 @@ class Http {
         $json = ($json == null ? (object) null : (($method != 'GET') && ($method != 'DELETE') && ($contentType == 'application/json') ? json_encode($json) : $json));
 
         if($method == 'POST') {
-          $curl = curl_init($url);
-          curl_setopt($curl, CURLOPT_POST, true);
-          curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
+            $curl = curl_init($url);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
             if(isset($json['filename'])) {
-            $file = fopen($json['filename'], 'r');
-            $size = filesize($json['filename']);
-            $filedata = fread($file, $size);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $filedata);
-            curl_setopt($curl, CURLOPT_INFILE, $file);
-            curl_setopt($curl, CURLOPT_INFILESIZE, $size);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-type: application/binary'));
-          }
+							$file = fopen($json['filename'], 'r');
+							$size = filesize($json['filename']);
+							$filedata = fread($file, $size);
+							curl_setopt($curl, CURLOPT_POSTFIELDS, $filedata);
+							curl_setopt($curl, CURLOPT_INFILE, $file);
+							curl_setopt($curl, CURLOPT_INFILESIZE, $size);
+							curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-type: application/binary'));
+						}
         } else
         if($method == 'PUT') {
             $curl = curl_init($url);
@@ -79,9 +79,6 @@ class Http {
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
         $response = curl_exec($curl);
-        if($file) {
-	        fclose($file);
-        }
         if ($response === false) {
             throw new \Exception('No response from curl_exec in '.__METHOD__);
         }
