@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpunit bootstrap="tests/bootstrap.php" colors="true">
     <php>
-        <var name="SUBDOMAIN" value="" />
-        <var name="USERNAME" value="" />
-        <var name="PASSWORD" value="" />
-        <var name="TOKEN" value="" />
-        <var name="OAUTH_SECRET" value="" />
-        <var name="OAUTH_TOKEN" value="" />
-        <var name="END_USER_USERNAME" value="" />
-        <var name="END_USER_PASSWORD" value="" />
-        <var name="END_USER_OAUTH_TOKEN" value="" />
+        <var name="SUBDOMAIN" value="sandedboxy" />
+        <var name="USERNAME" value="dpawluk@zendesk.com" />
+        <var name="PASSWORD" value="bu5chlight!" />
+        <var name="TOKEN" value="ynhQlpP75vQ1lQL6DVTbEvLq81iiVAjlD3S9XjiV" />
+        <var name="OAUTH_SECRET" value="7a4b33369eee74ced726d4bcd0ae4fb1283b4c5a1d8b2f34363939064300ea68" />
+        <var name="OAUTH_TOKEN" value="9f4ffefe9a0362052b81017f9811e4f257e867df1ccfb45feec3267204331fb7" />
+        <var name="END_USER_USERNAME" value="daniel.pawluk@me.com" />
+        <var name="END_USER_PASSWORD" value="buschlight" />
+        <var name="END_USER_OAUTH_TOKEN" value="9f4ffefe9a" />
     </php>
 </phpunit>
+<!--de429fd3aef395b58f665c078dcc54db0a62dc1ef5c24d9bcae0572d4d8699e2-->

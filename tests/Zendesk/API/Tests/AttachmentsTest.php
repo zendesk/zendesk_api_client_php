@@ -37,7 +37,8 @@ class AttachmentsTest extends \PHPUnit_Framework_TestCase {
     public function testUploadAttachment() {
         $attachment = $this->client->attachments()->upload(array(
             'file' => getcwd().'/tests/assets/UK.png',
-            'type' => 'image/png'
+            'type' => 'image/png',
+            'name' => 'UK.png'
         ));
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '201', 'Does not return HTTP code 201');
         $this->assertEquals(is_object($attachment), true, 'Should return an object');
@@ -45,6 +46,7 @@ class AttachmentsTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals(($attachment->upload->token != ''), true, 'Should return a token');
         $this->assertEquals(is_array($attachment->upload->attachments), true, 'Should return an array called "upload->attachments"');
         $this->assertGreaterThan(0, $attachment->upload->attachments[0]->id, 'Returns a non-numeric id for upload->attachments[0]');
+        $this->assertGreaterThan(0, $attachment->upload->attachments[0]->size, 'returns a file with a greater than nothing filesize');
         $stack = array($attachment);
         return $stack;
     }
