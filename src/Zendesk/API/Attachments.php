@@ -14,6 +14,7 @@ class Attachments extends ClientAbstract {
      *    'type' - the MIME type of the file
      * Optional:
      *    'optional_token' - an existing token
+     *		'name' - preferred filename
      */
     public function upload(array $params) {
         if(!$this->hasKeys($params, array('file'))) {
@@ -22,9 +23,18 @@ class Attachments extends ClientAbstract {
         if(!file_exists($params['file'])) {
             throw new CustomException('File '.$params['file'].' could not be found in '.__METHOD__);
         }
-        $endPoint = Http::prepare('uploads.json?filename='.$params['file'].(isset($params['optional_token']) ? '&token='.$params['optional_token'] : ''));
-        $response = Http::send($this->client, $endPoint, array('filename' => '@'.$params['file']), 'POST', (isset($params['type']) ? $params['type'] : 'application/binary'));
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
+        if(!$params['name'] && strrpos($params['file'], '/') > -1) {
+          $path_array = explode('/', $params['file']);
+          $file_index = count($path_array) - 1;
+          $params['name'] = $path_array[$file_index];
+        }
+        if(!$params['name'] && strrpos($params['file'], '/') == FALSE) {
+	        $params['name'] = $params['file'];
+        } 
+        
+        $endPoint = Http::prepare('uploads.json?filename='.$params['name'].(isset($params['optional_token']) ? '&token='.$params['optional_token'] : ''));
+        $response = Http::send($this->client, $endPoint, array('filename' => $params['file']), 'POST', (isset($params['type']) ? $params['type'] : 'application/binary'));
+       if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
