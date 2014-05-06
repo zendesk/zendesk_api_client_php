@@ -118,10 +118,14 @@ class Http {
 
     /*
      * Specific case for OAuth. Run /oauth.php via your browser to get an access token
-     */
-    public static function oauth($client, $code, $oAuthId, $oAuthSecret) {
+     *
+     * @param $secure boolean,  defaults to true.  99.999% of users will not need to use this.
+     *       Just for those of us across the pond where it's 1.2-1.5 seconds faster to fiddle a hosts file entry and
+     *       talk HTTP to a machine in the US which then talks HTTPs to the Zendesk API
+     * */
+    public static function oauth($client, $code, $oAuthId, $oAuthSecret, $secure=true) {
 
-        $url = 'http://'.$client->getSubdomain().'.zendesk.com/oauth/tokens';
+        $url = 'http'.($secure?'s':'').'://'.$client->getSubdomain().'.zendesk.com/oauth/tokens';
         $method = 'POST';
 
         $curl = curl_init($url);
