@@ -60,7 +60,7 @@ class Http {
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
             curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
         } else {
-            $curl = curl_init($url.($json != (object) null ? '?'.http_build_query($json) : ''));
+            $curl = curl_init($url.($json != (object) null ? (strpos($url, '?') === false ? '?' : '&').http_build_query($json) : ''));
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, ($method ? $method : 'GET'));
         }
         if($client->getAuthType() == 'oauth_token') {
