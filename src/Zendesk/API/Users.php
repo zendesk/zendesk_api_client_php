@@ -114,7 +114,7 @@ class Users extends ClientAbstract {
      */
     public function createMany(array $params) {
         $endPoint = Http::prepare('users/create_many.json');
-        $response = Http::send($this->client, $endPoint, array (self::OBJ_NAME => $params), 'POST');
+        $response = Http::send($this->client, $endPoint, array (self::OBJ_NAME_PLURAL => $params), 'POST');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
