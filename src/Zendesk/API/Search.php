@@ -10,7 +10,7 @@ class Search extends ClientAbstract {
     /*
      * Perform a search
      */
-    public function search(array $params) {
+    public function performSearch(array $params) {
         if(!$this->hasKeys($params, array('query'))) {
             throw new MissingParametersException(__METHOD__, array('query'));
         }
