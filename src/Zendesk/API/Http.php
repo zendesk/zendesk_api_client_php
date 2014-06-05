@@ -45,7 +45,7 @@ class Http {
             $curl = curl_init($url);
             curl_setopt($curl, CURLOPT_POST, true);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
-            if(isset($json['filename'])) {
+            if(is_array($json) && isset($json['filename'])) {
 							$file = fopen($json['filename'], 'r');
 							$size = filesize($json['filename']);
 							$filedata = fread($file, $size);
