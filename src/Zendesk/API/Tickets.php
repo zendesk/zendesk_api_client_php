@@ -154,6 +154,28 @@ class Tickets extends ClientAbstract {
     }
 
     /*
+     * Merge a ticket
+     */
+    public function merge(array $params) {
+        if($this->lastId != null) {
+            $params['id'] = $this->lastId;
+            $this->lastId = null;
+        }
+        if(!$this->hasKeys($params, array('id', 'ids'))) {
+            throw new MissingParametersException(__METHOD__, array('id', 'ids'));
+        }
+        $id = $params['id'];
+        unset($params['id']);
+        $endPoint = Http::prepare('tickets/'.$id.'/merge.json');
+        $response = Http::send($this->client, $endPoint, $params, 'POST');
+        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
+            throw new ResponseException(__METHOD__);
+        }
+        $this->client->setSideload(null);
+        return $response;
+    }
+
+    /*
      * Mark a ticket as spam
      */
     public function markAsSpam(array $params = array()) {
