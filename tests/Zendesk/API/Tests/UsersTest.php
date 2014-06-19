@@ -64,7 +64,7 @@ class UsersTest extends \PHPUnit_Framework_TestCase {
      * @depends testAuthToken
      */
     public function testFindMultiple() {
-        $users = $this->client->user(array(454094082))->find(); // Should add an additional user id here
+        $users = $this->client->users(array(454094082))->find(); // Should add an additional user id here
         $this->assertEquals(is_object($users), true, 'Should return an object');
         $this->assertEquals(is_array($users->users), true, 'Should return an array called "users"');
         $this->assertEquals(is_object($users->users[0]), true, 'Should return an object as first "users" array element');
