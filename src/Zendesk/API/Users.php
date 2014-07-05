@@ -45,7 +45,7 @@ class Users extends ClientAbstract {
         if(!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $endPoint = Http::prepare('users/'.$params['id'].'.json', $this->client->getSideload($params));
+        $endPoint = Http::prepare((is_array($params['id']) ? 'users/show_many.json?ids='.implode(',', $params['id']) : 'users/'.$params['id'].'.json'), $this->client->getSideload($params));
         $response = Http::send($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
