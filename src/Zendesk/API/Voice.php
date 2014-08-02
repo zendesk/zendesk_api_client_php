@@ -4,6 +4,12 @@ namespace Zendesk\API;
 
 /**
  * The Voice class is a wrapper for methods as detailed on http://developer.zendesk.com/documentation/rest_api/voice.html
+ *
+ * @method VoicePhoneNumbers phoneNumbers()
+ * @method VoiceGreetings greetings()
+ * @method VoiceStats stats()
+ * @method VoiceAgents agents()
+ * @method VoiceTickets tickets()
  */
 class Voice extends ClientAbstract {
 
