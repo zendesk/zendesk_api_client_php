@@ -13,7 +13,7 @@ class Voice extends ClientAbstract {
     protected $agents;
     protected $tickets;
 
-    public function __construct($client) {
+    public function __construct(Client $client) {
         parent::__construct($client);
         $this->phoneNumbers = new VoicePhoneNumbers($client);
         $this->greetings = new VoiceGreetings($client);

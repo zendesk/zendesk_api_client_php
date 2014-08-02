@@ -14,7 +14,7 @@ class Topics extends ClientAbstract {
     protected $subscriptions;
     protected $votes;
 
-    public function __construct($client) {
+    public function __construct(Client $client) {
         parent::__construct($client);
         $this->comments = new TopicComments($client);
         $this->subscriptions = new TopicSubscriptions($client);
