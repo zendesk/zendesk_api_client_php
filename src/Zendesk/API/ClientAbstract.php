@@ -11,7 +11,7 @@ abstract class ClientAbstract
     protected $client;
     protected $lastId;
 
-    public function __construct($client) {
+    public function __construct(Client $client) {
         $this->client = $client;
     }
 
@@ -33,7 +33,7 @@ abstract class ClientAbstract
     /*
      * Check that all parameters have been supplied
      */
-    public function hasKeys($params, $mandatory) {
+    public function hasKeys(array $params, array $mandatory) {
         for($i = 0; $i < count($mandatory); $i++) {
             if(!array_key_exists($mandatory[$i], $params)) {
                 return false;
@@ -45,7 +45,7 @@ abstract class ClientAbstract
     /*
      * Check that any parameter has been supplied
      */
-    public function hasAnyKey($params, $mandatory) {
+    public function hasAnyKey(array $params, array $mandatory) {
         for($i = 0; $i < count($mandatory); $i++) {
             if(array_key_exists($mandatory[$i], $params)) {
                 return true;

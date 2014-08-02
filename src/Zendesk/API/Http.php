@@ -10,7 +10,7 @@ class Http {
     /*
      * Prepares an endpoint URL with optional side-loading
      */
-    public static function prepare($endPoint, $sideload = null, $iterators = null) {
+    public static function prepare($endPoint, array $sideload = null, array $iterators = null) {
         $addParams = array();
         // First look for side-loaded variables
         if(is_array($sideload)) {
@@ -35,7 +35,7 @@ class Http {
     /*
      * Use the send method to call every endpoint except for oauth/tokens
      */
-    public static function send($client, $endPoint, $json = null, $method = 'GET', $contentType = 'application/json') {
+    public static function send(Client $client, $endPoint, $json = null, $method = 'GET', $contentType = 'application/json') {
 
         $url = $client->getApiUrl().$endPoint;
         $method = strtoupper($method);
@@ -98,7 +98,7 @@ class Http {
     /*
      * Specific case for OAuth. Run /oauth.php via your browser to get an access token
      */
-    public static function oauth($client, $code, $oAuthId, $oAuthSecret) {
+    public static function oauth(Client $client, $code, $oAuthId, $oAuthSecret) {
 
         $url = 'https://'.$client->getSubdomain().'.zendesk.com/oauth/tokens';
         $method = 'POST';
