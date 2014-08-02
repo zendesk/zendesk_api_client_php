@@ -7,8 +7,43 @@ namespace Zendesk\API;
  * spl_autoload_register(function($c){@include 'src/'.preg_replace('#\\\|_(?!.+\\\)#','/',$c).'.php';});
  */
 
-/*
+/**
  * Client class, base level access
+ *
+ * @method Debug debug()
+ * @method Tickets tickets()
+ * @method TicketFields ticketFields()
+ * @method TicketForms ticketForms()
+ * @method Twitter twitter()
+ * @method Attachments attachments()
+ * @method Requests requests()
+ * @method Views views()
+ * @method Users users()
+ * @method UserFields userFields()
+ * @method Groups groups()
+ * @method GroupMemberships groupMemberships()
+ * @method CustomRoles customRoles()
+ * @method Forums forums()
+ * @method Categories categories()
+ * @method Topics topics()
+ * @method Settings settings()
+ * @method ActivityStream activityStream()
+ * @method AuditLogs auditLogs()
+ * @method Autocomplete autocomplete()
+ * @method Automations automations()
+ * @method JobStatuses jobStatuses()
+ * @method Macros macros()
+ * @method OAuthClients oauthClients()
+ * @method OAuthTokens oauthTokens()
+ * @method OrganizationFields organizationFields()
+ * @method Organizations organizations()
+ * @method SharingAgreements sharingAgreements()
+ * @method SuspendedTickets suspendedTickets()
+ * @method Tags tags()
+ * @method Targets targets()
+ * @method Triggers triggers()
+ * @method Voice voice()
+ * @method Locales locales()
  */
 class Client {
 

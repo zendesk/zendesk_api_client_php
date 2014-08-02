@@ -4,6 +4,10 @@ namespace Zendesk\API;
 
 /**
  * The Topics class exposes topic information
+ *
+ * @method TopicComments comments()
+ * @method TopicSubscriptions subscriptions()
+ * @method TopicVotes votes()
  */
 class Topics extends ClientAbstract {
 

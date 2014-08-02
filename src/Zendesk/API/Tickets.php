@@ -4,6 +4,11 @@ namespace Zendesk\API;
 
 /**
  * The Tickets class exposes key methods for reading and updating ticket data
+ *
+ * @method TicketAudits audits()
+ * @method TicketComments comments()
+ * @method TicketMetrics metrics()
+ * @method SatisfactionRatings satisfactionRatings()
  */
 class Tickets extends ClientAbstract {
 
