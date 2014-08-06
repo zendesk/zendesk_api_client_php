@@ -39,8 +39,12 @@ class Http {
 
         $url = $client->getApiUrl().$endPoint;
         $method = strtoupper($method);
-        $json = ($json == null ? (object) null : (($method != 'GET') && ($method != 'DELETE') && ($contentType == 'application/json') ? json_encode($json) : $json));
-
+        if (null == $json) {
+            $json = new \stdClass();
+        } else if ($contentType == 'application/json' && $method != 'GET' && $method != 'DELETE') {
+            $json = json_encode($json);
+        }
+        
         if($method == 'POST') {
             $curl = curl_init($url);
             curl_setopt($curl, CURLOPT_POST, true);
