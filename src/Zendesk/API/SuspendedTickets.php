@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The SuspendedTickets class exposes methods as detailed on http://developer.zendesk.com/documentation/rest_api/suspended_tickets.html
+ * @package Zendesk\API
  */
 class SuspendedTickets extends ClientAbstract {
 
     const OBJ_NAME = 'suspended_ticket';
     const OBJ_NAME_PLURAL = 'suspended_tickets';
 
-    /*
+    /**
      * List all suspended tickets
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare('suspended_tickets.json', null, $params);
@@ -23,8 +31,16 @@ class SuspendedTickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific suspended ticket
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -43,8 +59,16 @@ class SuspendedTickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Recover a suspended ticket (or multiple tickets)
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function recover(array $params = array()) {
         if($this->lastId != null) {
@@ -64,8 +88,16 @@ class SuspendedTickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a suspended ticket or multiple tickets
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {

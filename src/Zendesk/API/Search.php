@@ -4,11 +4,20 @@ namespace Zendesk\API;
 
 /**
  * The Search class exposes methods defined in http://developer.zendesk.com/documentation/rest_api/search.html
+ * @package Zendesk\API
  */
 class Search extends ClientAbstract {
 
-    /*
+    /**
      * Perform a search
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function performSearch(array $params) {
         if(!$this->hasKeys($params, array('query'))) {
@@ -23,8 +32,16 @@ class Search extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Perform an anonymous search
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function anonymousSearch(array $params) {
         if(!$this->hasKeys($params, array('query'))) {

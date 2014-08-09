@@ -4,21 +4,35 @@ namespace Zendesk\API;
 
 /**
  * The Forums class exposes forum information
+ * @package Zendesk\API
  */
 class Forums extends ClientAbstract {
 
     const OBJ_NAME = 'forum';
     const OBJ_NAME_PLURAL = 'forums';
 
+    /**
+     * @var ForumSubscriptions
+     */
     protected $subscriptions;
 
+    /**
+     * @param Client $client
+     */
     public function __construct($client) {
         parent::__construct($client);
         $this->subscriptions = new ForumSubscriptions($client);
     }
 
-    /*
+    /**
      * List all forums
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare((isset($params['category_id']) ? 'categories/'.$params['category_id'].'/forums.json' : 'forums.json'), null, $params);
@@ -30,8 +44,16 @@ class Forums extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific forum
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -50,8 +72,15 @@ class Forums extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a new forum
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         $endPoint = Http::prepare('forums.json');
@@ -63,8 +92,16 @@ class Forums extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a forum
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -85,8 +122,16 @@ class Forums extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a forum
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {
@@ -109,7 +154,19 @@ class Forums extends ClientAbstract {
      * Syntactic sugar methods:
      * Handy aliases:
      */
+
+    /**
+     * @param int|null $id
+     *
+     * @return ForumSubscriptions
+     */
     public function subscriptions($id = null) { return ($id != null ? $this->subscriptions->setLastId($id) : $this->subscriptions); }
+
+    /**
+     * @param int $id
+     *
+     * @return ForumSubscriptions
+     */
     public function subscription($id) { return $this->subscriptions->setLastId($id); }
 
 

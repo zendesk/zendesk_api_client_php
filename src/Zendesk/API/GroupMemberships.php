@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The GroupMemberships class exposes group membership information
+ * @package Zendesk\API
  */
 class GroupMemberships extends ClientAbstract {
 
     const OBJ_NAME = 'group_membership';
     const OBJ_NAME_PLURAL = 'group_memberships';
 
-    /*
+    /**
      * List all group memberships
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         if($this->client->users()->getLastId() != null) {
@@ -35,8 +43,16 @@ class GroupMemberships extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific group membership by id
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->client->users()->getLastId() != null) {
@@ -59,8 +75,16 @@ class GroupMemberships extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a new group membership
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         if($this->client->users()->getLastId() != null) {
@@ -83,8 +107,16 @@ class GroupMemberships extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a group membership
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->client->users()->getLastId() != null) {
@@ -107,8 +139,16 @@ class GroupMemberships extends ClientAbstract {
         return true;
     }
 
-    /* 
+    /**
      * Make this group membership the default
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function makeDefault(array $params = array()) {
         if($this->client->users()->getLastId() != null) {

@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The Twitter class exposes methods for managing and monitoring Twitter posts
+ * @package Zendesk\API
  */
 class Twitter extends ClientAbstract {
 
     const OBJ_NAME = 'monitored_twitter_handle';
     const OBJ_NAME_PLURAL = 'monitored_twitter_handles';
 
-    /*
+    /**
      * Return a list of monitored handles
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function handles(array $params = array()) {
         $endPoint = Http::prepare('channels/twitter/monitored_twitter_handles.json', null, $params);
@@ -23,8 +31,16 @@ class Twitter extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Responds with details of a specific handle
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function handleById(array $params) {
         if($this->lastId != null) {

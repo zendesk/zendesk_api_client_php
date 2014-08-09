@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The ForumSubscriptions class exposes forum information
+ * @package Zendesk\API
  */
 class ForumSubscriptions extends ClientAbstract {
 
     const OBJ_NAME = 'forum_subscription';
     const OBJ_NAME_PLURAL = 'forum_subscriptions';
 
-    /*
+    /**
      * List all forum subscriptions
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         if($this->client->forums()->getLastId() != null) {
@@ -27,8 +35,16 @@ class ForumSubscriptions extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific forum subscription
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -47,8 +63,16 @@ class ForumSubscriptions extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a new forum subscription
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         if($this->client->users()->getLastId() != null) {
@@ -71,8 +95,16 @@ class ForumSubscriptions extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a forum subscription
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {

@@ -4,11 +4,18 @@ namespace Zendesk\API;
 
 /**
  * HTTP functions via curl
+ * @package Zendesk\API
  */
 class Http {
 
-    /*
+    /**
      * Prepares an endpoint URL with optional side-loading
+     *
+     * @param string $endPoint
+     * @param array  $sideload
+     * @param array  $iterators
+     *
+     * @return string
      */
     public static function prepare($endPoint, $sideload = null, $iterators = null) {
         $addParams = array();
@@ -32,8 +39,18 @@ class Http {
         }
     }
 
-    /*
+    /**
      * Use the send method to call every endpoint except for oauth/tokens
+     *
+     * @param Client $client
+     * @param string $endPoint
+     * @param mixed  $json
+     * @param string $method
+     * @param string $contentType
+     *
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public static function send($client, $endPoint, $json = null, $method = 'GET', $contentType = 'application/json') {
 
@@ -108,8 +125,17 @@ class Http {
 
     }
 
-    /*
+    /**
      * Specific case for OAuth. Run /oauth.php via your browser to get an access token
+     *
+     * @param Client $client
+     * @param string $code
+     * @param string $oAuthId
+     * @param string $oAuthSecret
+     *
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public static function oauth($client, $code, $oAuthId, $oAuthSecret) {
 
