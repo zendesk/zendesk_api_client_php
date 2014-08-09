@@ -4,6 +4,7 @@ namespace Zendesk\API;
 
 /**
  * The Voice class is a wrapper for methods as detailed on http://developer.zendesk.com/documentation/rest_api/voice.html
+ * @package Zendesk\API
  *
  * @method VoicePhoneNumbers phoneNumbers()
  * @method VoiceGreetings greetings()
@@ -13,12 +14,30 @@ namespace Zendesk\API;
  */
 class Voice extends ClientAbstract {
 
+    /**
+     * @var VoicePhoneNumbers
+     */
     protected $phoneNumbers;
+    /**
+     * @var VoiceGreetings
+     */
     protected $greetings;
+    /**
+     * @var VoiceStats
+     */
     protected $stats;
+    /**
+     * @var VoiceAgents
+     */
     protected $agents;
+    /**
+     * @var VoiceTickets
+     */
     protected $tickets;
 
+    /**
+     * @param Client $client
+     */
     public function __construct($client) {
         parent::__construct($client);
         $this->phoneNumbers = new VoicePhoneNumbers($client);
@@ -28,10 +47,15 @@ class Voice extends ClientAbstract {
         $this->tickets = new VoiceTickets($client);
     }
 
-    /*
+    /**
      * Generic method to object getter. Since all objects are protected, this method
      * exposes a getter function with the same name as the protected variable, for example
      * $client->tickets can be referenced by $client->tickets()
+     *
+     * @param $name
+     * @param $arguments
+     *
+     * @throws CustomException
      */
     public function __call($name, $arguments) {
         if(isset($this->$name)) {

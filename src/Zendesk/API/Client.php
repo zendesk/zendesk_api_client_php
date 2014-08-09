@@ -9,8 +9,10 @@ namespace Zendesk\API;
 
 /**
  * Client class, base level access
+ * @package Zendesk\API
  *
  * @method Debug debug()
+ * @method Tickets ticket()
  * @method Tickets tickets()
  * @method TicketFields ticketFields()
  * @method TicketForms ticketForms()
@@ -47,50 +49,180 @@ namespace Zendesk\API;
  */
 class Client {
 
+    /**
+     * @var string
+     */
     protected $subdomain;
+    /**
+     * @var string
+     */
     protected $username;
+    /**
+     * @var string
+     */
     protected $password;
+    /**
+     * @var string
+     */
     protected $token;
+    /**
+     * @var string
+     */
     protected $oAuthToken;
+    /**
+     * @var string
+     */
     protected $apiUrl;
+    /**
+     * @var string
+     */
     protected $apiVer = 'v2';
+    /**
+     * @var array|null
+     */
     protected $sideload;
 
+    /**
+     * @var Tickets
+     */
     protected $tickets;
+    /**
+     * @var TicketFields
+     */
     protected $ticketFields;
+    /**
+     * @var TicketForms
+     */
     protected $ticketForms;
+    /**
+     * @var Twitter
+     */
     protected $twitter;
+    /**
+     * @var Attachments
+     */
     protected $attachments;
+    /**
+     * @var Requests
+     */
     protected $requests;
+    /**
+     * @var Users
+     */
     protected $users;
+    /**
+     * @var UserFields
+     */
     protected $userFields;
+    /**
+     * @var Groups
+     */
     protected $groups;
+    /**
+     * @var GroupMemberships
+     */
     protected $groupMemberships;
+    /**
+     * @var CustomRoles
+     */
     protected $customRoles;
+    /**
+     * @var Forums
+     */
     protected $forums;
+    /**
+     * @var Categories
+     */
     protected $categories;
+    /**
+     * @var Topics
+     */
     protected $topics;
+    /**
+     * @var Settings
+     */
     protected $settings;
+    /**
+     * @var ActivityStream
+     */
     protected $activityStream;
+    /**
+     * @var AuditLogs
+     */
     protected $auditLogs;
+    /**
+     * @var Autocomplete
+     */
     protected $autocomplete;
+    /**
+     * @var Automations
+     */
     protected $automations;
+    /**
+     * @var JobStatuses
+     */
     protected $jobStatuses;
+    /**
+     * @var Macros
+     */
     protected $macros;
+    /**
+     * @var OAuthClients
+     */
     protected $oauthClients;
+    /**
+     * @var OAuthTokens
+     */
     protected $oauthTokens;
+    /**
+     * @var OrganizationFields
+     */
     protected $organizationFields;
+    /**
+     * @var Organizations
+     */
     protected $organizations;
+    /**
+     * @var Search
+     */
     protected $search;
+    /**
+     * @var SharingAgreements
+     */
     protected $sharingAgreements;
+    /**
+     * @var SuspendedTickets
+     */
     protected $suspendedTickets;
+    /**
+     * @var Tags
+     */
     protected $tags;
+    /**
+     * @var Targets
+     */
     protected $targets;
+    /**
+     * @var Triggers
+     */
     protected $triggers;
+    /**
+     * @var Voice
+     */
     protected $voice;
+    /**
+     * @var Locales
+     */
     protected $locales;
+    /**
+     * @var Debug
+     */
     protected $debug;
 
+    /**
+     * @param string $subdomain
+     * @param string $username
+     */
     public function __construct($subdomain, $username) {
         $this->subdomain = $subdomain;
         $this->username = $username;
@@ -132,8 +264,11 @@ class Client {
         $this->locales = new Locales($this);
     }
 
-    /*
+    /**
      * Configure the authorization method
+     *
+     * @param string $method
+     * @param string $value
      */
     public function setAuth($method, $value) {
         switch($method) {
@@ -152,36 +287,48 @@ class Client {
         }
     }
 
-    /*
+    /**
      * Returns the supplied subdomain
+     *
+     * @return string
      */
     public function getSubdomain() {
         return $this->subdomain;
     }
 
-    /*
+    /**
      * Returns the generated api URL
+     *
+     * @return string
      */
     public function getApiUrl() {
         return $this->apiUrl;
     }
 
-    /*
+    /**
      * Returns a text value indicating the type of authorization configured
+     *
+     * @return string
      */
     public function getAuthType() {
         return ($this->oAuthToken ? 'oauth_token' : ($this->token ? 'token' : 'password'));
     }
 
-    /*
+    /**
      * Compiles an auth string with either token, password or OAuth credentials
+     *
+     * @return string
      */
     public function getAuthText() {
         return ($this->oAuthToken ? $this->oAuthToken : $this->username.($this->token ? '/token:'.$this->token : ':'.$this->password));
     }
 
-    /*
+    /**
      * Set debug information as an object
+     *
+     * @param mixed $lastRequestHeaders
+     * @param mixed $lastResponseCode
+     * @param string $lastResponseHeaders
      */
     public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders) {
         $this->debug->lastRequestHeaders = $lastRequestHeaders;
@@ -189,32 +336,47 @@ class Client {
         $this->debug->lastResponseHeaders = $lastResponseHeaders;
     }
 
-    /*
+    /**
      * Returns debug information in an object
+     *
+     * @return Debug
      */
     public function getDebug() {
         return $this->debug;
     }
 
-    /*
+    /**
      * Sideload setter
+     *
+     * @param array|null $fields
+     *
+     * @return Client
      */
     public function setSideload($fields = null) {
         $this->sideload = $fields;
         return $this;
     }
 
-    /*
+    /**
      * Sideload getter
+     *
+     * @param array|null $params
+     *
+     * @return array|null
      */
     public function getSideload($params = null) {
         return ((isset($params['sideload'])) && (is_array($params['sideload'])) ? $params['sideload'] : $this->sideload);
     }
 
-    /*
+    /**
      * Generic method to object getter. Since all objects are protected, this method
      * exposes a getter function with the same name as the protected variable, for example
      * $client->tickets can be referenced by $client->tickets()
+     *
+     * @param $name
+     * @param $arguments
+     *
+     * @throws CustomException
      */
     public function __call($name, $arguments) {
         if(isset($this->$name)) {
@@ -231,11 +393,53 @@ class Client {
     /*
      * These ones don't follow the usual construct
      */
+
+    /**
+     * @param int $id
+     *
+     * @return $this
+     */
     public function category($id) { return $this->categories->setLastId($id); }
+
+    /**
+     * @param int|null $id
+     *
+     * @return ActivityStream
+     */
     public function activities($id = null) { return ($id != null ? $this->activityStream()->setLastId($id) : $this->activityStream()); }
+
+    /**
+     * @param int $id
+     *
+     * @return ActivityStream
+     */
     public function activity($id) { return $this->activityStream()->setLastId($id); }
+
+    /**
+     * @param int $id
+     *
+     * @return JobStatuses
+     */
     public function jobStatus($id) { return $this->jobStatuses()->setLastId($id); }
+
+    /**
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     *
+     * @return mixed
+     */
     public function search(array $params) { return $this->search->performSearch($params); }
+
+    /**
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     *
+     * @return mixed
+     */
     public function anonymousSearch(array $params) { return $this->search->anonymousSearch($params); }
 
 }

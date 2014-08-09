@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The Targets class exposes methods as detailed on http://developer.zendesk.com/documentation/rest_api/targets.html
+ * @package Zendesk\API
  */
 class Targets extends ClientAbstract {
 
     const OBJ_NAME = 'target';
     const OBJ_NAME_PLURAL = 'targets';
 
-    /*
+    /**
      * List targets
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare('targets.json', null, $params);
@@ -23,8 +31,16 @@ class Targets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific target
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -43,8 +59,15 @@ class Targets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a target
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         $endPoint = Http::prepare('targets.json');
@@ -56,8 +79,16 @@ class Targets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a target
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -76,8 +107,16 @@ class Targets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a target
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {

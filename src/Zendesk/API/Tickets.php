@@ -4,6 +4,7 @@ namespace Zendesk\API;
 
 /**
  * The Tickets class exposes key methods for reading and updating ticket data
+ * @package Zendesk\API
  *
  * @method TicketAudits audits()
  * @method TicketComments comments()
@@ -15,16 +16,38 @@ class Tickets extends ClientAbstract {
     const OBJ_NAME = 'ticket';
     const OBJ_NAME_PLURAL = 'tickets';
 
+    /**
+     * @var TicketAudits
+     */
     protected $audits;
+    /**
+     * @var TicketComments
+     */
     protected $comments;
+    /**
+     * @var TicketMetrics
+     */
     protected $metrics;
+    /**
+     * @var TicketImport
+     */
     protected $import;
+    /**
+     * @var SatisfactionRatings
+     */
     protected $satisfactionRatings;
     /*
      * Helpers:
      */
+
+    /**
+     * @var array
+     */
     protected $lastAttachments = array();
 
+    /**
+     * @param Client $client
+     */
     public function __construct($client) {
         parent::__construct($client);
         $this->audits = new TicketAudits($client);
@@ -34,8 +57,15 @@ class Tickets extends ClientAbstract {
         $this->satisfactionRatings = new SatisfactionRatings($client);
     }
 
-    /*
+    /**
      * Returns all recent tickets overall, per user or per organization
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array ()) {
         if($this->client->organizations()->getLastId() != null) {
@@ -59,8 +89,16 @@ class Tickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Find a specific ticket by id or series of ids
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -79,8 +117,16 @@ class Tickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Find a specific twitter generated ticket by id
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findTwicket(array $params = array()) {
         if($this->lastId != null) {
@@ -99,8 +145,15 @@ class Tickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a ticket
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         if(count($this->lastAttachments)) {
@@ -116,8 +169,16 @@ class Tickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a ticket from a tweet
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function createFromTweet(array $params) {
         if((!$params['twitter_status_message_id']) || (!$params['monitored_twitter_handle_id'])) {
@@ -132,8 +193,16 @@ class Tickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a ticket or series of tickets
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -158,8 +227,16 @@ class Tickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Mark a ticket as spam
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function markAsSpam(array $params = array()) {
         if($this->lastId != null) {
@@ -180,8 +257,16 @@ class Tickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Get related ticket information
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function related(array $params = array()) {
         if($this->lastId != null) {
@@ -201,8 +286,16 @@ class Tickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a ticket or series of tickets
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {
@@ -222,8 +315,16 @@ class Tickets extends ClientAbstract {
         return true;
     }
 
-    /*
+    /**
      * List collaborators for a ticket
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function collaborators(array $params) {
         if($this->lastId != null) {
@@ -243,8 +344,16 @@ class Tickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * List incidents for a ticket
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function incidents(array $params) {
         if($this->lastId != null) {
@@ -264,8 +373,16 @@ class Tickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * List problems for a ticket
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function problems(array $params) {
         if($this->lastId != null) {
@@ -285,8 +402,16 @@ class Tickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Add a problem autocomplete
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function problemAutoComplete(array $params) {
         if($this->lastId != null) {
@@ -306,8 +431,16 @@ class Tickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Incremental ticket exports with a supplied start_time
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function export(array $params) {
         if(!$params['start_time']) {
@@ -322,8 +455,16 @@ class Tickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * For testing of incremental tickets only
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function exportSample(array $params) {
         if(!$params['start_time']) {
@@ -338,10 +479,15 @@ class Tickets extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Generic method to object getter. Since all objects are protected, this method
      * exposes a getter function with the same name as the protected variable, for example
      * $client->tickets can be referenced by $client->tickets()
+     *
+     * @param $name
+     * @param $arguments
+     *
+     * @throws CustomException
      */
     public function __call($name, $arguments) {
         if(isset($this->$name)) {
@@ -355,13 +501,43 @@ class Tickets extends ClientAbstract {
         }
     }
 
-    /*
+    /**
      * Syntactic sugar methods:
      * Handy aliases:
      */
+
+    /**
+     * @param int|null $id
+     *
+     * @return Tags
+     */
     public function tags($id = null) { return ($id != null ? $this->client->tags()->setLastId($id) : $this->client->tags()); }
+
+    /**
+     * @param $id
+     *
+     * @return Tags
+     */
     public function tag($id) { return $this->client->tags()->setLastId($id); }
+
+    /**
+     * @param array $params
+     *
+     * @throws ResponseException
+     *
+     * @return mixed
+     */
     public function import(array $params) { return $this->import->import($params); }
+
+    /**
+     * @param array $params
+     *
+     * @throws CustomException
+     * @throws MissingParametersException
+     * @throws ResponseException
+     *
+     * @return Tickets
+     */
     public function attach(array $params = array()) {
         if(!$this->hasKeys($params, array('file'))) {
             throw new MissingParametersException(__METHOD__, array('file'));

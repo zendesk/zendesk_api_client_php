@@ -4,11 +4,20 @@ namespace Zendesk\API;
 
 /**
  * The VoiceStats class exposes methods as outlined in http://developer.zendesk.com/documentation/rest_api/voice.html
+ * @package Zendesk\API
  */
 class VoiceStats extends ClientAbstract {
 
-    /*
+    /**
      * List all stats
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         if(!$this->hasAnyKey($params, array('current_queue_activity', 'historical_queue_activity', 'agents_activity'))) {
