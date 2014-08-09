@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The TicketImport class exposes import methods for tickets
+ * @package Zendesk\API
  */
 class TicketImport extends ClientAbstract {
 
     const OBJ_NAME = 'ticket';
     const OBJ_NAME_PLURAL = 'tickets';
 
-    /*
+    /**
      * Create a new ticket field
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function import(array $params) {
         $endPoint = Http::prepare('imports/tickets.json');

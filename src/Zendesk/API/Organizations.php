@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The Organizations class exposes methods as detailed on http://developer.zendesk.com/documentation/rest_api/organizations.html
+ * @package Zendesk\API
  */
 class Organizations extends ClientAbstract {
 
     const OBJ_NAME = 'organization';
     const OBJ_NAME_PLURAL = 'organizations';
 
-    /*
+    /**
      * List all organizations
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         if($this->client->users()->getLastId() != null) {
@@ -27,8 +35,16 @@ class Organizations extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific organization
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -47,8 +63,15 @@ class Organizations extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a new organization
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         $endPoint = Http::prepare('organizations.json');
@@ -60,8 +83,15 @@ class Organizations extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create multiple new organizations, returns as a job
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function createMany(array $params) {
         $endPoint = Http::prepare('organizations/create_many.json');
@@ -73,8 +103,16 @@ class Organizations extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update an organization
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -95,8 +133,16 @@ class Organizations extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete an organization
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {
@@ -116,8 +162,16 @@ class Organizations extends ClientAbstract {
         return true;
     }
 
-    /*
+    /**
      * Autocomplete a list of organizations
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function autocomplete(array $params = array()) {
         if(!$this->hasKeys($params, array('name'))) {
@@ -132,8 +186,16 @@ class Organizations extends ClientAbstract {
         return $response;
     }
 
-     /*
+    /**
      * Get a list of related information
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function related(array $params = array()) {
         if($this->lastId != null) {
@@ -152,8 +214,16 @@ class Organizations extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Search for organizations
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function search(array $params) {
         if(!$this->hasKeys($params, array('external_id'))) {
@@ -172,9 +242,33 @@ class Organizations extends ClientAbstract {
      * Syntactic sugar methods:
      * Handy aliases:
      */
+
+    /**
+     * @param null $id
+     *
+     * @return Tickets
+     */
     public function tickets($id = null) { return ($id != null ? $this->client->tickets()->setLastId($id) : $this->client->tickets()); }
+
+    /**
+     * @param int $id
+     *
+     * @return Tickets
+     */
     public function ticket($id) { return $this->client->tickets()->setLastId($id); }
+
+    /**
+     * @param int|null $id
+     *
+     * @return Tags
+     */
     public function tags($id = null) { return ($id != null ? $this->client->tags()->setLastId($id) : $this->client->tags()); }
+
+    /**
+     * @param int $id
+     *
+     * @return Tags
+     */
     public function tag($id) { return $this->client->tags()->setLastId($id); }
 
 }

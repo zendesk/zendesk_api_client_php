@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The Macros class exposes methods seen at http://developer.zendesk.com/documentation/rest_api/macros.html
+ * @package Zendesk\API
  */
 class Macros extends ClientAbstract {
 
     const OBJ_NAME = 'macro';
     const OBJ_NAME_PLURAL = 'macros';
 
-    /*
+    /**
      * List all macros
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare((isset($params['active']) ? 'macros/active.json' : 'macros.json'), null, $params);
@@ -23,8 +31,16 @@ class Macros extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific macro
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -43,8 +59,15 @@ class Macros extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a macro
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         $endPoint = Http::prepare('macros.json');
@@ -56,8 +79,16 @@ class Macros extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a macro
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -76,8 +107,16 @@ class Macros extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a macro
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {
@@ -97,8 +136,16 @@ class Macros extends ClientAbstract {
         return true;
     }
 
-    /*
+    /**
      * Apply a specific macro
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function apply(array $params = array()) {
         if($this->client->tickets()->getLastId() != null) {

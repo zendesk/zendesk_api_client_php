@@ -4,14 +4,23 @@ namespace Zendesk\API;
 
 /**
  * The UserIdentities class exposes fields on the user profile page
+ * @package Zendesk\API
  */
 class UserIdentities extends ClientAbstract {
 
     const OBJ_NAME = 'identity';
     const OBJ_NAME_PLURAL = 'identities';
 
-    /*
+    /**
      * List all user identities
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         if($this->client->users()->getLastId() != null) {
@@ -30,8 +39,16 @@ class UserIdentities extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific user identity
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->client->users()->getLastId() != null) {
@@ -54,8 +71,16 @@ class UserIdentities extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a new user identity
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         if($this->client->users()->getLastId() != null) {
@@ -78,8 +103,16 @@ class UserIdentities extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Mark a user identity as verified
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function markAsVerified(array $params = array()) {
         if($this->client->users()->getLastId() != null) {
@@ -102,8 +135,16 @@ class UserIdentities extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Mark a user identity as primary
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function makePrimary(array $params = array()) {
         if($this->client->users()->getLastId() != null) {
@@ -126,8 +167,16 @@ class UserIdentities extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Request verification
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function requestVerification(array $params = array()) {
         if($this->client->users()->getLastId() != null) {
@@ -150,8 +199,16 @@ class UserIdentities extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a user identity
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->client->users()->getLastId() != null) {

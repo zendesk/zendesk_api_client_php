@@ -11,18 +11,29 @@ class Requests extends ClientAbstract {
     const OBJ_NAME = 'request';
     const OBJ_NAME_PLURAL = 'requests';
 
-    /*
-     * Public objects:
+
+    /**
+     * @var RequestComments
      */
     protected $comments;
 
+    /**
+     * @param Client $client
+     */
     public function __construct($client) {
         parent::__construct($client);
         $this->comments = new RequestComments($client);
     }
 
-    /*
+    /**
      * List all requests
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare(
@@ -40,8 +51,16 @@ class Requests extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific request
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -60,8 +79,15 @@ class Requests extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a new request
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         $endPoint = Http::prepare('requests.json');
@@ -73,8 +99,16 @@ class Requests extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a request
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -99,10 +133,45 @@ class Requests extends ClientAbstract {
      * Syntactic sugar methods:
      * Handy aliases:
      */
+
+    /**
+     * @param int|null $id
+     * @return RequestComments
+     */
     public function comments($id = null) { return ($id != null ? $this->comments->setLastId($id) : $this->comments); }
+
+    /**
+     * @param int $id
+     *
+     * @return $this
+     */
     public function comment($id) { return $this->comments->setLastId($id); }
+
+    /**
+     * @param array $params
+     *
+     * @throws ResponseException*
+     *
+     * @return mixed
+     */
     public function open(array $params = array()) { $params['open'] = true; return $this->findAll($params); }
+
+    /**
+     * @param array $params
+     *
+     * @throws ResponseException
+     *
+     * @return mixed
+     */
     public function solved(array $params = array()) { $params['solved'] = true; return $this->findAll($params); }
+
+    /**
+     * @param array $params
+     *
+     * @throws ResponseException
+     *
+     * @return mixed
+     */
     public function ccd(array $params = array()) { $params['ccd'] = true; return $this->findAll($params); }
 
 }
