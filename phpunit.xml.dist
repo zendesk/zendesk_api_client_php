@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpunit bootstrap="tests/bootstrap.php" colors="true">
+    <php>
+        <var name="SUBDOMAIN" value="" />
+        <var name="USERNAME" value="" />
+        <var name="PASSWORD" value="" />
+        <var name="TOKEN" value="" />
+        <var name="OAUTH_SECRET" value="" />
+        <var name="OAUTH_TOKEN" value="" />
+        <var name="END_USER_USERNAME" value="" />
+        <var name="END_USER_PASSWORD" value="" />
+        <var name="END_USER_OAUTH_TOKEN" value="" />
+    </php>
+</phpunit>
