@@ -9,7 +9,7 @@ class Apps extends ClientAbstract {
 
     protected $installations;
 
-    public function __construct($client) {
+    public function __construct(Client $client) {
         parent::__construct($client);
         $this->installations = new AppInstallations($client);
     }

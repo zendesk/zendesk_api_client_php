@@ -13,7 +13,7 @@ class Users extends ClientAbstract {
 
     protected $identities;
 
-    public function __construct($client) {
+    public function __construct(Client $client) {
         parent::__construct($client);
         $this->identities = new UserIdentities($client);
     }
