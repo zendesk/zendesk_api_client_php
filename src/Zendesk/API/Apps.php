@@ -4,18 +4,33 @@ namespace Zendesk\API;
 
 /**
  * The Apps class exposes app management methods
+ * @package Zendesk\API
  */
 class Apps extends ClientAbstract {
 
+    /**
+     * @var AppInstallations
+     */
     protected $installations;
 
-    public function __construct(Client $client) {
+    /**
+     * @param Client $client
+     */
+     public function __construct(Client $client) {
         parent::__construct($client);
         $this->installations = new AppInstallations($client);
     }
 
-    /*
+    /**
      * Uploads an app - see http://developer.zendesk.com/documentation/rest_api/apps.html for workflow
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function upload(array $params) {
         if(!$this->hasKeys($params, array('file'))) {
@@ -30,8 +45,15 @@ class Apps extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create an app
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         $endPoint = Http::prepare('apps.json');
@@ -43,8 +65,16 @@ class Apps extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update an app
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -63,8 +93,16 @@ class Apps extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete an app
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {
@@ -84,8 +122,15 @@ class Apps extends ClientAbstract {
         return true;
     }
 
-    /*
+    /**
      * Send an app notification
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function sendNotification(array $params) {
         $endPoint = Http::prepare('apps/notify.json');
@@ -101,7 +146,19 @@ class Apps extends ClientAbstract {
      * Syntactic sugar methods:
      * Handy aliases:
      */
+
+    /**
+     * @param int|null $id
+     *
+     * @return AppInstallations
+     */
     public function installations($id = null) { return ($id != null ? $this->installations->setLastId($id) : $this->installations); }
+
+    /**
+     * @param int $id
+     *
+     * @return AppInstallations
+     */
     public function installation($id) { return $this->installations->setLastId($id); }
 
 }

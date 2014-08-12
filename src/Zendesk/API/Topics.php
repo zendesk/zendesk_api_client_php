@@ -4,16 +4,33 @@ namespace Zendesk\API;
 
 /**
  * The Topics class exposes topic information
+ * @package Zendesk\API
+ *
+ * @method TopicComments comments()
+ * @method TopicSubscriptions subscriptions()
+ * @method TopicVotes votes()
  */
 class Topics extends ClientAbstract {
 
     const OBJ_NAME = 'topic';
     const OBJ_NAME_PLURAL = 'topics';
 
+    /**
+     * @var TopicComments
+     */
     protected $comments;
+    /**
+     * @var TopicSubscriptions
+     */
     protected $subscriptions;
+    /**
+     * @var TopicVotes
+     */
     protected $votes;
-
+    
+    /**
+     * @param Client $client
+     */
     public function __construct(Client $client) {
         parent::__construct($client);
         $this->comments = new TopicComments($client);
@@ -21,8 +38,15 @@ class Topics extends ClientAbstract {
         $this->votes = new TopicVotes($client);
     }
 
-    /*
+    /**
      * List all topics
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         if($this->client->forums()->getLastId() != null) {
@@ -34,7 +58,7 @@ class Topics extends ClientAbstract {
             $this->client->users()->setLastId(null);
         }
         $endPoint = Http::prepare(
-                (isset($params['forum_id']) ? 'forums/'.$params['forum_id'].'/topics.json' : 
+                (isset($params['forum_id']) ? 'forums/'.$params['forum_id'].'/topics.json' :
                 (isset($params['user_id']) ? 'users/'.$params['user_id'].'/topics.json' : 'topics.json')), $this->client->getSideload($params), $params
             );
         $response = Http::send($this->client, $endPoint);
@@ -45,8 +69,16 @@ class Topics extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific topic
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -65,8 +97,15 @@ class Topics extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a new topic
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         if($this->client->forums()->getLastId() != null) {
@@ -82,8 +121,15 @@ class Topics extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Import a topic (same as create but without notifications)
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function import(array $params) {
         $endPoint = Http::prepare('import/topics.json');
@@ -95,8 +141,16 @@ class Topics extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a topic
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -117,8 +171,16 @@ class Topics extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a topic
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {
@@ -137,8 +199,13 @@ class Topics extends ClientAbstract {
         return true;
     }
 
-    /*
+    /**
      * Generic method to object getter
+     *
+     * @param $name
+     * @param $arguments
+     *
+     * @throws CustomException
      */
     public function __call($name, $arguments) {
         if(isset($this->$name)) {
@@ -152,7 +219,18 @@ class Topics extends ClientAbstract {
         }
     }
 
+    /**
+     * @param int|null $id
+     *
+     * @return Tags
+     */
     public function tags($id = null) { return ($id != null ? $this->client->tags()->setLastId($id) : $this->client->tags()); }
+
+    /**
+     * @param $id
+     *
+     * @return Tags
+     */
     public function tag($id) { return $this->client->tags()->setLastId($id); }
 
 }

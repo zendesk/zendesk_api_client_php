@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The VoicePhoneNumbers class exposes methods as outlined in http://developer.zendesk.com/documentation/rest_api/voice.html
+ * @package Zendesk\API
  */
 class VoicePhoneNumbers extends ClientAbstract {
 
     const OBJ_NAME = 'phone_number';
     const OBJ_NAME_PLURAL = 'phone_numbers';
 
-    /*
+    /**
      * List all voice phone numbers
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare('channels/voice/phone_numbers.json', null, $params);
@@ -23,8 +31,16 @@ class VoicePhoneNumbers extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific voice phone number
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -43,8 +59,16 @@ class VoicePhoneNumbers extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Search for a voice phone number
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function search(array $params) {
         if(!$this->hasKeys($params, array('country'))) {
@@ -59,8 +83,16 @@ class VoicePhoneNumbers extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a voice phone number
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         if(!$this->hasKeys($params, array('token'))) {
@@ -75,8 +107,16 @@ class VoicePhoneNumbers extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a voice phone number
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -97,8 +137,16 @@ class VoicePhoneNumbers extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a voice phone number
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {

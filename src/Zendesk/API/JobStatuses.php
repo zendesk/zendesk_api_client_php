@@ -4,11 +4,20 @@ namespace Zendesk\API;
 
 /**
  * The JobStatuses class exposes information about the status of a job
+ * @package Zendesk\API
  */
 class JobStatuses extends ClientAbstract {
 
-    /*
+    /**
      * Show a specific job status
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {

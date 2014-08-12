@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The AppInstallations class exposes app installation methods
+ * @package Zendesk\API
  */
 class AppInstallations extends ClientAbstract {
 
     const OBJ_NAME = 'installation';
     const OBJ_NAME_PLURAL = 'installations';
 
-    /*
+    /**
      * List all app installations
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare('apps/installations.json'.(isset($params['include']) ? '?include='.$params['include'] : ''), null, $params);
@@ -23,8 +31,16 @@ class AppInstallations extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update an app installation
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -43,8 +59,16 @@ class AppInstallations extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete an app installation
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {
