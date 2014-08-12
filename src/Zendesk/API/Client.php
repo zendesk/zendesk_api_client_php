@@ -164,7 +164,7 @@ class Client {
     /*
      * Sideload setter
      */
-    public function setSideload($fields = null) {
+    public function setSideload(array $fields = null) {
         $this->sideload = $fields;
         return $this;
     }
@@ -172,7 +172,7 @@ class Client {
     /*
      * Sideload getter
      */
-    public function getSideload($params = null) {
+    public function getSideload(array $params = null) {
         return ((isset($params['sideload'])) && (is_array($params['sideload'])) ? $params['sideload'] : $this->sideload);
     }
 

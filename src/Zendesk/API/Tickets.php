@@ -20,7 +20,7 @@ class Tickets extends ClientAbstract {
      */
     protected $lastAttachments = array();
 
-    public function __construct($client) {
+    public function __construct(Client $client) {
         parent::__construct($client);
         $this->audits = new TicketAudits($client);
         $this->comments = new TicketComments($client);

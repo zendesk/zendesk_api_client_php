@@ -12,7 +12,7 @@ class Forums extends ClientAbstract {
 
     protected $subscriptions;
 
-    public function __construct($client) {
+    public function __construct(Client $client) {
         parent::__construct($client);
         $this->subscriptions = new ForumSubscriptions($client);
     }
