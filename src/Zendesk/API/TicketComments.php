@@ -4,14 +4,23 @@ namespace Zendesk\API;
 
 /**
  * The TicketComments class exposes comment methods for tickets
+ * @package Zendesk\API
  */
 class TicketComments extends ClientAbstract {
 
     const OBJ_NAME = 'comment';
     const OBJ_NAME_PLURAL = 'comments';
 
-    /*
+    /**
      * Returns all comments for a particular ticket
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         if($this->client->tickets()->getLastId() != null) {
@@ -30,8 +39,16 @@ class TicketComments extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Make the specified comment private
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function makePrivate(array $params = array()) {
         if($this->client->tickets()->getLastId() != null) {
@@ -57,6 +74,12 @@ class TicketComments extends ClientAbstract {
     /*
      * Syntactic sugar methods:
      * Handy aliases:
+     */
+
+    /**
+     * @param array $params
+     *
+     * @throws CustomException
      */
     public function find(array $params = array()) {
         throw new CustomException('Method '.__METHOD__.' does not exist. Try $client->ticket(ticket_id)->comments()->findAll() instead.');

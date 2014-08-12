@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The SatisfactionRatings class exposes methods as detailed on http://developer.zendesk.com/documentation/rest_api/satisfaction_ratings.html
+ * @package Zendesk\API
  */
 class SatisfactionRatings extends ClientAbstract {
 
     const OBJ_NAME = 'satisfaction_rating';
     const OBJ_NAME_PLURAL = 'satisfaction_ratings';
 
-    /*
+    /**
      * List all satisfaction ratings
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         if($this->client->tickets()->getLastId() != null) {
@@ -27,8 +35,16 @@ class SatisfactionRatings extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific satisfaction rating
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -47,8 +63,15 @@ class SatisfactionRatings extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a new satisfaction rating (authorised end user credentials only please!)
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         if($this->client->tickets()->getLastId() != null) {

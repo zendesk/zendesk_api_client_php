@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The Automations class exposes methods seen at http://developer.zendesk.com/documentation/rest_api/automations.html
+ * @package Zendesk\API
  */
 class Automations extends ClientAbstract {
 
     const OBJ_NAME = 'automation';
     const OBJ_NAME_PLURAL = 'automations';
 
-    /*
+    /**
      * List all automations
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare((isset($params['active']) ? 'automations/active.json' : 'automations.json'), null, $params);
@@ -23,8 +31,16 @@ class Automations extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific automation
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -43,8 +59,15 @@ class Automations extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create an automation
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         $endPoint = Http::prepare('automations.json');
@@ -56,8 +79,16 @@ class Automations extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update an automation
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -76,8 +107,16 @@ class Automations extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete an automation
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {

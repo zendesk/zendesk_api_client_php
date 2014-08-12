@@ -5,14 +5,24 @@ namespace Zendesk\API;
 /**
  * The RequestComments class exposes request comment management methods
  * Note: you must authenticate as a user!
+ *
+ * @package Zendesk\API
  */
 class RequestComments extends ClientAbstract {
 
     const OBJ_NAME = 'comment';
     const OBJ_NAME_PLURAL = 'comments';
 
-    /*
+    /**
      * Get comments from a request
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         if($this->client->requests()->getLastId() != null) {
@@ -31,8 +41,16 @@ class RequestComments extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific request
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->client->requests()->getLastId() != null) {

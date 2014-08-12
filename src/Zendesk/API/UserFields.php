@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The UserFields class exposes fields on the user profile page
+ * @package Zendesk\API
  */
 class UserFields extends ClientAbstract {
 
     const OBJ_NAME = 'user_field';
     const OBJ_NAME_PLURAL = 'user_fields';
 
-    /*
+    /**
      * List all user fields
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare('user_fields.json', null, $params);
@@ -23,8 +31,16 @@ class UserFields extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific user field
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -43,8 +59,15 @@ class UserFields extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a new user field
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         $endPoint = Http::prepare('user_fields.json');
@@ -56,8 +79,16 @@ class UserFields extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a user field
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -78,8 +109,16 @@ class UserFields extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a user field
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {
@@ -99,8 +138,15 @@ class UserFields extends ClientAbstract {
         return true;
     }
 
-    /*
+    /**
      * Reorder user fields
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function reorder(array $params) {
         $endPoint = Http::prepare('user_fields/reorder.json');

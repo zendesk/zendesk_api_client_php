@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The Groups class exposes ticket group information
+ * @package Zendesk\API
  */
 class Groups extends ClientAbstract {
 
     const OBJ_NAME = 'group';
     const OBJ_NAME_PLURAL = 'groups';
 
-    /*
+    /**
      * List all groups
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         if($this->client->users()->getLastId() != null) {
@@ -30,8 +38,16 @@ class Groups extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific group
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -50,8 +66,15 @@ class Groups extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a new group
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         $endPoint = Http::prepare('groups.json');
@@ -63,8 +86,16 @@ class Groups extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a group
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -85,8 +116,16 @@ class Groups extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a group
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {
@@ -105,7 +144,18 @@ class Groups extends ClientAbstract {
         return true;
     }
 
+    /**
+     * @param int|null $id
+     *
+     * @return GroupMemberships
+     */
     public function members($id = null) { return ($id != null ? $this->client->groupMemberships()->setLastId($id) : $this->client->groupMemberships()); }
+
+    /**
+     * @param int $id
+     *
+     * @return GroupMemberships
+     */
     public function member($id) { return $this->client->groupMemberships()->setLastId($id); }
 
 }
