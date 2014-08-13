@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The OAuthTokens class exposes methods seen at http://developer.zendesk.com/documentation/rest_api/oauth_clients.html
+ * @package Zendesk\API
  */
 class OAuthTokens extends ClientAbstract {
 
     const OBJ_NAME = 'token';
     const OBJ_NAME_PLURAL = 'tokens';
 
-    /*
+    /**
      * List all tokens
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare('oauth/tokens.json', null, $params);
@@ -23,8 +31,15 @@ class OAuthTokens extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific token or the current one if no id is specified
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -40,8 +55,16 @@ class OAuthTokens extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a token
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function revoke(array $params = array()) {
         if($this->lastId != null) {

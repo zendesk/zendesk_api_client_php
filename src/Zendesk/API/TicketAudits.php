@@ -4,14 +4,23 @@ namespace Zendesk\API;
 
 /**
  * The TicketAudits class exposes read only audit methods
+ * @package Zendesk\API
  */
 class TicketAudits extends ClientAbstract {
 
     const OBJ_NAME = 'audit';
     const OBJ_NAME_PLURAL = 'audits';
 
-    /*
+    /**
      * Returns all audits for a particular ticket
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         if($this->client->tickets()->getLastId() != null) {
@@ -30,8 +39,16 @@ class TicketAudits extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific audit record
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->client->tickets()->getLastId() != null) {
@@ -54,8 +71,16 @@ class TicketAudits extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Mark the specified ticket as trusted
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function markAsTrusted(array $params = array()) {
         if($this->client->tickets()->getLastId() != null) {

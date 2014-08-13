@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The Triggers class exposes methods as detailed on http://developer.zendesk.com/documentation/rest_api/triggers.html
+ * @package Zendesk\API
  */
 class Triggers extends ClientAbstract {
 
     const OBJ_NAME = 'trigger';
     const OBJ_NAME_PLURAL = 'triggers';
 
-    /*
+    /**
      * List triggers
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare((isset($params['active']) ? 'triggers/active.json' : 'triggers.json'), null, $params);
@@ -23,8 +31,16 @@ class Triggers extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific trigger
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -43,8 +59,15 @@ class Triggers extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a trigger
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         $endPoint = Http::prepare('triggers.json');
@@ -56,8 +79,16 @@ class Triggers extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a trigger
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -76,8 +107,16 @@ class Triggers extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a trigger
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {
@@ -96,6 +135,11 @@ class Triggers extends ClientAbstract {
         return true;
     }
 
+    /**
+     * @throws ResponseException
+     *
+     * @return mixed
+     */
     public function active() { return $this->findAll(array('active' => true)); }
 
 }

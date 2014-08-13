@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The Views class exposes view management methods
+ * @package Zendesk\API
  */
 class Views extends ClientAbstract {
 
     const OBJ_NAME = 'view';
     const OBJ_NAME_PLURAL = 'views';
 
-    /*
+    /**
      * List all views
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare(
@@ -26,8 +34,16 @@ class Views extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific view
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -46,8 +62,15 @@ class Views extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a new view
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         $endPoint = Http::prepare('views.json');
@@ -59,8 +82,16 @@ class Views extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a view
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -81,8 +112,16 @@ class Views extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a view
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {
@@ -102,8 +141,16 @@ class Views extends ClientAbstract {
         return true;
     }
 
-    /*
+    /**
      * Execute a specific view
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function execute(array $params = array()) {
         if($this->lastId != null) {
@@ -122,8 +169,16 @@ class Views extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Get tickets from a specific view
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function tickets(array $params = array()) {
         if($this->lastId != null) {
@@ -142,8 +197,16 @@ class Views extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Count tickets (estimate) from a specific view or list of views
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function count(array $params = array()) {
         if($this->lastId != null) {
@@ -162,8 +225,16 @@ class Views extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Export a view
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function export(array $params = array()) {
         if($this->lastId != null) {
@@ -182,8 +253,15 @@ class Views extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Preview a view
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function preview(array $params) {
         $endPoint = Http::prepare('views/preview.json', $this->client->getSideload($params), $params);
@@ -195,8 +273,15 @@ class Views extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Ticket count for a view preview
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function previewCount(array $params) {
         $endPoint = Http::prepare('views/preview/count.json', $this->client->getSideload($params), $params);

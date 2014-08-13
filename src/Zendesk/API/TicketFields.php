@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The TicketFields class exposes field management methods for tickets
+ * @package Zendesk\API
  */
 class TicketFields extends ClientAbstract {
 
     const OBJ_NAME = 'ticket_field';
     const OBJ_NAME_PLURAL = 'ticket_fields';
 
-    /*
+    /**
      * List all ticket fields
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare('ticket_fields.json', null, $params);
@@ -23,8 +31,16 @@ class TicketFields extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific ticket field
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -43,8 +59,15 @@ class TicketFields extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a new ticket field
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         $endPoint = Http::prepare('ticket_fields.json');
@@ -56,8 +79,16 @@ class TicketFields extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a ticket field
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -78,8 +109,16 @@ class TicketFields extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a ticket field
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {

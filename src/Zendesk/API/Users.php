@@ -5,25 +5,40 @@ namespace Zendesk\API;
 /**
  * The Users class exposes user management methods
  * Note: you must authenticate as a user!
+ *
+ * @package Zendesk\API
  */
 class Users extends ClientAbstract {
 
     const OBJ_NAME = 'user';
     const OBJ_NAME_PLURAL = 'users';
 
+    /**
+     * @var UserIdentities
+     */
     protected $identities;
 
+    /**
+     * @param Client $client
+     */
     public function __construct(Client $client) {
         parent::__construct($client);
         $this->identities = new UserIdentities($client);
     }
 
-    /*
+    /**
      * List all users
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare(
-                (isset($params['organization_id']) ? 'organizations/'.$params['organization_id'].'/users' : 
+                (isset($params['organization_id']) ? 'organizations/'.$params['organization_id'].'/users' :
                 (isset($params['group_id']) ? 'groups/'.$params['group_id'].'/users' : 'users')
             ).'.json'.(isset($params['role']) ? (is_array($params['role']) ? '&role[]='.implode('&role[]=', $params['role']) : '?role='.$params['role']) : '').(isset($params['permission_set']) ? (isset($params['role']) ? '&' : '?').'permission_set='.$params['permission_set'] : ''), $this->client->getSideload($params), $params);
         $response = Http::send($this->client, $endPoint);
@@ -34,8 +49,16 @@ class Users extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific user
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -54,8 +77,16 @@ class Users extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Get related information about the user
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function related(array $params = array()) {
         if($this->lastId != null) {
@@ -74,8 +105,15 @@ class Users extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a new user
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         $endPoint = Http::prepare('users.json');
@@ -87,8 +125,16 @@ class Users extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Merge the specified user (???)
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function merge(array $params = array()) {
         if($this->lastId != null) {
@@ -109,8 +155,15 @@ class Users extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create multiple new users
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function createMany(array $params) {
         $endPoint = Http::prepare('users/create_many.json');
@@ -122,8 +175,16 @@ class Users extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a user
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -144,8 +205,15 @@ class Users extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Suspend a user
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     *
+     * @return mixed
      */
     public function suspend(array $params = array()) {
         if($this->lastId != null) {
@@ -159,8 +227,16 @@ class Users extends ClientAbstract {
         return $this->update($params);
     }
 
-    /*
+    /**
      * Delete a user
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {
@@ -180,8 +256,15 @@ class Users extends ClientAbstract {
         return true;
     }
 
-    /*
+    /**
      * Search for users
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function search(array $params) {
         $endPoint = Http::prepare('users/search.json?'.http_build_query($params), $this->client->getSideload($params), $params);
@@ -193,8 +276,15 @@ class Users extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Requests autocomplete for users
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function autocomplete(array $params) {
         $endPoint = Http::prepare('users/autocomplete.json?'.http_build_query($params));
@@ -206,8 +296,17 @@ class Users extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a user's profile image
+     *
+     * @param array $params
+     *
+     * @throws CustomException
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function updateProfileImage(array $params) {
         if($this->lastId != null) {
@@ -231,16 +330,31 @@ class Users extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show the current user
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     *
+     * @return mixed
      */
     public function me(array $params = array()) {
         $params['id'] = 'me';
         return $this->find($params);
     }
 
-    /*
+    /**
      * Sets a user's initial password
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function setPassword(array $params) {
         if($this->lastId != null) {
@@ -261,8 +375,16 @@ class Users extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Change a user's password
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function changePassword(array $params) {
         if($this->lastId != null) {
@@ -287,13 +409,61 @@ class Users extends ClientAbstract {
      * Syntactic sugar methods:
      * Handy aliases:
      */
+
+    /**
+     * @param int|null $id
+     *
+     * @return Tickets
+     */
     public function tickets($id = null) { return ($id != null ? $this->client->tickets()->setLastId($id) : $this->client->tickets()); }
+
+    /**
+     * @param int $id
+     *
+     * @return Tickets
+     */
     public function ticket($id) { return $this->client->tickets()->setLastId($id); }
+
+    /**
+     * @param int|null $id
+     *
+     * @return UserIdentities
+     */
     public function identities($id = null) { return ($id != null ? $this->identities->setLastId($id) : $this->identities); }
+
+    /**
+     * @param int $id
+     *
+     * @return UserIdentities
+     */
     public function identity($id) { return $this->identities->setLastId($id); }
+
+    /**
+     * @param int|null $id
+     *
+     * @return Groups
+     */
     public function groups($id = null) { return ($id != null ? $this->client->groups()->setLastId($id) : $this->client->groups()); }
+
+    /**
+     * @param int $id
+     *
+     * @return Groups
+     */
     public function group($id) { return $this->client->groups()->setLastId($id); }
+
+    /**
+     * @param int|null $id
+     *
+     * @return GroupMemberships
+     */
     public function groupMemberships($id = null) { return ($id != null ? $this->client->groupMemberships()->setLastId($id) : $this->client->groupMemberships()); }
+
+    /**
+     * @param int $id
+     *
+     * @return GroupMemberships
+     */
     public function groupMembership($id) { return $this->client->groupMemberships()->setLastId($id); }
 
 }
