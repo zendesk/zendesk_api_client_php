@@ -4,14 +4,23 @@ namespace Zendesk\API;
 
 /**
  * The TopicComments class exposes topic commentary information
+ * @package Zendesk\API
  */
 class TopicComments extends ClientAbstract {
 
     const OBJ_NAME = 'topic_comment';
     const OBJ_NAME_PLURAL = 'topic_comments';
 
-    /*
+    /**
      * List all topic comments
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         if($this->client->topics()->getLastId() != null) {
@@ -37,8 +46,16 @@ class TopicComments extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific topic comment
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->client->topics()->getLastId() != null) {
@@ -68,8 +85,16 @@ class TopicComments extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a new topic comment
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         if($this->client->topics()->getLastId() != null) {
@@ -88,8 +113,16 @@ class TopicComments extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Import a topic comment (same as create but without notifications)
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function import(array $params) {
         if($this->client->topics()->getLastId() != null) {
@@ -108,8 +141,16 @@ class TopicComments extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a topic comment
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -135,8 +176,16 @@ class TopicComments extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a topic comment
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {

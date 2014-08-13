@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The Tags class exposes methods as detailed on http://developer.zendesk.com/documentation/rest_api/tags.html
+ * @package Zendesk\API
  */
 class Tags extends ClientAbstract {
 
     const OBJ_NAME = 'tags';
     const OBJ_NAME_PLURAL = 'tags';
 
-    /*
+    /**
      * List the most popular tags
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare('tags.json', null, $params);
@@ -23,8 +31,16 @@ class Tags extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific tag
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->client->tickets()->getLastId() != null) {
@@ -55,8 +71,16 @@ class Tags extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a tag
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         if($this->client->tickets()->getLastId() != null) {
@@ -90,8 +114,16 @@ class Tags extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a tag
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->client->tickets()->getLastId() != null) {
@@ -125,8 +157,16 @@ class Tags extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a tag
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function delete(array $params) {
         if($this->client->tickets()->getLastId() != null) {
@@ -164,9 +204,44 @@ class Tags extends ClientAbstract {
      * Syntactic sugar methods:
      * Handy aliases:
      */
+
+    /**
+     * @param array $params
+     *
+     * @throws ResponseException
+     *
+     * @return mixed
+     */
     public function show(array $params = array()) { return $this->findAll($params); }
+
+    /**
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     *
+     * @return mixed
+     */
     public function set(array $params) { return $this->create($params); }
+
+    /**
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     *
+     * @return mixed
+     */
     public function add(array $params) { return $this->update($params); }
+
+    /**
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     *
+     * @return mixed
+     */
     public function remove(array $params) { return $this->delete($params); }
 
 }

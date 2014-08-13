@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The OAuthClients class exposes methods seen at http://developer.zendesk.com/documentation/rest_api/oauth_clients.html
+ * @package Zendesk\API
  */
 class OAuthClients extends ClientAbstract {
 
     const OBJ_NAME = 'client';
     const OBJ_NAME_PLURAL = 'clients';
 
-    /*
+    /**
      * List all clients
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare((isset($params['me']) ? 'users/me/oauth/clients.json' : 'oauth/clients.json'), null, $params);
@@ -23,8 +31,16 @@ class OAuthClients extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific client
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -43,8 +59,15 @@ class OAuthClients extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a client
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         $endPoint = Http::prepare('oauth/clients.json');
@@ -56,8 +79,16 @@ class OAuthClients extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a client
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -78,8 +109,16 @@ class OAuthClients extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a client
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {

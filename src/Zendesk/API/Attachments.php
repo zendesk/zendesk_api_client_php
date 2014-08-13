@@ -4,10 +4,11 @@ namespace Zendesk\API;
 
 /**
  * The Attachments class exposes methods for uploading and retrieving attachments
+ * @package Zendesk\API
  */
 class Attachments extends ClientAbstract {
 
-    /*
+    /**
      * Upload an attachment
      * $params must include:
      *    'file' - an attribute with the absolute local file path on the server
@@ -15,6 +16,15 @@ class Attachments extends ClientAbstract {
      * Optional:
      *    'optional_token' - an existing token
      *		'name' - preferred filename
+     *
+     * @param array $params
+     *
+     * @throws CustomException
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function upload(array $params) {
         if(!$this->hasKeys($params, array('file'))) {
@@ -41,11 +51,19 @@ class Attachments extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete one or more attachments by token or id
      * $params must include one of these:
      *        'token' - the token given to you after the original upload
      *        'id' - the id of the attachment
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params) {
         if(!$this->hasAnyKey($params, array('id', 'token'))) {
@@ -60,10 +78,18 @@ class Attachments extends ClientAbstract {
         return true;
     }
 
-    /*
+    /**
      * Get a list of uploaded attachments (by id)
      * $params must include:
      *        'id' - the id of the attachment
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params) {
         if(!$this->hasKeys($params, array('id'))) {

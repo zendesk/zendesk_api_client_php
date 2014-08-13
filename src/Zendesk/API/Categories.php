@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The Categories class exposes category information
+ * @package Zendesk\API
  */
 class Categories extends ClientAbstract {
 
     const OBJ_NAME = 'category';
     const OBJ_NAME_PLURAL = 'categories';
 
-    /*
+    /**
      * List all categories
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare('categories.json', null, $params);
@@ -23,8 +31,16 @@ class Categories extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific category
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -43,8 +59,15 @@ class Categories extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a new category
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         $endPoint = Http::prepare('categories.json');
@@ -56,8 +79,16 @@ class Categories extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update a category
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -78,8 +109,16 @@ class Categories extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete a category
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {

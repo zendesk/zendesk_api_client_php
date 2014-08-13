@@ -4,14 +4,22 @@ namespace Zendesk\API;
 
 /**
  * The OrganizationFields class exposes methods as detailed on http://developer.zendesk.com/documentation/rest_api/organization_fields.html
+ * @package Zendesk\API
  */
 class OrganizationFields extends ClientAbstract {
 
     const OBJ_NAME = 'organization_field';
     const OBJ_NAME_PLURAL = 'organization_fields';
 
-    /*
+    /**
      * List all organization fields
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare('organization_fields.json', null, $params);
@@ -23,8 +31,16 @@ class OrganizationFields extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Show a specific organization field
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function find(array $params = array()) {
         if($this->lastId != null) {
@@ -43,8 +59,15 @@ class OrganizationFields extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Create a new organization field
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function create(array $params) {
         $endPoint = Http::prepare('organization_fields.json');
@@ -56,8 +79,16 @@ class OrganizationFields extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Update an organization field
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function update(array $params) {
         if($this->lastId != null) {
@@ -78,8 +109,16 @@ class OrganizationFields extends ClientAbstract {
         return $response;
     }
 
-    /*
+    /**
      * Delete an organization field
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
      */
     public function delete(array $params = array()) {
         if($this->lastId != null) {
@@ -99,8 +138,16 @@ class OrganizationFields extends ClientAbstract {
         return true;
     }
 
-    /*
+    /**
      * Reorder organization fields
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
      */
     public function reorder(array $params) {
         if(!$this->hasKeys($params, array('organization_field_ids'))) {
