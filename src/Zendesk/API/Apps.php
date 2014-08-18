@@ -37,7 +37,7 @@ class Apps extends ClientAbstract {
             throw new MissingParametersException(__METHOD__, array('file'));
         }
         $endPoint = Http::prepare('apps/uploads.json');
-        $response = Http::send($this->client, $endPoint, array('uploaded_data' => '@'.$params['file']), 'POST', (isset($params['type']) ? $params['type'] : 'application/binary'));
+        $response = Http::send($this->client, $endPoint, array('uploaded_data' => $params['file']), 'POST', (isset($params['type']) ? $params['type'] : 'application/binary'));
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
             throw new ResponseException(__METHOD__);
         }
