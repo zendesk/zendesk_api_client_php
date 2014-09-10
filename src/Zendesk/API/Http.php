@@ -26,7 +26,7 @@ class Http {
         // Next look for special collection iterators
         if(is_array($iterators)) {
             foreach($iterators as $k => $v) {
-                if(in_array($k, array('per_page', 'page', 'sort_order'))) {
+                if(in_array($k, array('per_page', 'page', 'sort_order', 'sort_by'))) {
                     $addParams[$k] = $v;
                 }
             }
