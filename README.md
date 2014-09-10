@@ -1,5 +1,7 @@
 # Zendesk PHP API Client Library #
 
+[![Build Status](https://travis-ci.org/zendesk/zendesk_api_client_php.svg?branch=master)](https://travis-ci.org/zendesk/zendesk_api_client_php)
+
 ## API version support
 
 This client **only** supports Zendesk's v2 API.  Please see our [API documentation](http://developer.zendesk.com/api-docs) for more information.
