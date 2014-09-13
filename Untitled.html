@@ -1,0 +1,23 @@
+jpeterson@logs1:~$ ultragrep -p "z3njimbob" -s "2014-08-23 22:00:00" "AccessController" "japeterson@zendesk.com"
+
+
+# /storage/logs/hosts/2014/08/23/app14.pod4.sac1.zdsys.com/production.log-20140823
+Started POST "/access/normal_login" for 192.161.159.18 at 2014-08-23 22:20:45 +0000
+Checking if user  is system user: 
+Processing by AccessController#normal_login as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"c5QoWuu13sv5V3emC0ZIl38AY80CBATD1brElE8vLv0=", "return_to"=>"", "user"=>{"email"=>"japeterson@zendesk.com", "password"=>"[FILTERED]"}, "commit"=>"Entrar"}
+  Session: 8ab89c3dc62c7827730bbe7afffb7e3b Account: 546290 User: nil
+Zendesk::Auth::Warden::PasswordStrategy z3njimbob: Logging in user 319884829 via email/password
+Zendesk::Auth::Warden::PasswordStrategy z3njimbob: Authenticated user 319884829
+Queuing {:account_id=>546290, :deferred=>{:mailer_name=>"Devices::Mailer", :method_id=>"new_device_notification", :arguments=>[{"class"=>"Device", "id"=>81786895}]}, :options=>{"time_zone"=>"Bogota", "locale"=>:"en-US-x-1"}, :audit_id=>nil, :job=>"MailRenderingJob", :delay=>"now", :environment=>{"cia"=>{"ip_address"=>"192.161.159.18"}}}
+{"time":"2014-08-23 22:20:46","severity":"info","message":"audit.enqueued_id: app14.pod4.sac1.zdsys.com/32317/1408832446/2"}
+Queued, job: MailRenderingJob
+Redirected to https://z3njimbob.zendesk.com/agent
+Completed 302 Found in 202.8ms (ActiveRecord: 40.4ms | https://z3njimbob.zendesk.com/access/normal_login)
+shared_session/Zendesk::SharedSession::RiakStore: changed: [:"warden.user.default.key", :locale_id, :auth_via, :auth_authenticated_at, :auth_duration, :auth_password_version, :auth_updated_at, :auth_stored, :user_role, :csrf_token]
+request-start: t=1408832445.985000 queue-start: 
+-----------------------------------------------
+
+
+ultragrep --type work "japeterson@zendesk.com" "DevicesMailer"  -p -s "2014-08-23 21:00:00" -e "2014-08-23 24:00:00" 
+

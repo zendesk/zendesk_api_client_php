@@ -1,0 +1,83 @@
+{
+  "app": {
+    "package": "secure_demo_app",
+    "description": {
+      "value": "Show how secure works.",
+      "title": "app description"
+    },
+    "name": {
+      "value": "Secure Demo",
+      "title": "app name"
+    }
+  },
+
+  "parameters": {
+      "subdomain": {
+        "value": "The subdomain for herokuapp",
+        "title": "Label for the subdomain field when the user is installing the App."
+      },
+      "key": {
+        "value": "The unique key used to make a request to teachmyapi.com.",
+        "title": "Label for the teachmyapi key field when the user is installing the App."
+      },
+      "new_data": {
+        "value": "The new data to be sent to herokuapp.com.",
+        "title": "Label for the new data field when the user is installing the App."
+      }
+    },
+
+  "label_name": {
+    "value": "Name",
+    "title": "Label for name input/info field"
+  },
+
+  "label_age": {
+    "value": "Age",
+    "title": "Label for age input/info field"
+  },
+
+  "label_birthday": {
+    "value": "Birthday",
+    "title": "Label for birthday input/info field"
+  },
+
+  "label_friends": {
+    "value": "Friends",
+    "title": "Label for friends input/info field"
+  },
+
+  "label_married": {
+    "value": "Married",
+    "title": "Label for married input/info field"
+  },
+
+  "label_id": {
+    "value": "ID",
+    "title": "Label for id info field"
+  },
+
+  "api_get_button": {
+    "value": "Gets from the teachmyapi API",
+    "title": "Calls the API"
+  },
+
+  "btn_get_api": {
+    "value": "Get",
+    "title": "The button to get the teachmyapi API details"
+  },
+
+  "api_post_button": {
+    "value": "Posts to the herokuapp API",
+    "title": "Calls the API"
+  },
+
+  "btn_post_api": {
+    "value": "Post",
+    "title": "The button to post to the herokuapp API"
+  },
+
+  "btn_go_back": {
+    "value": "Go Back",
+    "title": "Message displayed on the button that navigates back to the start page."
+  }
+}

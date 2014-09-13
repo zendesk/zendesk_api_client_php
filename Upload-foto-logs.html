@@ -1,0 +1,46 @@
+works
+
+# /storage/logs/hosts/2014/08/24/app22.pod1.ord.zdsys.com/production.log-20140824
+Started PUT "/api/v2/users/685284897.json" for 166.78.66.61 at 2014-08-24 18:45:18 +0000
+Checking if user  is system user: 
+Processing by Api::V2::UsersController#update as JSON
+  Parameters: {"user"=>{"photo"=>{"uploaded_data"=>#<ActionDispatch::Http::UploadedFile:0x007f7bd32f9dc8 @original_filename="james.jpg", @content_type="image/jpeg", @headers="Content-Disposition: form-data; name=\"user[photo][uploaded_data]\"; filename=\"james.jpg\"\r\nContent-Type: image/jpeg\r\n", @tempfile=#<Tempfile:/tmp/RackMultipart20140824-9193-6g0zdf>>}}, "id"=>"685284897"}
+Zendesk::Auth::Warden::BasicStrategy z3nburmaglot: Authenticated user 693764476
+Checking if user 693764476 is system user: false
+  Filtered Parameters: {"controller"=>"api/v2/users", "action"=>"update", "format"=>"json", "id"=>685284897, "user"=>{"photo"=>{"uploaded_data"=>#<ActionDispatch::Http::UploadedFile:0x007f7bd22b7fa0 @original_filename="james.jpg", @content_type="image/jpeg", @headers="Content-Disposition: form-data; name=\"user[photo][uploaded_data]\"; filename=\"james.jpg\"\r\nContent-Type: image/jpeg\r\n", @tempfile=#<Tempfile:/tmp/RackMultipart20140824-9193-6g0zdf>>}}}
+API request mode:basic, subdomain:z3nburmaglot, lotus:no, mobile:false, time:1540, account_id:519627, user:japeterson@zendesk.com/token, url:https://z3nburmaglot.zendesk.com/api/v2/users/685284897.json
+Completed 200 OK in 1541.4ms (Views: 1.1ms | ActiveRecord: 34.2ms | https://z3nburmaglot.zendesk.com/api/v2/users/685284897.json)
+request-start: t=1408905918.640000 queue-start: 
+-----------------------------------------------
+
+doesn't work
+
+# tail -f /storage/logs/hosts/2014/08/24/app7.pod1.ord.zdsys.com/production.log-20140824
+Started PUT "/api/v2/users/685284897.json" for 166.78.66.61 at 2014-08-24 19:20:39 +0000
+Checking if user  is system user: 
+Processing by Api::V2::UsersController#update as JSON
+  Parameters: {"user"=>{"photo"=>{"uploaded_data"=>#<ActionDispatch::Http::UploadedFile:0x007f0efef79748 @original_filename="phpar8Ops", @content_type="application/octet-stream", @headers="Content-Disposition: form-data; name=\"user[photo][uploaded_data]\"; filename=\"/Applications/MAMP/tmp/php/phpar8Ops\"\r\nContent-Type: application/octet-stream\r\n", @tempfile=#<Tempfile:/tmp/RackMultipart20140824-48153-uw68qz>>}}, "id"=>"685284897"}
+Zendesk::Auth::Warden::BasicStrategy z3nburmaglot: Authenticated user 757317376
+Checking if user 757317376 is system user: false
+  Filtered Parameters: {"controller"=>"api/v2/users", "action"=>"update", "format"=>"json", "id"=>685284897, "user"=>{"photo"=>{"uploaded_data"=>#<ActionDispatch::Http::UploadedFile:0x007f0efed597b0 @original_filename="phpar8Ops", @content_type="application/octet-stream", @headers="Content-Disposition: form-data; name=\"user[photo][uploaded_data]\"; filename=\"/Applications/MAMP/tmp/php/phpar8Ops\"\r\nContent-Type: application/octet-stream\r\n", @tempfile=#<Tempfile:/tmp/RackMultipart20140824-48153-uw68qz>>}}}
+Completed 422 Unprocessable Entity in 479.6ms (Views: 0.3ms | ActiveRecord: 17.9ms | https://z3nburmaglot.zendesk.com/api/v2/users/685284897.json)
+request-start: t=1408908039.632000 queue-start: 
+-----------------------------------------------
+
+
+
+doesn't work
+
+# /storage/logs/hosts/2014/08/24/app6.pod1.ord.zdsys.com/production.log-20140824
+Started PUT "/api/v2/users/685284897.json" for 166.78.66.61 at 2014-08-24 19:03:58 +0000
+Checking if user  is system user: 
+Processing by Api::V2::UsersController#update as JSON
+  Parameters: {"user"=>"{\"photo\":{\"uploaded_data\":{\"name\":\"\\/Applications\\/MAMP\\/tmp\\/php\\/phpuXh87E\",\"mime\":\"\",\"postname\":\"\"}}}", "id"=>"685284897"}
+Zendesk::Auth::Warden::BasicStrategy z3nburmaglot: Authenticated user 757317376
+Checking if user 757317376 is system user: false
+Invalid parameter {:key=>"user", :value=>"{\"photo\":{\"uploaded_data\":{\"name\":\"\\/Applications\\/MAMP\\/tmp\\/php\\/phpuXh87E\",\"mime\":\"\",\"postname\":\"\"}}}", :message=>"must be a hash"}
+Completed 400 Bad Request in 42.0ms (Views: 2.0ms | ActiveRecord: 5.7ms | https://z3nburmaglot.zendesk.com/api/v2/users/685284897.json)
+request-start: t=1408907038.795000 queue-start: 
+-----------------------------------------------
+
+

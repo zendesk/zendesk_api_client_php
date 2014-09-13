@@ -1,0 +1,38 @@
+.start {
+  div {
+    padding: 5px;
+    span {
+      display: block;
+    }
+  }
+}
+
+.spinner {
+  text-align: center;
+}
+
+.user_list {
+  text-align: left;
+  margin: 0 auto;
+  .user {
+    display: block;
+    padding: 4px;
+    margin-top: 3px;
+  }
+  .update :hover {
+    cursor: pointer;
+  }
+}
+
+label {
+  font-weight: bold;
+}
+
+.btn {
+  margin: 5px;
+}
+
+.body_message, 
+.user_list .user {
+  border-radius: 5px;
+}
