@@ -1,0 +1,27 @@
+{
+    "name": "zendesk/zendesk_api_client_php",
+    "description": "PHP Client for Zendesk REST API. See http://developer.zendesk.com/api-docs",
+    "license": "Apache License Version 2.0",
+    "homepage": "https://github.com/zendesk/zendesk_api_client_php",
+    "authors": [
+        {
+            "name": "DeVaris Brown",
+            "email": "dbrown@zendesk.com"
+        },
+        {
+            "name": "John Ginsberg",
+            "email": "john.ginsberg@toptal.com"
+        }
+    ],
+    "require": {
+		"php": ">=5.3.1"
+    },
+	"require-dev": {
+        "phpunit/phpunit": "3.7.*"
+    },
+	"autoload": {
+        "psr-0": {
+            "Zendesk\\API\\": "src/"
+        }
+    }
+}
