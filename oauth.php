@@ -9,8 +9,6 @@ $username = "japeterson@zendesk.com";         // Your Zendesk login
 $oAuthId = "test_client";          // The value you entered into the OAuth 'Unique Identifier' field
 $oAuthSecret = "8115153dc3e2e0bf4ec1a69fbc97722b89b16d74c0a4985a890f495d824cf422";	// The OAuth secret given to you by Zendesk
 
-
-
 $client = new ZendeskAPI($subdomain, $username);
 if ($_REQUEST['code']) {
 	$response = Http::oauth($client, $_REQUEST['code'], $oAuthId, $oAuthSecret);
