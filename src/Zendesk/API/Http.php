@@ -61,7 +61,7 @@ class Http {
         } else if ($contentType == 'application/json' && $method != 'GET' && $method != 'DELETE') {
             $json = json_encode($json);
         } else if (is_array($json)) {
-          $json = http_build_query($json);
+            $json = http_build_query($json);
         }
 
         if ($method == 'POST') {
