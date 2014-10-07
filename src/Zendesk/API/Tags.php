@@ -61,7 +61,7 @@ class Tags extends ClientAbstract {
         $endPoint = Http::prepare(
                 (isset($params['ticket_id']) ? 'tickets/'.$params['ticket_id'].'/tags.json' : 
                 (isset($params['topic_id']) ? 'topics/'.$params['topic_id'].'/tags.json' : 
-                (isset($params['organization_id']) ? 'organizations/{id}/tags.json' : '')))
+                (isset($params['organization_id']) ? 'organizations/'.$params['organization_id'].'/tags.json' : '')))
             );
         $response = Http::send($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
@@ -147,7 +147,7 @@ class Tags extends ClientAbstract {
         $endPoint = Http::prepare(
                 (isset($params['ticket_id']) ? 'tickets/'.$params['ticket_id'].'/tags.json' : 
                 (isset($params['topic_id']) ? 'topics/'.$params['topic_id'].'/tags.json' : 
-                (isset($params['organization_id']) ? 'organizations/{id}/tags.json' : '')))
+                (isset($params['organization_id']) ? 'organizations/'.$params['organization_id'].'/tags.json' : '')))
             );
         $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params['tags']), 'PUT');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
@@ -190,7 +190,7 @@ class Tags extends ClientAbstract {
         $endPoint = Http::prepare(
                 (isset($params['ticket_id']) ? 'tickets/'.$params['ticket_id'].'/tags.json' : 
                 (isset($params['topic_id']) ? 'topics/'.$params['topic_id'].'/tags.json' : 
-                (isset($params['organization_id']) ? 'organizations/{id}/tags.json' : '')))
+                (isset($params['organization_id']) ? 'organizations/'.$params['organization_id'].'/tags.json' : '')))
             );
         $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params['tags']), 'DELETE');
         if ($this->client->getDebug()->lastResponseCode != 200) {
