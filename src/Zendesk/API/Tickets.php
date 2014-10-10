@@ -43,7 +43,7 @@ class Tickets extends ClientAbstract {
         }
         $endPoint = Http::prepare(
                 (isset($params['organization_id']) ? 'organizations/'.$params['organization_id'].'/tickets' : 
-                (isset($params['user_id']) ? 'users/'.$params['user_id'].'/tickets/'.(isset($params['ccd']) ? 'ccd' : 'requested') : 
+                (isset($params['user_id']) ? 'users/'.$params['user_id'].'/tickets/'.($params['ccd'] ? 'ccd' : 'requested') : 
                 (isset($params['recent']) ? 'tickets/recent' : 'tickets'))
             ).'.json', $this->client->getSideload($params), $params);
         $response = Http::send($this->client, $endPoint);
