@@ -20,6 +20,26 @@ class Requests extends ClientAbstract {
         parent::__construct($client);
         $this->comments = new RequestComments($client);
     }
+    
+    
+    /*
+     * Search requests
+     * 
+     * Sample requests
+     * GET /api/v2/requests/search.json?query=camera 
+     * GET /api/v2/requests/search.json?query=camera&organization_id=1
+     * GET /api/v2/requests/search.json?query=camera&cc_id=true 
+     * GET /api/v2/requests/search.json?query=camera&status=hold,open
+     */
+    public function search(array $params) {
+        $endPoint = Http::prepare('requests/search.json?'.http_build_query($params), $this->client->getSideload($params), $params);
+        $response = Http::send($this->client, $endPoint);
+        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
+            throw new ResponseException(__METHOD__);
+        }
+        $this->client->setSideload(null);
+        return $response; 
+    }
 
     /*
      * List all requests
