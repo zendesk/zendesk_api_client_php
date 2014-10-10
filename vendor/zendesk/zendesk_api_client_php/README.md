@@ -1,5 +1,5 @@
 # Zendesk PHP API Client Library #
-line change
+
 ## API version support
 
 This client **only** supports Zendesk's v2 API.  Please see our [API documentation](http://developer.zendesk.com/api-docs) for more information.
@@ -12,49 +12,49 @@ The Zendesk PHP API client can be installed using [Composer](https://packagist.o
 
 Inside of composer.json specify the following:
 
-```json
+````
 {
   "require": {
     "zendesk/zendesk_api_client_php": "dev-master"
   }
 }
-```
+````
 
 ## Configuration
 
 Configuration is done through an instance of Zendesk\API\Client.
 The block is mandatory and if not passed, an error will be thrown.
 
-```php
+````
 use Zendesk\API\Client as ZendeskAPI;
 
 $subdomain = "subdomain";
-$username  = "username";
-$token     = "6wiIBWbGkBMo1mRDMuVwkw1EPsNkeUj95PIz2akv"; // replace this with your token
-// $password = "123456";
+$username = "username";
+$token = "6wiIBWbGkBMo1mRDMuVwkw1EPsNkeUj95PIz2akv"; // replace this with your token
+//$password = "123456";
 
 $client = new ZendeskAPI($subdomain, $username);
 $client->setAuth('token', $token); // set either token or password
-```
+````
 
 ## Usage
 
 ### Basic Operations
 
-```php
+````
 // Get all tickets
 $tickets = $client->tickets()->findAll();
-print_r($tickets);
+print_r ($tickets);
 
 // Create a new ticket
-$newTicket = $client->tickets()->create(array(
+$newTicket = $client->tickets()->create(array (
   'subject' => 'The quick brown fox jumps over the lazy dog',
   'comment' => array (
-      'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+    'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
   ),
   'priority' => 'normal'
 ));
-print_r($newTicket);
+print_r ($newTicket);
 
 // Update multiple tickets
 $client->ticket(array (123, 456))->update(array (
@@ -63,23 +63,23 @@ $client->ticket(array (123, 456))->update(array (
 
 // Delete a ticket
 $client->ticket(123)->delete();
-```
+````
 
 ### Attachments
 
-```php
+````
 $attachment = $client->attachments()->upload(array(
-    'file' => getcwd().'/tests/assets/UK.png',
-    'type' => 'image/png',
-    'name' => 'UK.png'    // Optional parameter, will default to filename.ext
-));
-```
+            'file' => getcwd().'/tests/assets/UK.png',
+            'type' => 'image/png',
+            'name' => 'UK.png'    // Optional parameter, will default to filename.ext 
+        ));
+````
 
 ### Side-loading
 
-```php
+````
 $tickets = $this->client->tickets()->sideload(array('users', 'groups'))->findAll();
-```
+````
 
 ## Note on Patches/Pull Requests
 1. Fork the project.

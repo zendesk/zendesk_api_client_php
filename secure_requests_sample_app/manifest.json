@@ -1,0 +1,35 @@
+{
+  "name": "Secure Requests Demo",
+  "author": {
+    "name": "Zendesk",
+    "email": "support@zendesk.com"
+  },
+  "defaultLocale": "en",
+  "private": true,
+  "location": "ticket_sidebar",
+  "domainWhitelist": ["www.teachmyapi.com", "{{setting.subdomain}}.herokuapp.com"],
+  "version": "1.0",
+  "frameworkVersion": "1.0",
+  "parameters": [
+    {
+      "name": "key",
+      "type": "text",
+      "required": true,
+      "secure": true
+    },
+
+    {
+      "name": "subdomain",
+      "type": "text",
+      "required": true,
+      "secure": true
+    },
+
+    {
+      "name": "new_data",
+      "type": "text",
+      "required": true,
+      "secure": true
+    }
+  ]
+}

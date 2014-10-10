@@ -1,0 +1,8 @@
+<div class="start">
+  <div>
+    <h5>{{t "api_get_button"}}</h5>
+    <button class="btn fetch">{{t "btn_get_api"}}</button>
+    <h5>{{t "api_post_button"}}</h5>
+    <button class="btn post">{{t "btn_post_api"}}</button>
+  </div>
+ </div>

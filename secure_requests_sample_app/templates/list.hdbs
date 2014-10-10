@@ -1,0 +1,33 @@
+<div class="user_page">
+  <div class="user_page_content">
+    <ul class="user_list">
+      {{#users}}
+        <li class="user">
+          {{#if user.name}}
+            <h5>{{t "label_name"}}:</h5><span class="name">{{user.name}}</span>
+          {{/if}}
+          {{#if user.age}}
+            <h5>{{t "label_age"}}:</h5><span class="age">{{user.age}}</span>
+          {{/if}}
+          {{#if user.birthday}}
+            <h5>{{t "label_birthday"}}:</h5><span class="birthday">{{user.birthday}}</span>
+          {{/if}}
+          {{#if user.married}}
+            <span class="married">{{t "label_married"}}</span>
+          {{/if}}
+          {{#if user.friends}}
+            <h5>{{t "label_friends"}}:</h5><span class="friends">{{user.friends}}</span>
+          {{/if}}
+          {{#if user.id}}
+            <h5>{{t "label_id"}}:</h5><span class="id">{{user.id}}</span>
+          {{else}}
+          <h5>{{t "label_id"}}:</h5><span class="id">0</span>
+          {{/if}}
+        </li>
+      {{/users}}
+    </ul>
+  </div>
+  <div class="user_page_control">
+    <button class="btn back_to_start">{{t "btn_go_back"}}!</button>
+  </div>
+</div>

@@ -4,10 +4,12 @@ include("vendor/autoload.php");
 use Zendesk\API\Client as ZendeskAPI;
 use Zendesk\API\Http;
 
-$subdomain = "z3njimbob";       // Your Zendesk subdomain
+$subdomain = "z3nburmaglot";       // Your Zendesk subdomain
 $username = "japeterson@zendesk.com";         // Your Zendesk login
-$oAuthId = "test_client";          // The value you entered into the OAuth 'Unique Identifier' field
-$oAuthSecret = "8115153dc3e2e0bf4ec1a69fbc97722b89b16d74c0a4985a890f495d824cf422";	// The OAuth secret given to you by Zendesk
+$oAuthId = "myo";          // The value you entered into the OAuth 'Unique Identifier' field
+$oAuthSecret = "e661791f1e22aa9bae0ee4745828f1d35078fd3943da2d54647cc7ab33ea8e58";	// The OAuth secret given to you by Zendesk
+
+
 
 $client = new ZendeskAPI($subdomain, $username);
 if ($_REQUEST['code']) {
