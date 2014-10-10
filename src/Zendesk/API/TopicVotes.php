@@ -25,7 +25,7 @@ class TopicVotes extends ClientAbstract {
         if(!$this->hasAnyKey($params, array('topic_id', 'user_id'))) {
             throw new MissingParametersException(__METHOD__, array('topic_id', 'user_id'));
         }
-        $endPoint = Http::prepare((isset($params['topic_id']) ? 'topics/'.$params['topic_id'].'/votes.json' : 'users/'.$params['user_id'].'/topic_votes.json'), null, $params);
+        $endPoint = Http::prepare((isset($params['topic_id']) ? 'topics/'.$params['topic_id'].'/votes.json' : 'users/'.$params['user_id'].'/topic_votes.json'), $this->client->getSideload($params), $params);
         $response = Http::send($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
