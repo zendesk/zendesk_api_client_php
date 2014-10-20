@@ -121,12 +121,12 @@ class Attachments extends ClientAbstract {
      * @return mixed
      */ 
     public function redact(array $params) {
-	    if(!$this->hasKeys($params, array('ticket', 'comment', 'attachment'))) {
-            throw new MissingParametersException(__METHOD__, array('id', 'comment', 'attachment'));
+	    if(!$this->hasKeys($params, array('ticket_id', 'comment_id', 'attachment_id'))) {
+            throw new MissingParametersException(__METHOD__, array('ticket_id', 'comment_id', 'attachment_id'));
         }
-        $ticket_id = $params['ticket'];
-        $comment_id = $params['comment'];
-        $attachment_id = $params['attachment'];
+        $ticket_id = $params['ticket_id'];
+        $comment_id = $params['comment_id'];
+        $attachment_id = $params['attachment_id'];
         
         $endPoint = Http::prepare('tickets/'.$ticket_id.'/comments/'.$comment_id.'/attachments/'.$attachment_id.'/redact.json');
         $response = Http::send($this->client, $endPoint, null, 'PUT');
