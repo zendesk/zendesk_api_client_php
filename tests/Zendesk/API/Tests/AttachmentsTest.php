@@ -38,7 +38,7 @@ class AttachmentsTest extends \PHPUnit_Framework_TestCase {
         $attachment = $this->client->attachments()->upload(array(
             'file' => getcwd().'/tests/assets/UK.png',
             'type' => 'image/png',
-            'name' => 'UK.png'
+            'name' => 'UK test non-alpha chars.png'
         ));
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '201', 'Does not return HTTP code 201');
         $this->assertEquals(is_object($attachment), true, 'Should return an object');
