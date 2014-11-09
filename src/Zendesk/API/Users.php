@@ -40,7 +40,7 @@ class Users extends ClientAbstract {
         $endPoint = Http::prepare(
                 (isset($params['organization_id']) ? 'organizations/'.$params['organization_id'].'/users' :
                 (isset($params['group_id']) ? 'groups/'.$params['group_id'].'/users' : 'users')
-            ).'.json'.(isset($params['role']) ? (is_array($params['role']) ? '&role[]='.implode('&role[]=', $params['role']) : '?role='.$params['role']) : '').(isset($params['permission_set']) ? (isset($params['role']) ? '&' : '?').'permission_set='.$params['permission_set'] : ''), $this->client->getSideload($params), $params);
+            ).'.json'.(isset($params['role']) ? (is_array($params['role']) ? '?role[]='.implode('&role[]=', $params['role']) : '?role='.$params['role']) : '').(isset($params['permission_set']) ? (isset($params['role']) ? '&' : '?').'permission_set='.$params['permission_set'] : ''), $this->client->getSideload($params), $params);
         $response = Http::send($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
