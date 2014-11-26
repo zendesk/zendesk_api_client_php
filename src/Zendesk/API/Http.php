@@ -203,6 +203,7 @@ class Http {
      * specified by self::$rateLimitRetryAttempts.
      *
      * @throws \Exception If more than the specified number of attempts to send the request fail
+     * @throws \Exception If cURL experiences an error
      * 
      * @param  resource $curl The cURL handle to execute
      * @return string         The response from the server
@@ -212,6 +213,12 @@ class Http {
 
         do {
             $response = curl_exec($curl);
+
+            if ($errNo = curl_errno($curl)) {
+                $errMsg = curl_errno($curl);
+                throw new \Exception(sprintf('cURL error %d: %s', $errNo, $errMsg));
+            }
+
             $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 
             if ($code == 429) {
