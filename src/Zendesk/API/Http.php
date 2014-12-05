@@ -66,15 +66,21 @@ class Http {
             $curl = curl_init($url);
             curl_setopt($curl, CURLOPT_POST, true);
             curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
-            if (is_array($json) && (isset($json['filename']) || isset($json['uploaded_data']))) {
-                $filename = isset($json['filename']) ? $json['filename'] : $json['uploaded_data'];
-                $file     = fopen($filename, 'r');
-                $size     = filesize($filename);
-                $fileData = fread($file, $size);
-                curl_setopt($curl, CURLOPT_POSTFIELDS, $fileData);
-                curl_setopt($curl, CURLOPT_INFILE, $file);
-                curl_setopt($curl, CURLOPT_INFILESIZE, $size);
-                curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-type: application/binary'));
+            if (is_array($json)) {
+                if (isset($json['body'])) {
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $json['body']);
+                    curl_setopt($curl, CURLOPT_INFILESIZE, strlen($json['body']));
+                } else if (isset($json['uploaded_data'])) {
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $json['uploaded_data']);
+                } else if (isset($json['filename'])) {
+                    $filename = $json['filename'];
+                    $file     = fopen($filename, 'r');
+                    $size     = filesize($filename);
+                    $fileData = fread($file, $size);
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $fileData);
+                    curl_setopt($curl, CURLOPT_INFILE, $file);
+                    curl_setopt($curl, CURLOPT_INFILESIZE, $size);
+                }
             }
         } else if ($method == 'PUT') {
             $curl = curl_init($url);
