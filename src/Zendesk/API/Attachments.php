@@ -52,6 +52,40 @@ class Attachments extends ClientAbstract {
     }
 
     /**
+     * Upload an attachment from a buffer in memory
+     * $params must include:
+     *    'body' - the raw file data to upload
+     *    'name' - the filename
+     *    'type' - the MIME type of the file
+     * Optional:
+     *    'optional_token' - an existing token
+     *
+     * @param array $params
+     *
+     * @throws CustomException
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function uploadWithBody(array $params) {
+        if(!$this->hasKeys($params, array('body'))) {
+            throw new MissingParametersException(__METHOD__, array('body'));
+        }
+        if(!$params['name']) {
+            throw new MissingParametersException(__METHOD__, array('name'));
+        }
+        $endPoint = Http::prepare('uploads.json?filename='.$params['name'].(isset($params['optional_token']) ? '&token='.$params['optional_token'] : ''));
+        $response = Http::send($this->client, $endPoint, array('body' => $params['body']), 'POST', (isset($params['type']) ? $params['type'] : 'application/binary'));
+        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
+            throw new ResponseException(__METHOD__);
+        }
+        $this->client->setSideload(null);
+        return $response;
+    }
+
+    /**
      * Delete one or more attachments by token or id
      * $params must include one of these:
      *        'token' - the token given to you after the original upload
