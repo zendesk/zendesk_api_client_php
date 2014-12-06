@@ -63,6 +63,27 @@ class AttachmentsTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
+    /**
+     * @depends testAuthToken
+     */
+    public function testUploadAttachmentBody() {
+        $body = file_get_contents(getcwd().'/tests/assets/UK.png');
+        $attachment = $this->client->attachments()->uploadWithBody(array(
+            'body' => $body,
+            'type' => 'image/png',
+            'name' => 'UK.png'
+        ));
+        $this->assertEquals($this->client->getDebug()->lastResponseCode, '201', 'Does not return HTTP code 201');
+        $this->assertEquals(is_object($attachment), true, 'Should return an object');
+        $this->assertEquals(is_object($attachment->upload), true, 'Should return an object called "upload"');
+        $this->assertEquals(($attachment->upload->token != ''), true, 'Should return a token');
+        $this->assertEquals(is_array($attachment->upload->attachments), true, 'Should return an array called "upload->attachments"');
+        $this->assertGreaterThan(0, $attachment->upload->attachments[0]->id, 'Returns a non-numeric id for upload->attachments[0]');
+        $this->assertEquals(strlen($body), $attachment->upload->attachments[0]->size, 'returns a file with correct filesize');
+        $stack = array($attachment);
+        return $stack;
+    }
+
 }
 
 ?>
