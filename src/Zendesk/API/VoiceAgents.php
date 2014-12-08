@@ -49,7 +49,7 @@ class VoiceAgents extends ClientAbstract {
         }
         $endPoint = Http::prepare('channels/voice/agents/'.$params['agent_id'].'/tickets/'.$params['ticket_id'].'/display.json');
         $response = Http::send($this->client, $endPoint, null, 'POST');
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
+        if (($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
