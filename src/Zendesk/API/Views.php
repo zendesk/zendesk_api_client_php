@@ -160,7 +160,7 @@ class Views extends ClientAbstract {
         if(!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $endPoint = Http::prepare('views/'.$params['id'].'/execute.json'.(isset($params['sort_by']) ? '?sort_by='.$params['sort_by'].(isset($params['sort_order']) ? '&sort_order='.$params['sort_order'] : '') : ''));
+        $endPoint = Http::prepare('views/'.$params['id'].'/execute.json'.(isset($params['sort_by']) ? '?sort_by='.$params['sort_by'].(isset($params['sort_order']) ? '&sort_order='.$params['sort_order'] : '') : ''), $this->client->getSideload($params), $params);
         $response = Http::send($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
