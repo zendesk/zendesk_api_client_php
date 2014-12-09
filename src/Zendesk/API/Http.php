@@ -117,7 +117,7 @@ class Http {
         curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
         $response = curl_exec($curl);
         if ($response === false) {
-            throw new \Exception('No response from curl_exec in ' . __METHOD__);
+            throw new \Exception(sprintf('Curl error message: "%s" in %s', curl_error($curl),  __METHOD__));
         }
         $headerSize   = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
         $responseBody = substr($response, $headerSize);
@@ -171,7 +171,7 @@ class Http {
         curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
         $response = curl_exec($curl);
         if ($response === false) {
-            throw new \Exception('No response from curl_exec in '.__METHOD__);
+            throw new \Exception(sprintf('Curl error message: "%s" in %s', curl_error($curl),  __METHOD__));
         }
         $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
         $responseBody = substr($response, $headerSize);
