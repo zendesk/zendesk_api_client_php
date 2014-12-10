@@ -7,7 +7,8 @@ use Zendesk\API\Client;
 /**
  * Tickets test class
  */
-class TicketsTest extends \PHPUnit_Framework_TestCase {
+// class TicketsTest extends BasicTest {
+class TicketsTest extends \PHPUnit_Framework_TestCase{
 
     private $client;
     private $subdomain;
@@ -26,15 +27,16 @@ class TicketsTest extends \PHPUnit_Framework_TestCase {
         $this->client->setAuth('token', $this->token);
     }
 
-    public function testCredentials() {
-        $this->assertEquals($GLOBALS['SUBDOMAIN'] != '', true, 'Expecting GLOBALS[SUBDOMAIN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['TOKEN'] != '', true, 'Expecting GLOBALS[TOKEN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['PASSWORD'] != '', true, 'Expecting GLOBALS[PASSWORD] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['OAUTH_TOKEN'] != '', true, 'Expecting GLOBALS[OAUTH_TOKEN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['USERNAME'] != '', true, 'Expecting GLOBALS[USERNAME] parameter; does phpunit.xml exist?');
-    }
+    // public function testCredentials() {
+    //     $this->assertEquals(getenv('SUBDOMAIN') != '', true, 'Expecting GLOBALS[SUBDOMAIN] parameter; does phpunit.xml exist?');
+    //     $this->assertEquals(getenv('TOKEN') != '', true, 'Expecting GLOBALS[TOKEN] parameter; does phpunit.xml exist?');
+    //     $this->assertEquals(getenv('PASSWORD') != '', true, 'Expecting GLOBALS[PASSWORD] parameter; does phpunit.xml exist?');
+    //     $this->assertEquals(getenv('OAUTH_TOKEN') != '', true, 'Expecting GLOBALS[OAUTH_TOKEN] parameter; does phpunit.xml exist?');
+    //     $this->assertEquals(getenv('USERNAME') != '', true, 'Expecting GLOBALS[USERNAME] parameter; does phpunit.xml exist?');
+    // }
 
     public function testAuthPassword() {
+        print_r($this->client);
         $this->client->setAuth('password', $this->password);
         $tickets = $this->client->tickets()->findAll();
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
