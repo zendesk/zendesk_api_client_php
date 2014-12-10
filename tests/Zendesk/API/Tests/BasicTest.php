@@ -2,7 +2,7 @@
 
 namespace Zendesk\API\Tests;
 
-include("client_config.php");
+// include("config.php");
 
 use Zendesk\API\Client;
 
