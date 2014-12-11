@@ -7,24 +7,7 @@ use Zendesk\API\Client;
 /**
  * Twitter test class
  */
-class TwitterTest extends \PHPUnit_Framework_TestCase {
-
-    private $client;
-    private $subdomain;
-    private $username;
-    private $password;
-    private $token;
-    private $oAuthToken;
-
-    public function __construct() {
-        $this->subdomain = $GLOBALS['SUBDOMAIN'];
-        $this->username = $GLOBALS['USERNAME'];
-        $this->password = $GLOBALS['PASSWORD'];
-        $this->token = $GLOBALS['TOKEN'];
-        $this->oAuthToken = $GLOBALS['OAUTH_TOKEN'];
-        $this->client = new Client($this->subdomain, $this->username);
-        $this->client->setAuth('token', $this->token);
-    }
+class TwitterTest extends BasicTest {
 
     public function testAuthToken() {
         $tickets = $this->client->tickets()->findAll();
