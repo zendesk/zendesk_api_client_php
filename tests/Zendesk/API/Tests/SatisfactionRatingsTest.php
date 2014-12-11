@@ -7,37 +7,20 @@ use Zendesk\API\Client;
 /**
  * SatisfactionRatings test class
  */
-class SatisfactionRatingsTest extends \PHPUnit_Framework_TestCase {
-
-    private $client;
-    private $subdomain;
-    private $username;
-    private $password;
-    private $token;
-    private $oAuthToken;
-
-    public function __construct() {
-        $this->subdomain = $GLOBALS['SUBDOMAIN'];
-        $this->username = $GLOBALS['USERNAME'];
-        $this->password = $GLOBALS['PASSWORD'];
-        $this->token = $GLOBALS['TOKEN'];
-        $this->oAuthToken = $GLOBALS['OAUTH_TOKEN'];
-        $this->client = new Client($this->subdomain, $this->username);
-        $this->client->setAuth('token', $this->token);
-    }
+class SatisfactionRatingsTest extends BasicTest {
 
     public function testCredentials() {
-        $this->assertEquals($GLOBALS['SUBDOMAIN'] != '', true, 'Expecting GLOBALS[SUBDOMAIN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['TOKEN'] != '', true, 'Expecting GLOBALS[TOKEN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['USERNAME'] != '', true, 'Expecting GLOBALS[USERNAME] parameter; does phpunit.xml exist?');
+        $this->assertEquals($_ENV['SUBDOMAIN'] != '', true, 'Expecting _ENV[SUBDOMAIN] parameter; does phpunit.xml exist?');
+        $this->assertEquals($_ENV['TOKEN'] != '', true, 'Expecting _ENV[TOKEN] parameter; does phpunit.xml exist?');
+        $this->assertEquals($_ENV['USERNAME'] != '', true, 'Expecting _ENV[USERNAME] parameter; does phpunit.xml exist?');
     }
 
     public function testCreate() {
         // Auth as end user
-        $this->username = $GLOBALS['END_USER_USERNAME'];
-        $this->password = $GLOBALS['END_USER_PASSWORD'];
-        $this->token = $GLOBALS['TOKEN'];
-        $this->oAuthToken = $GLOBALS['END_USER_OAUTH_TOKEN'];
+        $this->username = $_ENV['END_USER_USERNAME'];
+        $this->password = $_ENV['END_USER_PASSWORD'];
+        $this->token = $_ENV['TOKEN'];
+        $this->oAuthToken = $_ENV['END_USER_OAUTH_TOKEN'];
         $this->client = new Client($this->subdomain, $this->username);
         $this->client->setAuth('password', $this->password);
         $rating = $this->client->ticket(200)->satisfactionRatings()->create(array(
