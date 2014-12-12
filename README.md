@@ -4,7 +4,7 @@
 
 ## API version support
 
-This client **only** supports Zendesk's v2 API.  Please see our [API documentation](http://developer.zendesk.com/api-docs) for more information.
+This client **only** supports Zendesk's API v2.  Please see our [API documentation](http://developer.zendesk.com/api-docs) for more information.
 
 ## Installation
 
@@ -12,7 +12,7 @@ The Zendesk PHP API client can be installed using [Composer](https://packagist.o
 
 ### Composer
 
-Inside of composer.json specify the following:
+Inside of `composer.json` specify the following:
 
 ```json
 {
@@ -24,7 +24,7 @@ Inside of composer.json specify the following:
 
 ## Configuration
 
-Configuration is done through an instance of Zendesk\API\Client.
+Configuration is done through an instance of `Zendesk\API\Client`.
 The block is mandatory and if not passed, an error will be thrown.
 
 ```php
@@ -88,7 +88,7 @@ $tickets = $this->client->tickets()->sideload(array('users', 'groups'))->findAll
 2. Make your feature addition or bug fix.
 3. Add tests for it. This is important so I don't break it in a future version
    unintentionally.
-4. Commit and do not mess with version or history. (if you want to have
+4. Commit and do not mess with version or history. (If you want to have
    your own version, that is fine but bump version in a commit by itself I can
    ignore when I pull)
 5. Send a pull request. Bonus points for topic branches.
