@@ -10,21 +10,17 @@ use Zendesk\API\Client;
 class TicketsTest extends BasicTest {
 
     public function testCredentials() {
-        $this->assertEquals($_ENV['SUBDOMAIN'] != '', true, 'Expecting _ENV[SUBDOMAIN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($_ENV['TOKEN'] != '', true, 'Expecting _ENV[TOKEN] parameter; does phpunit.xml exist?');
+        parent::credentialsTest();
         $this->assertEquals($_ENV['PASSWORD'] != '', true, 'Expecting _ENV[PASSWORD] parameter; does phpunit.xml exist?');
         $this->assertEquals($_ENV['OAUTH_TOKEN'] != '', true, 'Expecting _ENV[OAUTH_TOKEN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($_ENV['USERNAME'] != '', true, 'Expecting _ENV[USERNAME] parameter; does phpunit.xml exist?');
+    }
+
+    public function testAuthToken() {
+        parent::authTokenTest();
     }
 
     public function testAuthPassword() {
         $this->client->setAuth('password', $this->password);
-        $tickets = $this->client->tickets()->findAll();
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-    }
-
-    public function testAuthToken() {
-        $this->client->setAuth('token', $this->token);
         $tickets = $this->client->tickets()->findAll();
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }

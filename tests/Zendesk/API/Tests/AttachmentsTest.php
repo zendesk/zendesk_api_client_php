@@ -10,8 +10,7 @@ use Zendesk\API\Client;
 class AttachmentsTest extends BasicTest {
 
     public function testAuthToken() {
-        $tickets = $this->client->tickets()->findAll();
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+        parent::authTokenTest();
     }
 
     /**
