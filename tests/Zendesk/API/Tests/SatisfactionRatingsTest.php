@@ -10,9 +10,7 @@ use Zendesk\API\Client;
 class SatisfactionRatingsTest extends BasicTest {
 
     public function testCredentials() {
-        $this->assertEquals($_ENV['SUBDOMAIN'] != '', true, 'Expecting _ENV[SUBDOMAIN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($_ENV['TOKEN'] != '', true, 'Expecting _ENV[TOKEN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($_ENV['USERNAME'] != '', true, 'Expecting _ENV[USERNAME] parameter; does phpunit.xml exist?');
+        parent::credentialsTest();
     }
 
     public function testCreate() {

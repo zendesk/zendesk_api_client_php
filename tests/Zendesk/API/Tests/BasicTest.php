@@ -24,6 +24,17 @@ class BasicTest extends \PHPUnit_Framework_TestCase {
         $this->client = new Client($this->subdomain, $this->username);
         $this->client->setAuth('token', $this->token);
     }
+
+    public function authTokenTest() {
+        $tickets = $this->client->tickets()->findAll();
+        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+    }
+
+    public function credentialsTest() {
+        $this->assertEquals(getenv('SUBDOMAIN') != '', true, 'Expecting getenv(\'SUBDOMAIN\') parameter; does phpunit.xml exist?');
+        $this->assertEquals(getenv('TOKEN') != '', true, 'Expecting getenv(\'TOKEN\')parameter; does phpunit.xml exist?');
+        $this->assertEquals(getenv('USERNAME') != '', true, 'Expecting getenv(\'USERNAME\') parameter; does phpunit.xml exist?');
+    }
 }
 
 ?>
