@@ -16,9 +16,7 @@ class LocalsTest extends BasicTest {
     public function testAuthToken() {
         parent::authTokenTest();
     }
-    /**
-     * @depends testAuthToken
-     */
+
     public function testAll() {
         $locales = $this->client->locales()->findAll();
         $this->assertEquals(is_object($locales), true, 'Should return an object');
@@ -27,9 +25,6 @@ class LocalsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testAgent() {
         $locales = $this->client->locales()->agent();
         $this->assertEquals(is_object($locales), true, 'Should return an object');
@@ -38,9 +33,6 @@ class LocalsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testCurrent() {
         $locale = $this->client->locales()->current();
         $this->assertEquals(is_object($locale), true, 'Should return an object');
@@ -49,9 +41,6 @@ class LocalsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testFind() {
         $locale = $this->client->locale(1)->find();
         $this->assertEquals(is_object($locale), true, 'Should return an object');
@@ -60,9 +49,6 @@ class LocalsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testDetectBest() {
         $locale = $this->client->locales()->detectBest(array('available_locales' => array('en', 'js', 'es')));
         $this->assertEquals(is_object($locale), true, 'Should return an object');

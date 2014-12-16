@@ -17,9 +17,6 @@ class SharingAgreementsTest extends BasicTest {
         parent::authTokenTest();
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testAll() {
         $agreements = $this->client->sharingAgreements()->findAll();
         $this->assertEquals(is_object($agreements), true, 'Should return an object');

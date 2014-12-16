@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpunit bootstrap="tests/bootstrap.php" colors="true">
     <php>
-        <env name="SUBDOMAIN" value="" />
-        <env name="USERNAME" value="" />
-        <env name="PASSWORD" value="" />
-        <env name="TOKEN" value="" />
+        <env name="SUBDOMAIN" value="z3n521" />
+        <env name="USERNAME" value="ytang@zendesk.com" />
+        <env name="PASSWORD" value="12345" />
+        <env name="TOKEN" value="Whob17VOVfXfN4dUCjkaGQeRrIZbe2rHTyTL72lA" />
         <env name="OAUTH_SECRET" value="" />
         <env name="OAUTH_TOKEN" value="" />
-        <env name="END_USER_USERNAME" value="" />
-        <env name="END_USER_PASSWORD" value="" />
+        <env name="END_USER_USERNAME" value="johnny@example.org" />
+        <env name="END_USER_PASSWORD" value="123456" />
         <env name="END_USER_OAUTH_TOKEN" value="" />
     </php>
     <testsuites>

@@ -17,9 +17,6 @@ class CategoriesTest extends BasicTest {
         parent::authTokenTest();
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testCreate() {
         $category = $this->client->categories()->create(array(
             'name' => 'My Category'

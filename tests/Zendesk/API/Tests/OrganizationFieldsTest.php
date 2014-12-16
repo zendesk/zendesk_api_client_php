@@ -17,10 +17,9 @@ class OrganizationFieldsTest extends BasicTest {
         parent::authTokenTest();
     }
 
-    /**
-     * @depends testAuthToken
-     */
-    public function testCreate() {
+    protected $id;
+    
+    public function setUp() {
         $organizationFields = $this->client->organizationFields()->create(array(
             'type' => 'text',
             'title' => 'Support description',
@@ -34,42 +33,26 @@ class OrganizationFieldsTest extends BasicTest {
         $this->assertGreaterThan(0, $organizationFields->organization_field->id, 'Returns a non-numeric id for organization_field');
         $this->assertEquals($organizationFields->organization_field->title, 'Support description', 'Name of test organization field does not match');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '201', 'Does not return HTTP code 201');
-        $id = $organizationFields->organization_field->id;
-        $stack = array($id);
-        return $stack;
+        $this->id = $organizationFields->organization_field->id;
     }
 
-    /**
-     * @depends testCreate
-     */
-    public function testAll($stack) {
+    public function testAll() {
         $organizationFields = $this->client->organizationFields()->findAll();
         $this->assertEquals(is_object($organizationFields), true, 'Should return an object');
         $this->assertEquals(is_array($organizationFields->organization_fields), true, 'Should return an object containing an array called "organization_fields"');
         $this->assertGreaterThan(0, $organizationFields->organization_fields[0]->id, 'Returns a non-numeric id for organization_fields[0]');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-        return $stack;
     }
 
-    /**
-     * @depends testCreate
-     */
-    public function testFind($stack) {
-        $id = array_pop($stack);
-        $organizationField = $this->client->organizationField($id)->find();
+    public function testFind() {
+        $organizationField = $this->client->organizationField($this->id)->find();
         $this->assertEquals(is_object($organizationField), true, 'Should return an object');
         $this->assertGreaterThan(0, $organizationField->organization_field->id, 'Returns a non-numeric id for organization_field');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-        $stack = array($id);
-        return $stack;
     }
 
-    /**
-     * @depends testCreate
-     */
-    public function testUpdate(array $stack) {
-        $id = array_pop($stack);
-        $organizationField = $this->client->organizationField($id)->update(array(
+    public function testUpdate() {
+        $organizationField = $this->client->organizationField($this->id)->update(array(
             'title' => 'Roger Wilco II'
         ));
         $this->assertEquals(is_object($organizationField), true, 'Should return an object');
@@ -77,25 +60,16 @@ class OrganizationFieldsTest extends BasicTest {
         $this->assertGreaterThan(0, $organizationField->organization_field->id, 'Returns a non-numeric id for organization_field');
         $this->assertEquals($organizationField->organization_field->title, 'Roger Wilco II', 'Title of test organization field does not match');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-        $stack = array($id);
-        return $stack;
     }
 
-    /**
-     * @depends testCreate
-     */
-    public function testDelete(array $stack) {
-        $id = array_pop($stack);
-        $this->assertGreaterThan(0, $id, 'Cannot find an organization field id to test with. Did testCreate fail?');
-        $organizationField = $this->client->organizationField($id)->delete();
+    public function testReorder() {
+        $result = $this->client->organizationFields()->reorder(array('organization_field_ids' => array(14382, 14342)));
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
-    public function testReorder() {
-        $result = $this->client->organizationFields()->reorder(array('organization_field_ids' => array(14382, 14342)));
+    public function tearDown() {
+        $this->assertGreaterThan(0, $this->id, 'Cannot find an organization field id to test with. Did setUp fail?');
+        $organizationField = $this->client->organizationField($this->id)->delete();
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 

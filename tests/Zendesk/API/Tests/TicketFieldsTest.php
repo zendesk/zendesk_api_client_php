@@ -17,32 +17,9 @@ class TicketFieldsTest extends BasicTest {
         parent::authTokenTest();
     }
 
-    /**
-     * @depends testAuthToken
-     */
-    public function testAll() {
-        $fields = $this->client->ticketFields()->findAll();
-        $this->assertEquals(is_object($fields), true, 'Should return an object');
-        $this->assertEquals(is_array($fields->ticket_fields), true, 'Should return an object containing an array called "ticket_fields"');
-        $this->assertGreaterThan(0, $fields->ticket_fields[0]->id, 'Returns a non-numeric id in first ticket field');
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-    }
+    protected $id;
 
-    /**
-     * @depends testAuthToken
-     */
-    public function testFind() {
-        $fields = $this->client->ticketField(23153032)->find(); // ticket field #23153032 must never be deleted
-        $this->assertEquals(is_object($fields), true, 'Should return an object');
-        $this->assertEquals(is_object($fields->ticket_field), true, 'Should return an object called "ticket_field"');
-        $this->assertEquals('23153032', $fields->ticket_field->id, 'Returns an incorrect id in ticket field object');
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-    }
-
-    /**
-     * @depends testAuthToken
-     */
-    public function testCreate() {
+    public function setUp() {
         $field = $this->client->ticketFields()->create(array(
             'type' => 'text',
             'title' => 'Age'
@@ -53,17 +30,27 @@ class TicketFieldsTest extends BasicTest {
         $this->assertEquals($field->ticket_field->type, 'text', 'Type of test ticket field does not match');
         $this->assertEquals($field->ticket_field->title, 'Age', 'Title of test ticket field does not match');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '201', 'Does not return HTTP code 201');
-        $id = $field->ticket_field->id;
-        $stack = array($id);
-        return $stack;
+        $this->id = $field->ticket_field->id;
     }
 
-    /**
-     * @depends testCreate
-     */
-    public function testUpdate(array $stack) {
-        $id = array_pop($stack);
-        $field = $this->client->ticketField($id)->update(array(
+    public function testAll() {
+        $fields = $this->client->ticketFields()->findAll();
+        $this->assertEquals(is_object($fields), true, 'Should return an object');
+        $this->assertEquals(is_array($fields->ticket_fields), true, 'Should return an object containing an array called "ticket_fields"');
+        $this->assertGreaterThan(0, $fields->ticket_fields[0]->id, 'Returns a non-numeric id in first ticket field');
+        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+    }
+
+    public function testFind() {
+        $fields = $this->client->ticketField($this->id)->find(); 
+        $this->assertEquals(is_object($fields), true, 'Should return an object');
+        $this->assertEquals(is_object($fields->ticket_field), true, 'Should return an object called "ticket_field"');
+        $this->assertEquals($this->id, $fields->ticket_field->id, 'Returns an incorrect id in ticket field object');
+        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+    }
+
+    public function testUpdate() {
+        $field = $this->client->ticketField($this->id)->update(array(
             'title' => 'Another value'
         ));
         $this->assertEquals(is_object($field), true, 'Should return an object');
@@ -72,20 +59,13 @@ class TicketFieldsTest extends BasicTest {
         $this->assertEquals($field->ticket_field->type, 'text', 'Type of test ticket field does not match');
         $this->assertEquals($field->ticket_field->title, 'Another value', 'Title of test ticket field does not match');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-        $id = $field->ticket_field->id;
-        $stack = array($id);
-        return $stack;
     }
 
-    /**
-     * @depends testCreate
-     */
-    public function testDelete(array $stack) {
-        $id = array_pop($stack);
-        $field = $this->client->ticketField($id)->delete();
+    public function tearDown() {
+        $field = $this->client->ticketField($this->id)->delete();
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
-
+    
 }
 
 ?>

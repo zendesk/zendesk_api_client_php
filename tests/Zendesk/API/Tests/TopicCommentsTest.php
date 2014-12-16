@@ -17,25 +17,29 @@ class TopicCommentsTest extends BasicTest {
         parent::authTokenTest();
     }
     
-    /**
-     * @depends testAuthToken
-     */
-    public function testCreate() {
+    protected $id, $topic_id, $forum_id;
+    
+    public function setUP() {
         /*
-         * First start by creating a topic (we'll delete it later)
+         * First start by creating a forum and a topic (we'll delete them later)
          */
+        $forum = $this->client->forums()->create(array(
+            'name' => 'My Forum',
+            'forum_type' => 'articles',
+            'access' => 'logged-in users'
+        ));
+        $this->forum_id = $forum->forum->id;
+
         $topic = $this->client->topics()->create(array(
-            'forum_id' => 22480662,
+            'forum_id' => $this->forum_id,
             'title' => 'My Topic',
             'body' => 'This is a test topic'
         ));
-        $this->assertEquals(is_object($topic), true, 'Should return an object');
-        $this->assertEquals(is_object($topic->topic), true, 'Should return an object called "topic"');
-        $this->assertGreaterThan(0, $topic->topic->id, 'Returns a non-numeric id for topic');
+        $this->topic_id = $topic->topic->id;
         /*
          * Continue with the rest of the test...
          */
-        $topicComment = $this->client->topic($topic->topic->id)->comments()->create(array(
+        $topicComment = $this->client->topic($this->topic_id)->comments()->create(array(
             'body' => 'A man walks into a bar'
         ));
         $this->assertEquals(is_object($topicComment), true, 'Should return an object');
@@ -43,39 +47,26 @@ class TopicCommentsTest extends BasicTest {
         $this->assertGreaterThan(0, $topicComment->topic_comment->id, 'Returns a non-numeric id for topic_comment');
         $this->assertEquals($topicComment->topic_comment->body, 'A man walks into a bar', 'Body of test comment does not match');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '201', 'Does not return HTTP code 201');
-        $id = $topicComment->topic_comment->id;
-        $stack = array($id, $topic->topic->id);
-        return $stack;
+        $this->id = $topicComment->topic_comment->id;
     }
 
-    /**
-     * @depends testCreate
-     */
-    public function testAll($stack) {
-        $topicComments = $this->client->topic($stack[1])->comments()->findAll();
+    public function testAll() {
+        $topicComments = $this->client->topic($this->topic_id)->comments()->findAll();
         $this->assertEquals(is_object($topicComments), true, 'Should return an object');
         $this->assertEquals(is_array($topicComments->topic_comments), true, 'Should return an object containing an array called "topic_comments"');
         $this->assertGreaterThan(0, $topicComments->topic_comments[0]->id, 'Returns a non-numeric id for topic_comments[0]');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-        return $stack;
     }
 
-    /**
-     * @depends testCreate
-     */
-    public function testFind($stack) {
-        $topicComment = $this->client->topic($stack[1])->comment($stack[0])->find();
+    public function testFind() {
+        $topicComment = $this->client->topic($this->topic_id)->comment($this->id)->find();
         $this->assertEquals(is_object($topicComment), true, 'Should return an object');
         $this->assertGreaterThan(0, $topicComment->topic_comment->id, 'Returns a non-numeric id for topic');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-        return $stack;
     }
 
-    /**
-     * @depends testCreate
-     */
-    public function testUpdate(array $stack) {
-        $topicComment = $this->client->topic($stack[1])->comment($stack[0])->update(array(
+    public function testUpdate() {
+        $topicComment = $this->client->topic($this->topic_id)->comment($this->id)->update(array(
             'body' => 'A man walks into a different bar'
         ));
         $this->assertEquals(is_object($topicComment), true, 'Should return an object');
@@ -83,20 +74,16 @@ class TopicCommentsTest extends BasicTest {
         $this->assertGreaterThan(0, $topicComment->topic_comment->id, 'Returns a non-numeric id for topic_comment');
         $this->assertEquals($topicComment->topic_comment->body, 'A man walks into a different bar', 'Name of test topic does not match');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-        return $stack;
     }
 
-    /**
-     * @depends testCreate
-     */
-    public function testDelete(array $stack) {
-        $this->assertGreaterThan(0, $stack[0], 'Cannot find a topic comment id to test with. Did testCreate fail?');
-        $view = $this->client->topic($stack[1])->comment($stack[0])->delete();
+    public function teardown() {
+        $this->assertGreaterThan(0, $this->id, 'Cannot find a topic comment id to test with. Did setUp fail?');
+        $view = $this->client->topic($this->topic_id)->comment($this->id)->delete();
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
         /*
          * Clean-up
          */
-        $topic = $this->client->topic($stack[1])->delete();
+        $topic = $this->client->forum($this->forum_id)->delete();
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 

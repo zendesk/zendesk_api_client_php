@@ -21,6 +21,9 @@ class OAuthTokensTest extends BasicTest {
      * @depends testAuthToken
      */
     public function testAll() {
+        $this->markTestSkipped(
+            'Since there\'s no way to create a token programmatically, we can\'t test testAll'
+        );
         $tokens = $this->client->oauthTokens()->findAll();
         $this->assertEquals(is_object($tokens), true, 'Should return an object');
         $this->assertEquals(is_array($tokens->tokens), true, 'Should return an object containing an array called "tokens"');
@@ -32,6 +35,9 @@ class OAuthTokensTest extends BasicTest {
      * @depends testAuthToken
      */
     public function testFind() {
+        $this->markTestSkipped(
+            'Since there\'s no way to create a token programmatically, we can\'t test testFind'
+        );
         $id = 941; // don't delete this token
         $token = $this->client->oauthToken($id)->find();
         $this->assertEquals(is_object($token), true, 'Should return an object');

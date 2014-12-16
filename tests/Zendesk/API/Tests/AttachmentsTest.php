@@ -13,9 +13,6 @@ class AttachmentsTest extends BasicTest {
         parent::authTokenTest();
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testUploadAttachment() {
         $attachment = $this->client->attachments()->upload(array(
             'file' => getcwd().'/tests/assets/UK.png',
@@ -45,9 +42,6 @@ class AttachmentsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testUploadAttachmentBody() {
         $body = file_get_contents(getcwd().'/tests/assets/UK.png');
         $attachment = $this->client->attachments()->uploadWithBody(array(
