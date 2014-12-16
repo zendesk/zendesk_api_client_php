@@ -31,9 +31,9 @@ class BasicTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function credentialsTest() {
-        $this->assertEquals(getenv('SUBDOMAIN') != '', true, 'Expecting getenv(\'SUBDOMAIN\') parameter; does phpunit.xml exist?');
-        $this->assertEquals(getenv('TOKEN') != '', true, 'Expecting getenv(\'TOKEN\')parameter; does phpunit.xml exist?');
-        $this->assertEquals(getenv('USERNAME') != '', true, 'Expecting getenv(\'USERNAME\') parameter; does phpunit.xml exist?');
+        $this->assertEquals($this->subdomain != '', true, 'Expecting $this->subdomain parameter; does phpunit.xml exist?');
+        $this->assertEquals($this->token != '', true, 'Expecting $this->token parameter; does phpunit.xml exist?');
+        $this->assertEquals($this->username != '', true, 'Expecting $this->username parameter; does phpunit.xml exist?');
     }
 }
 

@@ -13,9 +13,6 @@ class TwitterTest extends BasicTest {
         parent::authTokenTest();
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testGetHandles() {
         $handles = $this->client->twitter()->handles();
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
@@ -23,12 +20,10 @@ class TwitterTest extends BasicTest {
         $this->assertEquals(is_array($handles->monitored_twitter_handles), true, 'Should return an array called "monitored_twitter_handles"');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testGetHandleById() {
+        $id = $this->client->twitter()->handles()->monitored_twitter_handles[0]->id;
         $handles = $this->client->twitter()->handleById(array(
-            'id' => 20032352 // don't delete
+            'id' => $id 
         ));
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
         $this->assertEquals(is_object($handles), true, 'Should return an object');

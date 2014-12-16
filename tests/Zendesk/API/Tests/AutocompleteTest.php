@@ -17,9 +17,6 @@ class AutocompleteTest extends BasicTest {
         parent::authTokenTest();
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testTags() {
         $tags = $this->client->autocomplete()->tags(array(
             'name' => 'att'

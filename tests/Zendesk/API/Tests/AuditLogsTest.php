@@ -16,10 +16,22 @@ class AuditLogsTest extends BasicTest {
     public function testAuthToken() {
         parent::authTokenTest();
     }
+    protected $ticket;
+    
+    public function setUp(){
+        $testTicket = array(
+            'subject' => 'The is for Audit Logs test', 
+            'comment' => array (
+                'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            ), 
+            'priority' => 'normal'
+        );
+        $this->ticket = $this->client->tickets()->create($testTicket);
+    }
 
-    /**
-     * @depends testAuthToken
-     */
+    public function tearDown(){
+        $this->client->tickets($this->ticket->ticket->id)->delete();
+    }
     public function testAll() {
         $auditLogs = $this->client->auditLogs()->findAll(array(
             'filter' => array(
@@ -32,11 +44,9 @@ class AuditLogsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testFind() {
-        $auditLog = $this->client->auditLog(24000361)->find(); // don't delete audit log #24000361
+        $auditLog_id = $this->client->auditLogs()->findAll()->audit_logs[0]->id;
+        $auditLog = $this->client->auditLog($auditLog_id)->find(); // don't delete audit log #24000361
         $this->assertEquals(is_object($auditLog), true, 'Should return an object');
         $this->assertGreaterThan(0, $auditLog->audit_log->id, 'Returns a non-numeric id for audit_log');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');

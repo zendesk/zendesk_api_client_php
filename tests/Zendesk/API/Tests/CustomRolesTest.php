@@ -17,9 +17,6 @@ class CustomRolesTest extends BasicTest {
         parent::authTokenTest();
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testAll() {
         $customRoles = $this->client->customRoles()->findAll();
         $this->assertEquals(is_object($customRoles), true, 'Should return an object');

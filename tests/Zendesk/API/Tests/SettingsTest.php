@@ -17,9 +17,6 @@ class SettingsTest extends BasicTest {
         parent::authTokenTest();
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testAll() {
         $settings = $this->client->settings()->findAll();
         $this->assertEquals(is_object($settings), true, 'Should return an object');
@@ -27,9 +24,6 @@ class SettingsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testUpdate() {
         $settings = $this->client->settings()->update(array(
             'lotus' => array(

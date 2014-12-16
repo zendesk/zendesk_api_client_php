@@ -17,9 +17,6 @@ class VoiceTest extends BasicTest {
         parent::authTokenTest();
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testCreatePhoneNumber() {
         // First we need to search for an available phone number
         $numbers = $this->client->voice()->phoneNumbers()->search(array(
@@ -105,9 +102,6 @@ class VoiceTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Delete trigger does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testCreateGreeting() {
         $greeting = $this->client->voice()->greetings()->create(array(
             'name' => 'Hello',
@@ -175,9 +169,6 @@ class VoiceTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Delete trigger does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testCurrentQueueActivity() {
         $stats = $this->client->voice()->stats()->findAll(array('current_queue_activity' => true));
         $this->assertEquals(is_object($stats), true, 'Should return an object');
@@ -185,9 +176,6 @@ class VoiceTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testHistoricalQueueActivity() {
         $stats = $this->client->voice()->stats()->findAll(array('historical_queue_activity' => true));
         $this->assertEquals(is_object($stats), true, 'Should return an object');
@@ -195,9 +183,6 @@ class VoiceTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testAgentsActivity() {
         $stats = $this->client->voice()->stats()->findAll(array('agents_activity' => true));
         $this->assertEquals(is_object($stats), true, 'Should return an object');
