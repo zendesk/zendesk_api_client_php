@@ -1,6 +1,8 @@
 <?php
 
 namespace Zendesk\API;
+use \CURLFile as CURLFile;
+
 
 /**
  * HTTP functions via curl
@@ -86,6 +88,13 @@ class Http {
             $curl = curl_init($url);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
             curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
+            if(is_array($json) && (isset($json['user[photo][uploaded_data]']))) {
+             	error_log("line #92 - ".$json['user[photo][uploaded_data]']);
+                curl_setopt($curl, CURLOPT_SAFE_UPLOAD, 1);
+				$args['user[photo][uploaded_data]'] = new CURLFile($json['user[photo][uploaded_data]']);
+				curl_setopt($curl, CURLOPT_POSTFIELDS, $args);
+				$http_header = array('Content-Type: multipart/form-data');
+			}
         } else {
             $curl = curl_init(
                 $url . ($json != (object)null ? (strpos($url, '?') === false ? '?' : '&') . http_build_query($json) : '')
@@ -104,7 +113,7 @@ class Http {
             );
         } else {
             curl_setopt($curl, CURLOPT_USERPWD, $client->getAuthText());
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: ' . $contentType, 'Accept: application/json'));
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $http_header);
         }
         curl_setopt($curl, CURLINFO_HEADER_OUT, true);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
