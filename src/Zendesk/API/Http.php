@@ -3,7 +3,6 @@
 namespace Zendesk\API;
 use \CURLFile as CURLFile;
 
-
 /**
  * HTTP functions via curl
  * @package Zendesk\API
@@ -63,6 +62,7 @@ class Http {
         } else if ($contentType == 'application/json' && $method != 'GET' && $method != 'DELETE') {
             $json = json_encode($json);
         }
+        $http_header = array('Content-Type: '.$contentType, 'Accept: application/json');
 
         if ($method == 'POST') {
             $curl = curl_init($url);
@@ -88,8 +88,8 @@ class Http {
             $curl = curl_init($url);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
             curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
+            // If a user profile photo has been uploaded - only for updating user photo via file upload
             if(is_array($json) && (isset($json['user[photo][uploaded_data]']))) {
-             	error_log("line #92 - ".$json['user[photo][uploaded_data]']);
                 curl_setopt($curl, CURLOPT_SAFE_UPLOAD, 1);
 				$args['user[photo][uploaded_data]'] = new CURLFile($json['user[photo][uploaded_data]']);
 				curl_setopt($curl, CURLOPT_POSTFIELDS, $args);
