@@ -37,30 +37,8 @@ class UserFieldsTest extends \PHPUnit_Framework_TestCase {
         $requests = $this->client->tickets()->findAll();
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
-
-    /**
-     * @depends testAuthToken
-     */
-    public function testAll() {
-        $userFields = $this->client->userFields()->findAll();
-        $this->assertEquals(is_object($userFields), true, 'Should return an object');
-        $this->assertEquals(is_array($userFields->user_fields), true, 'Should return an object containing an array called "user_fields"');
-        $this->assertGreaterThan(0, $userFields->user_fields[0]->id, 'Returns a non-numeric id for user_fields[0]');
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-    }
-
-    /**
-     * @depends testAuthToken
-     */
-    public function testFind() {
-        $userField = $this->client->userField(13581)->find(); // don't delete user field #13581
-        $this->assertEquals(is_object($userField), true, 'Should return an object');
-        $this->assertEquals(is_object($userField->user_field), true, 'Should return an object called "view"');
-        $this->assertGreaterThan(0, $userField->user_field->id, 'Returns a non-numeric id for view');
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-    }
-
-    /**
+    
+     /**
      * @depends testAuthToken
      */
     public function testCreate() {
@@ -81,6 +59,29 @@ class UserFieldsTest extends \PHPUnit_Framework_TestCase {
         $stack = array($id);
         return $stack;
     }
+    
+    /**
+     * @depends testAuthToken
+     */
+    public function testAll() {
+        $userFields = $this->client->userFields()->findAll();
+        $this->assertEquals(is_object($userFields), true, 'Should return an object');
+        $this->assertEquals(is_array($userFields->user_fields), true, 'Should return an object containing an array called "user_fields"');
+        $this->assertGreaterThan(0, $userFields->user_fields[0]->id, 'Returns a non-numeric id for user_fields[0]');
+        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+    }
+
+    /**
+     * @depends testCreate
+     */
+    public function testFind(array $stack) {
+	    $id = array_pop($stack);
+        $userField = $this->client->userField($id)->find(); // don't delete user field #13581
+        $this->assertEquals(is_object($userField), true, 'Should return an object');
+        $this->assertEquals(is_object($userField->user_field), true, 'Should return an object called "view"');
+        $this->assertGreaterThan(0, $userField->user_field->id, 'Returns a non-numeric id for view');
+        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+    }
 
     /**
      * @depends testCreate
@@ -99,6 +100,15 @@ class UserFieldsTest extends \PHPUnit_Framework_TestCase {
         $stack = array($id);
         return $stack;
     }
+    
+    /**
+     * @depends testCreate
+     */
+    public function testReorder(array $stack) {
+        $id = array_pop($stack);
+        $view = $this->client->userFields()->reorder(array($id));
+        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+    }
 
     /**
      * @depends testCreate
@@ -110,13 +120,7 @@ class UserFieldsTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
-    public function testReorder() {
-        $view = $this->client->userFields()->reorder(array(13581));
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-    }
+
 
 
 }
