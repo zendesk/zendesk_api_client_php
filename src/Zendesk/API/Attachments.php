@@ -138,5 +138,37 @@ class Attachments extends ClientAbstract {
         $this->client->setSideload(null);
         return $response;
     }
+    
+    /* 
+     *  Redact attachment (by id)
+     *  $params must include:
+     *  		`ticket` - ID of ticket where attachment lives
+     *			`comment` - ID of comment where the attachment lives
+     *			`attachment` - ID of the attachment
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
+     */ 
+    public function redact(array $params) {
+	    if(!$this->hasKeys($params, array('ticket_id', 'comment_id', 'attachment_id'))) {
+            throw new MissingParametersException(__METHOD__, array('ticket_id', 'comment_id', 'attachment_id'));
+        }
+        $ticket_id = $params['ticket_id'];
+        $comment_id = $params['comment_id'];
+        $attachment_id = $params['attachment_id'];
+        
+        $endPoint = Http::prepare('tickets/'.$ticket_id.'/comments/'.$comment_id.'/attachments/'.$attachment_id.'/redact.json');
+        $response = Http::send($this->client, $endPoint, null, 'PUT');
+        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
+            throw new ResponseException(__METHOD__);
+        }
+        $this->client->setSideload(null);
+        return $response;
+    }
 
 }
