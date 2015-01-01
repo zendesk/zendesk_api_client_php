@@ -211,6 +211,10 @@ class Client {
      */
     protected $voice;
     /**
+     * @var UserIdentities
+     */
+    protected $userIdentities;
+    /**
      * @var Locales
      */
     protected $locales;
@@ -262,6 +266,7 @@ class Client {
         $this->triggers = new Triggers($this);
         $this->voice = new Voice($this);
         $this->locales = new Locales($this);
+        $this->userIdentities = new userIdentities($this);
     }
 
     /**
