@@ -28,9 +28,9 @@ include("vendor/autoload.php");
 
 use Zendesk\API\Client as ZendeskAPI;
 
-$subdomain = "z3nburmaglot";
-$username = "japeterson@zendesk.com";
-$token = "FsD6L6pHGSsoHFctgl0HsPVATjEepNRHEwr2zycl"; // replace this with your token
+$subdomain = "";
+$username = "";
+$token = ""; // replace this with your token
 
 $client = new ZendeskAPI($subdomain, $username);
 $client->setAuth('token', $token); // set either token or password
