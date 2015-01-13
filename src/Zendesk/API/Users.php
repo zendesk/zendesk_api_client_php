@@ -322,7 +322,11 @@ class Users extends ClientAbstract {
         $id = $params['id'];
         unset($params['id']);
         $endPoint = Http::prepare('users/'.$id.'.json');
-        $response = Http::send($this->client, $endPoint, array('user[photo][uploaded_data]' => '@'.$params['file']), 'PUT', (isset($params['type']) ? $params['type'] : 'application/binary'));
+        if (function_exists('curl_file_create')) {
+            $response = Http::send($this->client, $endPoint, $params['file'], 'PUT', (isset($params['type']) ? $params['type'] : 'application/binary'));
+        }else {
+            $response = Http::send($this->client, $endPoint, array('user[photo][uploaded_data]' => '@'.$params['file']), 'PUT', (isset($params['type']) ? $params['type'] : 'application/binary'));
+        }
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }

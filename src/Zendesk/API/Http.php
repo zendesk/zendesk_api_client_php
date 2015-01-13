@@ -86,6 +86,7 @@ class Http {
             $curl = curl_init($url);
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
             curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
+
         } else {
             $curl = curl_init(
                 $url . ($json != (object)null ? (strpos($url, '?') === false ? '?' : '&') . http_build_query($json) : '')
