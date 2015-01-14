@@ -60,6 +60,8 @@ class Http {
             $json = new \stdClass();
         } else if ($contentType == 'application/json' && $method != 'GET' && $method != 'DELETE') {
             $json = json_encode($json);
+        } else if (is_array($json)) {
+            $json = http_build_query($json);
         }
 
         if ($method == 'POST') {
@@ -89,7 +91,7 @@ class Http {
 
         } else {
             $curl = curl_init(
-                $url . ($json != (object)null ? (strpos($url, '?') === false ? '?' : '&') . http_build_query($json) : '')
+                $url . ($json != (object)null ? (strpos($url, '?') === false ? '?' : '&') . $json : '')
             );
             curl_setopt($curl, CURLOPT_CUSTOMREQUEST, ($method ? $method : 'GET'));
         }
