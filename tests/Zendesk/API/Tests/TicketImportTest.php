@@ -7,46 +7,33 @@ use Zendesk\API\Client;
 /**
  * Ticket Imports test class
  */
-class TicketImportTest extends \PHPUnit_Framework_TestCase {
-
-    private $client;
-    private $subdomain;
-    private $username;
-    private $password;
-    private $token;
-    private $oAuthToken;
-
-    public function __construct() {
-        $this->subdomain = $GLOBALS['SUBDOMAIN'];
-        $this->username = $GLOBALS['USERNAME'];
-        $this->password = $GLOBALS['PASSWORD'];
-        $this->token = $GLOBALS['TOKEN'];
-        $this->oAuthToken = $GLOBALS['OAUTH_TOKEN'];
-        $this->client = new Client($this->subdomain, $this->username);
-        $this->client->setAuth('token', $this->token);
-    }
+class TicketImportTest extends BasicTest {
 
     public function testCredentials() {
-        $this->assertEquals($GLOBALS['SUBDOMAIN'] != '', true, 'Expecting GLOBALS[SUBDOMAIN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['TOKEN'] != '', true, 'Expecting GLOBALS[TOKEN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['USERNAME'] != '', true, 'Expecting GLOBALS[USERNAME] parameter; does phpunit.xml exist?');
+        parent::credentialsTest();
     }
 
     public function testAuthToken() {
-        $this->client->setAuth('token', $this->token);
-        $tickets = $this->client->tickets()->findAll();
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+        parent::authTokenTest();
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testImport() {
+        /*
+         * Create the user first, and we'll delete it later
+         */
+        $user = $this->client->users()->create(array(
+            'name' => 'Roger Wilco',
+            'email' => 'roge@example.org',
+            'role' => 'agent',
+            'verified' => true
+        ));
+        $author_id = $user->user->id;
+
         $confirm = $this->client->tickets()->import(array(
             'subject' => 'Help',
             'description' => 'A description',
             'comments' => array(
-                array('author_id' => 454094082, 'value' => 'This is a comment') // 454094082 is me
+                array('author_id' => $author_id, 'value' => 'This is a author comment') // 454094082 is me
             )
         ));
         $this->assertEquals(is_object($confirm), true, 'Should return an object');
@@ -55,6 +42,8 @@ class TicketImportTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($confirm->ticket->subject, 'Help', 'Subject of test ticket does not match');
         $this->assertEquals($confirm->ticket->description, 'A description', 'Description of test ticket does not match');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '201', 'Does not return HTTP code 201');
+
+        $this->client->user($author_id)->delete();
     }
 
 }

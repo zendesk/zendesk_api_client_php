@@ -7,65 +7,34 @@ use Zendesk\API\Client;
 /**
  * VoiceIntegration test class
  */
-class VoiceIntegrationTest extends \PHPUnit_Framework_TestCase {
-
-    private $client;
-    private $subdomain;
-    private $username;
-    private $password;
-    private $token;
-    private $oAuthToken;
-
-    public function __construct() {
-        $this->subdomain = $GLOBALS['SUBDOMAIN'];
-        $this->username = $GLOBALS['USERNAME'];
-        $this->password = $GLOBALS['PASSWORD'];
-        $this->token = $GLOBALS['TOKEN'];
-        $this->oAuthToken = $GLOBALS['OAUTH_TOKEN'];
-        $this->client = new Client($this->subdomain, $this->username);
-        $this->client->setAuth('token', $this->token);
-    }
+class VoiceIntegrationTest extends BasicTest {
 
     public function testCredentials() {
-        $this->assertEquals($GLOBALS['SUBDOMAIN'] != '', true, 'Expecting GLOBALS[SUBDOMAIN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['TOKEN'] != '', true, 'Expecting GLOBALS[TOKEN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['USERNAME'] != '', true, 'Expecting GLOBALS[USERNAME] parameter; does phpunit.xml exist?');
+        parent::credentialsTest();
     }
 
     public function testAuthToken() {
-        $this->client->setAuth('token', $this->token);
-        $requests = $this->client->tickets()->findAll();
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+        parent::authTokenTest();
     }
+    
+    // public function testOpenUserProfile() {
+    //     $result = $this->client->voice()->agents()->openUserProfile(array(
+    //         'agent_id' => '1',
+    //         'user_id' => '1'
+    //     ));
+    //     $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+    // }
 
-    /**
-     * @depends testAuthToken
-     */
-    public function testOpenUserProfile() {
-        $result = $this->client->voice()->agents()->openUserProfile(array(
-            'agent_id' => '1',
-            'user_id' => '1'
-        ));
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-    }
+    // public function testOpenTicket() {
+    //     $result = $this->client->voice()->agents()->openTicket(array(
+    //         'agent_id' => '1',
+    //         'ticket_id' => '1'
+    //     ));
+    //     $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+    // }
 
-    /**
-     * @depends testAuthToken
-     */
-    public function testOpenTicket() {
-        $result = $this->client->voice()->agents()->openTicket(array(
-            'agent_id' => '1',
-            'ticket_id' => '1'
-        ));
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-    }
-
-    /**
-     * @depends testAuthToken
-     */
     public function testCreateVoiceTicket() {
         $ticket = $this->client->voice()->tickets()->create(array(
-            'display_to_agent' => '1',
             'ticket' => array(
                 'via_id' => 44,
                 'subject' => 'My printer is on fire!',
@@ -82,9 +51,6 @@ class VoiceIntegrationTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '201', 'Does not return HTTP code 201');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testCreateVoicemailTicket() {
         $ticket = $this->client->voice()->tickets()->create(array(
             'ticket' => array(

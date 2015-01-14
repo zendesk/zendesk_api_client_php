@@ -7,42 +7,32 @@ use Zendesk\API\Client;
 /**
  * Ticket Comments test class
  */
-class TicketCommentsTest extends \PHPUnit_Framework_TestCase {
-
-    private $client;
-    private $subdomain;
-    private $username;
-    private $password;
-    private $token;
-    private $oAuthToken;
-
-    public function __construct() {
-        $this->subdomain = $GLOBALS['SUBDOMAIN'];
-        $this->username = $GLOBALS['USERNAME'];
-        $this->password = $GLOBALS['PASSWORD'];
-        $this->token = $GLOBALS['TOKEN'];
-        $this->oAuthToken = $GLOBALS['OAUTH_TOKEN'];
-        $this->client = new Client($this->subdomain, $this->username);
-        $this->client->setAuth('token', $this->token);
-    }
+class TicketCommentsTest extends BasicTest {
 
     public function testCredentials() {
-        $this->assertEquals($GLOBALS['SUBDOMAIN'] != '', true, 'Expecting GLOBALS[SUBDOMAIN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['TOKEN'] != '', true, 'Expecting GLOBALS[TOKEN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['USERNAME'] != '', true, 'Expecting GLOBALS[USERNAME] parameter; does phpunit.xml exist?');
+        parent::credentialsTest();
     }
 
     public function testAuthToken() {
-        $this->client->setAuth('token', $this->token);
-        $tickets = $this->client->tickets()->findAll();
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+        parent::authTokenTest();
     }
 
-    /**
-     * @depends testAuthToken
-     */
+    protected $ticket_id;
+
+    public function setUp(){
+        $testTicket = array(
+            'subject' => 'Ticket comment test', 
+            'comment' => array (
+                'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            ), 
+            'priority' => 'normal'
+        );
+        $ticket = $this->client->tickets()->create($testTicket);
+        $this->ticket_id = $ticket->ticket->id;
+    }
+    
     public function testAll() {
-        $comments = $this->client->ticket(76)->comments()->findAll(); // Don't delete ticket #76
+        $comments = $this->client->ticket($this->ticket_id)->comments()->findAll(); 
         $this->assertEquals(is_object($comments), true, 'Should return an object');
         $this->assertEquals(is_array($comments->comments), true, 'Should return an object containing an array called "comments"');
         $this->assertGreaterThan(0, $comments->comments[0]->id, 'Returns a non-numeric id in first audit');
@@ -53,13 +43,15 @@ class TicketCommentsTest extends \PHPUnit_Framework_TestCase {
      * Test make private
      */
     public function testMakePrivate() {
-        $this->markTestSkipped(
-            'Skipped for now because it requires a new (unique) comment id for each test'
-        );
-        $comments = $this->client->ticket(76)->comments(16303442242)->makePrivate();
+        $comment_id = $this->client->ticket($this->ticket_id)->comments()->findAll()->comments[0]->id; 
+        $comments = $this->client->ticket($this->ticket_id)->comments($comment_id)->makePrivate();
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
+    public function tearDown(){
+        $this->client->tickets($this->ticket_id)->delete();
+    }
+    
 }
 
 ?>
