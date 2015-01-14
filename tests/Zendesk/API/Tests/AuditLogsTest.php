@@ -7,40 +7,31 @@ use Zendesk\API\Client;
 /**
  * AuditLogs test class
  */
-class AuditLogsTest extends \PHPUnit_Framework_TestCase {
-
-    private $client;
-    private $subdomain;
-    private $username;
-    private $password;
-    private $token;
-    private $oAuthToken;
-
-    public function __construct() {
-        $this->subdomain = $GLOBALS['SUBDOMAIN'];
-        $this->username = $GLOBALS['USERNAME'];
-        $this->password = $GLOBALS['PASSWORD'];
-        $this->token = $GLOBALS['TOKEN'];
-        $this->oAuthToken = $GLOBALS['OAUTH_TOKEN'];
-        $this->client = new Client($this->subdomain, $this->username);
-        $this->client->setAuth('token', $this->token);
-    }
+class AuditLogsTest extends BasicTest {
 
     public function testCredentials() {
-        $this->assertEquals($GLOBALS['SUBDOMAIN'] != '', true, 'Expecting GLOBALS[SUBDOMAIN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['TOKEN'] != '', true, 'Expecting GLOBALS[TOKEN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['USERNAME'] != '', true, 'Expecting GLOBALS[USERNAME] parameter; does phpunit.xml exist?');
+        parent::credentialsTest();
     }
 
     public function testAuthToken() {
-        $this->client->setAuth('token', $this->token);
-        $requests = $this->client->tickets()->findAll();
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+        parent::authTokenTest();
+    }
+    protected $ticket;
+    
+    public function setUp(){
+        $testTicket = array(
+            'subject' => 'The is for Audit Logs test', 
+            'comment' => array (
+                'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            ), 
+            'priority' => 'normal'
+        );
+        $this->ticket = $this->client->tickets()->create($testTicket);
     }
 
-    /**
-     * @depends testAuthToken
-     */
+    public function tearDown(){
+        $this->client->tickets($this->ticket->ticket->id)->delete();
+    }
     public function testAll() {
         $auditLogs = $this->client->auditLogs()->findAll(array(
             'filter' => array(
@@ -53,11 +44,9 @@ class AuditLogsTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testFind() {
-        $auditLog = $this->client->auditLog(24000361)->find(); // don't delete audit log #24000361
+        $auditLog_id = $this->client->auditLogs()->findAll()->audit_logs[0]->id;
+        $auditLog = $this->client->auditLog($auditLog_id)->find(); // don't delete audit log #24000361
         $this->assertEquals(is_object($auditLog), true, 'Should return an object');
         $this->assertGreaterThan(0, $auditLog->audit_log->id, 'Returns a non-numeric id for audit_log');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');

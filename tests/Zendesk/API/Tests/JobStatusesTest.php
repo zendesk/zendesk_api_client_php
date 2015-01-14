@@ -7,50 +7,42 @@ use Zendesk\API\Client;
 /**
  * JobStatuses test class
  */
-class JobStatusesTest extends \PHPUnit_Framework_TestCase {
-
-    private $client;
-    private $subdomain;
-    private $username;
-    private $password;
-    private $token;
-    private $oAuthToken;
-
-    public function __construct() {
-        $this->subdomain = $GLOBALS['SUBDOMAIN'];
-        $this->username = $GLOBALS['USERNAME'];
-        $this->password = $GLOBALS['PASSWORD'];
-        $this->token = $GLOBALS['TOKEN'];
-        $this->oAuthToken = $GLOBALS['OAUTH_TOKEN'];
-        $this->client = new Client($this->subdomain, $this->username);
-        $this->client->setAuth('token', $this->token);
-    }
+class JobStatusesTest extends BasicTest {
 
     public function testCredentials() {
-        $this->assertEquals($GLOBALS['SUBDOMAIN'] != '', true, 'Expecting GLOBALS[SUBDOMAIN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['TOKEN'] != '', true, 'Expecting GLOBALS[TOKEN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['USERNAME'] != '', true, 'Expecting GLOBALS[USERNAME] parameter; does phpunit.xml exist?');
+        parent::credentialsTest();
     }
 
     public function testAuthToken() {
-        $this->client->setAuth('token', $this->token);
-        $requests = $this->client->tickets()->findAll();
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+        parent::authTokenTest();
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testFind() {
-        $this->markTestSkipped(
-            'Skipped for now because it requires a new job ID each time'
+        $testTicket = array(
+            'subject' => 'The quick brown fox jumps over the lazy dog', 
+            'comment' => array (
+                'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            ), 
+            'priority' => 'normal'
         );
-        $id = 'dae40e506a55013162fd3c305bf76b24';
+        $ticket = $this->client->tickets()->create($testTicket);
+        $ticket2 = $this->client->tickets()->create($testTicket);
+
+        $testUpdateTicket['id'] = array($ticket->ticket->id,$ticket2->ticket->id);
+        $testUpdateTicket['subject'] = 'Updated subject';
+        $testUpdateTicket['priority'] = 'urgent';
+
+        $testJobStatus = $this->client->tickets()->update($testUpdateTicket);
+
+        $id = $testJobStatus->job_status->id;
         $jobStatus = $this->client->jobStatus($id)->find();
         $this->assertEquals(is_object($jobStatus), true, 'Should return an object');
         $this->assertNotEmpty($jobStatus->job_status->id, 'Returns no id value for job_status');
-        $this->assertEquals($jobStatus->job_status->status, 'completed', 'Returns an incorrect status for job_status');
+        // $this->assertEquals($jobStatus->job_status->status, 'working', 'Returns an incorrect status for job_status');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+
+        $ticket = $this->client->ticket($ticket->ticket->id)->delete();
+        $ticket = $this->client->ticket($ticket2->ticket->id)->delete();
     }
 
 }

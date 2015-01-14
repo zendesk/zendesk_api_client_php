@@ -7,33 +7,12 @@ use Zendesk\API\Client;
 /**
  * Attachments test class
  */
-class AttachmentsTest extends \PHPUnit_Framework_TestCase {
-
-    private $client;
-    private $subdomain;
-    private $username;
-    private $password;
-    private $token;
-    private $oAuthToken;
-
-    public function __construct() {
-        $this->subdomain = $GLOBALS['SUBDOMAIN'];
-        $this->username = $GLOBALS['USERNAME'];
-        $this->password = $GLOBALS['PASSWORD'];
-        $this->token = $GLOBALS['TOKEN'];
-        $this->oAuthToken = $GLOBALS['OAUTH_TOKEN'];
-        $this->client = new Client($this->subdomain, $this->username);
-        $this->client->setAuth('token', $this->token);
-    }
+class AttachmentsTest extends BasicTest {
 
     public function testAuthToken() {
-        $tickets = $this->client->tickets()->findAll();
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+        parent::authTokenTest();
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testUploadAttachment() {
         $attachment = $this->client->attachments()->upload(array(
             'file' => getcwd().'/tests/assets/UK.png',
@@ -63,9 +42,6 @@ class AttachmentsTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testUploadAttachmentBody() {
         $body = file_get_contents(getcwd().'/tests/assets/UK.png');
         $attachment = $this->client->attachments()->uploadWithBody(array(

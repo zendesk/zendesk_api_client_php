@@ -7,40 +7,16 @@ use Zendesk\API\Client;
 /**
  * Locals test class
  */
-class LocalsTest extends \PHPUnit_Framework_TestCase {
-
-    private $client;
-    private $subdomain;
-    private $username;
-    private $password;
-    private $token;
-    private $oAuthToken;
-
-    public function __construct() {
-        $this->subdomain = $GLOBALS['SUBDOMAIN'];
-        $this->username = $GLOBALS['USERNAME'];
-        $this->password = $GLOBALS['PASSWORD'];
-        $this->token = $GLOBALS['TOKEN'];
-        $this->oAuthToken = $GLOBALS['OAUTH_TOKEN'];
-        $this->client = new Client($this->subdomain, $this->username);
-        $this->client->setAuth('token', $this->token);
-    }
+class LocalsTest extends BasicTest {
 
     public function testCredentials() {
-        $this->assertEquals($GLOBALS['SUBDOMAIN'] != '', true, 'Expecting GLOBALS[SUBDOMAIN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['TOKEN'] != '', true, 'Expecting GLOBALS[TOKEN] parameter; does phpunit.xml exist?');
-        $this->assertEquals($GLOBALS['USERNAME'] != '', true, 'Expecting GLOBALS[USERNAME] parameter; does phpunit.xml exist?');
+        parent::credentialsTest();
     }
 
     public function testAuthToken() {
-        $this->client->setAuth('token', $this->token);
-        $requests = $this->client->tickets()->findAll();
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+        parent::authTokenTest();
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testAll() {
         $locales = $this->client->locales()->findAll();
         $this->assertEquals(is_object($locales), true, 'Should return an object');
@@ -49,9 +25,6 @@ class LocalsTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testAgent() {
         $locales = $this->client->locales()->agent();
         $this->assertEquals(is_object($locales), true, 'Should return an object');
@@ -60,9 +33,6 @@ class LocalsTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testCurrent() {
         $locale = $this->client->locales()->current();
         $this->assertEquals(is_object($locale), true, 'Should return an object');
@@ -71,9 +41,6 @@ class LocalsTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testFind() {
         $locale = $this->client->locale(1)->find();
         $this->assertEquals(is_object($locale), true, 'Should return an object');
@@ -82,9 +49,6 @@ class LocalsTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    /**
-     * @depends testAuthToken
-     */
     public function testDetectBest() {
         $locale = $this->client->locales()->detectBest(array('available_locales' => array('en', 'js', 'es')));
         $this->assertEquals(is_object($locale), true, 'Should return an object');
