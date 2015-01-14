@@ -30,6 +30,13 @@ class SearchTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
+    public function testComplexSearch() {
+        $results = $this->client->search(array('query' => 'status<solved+type:ticket'));
+        $this->assertEquals(is_object($results), true, 'Should return an object');
+        $this->assertEquals(is_array($results->results), true, 'Should return an object containing an array called "results"');
+        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+    }
+
     public function testAnonymousSearch() {
         $results = $this->client->anonymousSearch(array('query' => 'hello'));
         $this->assertEquals(is_object($results), true, 'Should return an object');
