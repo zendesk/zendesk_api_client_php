@@ -56,11 +56,12 @@ class RequestsTest extends BasicTest {
                 'body' => 'Thanks!'
             )
         ));
+        $new_comment = array_pop($this->client->request($this->id)->comments()->findAll()->comments)->body;
         $this->assertEquals(is_object($request), true, 'Should return an object');
         $this->assertEquals(is_object($request->request), true, 'Should return an object called "request"');
         $this->assertGreaterThan(0, $request->request->id, 'Returns a non-numeric id for request');
         $this->assertEquals($request->request->subject, 'Help!', 'Name of test request does not match');
-        // $this->assertEquals($request->request->description, 'Thanks!', 'Description of test request does not match');
+        $this->assertEquals($new_comment, 'Thanks!', 'Comment of test request does not match');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
