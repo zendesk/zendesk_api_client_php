@@ -77,7 +77,7 @@ class Tickets extends ClientAbstract {
             $this->client->users()->setLastId(null);
         }
         $queryParams = array();
-        if($this->hasKeys($params, array('external_id'))) {
+        if(isset($params['external_id'])) {
             $queryParams['external_id'] = $params['external_id'];
         }
         $endPoint = Http::prepare(
