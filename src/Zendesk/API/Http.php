@@ -9,6 +9,20 @@ namespace Zendesk\API;
 class Http {
 
     /**
+     * The number of retry attempts when rate limiting encountered
+     * @var integer
+     */
+    private static $rateLimitRetryAttempts = 10;
+
+    /**
+     * Sets the number of attempts when rate limiting encountered
+     * @param int $n The number of attempts
+     */
+    public static function setRateLimitRetryAttempts($n) {
+        self::$rateLimitRetryAttempts = (int) $n;
+    }
+
+    /**
      * Prepares an endpoint URL with optional side-loading
      *
      * @param string $endPoint
@@ -119,7 +133,9 @@ class Http {
         curl_setopt($curl, CURLOPT_VERBOSE, true);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
-        $response = curl_exec($curl);
+        
+        $response = self::makeRateLimitProtectedCall($curl);
+
         if ($response === false) {
             throw new \Exception(sprintf('Curl error message: "%s" in %s', curl_error($curl),  __METHOD__));
         }
@@ -173,7 +189,9 @@ class Http {
         curl_setopt($curl, CURLOPT_VERBOSE, true);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
-        $response = curl_exec($curl);
+
+        $response = self::makeRateLimitProtectedCall($curl);
+
         if ($response === false) {
             throw new \Exception(sprintf('Curl error message: "%s" in %s', curl_error($curl),  __METHOD__));
         }
@@ -188,6 +206,50 @@ class Http {
 
         return json_decode($responseBody);
 
+    }
+
+    /**
+     * Calls cURL until a response is not rate-limited, or has attempted to do so as many times as
+     * specified by self::$rateLimitRetryAttempts.
+     *
+     * @throws \Exception If more than the specified number of attempts to send the request fail
+     * @throws \Exception If cURL experiences an error
+     * 
+     * @param  resource $curl The cURL handle to execute
+     * @return string         The response from the server
+     */
+    private static function makeRateLimitProtectedCall($curl) {
+        $sanity = self::$rateLimitRetryAttempts;
+
+        do {
+            $response = curl_exec($curl);
+
+            if ($errNo = curl_errno($curl)) {
+                $errMsg = curl_errno($curl);
+                throw new \Exception(sprintf('cURL error %d: %s', $errNo, $errMsg));
+            }
+
+            $code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+            if ($code == 429) {
+                if (!preg_match('/Retry-After: (\d+)/', $response, $match)) {
+                    $delay = 5;
+                } else {
+                    $delay = (int) $match[1];
+                }
+
+                if ($sanity) {
+                    sleep($delay);
+                }
+            }
+        } while (($code == 429) && $sanity--);
+
+        if ($code == 429) {
+            $msg = sprintf('Rate-limiting still in effect after %d attempts', self::$rateLimitRetryAttempts);
+            throw new \Exception($msg);
+        }
+
+        return $response;
     }
 
 }
