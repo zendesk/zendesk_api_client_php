@@ -4,7 +4,7 @@
 
 ## API version support
 
-This client **only** supports Zendesk's API v2.  Please see our [API documentation](http://developer.zendesk.com/api-docs) for more information.
+This client **only** supports Zendesk's API v2.  Please see our [API documentation](http://developer.zendesk.com) for more information.
 
 ## Installation
 
@@ -77,6 +77,10 @@ $attachment = $client->attachments()->upload(array(
 ));
 ```
 
+### Test suite
+
+The test suite is run via phpunit. Note that these are all live tests that must be run targeted at a real Zendesk instance. Credentials can be provided by setting the environment variables in phpunit.xml; a sample is provided at phpunit.xml.dist.
+
 ### Side-loading
 
 ```php
@@ -86,11 +90,10 @@ $tickets = $this->client->tickets()->sideload(array('users', 'groups'))->findAll
 ## Note on Patches/Pull Requests
 1. Fork the project.
 2. Make your feature addition or bug fix.
-3. Add tests for it. This is important so I don't break it in a future version
-   unintentionally.
+3. Add tests for it. This is important so that we don't break your improvement in a future version unintentionally.
 4. Commit and do not mess with version or history. (If you want to have
    your own version, that is fine but bump version in a commit by itself I can
-   ignore when I pull)
+   ignore when we pull)
 5. Send a pull request. Bonus points for topic branches.
 
 ## Copyright and license
