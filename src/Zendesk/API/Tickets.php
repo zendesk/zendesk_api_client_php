@@ -76,12 +76,16 @@ class Tickets extends ClientAbstract {
             $params['user_id'] = $this->client->users()->getLastId();
             $this->client->users()->setLastId(null);
         }
+        $queryParams = array();
+        if(isset($params['external_id'])) {
+            $queryParams['external_id'] = $params['external_id'];
+        }
         $endPoint = Http::prepare(
                 (isset($params['organization_id']) ? 'organizations/'.$params['organization_id'].'/tickets' :
                 (isset($params['user_id']) ? 'users/'.$params['user_id'].'/tickets/'.(isset($params['ccd']) ? 'ccd' : 'requested') :
                 (isset($params['recent']) ? 'tickets/recent' : 'tickets'))
             ).'.json', $this->client->getSideload($params), $params);
-        $response = Http::send($this->client, $endPoint);
+        $response = Http::send($this->client, $endPoint, $queryParams);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
