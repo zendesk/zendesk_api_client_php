@@ -44,7 +44,7 @@ class Http {
      *
      * @param Client $client
      * @param string $endPoint
-     * @param mixed  $json
+     * @param array  $json
      * @param string $method
      * @param string $contentType
      *
@@ -52,64 +52,45 @@ class Http {
      *
      * @return mixed
      */
-    public static function send(Client $client, $endPoint, $json = null, $method = 'GET', $contentType = 'application/json') {
-
+    public static function send(Client $client, $endPoint, $json = array(), $method = 'GET', $contentType = 'application/json') {
         $url    = $client->getApiUrl() . $endPoint;
         $method = strtoupper($method);
-        if (null == $json) {
-            $json = new \stdClass();
-        } else if ($contentType == 'application/json' && $method != 'GET' && $method != 'DELETE') {
+
+        $curl = curl_init($url);
+
+        if ($method === 'POST') {
+            curl_setopt($curl, CURLOPT_POST, true);
+
+        } else if ($method === 'PUT') {
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+
+        } else {
+            $st = http_build_query((array) $json);
+            curl_setopt($curl, CURLOPT_URL, $url . ($st !== array() ? (strpos($url, '?') === false ? '?' : '&') . $st : ''));
+            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+        }
+
+        $httpHeader = array('Accept: application/json');
+        if ($client->getAuthType() == 'oauth_token') {
+            $httpHeader[] = 'Authorization: Bearer ' . $client->getAuthText();
+
+        } else {
+            curl_setopt($curl, CURLOPT_USERPWD, $client->getAuthText());
+        }
+
+        /* DO NOT SET CONTENT TYPE IF UPLOADING */
+        if (!isset($json['uploaded_data'])) {
+            $httpHeader[] = 'Content-Type: '.$contentType;
+        } else {
+            $contentType = '';
+        }
+
+        if ($contentType === 'application/json') {
             $json = json_encode($json);
         }
 
-        if ($method == 'POST') {
-            $curl = curl_init($url);
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
-            if (is_array($json)) {
-                if (isset($json['body'])) {
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $json['body']);
-                    curl_setopt($curl, CURLOPT_INFILESIZE, strlen($json['body']));
-                } else if (isset($json['uploaded_data'])) {
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $json['uploaded_data']);
-                } else if (isset($json['filename'])) {
-                    $filename = $json['filename'];
-                    $file     = fopen($filename, 'r');
-                    $size     = filesize($filename);
-                    $fileData = fread($file, $size);
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $fileData);
-                    curl_setopt($curl, CURLOPT_INFILE, $file);
-                    curl_setopt($curl, CURLOPT_INFILESIZE, $size);
-                }
-            }
-        } else if ($method == 'PUT') {
-            $curl = curl_init($url);
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
-
-        } else {
-            if (is_array($json)) {
-                $json = http_build_query($json);
-            }
-            $curl = curl_init(
-                $url . ($json != (object)null ? (strpos($url, '?') === false ? '?' : '&') . $json : '')
-            );
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, ($method ? $method : 'GET'));
-        }
-        if ($client->getAuthType() == 'oauth_token') {
-            curl_setopt(
-                $curl,
-                CURLOPT_HTTPHEADER,
-                array(
-                    'Content-Type: ' . $contentType,
-                    'Accept: application/json',
-                    'Authorization: Bearer ' . $client->getAuthText()
-                )
-            );
-        } else {
-            curl_setopt($curl, CURLOPT_USERPWD, $client->getAuthText());
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: ' . $contentType, 'Accept: application/json'));
-        }
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $httpHeader);
         curl_setopt($curl, CURLINFO_HEADER_OUT, true);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 30);
@@ -119,6 +100,7 @@ class Http {
         curl_setopt($curl, CURLOPT_VERBOSE, true);
         curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
         curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
+
         $response = curl_exec($curl);
         if ($response === false) {
             throw new \Exception(sprintf('Curl error message: "%s" in %s', curl_error($curl),  __METHOD__));
