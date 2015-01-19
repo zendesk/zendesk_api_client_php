@@ -98,7 +98,7 @@ class Sessions extends ClientAbstract
 
         $endPoint = Http::prepare($uri, null, $params);
         $response = Http::send($this->client, $endPoint, null, 'DELETE');
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
+        if ($this->client->getDebug()->lastResponseCode != 200) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
@@ -126,7 +126,7 @@ class Sessions extends ClientAbstract
 
         $endPoint = Http::prepare($uri, null, $params);
         $response = Http::send($this->client, $endPoint, null, 'DELETE');
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
+        if ($this->client->getDebug()->lastResponseCode != 200) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
