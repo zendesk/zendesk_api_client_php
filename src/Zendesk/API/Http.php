@@ -7,7 +7,6 @@ namespace Zendesk\API;
  * @package Zendesk\API
  */
 class Http {
-
     /**
      * Prepares an endpoint URL with optional side-loading
      *
@@ -56,18 +55,18 @@ class Http {
         $url    = $client->getApiUrl() . $endPoint;
         $method = strtoupper($method);
 
-        $curl = curl_init($url);
+        $curl = new CurlRequest($url);
 
         if ($method === 'POST') {
-            curl_setopt($curl, CURLOPT_POST, true);
+            $curl->setopt(CURLOPT_POST, true);
 
         } else if ($method === 'PUT') {
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+            $curl->setopt(CURLOPT_CUSTOMREQUEST, 'PUT');
 
         } else {
             $st = http_build_query((array) $json);
-            curl_setopt($curl, CURLOPT_URL, $url . ($st !== array() ? (strpos($url, '?') === false ? '?' : '&') . $st : ''));
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, $method);
+            $curl->setopt(CURLOPT_URL, $url . ($st !== array() ? (strpos($url, '?') === false ? '?' : '&') . $st : ''));
+            $curl->setopt(CURLOPT_CUSTOMREQUEST, $method);
         }
 
         $httpHeader = array('Accept: application/json');
@@ -75,7 +74,7 @@ class Http {
             $httpHeader[] = 'Authorization: Bearer ' . $client->getAuthText();
 
         } else {
-            curl_setopt($curl, CURLOPT_USERPWD, $client->getAuthText());
+            $curl->setopt(CURLOPT_USERPWD, $client->getAuthText());
         }
 
         /* DO NOT SET CONTENT TYPE IF UPLOADING */
@@ -89,33 +88,32 @@ class Http {
             $json = json_encode($json);
         }
 
-        curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
-        curl_setopt($curl, CURLOPT_HTTPHEADER, $httpHeader);
-        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 30);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_HEADER, true);
-        curl_setopt($curl, CURLOPT_VERBOSE, true);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
+        $curl->setopt(CURLOPT_POSTFIELDS, $json);
+        $curl->setopt(CURLOPT_HTTPHEADER, $httpHeader);
+        $curl->setopt(CURLINFO_HEADER_OUT, true);
+        $curl->setopt(CURLOPT_RETURNTRANSFER, true);
+        $curl->setopt(CURLOPT_CONNECTTIMEOUT, 30);
+        $curl->setopt(CURLOPT_TIMEOUT, 30);
+        $curl->setopt(CURLOPT_SSL_VERIFYPEER, false);
+        $curl->setopt(CURLOPT_HEADER, true);
+        $curl->setopt(CURLOPT_VERBOSE, true);
+        $curl->setopt(CURLOPT_FOLLOWLOCATION, true);
+        $curl->setopt(CURLOPT_MAXREDIRS, 3);
 
-        $response = curl_exec($curl);
+        $response = $curl->exec();
         if ($response === false) {
-            throw new \Exception(sprintf('Curl error message: "%s" in %s', curl_error($curl),  __METHOD__));
+            throw new \Exception(sprintf('Curl error message: "%s" in %s', $curl->error(),  __METHOD__));
         }
-        $headerSize   = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+        $headerSize   = $curl->getinfo(CURLINFO_HEADER_SIZE);
         $responseBody = substr($response, $headerSize);
         $client->setDebug(
-            curl_getinfo($curl, CURLINFO_HEADER_OUT),
-            curl_getinfo($curl, CURLINFO_HTTP_CODE),
+            $curl->getinfo(CURLINFO_HEADER_OUT),
+            $curl->getinfo(CURLINFO_HTTP_CODE),
             substr($response, 0, $headerSize)
         );
-        curl_close($curl);
+        $curl->close();
 
         return json_decode($responseBody);
-
     }
 
     /**
@@ -131,13 +129,12 @@ class Http {
      * @return mixed
      */
     public static function oauth(Client $client, $code, $oAuthId, $oAuthSecret) {
-
         $url = 'https://'.$client->getSubdomain().'.zendesk.com/oauth/tokens';
         $method = 'POST';
 
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode(array(
+        $curl = new CurlRequest($url);
+        $curl->setopt(CURLOPT_POST, true);
+        $curl->setopt(CURLOPT_POSTFIELDS, json_encode(array(
             'grant_type' => 'authorization_code',
             'code' => $code,
             'client_id' => $oAuthId,
@@ -145,31 +142,29 @@ class Http {
             'redirect_uri' => ($_SERVER['HTTPS'] ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'],
             'scope' => 'read'
         )));
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 30);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_HEADER, true);
-        curl_setopt($curl, CURLOPT_VERBOSE, true);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
-        $response = curl_exec($curl);
+        $curl->setopt(CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        $curl->setopt(CURLINFO_HEADER_OUT, true);
+        $curl->setopt(CURLOPT_RETURNTRANSFER, true);
+        $curl->setopt(CURLOPT_CONNECTTIMEOUT, 30);
+        $curl->setopt(CURLOPT_TIMEOUT, 30);
+        $curl->setopt(CURLOPT_SSL_VERIFYPEER, false);
+        $curl->setopt(CURLOPT_HEADER, true);
+        $curl->setopt(CURLOPT_VERBOSE, true);
+        $curl->setopt(CURLOPT_FOLLOWLOCATION, true);
+        $curl->setopt(CURLOPT_MAXREDIRS, 3);
+        $response = $curl->exec();
         if ($response === false) {
-            throw new \Exception(sprintf('Curl error message: "%s" in %s', curl_error($curl),  __METHOD__));
+            throw new \Exception(sprintf('Curl error message: "%s" in %s', $curl->error(),  __METHOD__));
         }
-        $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+        $headerSize = $curl->getinfo(CURLINFO_HEADER_SIZE);
         $responseBody = substr($response, $headerSize);
         $client->setDebug(
-            curl_getinfo($curl, CURLINFO_HEADER_OUT),
-            curl_getinfo($curl, CURLINFO_HTTP_CODE),
+            $curl->getinfo(CURLINFO_HEADER_OUT),
+            $curl->getinfo(CURLINFO_HTTP_CODE),
             substr($response, 0, $headerSize)
         );
-        curl_close($curl);
+        $curl->close();
 
         return json_decode($responseBody);
-
     }
-
 }
