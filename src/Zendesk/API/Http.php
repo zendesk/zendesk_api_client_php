@@ -55,7 +55,8 @@ class Http {
         $url    = $client->getApiUrl() . $endPoint;
         $method = strtoupper($method);
 
-        $curl = new CurlRequest($url);
+        $curl = new CurlRequest();
+        $curl->setopt(CURLOPT_URL, $url);
 
         if ($method === 'POST') {
             $curl->setopt(CURLOPT_POST, true);

@@ -34,8 +34,7 @@ class CurlRequest {
     }
 
     public function exec() {
-        echo "\n";
-        var_dump($this->getopt_array());
+        return json_encode($this->getopt_array());
     }
 
     public function file_create($filename, $mimetype = NULL, $postname = NULL) {
@@ -60,7 +59,8 @@ class CurlRequest {
     }
 
     public function setopt($option, $value) {
-        $this->options[ (isset($this->constants[$option]) ? $this->constants[$option] : $option) ] = $value;
+        //$this->options[ (isset($this->constants[$option]) ? $this->constants[$option] : $option) ] = $value;
+        $this->options[ $option ] = $value;
         return curl_setopt($this->handle, $option, $value);
     }
 
@@ -80,4 +80,3 @@ class CurlRequest {
         return curl_version($age);
     }
 }
-var_dump("LOADING");
