@@ -11,7 +11,6 @@ class Requests extends ClientAbstract {
     const OBJ_NAME = 'request';
     const OBJ_NAME_PLURAL = 'requests';
 
-
     /**
      * @var RequestComments
      */

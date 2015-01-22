@@ -24,4 +24,3 @@ if ($_REQUEST['code']) {
 } else {
 	echo "<a href=\"https://".$subdomain.".zendesk.com/oauth/authorizations/new?response_type=code&redirect_uri=".($_SERVER['HTTPS'] ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF']."&client_id=".$oAuthId."&scope=read%20write\">Click to request an OAuth token</a>";
 }
-?>
