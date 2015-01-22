@@ -7,7 +7,7 @@ namespace Zendesk\API;
  * @package Zendesk\API
  */
 class CustomException extends \Exception {
-  
+
     /**
      * @param string     $message
      * @param int        $code

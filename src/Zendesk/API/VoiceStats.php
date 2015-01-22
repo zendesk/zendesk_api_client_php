@@ -24,8 +24,8 @@ class VoiceStats extends ClientAbstract {
             throw new MissingParametersException(__METHOD__, array('current_queue_activity', 'historical_queue_activity', 'agents_activity'));
         }
         $endPoint = Http::prepare(
-                (isset($params['current_queue_activity']) ? 'channels/voice/stats/current_queue_activity.json' : 
-                (isset($params['historical_queue_activity']) ? 'channels/voice/stats/historical_queue_activity.json' : 
+                (isset($params['current_queue_activity']) ? 'channels/voice/stats/current_queue_activity.json' :
+                (isset($params['historical_queue_activity']) ? 'channels/voice/stats/historical_queue_activity.json' :
                 (isset($params['agents_activity']) ? 'channels/voice/stats/agents_activity.json' : ''))), null, $params
             );
         $response = Http::send($this->client, $endPoint);

@@ -15,7 +15,7 @@ class Forums extends ClientAbstract {
      * @var ForumSubscriptions
      */
     protected $subscriptions;
-    
+
     /**
      * @param Client $client
      */
@@ -168,6 +168,4 @@ class Forums extends ClientAbstract {
      * @return ForumSubscriptions
      */
     public function subscription($id) { return $this->subscriptions->setLastId($id); }
-
-
 }

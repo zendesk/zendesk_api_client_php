@@ -7,7 +7,7 @@ namespace Zendesk\API;
  * @package Zendesk\API
  */
 class ResponseException extends \Exception {
-  
+
     /**
      * @param string     $method
      * @param string     $detail

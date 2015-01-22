@@ -27,7 +27,7 @@ class Topics extends ClientAbstract {
      * @var TopicVotes
      */
     protected $votes;
-    
+
     /**
      * @param Client $client
      */
