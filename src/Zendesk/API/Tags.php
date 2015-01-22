@@ -59,8 +59,8 @@ class Tags extends ClientAbstract {
             throw new MissingParametersException(__METHOD__, array('ticket_id', 'topic_id', 'organization_id'));
         }
         $endPoint = Http::prepare(
-                (isset($params['ticket_id']) ? 'tickets/'.$params['ticket_id'].'/tags.json' : 
-                (isset($params['topic_id']) ? 'topics/'.$params['topic_id'].'/tags.json' : 
+                (isset($params['ticket_id']) ? 'tickets/'.$params['ticket_id'].'/tags.json' :
+                (isset($params['topic_id']) ? 'topics/'.$params['topic_id'].'/tags.json' :
                 (isset($params['organization_id']) ? 'organizations/'.$params['organization_id'].'/tags.json' : '')))
             );
         $response = Http::send($this->client, $endPoint);
@@ -102,8 +102,8 @@ class Tags extends ClientAbstract {
             throw new MissingParametersException(__METHOD__, array('tags'));
         }
         $endPoint = Http::prepare(
-                (isset($params['ticket_id']) ? 'tickets/'.$params['ticket_id'].'/tags.json' : 
-                (isset($params['topic_id']) ? 'topics/'.$params['topic_id'].'/tags.json' : 
+                (isset($params['ticket_id']) ? 'tickets/'.$params['ticket_id'].'/tags.json' :
+                (isset($params['topic_id']) ? 'topics/'.$params['topic_id'].'/tags.json' :
                 (isset($params['organization_id']) ? 'organizations/'.$params['organization_id'].'/tags.json' : '')))
             );
         $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params['tags']), 'POST');
@@ -145,8 +145,8 @@ class Tags extends ClientAbstract {
             throw new MissingParametersException(__METHOD__, array('tags'));
         }
         $endPoint = Http::prepare(
-                (isset($params['ticket_id']) ? 'tickets/'.$params['ticket_id'].'/tags.json' : 
-                (isset($params['topic_id']) ? 'topics/'.$params['topic_id'].'/tags.json' : 
+                (isset($params['ticket_id']) ? 'tickets/'.$params['ticket_id'].'/tags.json' :
+                (isset($params['topic_id']) ? 'topics/'.$params['topic_id'].'/tags.json' :
                 (isset($params['organization_id']) ? 'organizations/'.$params['organization_id'].'/tags.json' : '')))
             );
         $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params['tags']), 'PUT');
@@ -188,8 +188,8 @@ class Tags extends ClientAbstract {
             throw new MissingParametersException(__METHOD__, array('ticket_id', 'topic_id', 'organization_id'));
         }
         $endPoint = Http::prepare(
-                (isset($params['ticket_id']) ? 'tickets/'.$params['ticket_id'].'/tags.json' : 
-                (isset($params['topic_id']) ? 'topics/'.$params['topic_id'].'/tags.json' : 
+                (isset($params['ticket_id']) ? 'tickets/'.$params['ticket_id'].'/tags.json' :
+                (isset($params['topic_id']) ? 'topics/'.$params['topic_id'].'/tags.json' :
                 (isset($params['organization_id']) ? 'organizations/'.$params['organization_id'].'/tags.json' : '')))
             );
         $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params['tags']), 'DELETE');

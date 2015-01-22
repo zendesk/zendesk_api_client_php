@@ -15,7 +15,7 @@ class Forums extends ClientAbstract {
      * @var ForumSubscriptions
      */
     protected $subscriptions;
-    
+
     /**
      * @param Client $client
      */

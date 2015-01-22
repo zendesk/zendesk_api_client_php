@@ -23,7 +23,7 @@ class Views extends ClientAbstract {
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare(
-                (isset($params['active']) ? 'views/active.json' : 
+                (isset($params['active']) ? 'views/active.json' :
                 (isset($params['compact']) ? 'views/compact.json' : 'views.json')), $this->client->getSideload($params), $params
             );
         $response = Http::send($this->client, $endPoint);

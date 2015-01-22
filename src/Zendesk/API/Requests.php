@@ -16,7 +16,7 @@ class Requests extends ClientAbstract {
      * @var RequestComments
      */
     protected $comments;
-    
+
     /**
      * @param Client $client
      */

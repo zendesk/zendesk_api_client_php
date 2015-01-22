@@ -23,7 +23,7 @@ class Locales extends ClientAbstract {
      */
     public function findAll(array $params = array()) {
         $endPoint = Http::prepare(
-                (isset($params['current']) ? 'locales/current.json' : 
+                (isset($params['current']) ? 'locales/current.json' :
                 (isset($params['agent']) ? 'locales/agent.json' : 'locales.json')), null, $params);
         $response = Http::send($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
