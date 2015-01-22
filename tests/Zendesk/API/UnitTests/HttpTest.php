@@ -1,6 +1,6 @@
 <?php
-namespace Zendesk\API\Tests;
-require __DIR__ . '/../CurlRequest.php';
+
+namespace Zendesk\API\UnitTests;
 use Zendesk\API\Client;
 use Zendesk\API\Http;
 
@@ -10,7 +10,8 @@ use Zendesk\API\Http;
  * Http test class
  */
 class HttpTest extends BasicTest {
-    public function testPrepare() {
+    public function setUp() {
+        Http::$curl = new MockCurlRequest();
     }
 
     public function testGetRequest() {

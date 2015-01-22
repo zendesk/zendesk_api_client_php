@@ -14,8 +14,11 @@
     </php>
 -->
     <testsuites>
-        <testsuite name="Zendesk API Test Suites">
-            <directory>./tests/</directory>
+        <testsuite name="Zendesk API Unit Test Suites">
+            <directory>./tests/Zendesk/API/UnitTests</directory>
+        </testsuite>
+        <testsuite name="Zendesk API Live Test Suites">
+            <directory>./tests/Zendesk/API/LiveTests</directory>
         </testsuite>
     </testsuites>
 </phpunit>
