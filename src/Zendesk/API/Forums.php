@@ -168,6 +168,4 @@ class Forums extends ClientAbstract {
      * @return ForumSubscriptions
      */
     public function subscription($id) { return $this->subscriptions->setLastId($id); }
-
-
 }

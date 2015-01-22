@@ -17,10 +17,10 @@ print_r ($tickets);
 
 // Create a new ticket
 $newTicket = $client->tickets()->create(array (
-	'subject' => 'The quick brown fox jumps over the lazy dog', 
+	'subject' => 'The quick brown fox jumps over the lazy dog',
 	'comment' => array (
 		'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-	), 
+	),
 	'priority' => 'normal'
 ));
 print_r ($newTicket);
@@ -32,4 +32,3 @@ $client->ticket(array (123, 456))->update(array (
 
 // Delete a ticket
 $client->ticket(123)->delete();
-?>
