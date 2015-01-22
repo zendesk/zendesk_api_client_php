@@ -27,5 +27,3 @@ class AutocompleteTest extends BasicTest {
     }
 
 }
-
-?>

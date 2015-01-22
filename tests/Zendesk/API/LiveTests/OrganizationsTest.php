@@ -86,5 +86,3 @@ class OrganizationsTest extends BasicTest {
     }
 
 }
-
-?>

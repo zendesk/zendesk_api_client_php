@@ -36,5 +36,3 @@ class SettingsTest extends BasicTest {
     }
 
 }
-
-?>

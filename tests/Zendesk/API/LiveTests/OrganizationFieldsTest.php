@@ -74,5 +74,3 @@ class OrganizationFieldsTest extends BasicTest {
     }
 
 }
-
-?>

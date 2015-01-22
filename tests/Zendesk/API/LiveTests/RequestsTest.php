@@ -87,5 +87,3 @@ class RequestsTest extends BasicTest {
     }
 
 }
-
-?>

@@ -76,5 +76,3 @@ class VoiceIntegrationTest extends BasicTest {
     }
 
 }
-
-?>

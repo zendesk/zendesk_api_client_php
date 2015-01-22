@@ -61,5 +61,3 @@ class AttachmentsTest extends BasicTest {
     }
 
 }
-
-?>

@@ -83,5 +83,3 @@ class TicketAuditsTest extends BasicTest {
     }
 
 }
-
-?>

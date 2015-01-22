@@ -53,5 +53,3 @@ class TicketCommentsTest extends BasicTest {
     }
 
 }
-
-?>

@@ -46,5 +46,3 @@ class JobStatusesTest extends BasicTest {
     }
 
 }
-
-?>

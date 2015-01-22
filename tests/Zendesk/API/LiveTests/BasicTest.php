@@ -36,5 +36,3 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($this->username != '', true, 'Expecting $this->username parameter; does phpunit.xml exist?');
     }
 }
-
-?>

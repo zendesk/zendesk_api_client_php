@@ -67,5 +67,3 @@ class TargetsTest extends BasicTest {
     }
 
 }
-
-?>

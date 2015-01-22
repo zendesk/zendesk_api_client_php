@@ -99,5 +99,3 @@ class GroupMembershipsTest extends BasicTest {
     }
 
 }
-
-?>

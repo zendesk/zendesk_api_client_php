@@ -191,5 +191,3 @@ class VoiceTest extends BasicTest {
     }
 
 }
-
-?>

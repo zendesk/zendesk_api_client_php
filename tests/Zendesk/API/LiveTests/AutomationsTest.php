@@ -89,5 +89,3 @@ class AutomationsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 }
-
-?>

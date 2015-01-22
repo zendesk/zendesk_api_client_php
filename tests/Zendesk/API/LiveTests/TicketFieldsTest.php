@@ -67,5 +67,3 @@ class TicketFieldsTest extends BasicTest {
     }
 
 }
-
-?>

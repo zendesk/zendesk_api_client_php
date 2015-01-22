@@ -65,5 +65,3 @@ class ForumsTest extends BasicTest {
     }
 
 }
-
-?>

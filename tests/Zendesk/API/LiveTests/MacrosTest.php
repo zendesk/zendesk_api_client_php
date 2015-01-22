@@ -78,5 +78,3 @@ class MacrosTest extends BasicTest {
     }
 
 }
-
-?>

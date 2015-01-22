@@ -31,5 +31,3 @@ class TwitterTest extends BasicTest {
     }
 
 }
-
-?>

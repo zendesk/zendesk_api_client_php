@@ -84,5 +84,3 @@ class CategoriesTest extends BasicTest {
     }
 
 }
-
-?>

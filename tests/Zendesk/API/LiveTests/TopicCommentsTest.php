@@ -88,5 +88,3 @@ class TopicCommentsTest extends BasicTest {
     }
 
 }
-
-?>

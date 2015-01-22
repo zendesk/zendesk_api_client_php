@@ -53,5 +53,3 @@ class AuditLogsTest extends BasicTest {
     }
 
 }
-
-?>
