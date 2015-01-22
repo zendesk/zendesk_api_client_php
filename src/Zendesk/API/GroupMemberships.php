@@ -31,8 +31,8 @@ class GroupMemberships extends ClientAbstract {
             $this->client->groups()->setLastId(null);
         }
         $endPoint = Http::prepare(
-                (isset($params['assignable']) ? (isset($params['group_id']) ? 'groups/'.$params['group_id'].'/memberships/assignable.json' : 'group_memberships/assignable.json') : 
-                (isset($params['user_id']) ? 'users/'.$params['user_id'].'/group_memberships.json' : 
+                (isset($params['assignable']) ? (isset($params['group_id']) ? 'groups/'.$params['group_id'].'/memberships/assignable.json' : 'group_memberships/assignable.json') :
+                (isset($params['user_id']) ? 'users/'.$params['user_id'].'/group_memberships.json' :
                 (isset($params['group_id']) ? 'groups/'.$params['group_id'].'/memberships.json' : 'group_memberships.json'))), $this->client->getSideload($params), $params
             );
         $response = Http::send($this->client, $endPoint);
@@ -168,7 +168,7 @@ class GroupMemberships extends ClientAbstract {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
-        return $response;    
+        return $response;
     }
 
 }

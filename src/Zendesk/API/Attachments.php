@@ -40,8 +40,8 @@ class Attachments extends ClientAbstract {
         }
         if(!$params['name'] && strrpos($params['file'], '/') == FALSE) {
 	        $params['name'] = $params['file'];
-        } 
-        
+        }
+
         $endPoint = Http::prepare('uploads.json?filename='.urlencode($params['name']).(isset($params['optional_token']) ? '&token='.$params['optional_token'] : ''));
         $response = Http::send($this->client, $endPoint, array('filename' => $params['file']), 'POST', (isset($params['type']) ? $params['type'] : 'application/binary'));
        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {

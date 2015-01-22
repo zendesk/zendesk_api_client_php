@@ -17,7 +17,7 @@ abstract class ClientAbstract
      * @var int
      */
     protected $lastId;
-    
+
     /**
      * @param Client $client
      */
