@@ -16,9 +16,9 @@ class TopicCommentsTest extends BasicTest {
     public function testAuthToken() {
         parent::authTokenTest();
     }
-    
+
     protected $id, $topic_id, $forum_id;
-    
+
     public function setUP() {
         /*
          * First start by creating a forum and a topic (we'll delete them later)

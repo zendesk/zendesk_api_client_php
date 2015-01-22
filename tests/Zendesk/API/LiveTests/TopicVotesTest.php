@@ -8,7 +8,7 @@ use Zendesk\API\Client;
  * TopicVotes test class
  */
 class TopicVotesTest extends BasicTest {
-    
+
     public function testCredentials() {
         parent::credentialsTest();
     }
@@ -18,7 +18,7 @@ class TopicVotesTest extends BasicTest {
     }
 
     protected $id, $forum_id, $topic_id;
-    
+
     public function setUp() {
         /*
          * First start by creating forum and a topic (we'll delete it later)

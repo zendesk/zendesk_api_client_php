@@ -16,9 +16,9 @@ class GroupMembershipsTest extends BasicTest {
     public function testAuthToken() {
         parent::authTokenTest();
     }
-    
+
     protected $id, $group_id, $user_id, $number;
-    
+
     public function setUp() {
         $this->number = strval(rand(1,1000));
         /*
@@ -36,7 +36,7 @@ class GroupMembershipsTest extends BasicTest {
             'verified' => true
         ));
         $this->user_id = $user->user->id;
-        
+
         $groupMembership = $this->client->groupMemberships()->create(array(
             'group_id' => $this->group_id,
             'user_id' => $this->user_id

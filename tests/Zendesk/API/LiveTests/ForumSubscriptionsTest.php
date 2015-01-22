@@ -22,7 +22,7 @@ class ForumSubscriptionsTest extends BasicTest {
     public function testCreateUser(){
 
     }
-    
+
     public function setUp(){
         $forum = $this->client->forums()->create(array(
             'name' => 'My Forum',
@@ -44,11 +44,11 @@ class ForumSubscriptionsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '201', 'Does not return HTTP code 201');
         $this->id = $forumSubscription->forum_subscription->id;
     }
-    
+
     public function tearDown(){
         $this->assertGreaterThan(0, $this->id, 'Cannot find a forum subscription id to test with. Did setUp fail?');
         $view = $this->client->forums()->subscription($this->id)->delete();
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200'); 
+        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
 
         $this->client->forum($this->forum_id)->delete();
     }

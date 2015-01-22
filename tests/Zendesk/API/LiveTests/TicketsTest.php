@@ -35,13 +35,13 @@ class TicketsTest extends BasicTest {
     }
 
     protected $testTicket;
-    
+
     public function setUP() {
         $this->testTicket = array(
-            'subject' => 'The quick brown fox jumps over the lazy dog', 
+            'subject' => 'The quick brown fox jumps over the lazy dog',
             'comment' => array (
                 'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-            ), 
+            ),
             'priority' => 'normal'
         );
         $ticket = $this->client->tickets()->create($this->testTicket);
@@ -88,10 +88,10 @@ class TicketsTest extends BasicTest {
 
     public function testFindMultiple() {
         $testTicket = array(
-            'subject' => 'The second ticket', 
+            'subject' => 'The second ticket',
             'comment' => array (
                 'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-            ), 
+            ),
             'priority' => 'normal'
         );
         $ticket2 = $this->client->tickets()->create($testTicket);
@@ -121,10 +121,10 @@ class TicketsTest extends BasicTest {
     public function testDeleteMultiple() {
         // Assume setUp works so we can go ahead and create two new tickets
         $testTicket = array(
-            'subject' => 'The quick brown fox jumps over the lazy dog', 
+            'subject' => 'The quick brown fox jumps over the lazy dog',
             'comment' => array (
                 'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-            ), 
+            ),
             'priority' => 'normal'
         );
         $ticket1 = $this->client->tickets()->create($this->testTicket);
@@ -142,10 +142,10 @@ class TicketsTest extends BasicTest {
 
     public function testCreateWithAttachment() {
         $testTicket = array(
-            'subject' => 'The quick brown fox jumps over the lazy dog', 
+            'subject' => 'The quick brown fox jumps over the lazy dog',
             'comment' => array (
                 'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-            ), 
+            ),
             'priority' => 'normal'
         );
         $ticket = $this->client->tickets()->attach(array(

@@ -18,7 +18,7 @@ class OrganizationFieldsTest extends BasicTest {
     }
 
     protected $id;
-    
+
     public function setUp() {
         $organizationFields = $this->client->organizationFields()->create(array(
             'type' => 'text',

@@ -8,7 +8,7 @@ use Zendesk\API\Client;
  * Settings test class
  */
 class SettingsTest extends BasicTest {
-    
+
     public function testCredentials() {
         parent::credentialsTest();
     }

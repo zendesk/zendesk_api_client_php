@@ -18,7 +18,7 @@ class ActivityStreamTest extends BasicTest {
     }
 
     protected $ticket_id;
-    
+
     public function setUP() {
 
         $username = getenv('END_USER_USERNAME');
@@ -27,10 +27,10 @@ class ActivityStreamTest extends BasicTest {
         $client_end_user->setAuth('password', $password);
 
         $testTicket = array(
-            'subject' => 'Activity Stream Test', 
+            'subject' => 'Activity Stream Test',
             'comment' => array (
                 'body' => 'ce est biche Actions test.'
-            ), 
+            ),
             'priority' => 'normal'
         );
         $request = $client_end_user->requests()->create($testTicket);

@@ -18,7 +18,7 @@ class TicketFormsTest extends BasicTest {
     }
 
     protected $id;
-    
+
     public function setUP() {
         $form = $this->client->ticketForms()->create(array(
             'name' => 'Snowboard Problem',
@@ -92,7 +92,7 @@ class TicketFormsTest extends BasicTest {
     }
 
     public function testClone() {
-        $form = $this->client->ticketForm($this->id)->cloneForm(); 
+        $form = $this->client->ticketForm($this->id)->cloneForm();
         $this->assertEquals(is_object($form), true, 'Should return an object');
         $this->assertEquals(is_object($form->ticket_form), true, 'Should return an object called "ticket_form"');
         $this->assertGreaterThan(0, $form->ticket_form->id, 'Returns a non-numeric id for ticket_form');

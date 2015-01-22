@@ -24,10 +24,10 @@ class TagsTest extends BasicTest {
          * First start by creating a topic (we'll delete it later)
          */
         $testTicket = array(
-            'subject' => 'This is for tag test', 
+            'subject' => 'This is for tag test',
             'comment' => array (
                 'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-            ), 
+            ),
             'priority' => 'normal'
         );
         $ticket = $this->client->tickets()->create($testTicket);

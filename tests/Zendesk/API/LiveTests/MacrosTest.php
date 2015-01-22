@@ -18,7 +18,7 @@ class MacrosTest extends BasicTest {
     }
 
     protected $id;
-    
+
     public function setUp() {
         $macro = $this->client->macros()->create(array(
             'title' => 'Roger Wilco',

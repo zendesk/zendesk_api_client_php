@@ -14,7 +14,7 @@ class SatisfactionRatingsTest extends BasicTest {
     }
 
     protected $id, $ticket_id;
-    
+
     public function setUp() {
 
         // Auth as end user
@@ -24,10 +24,10 @@ class SatisfactionRatingsTest extends BasicTest {
         $client_end_user->setAuth('password', $password);
 
         $testTicket = array(
-            'subject' => 'Satisfaction Ratings Test', 
+            'subject' => 'Satisfaction Ratings Test',
             'comment' => array (
                 'body' => 'Dette er for tilfredshed ratings test.'
-            ), 
+            ),
             'priority' => 'normal'
         );
         $request = $client_end_user->requests()->create($testTicket);
