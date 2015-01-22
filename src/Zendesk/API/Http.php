@@ -7,6 +7,7 @@ namespace Zendesk\API;
  * @package Zendesk\API
  */
 class Http {
+    public static $curl;
     /**
      * Prepares an endpoint URL with optional side-loading
      *
@@ -55,7 +56,7 @@ class Http {
         $url    = $client->getApiUrl() . $endPoint;
         $method = strtoupper($method);
 
-        $curl = new CurlRequest();
+        $curl = (isset(self::$curl)) ? self::$curl : new CurlRequest;
         $curl->setopt(CURLOPT_URL, $url);
 
         if ($method === 'POST') {
@@ -113,6 +114,7 @@ class Http {
             substr($response, 0, $headerSize)
         );
         $curl->close();
+        self::$curl = NULL;
 
         return json_decode($responseBody);
     }
@@ -133,7 +135,8 @@ class Http {
         $url = 'https://'.$client->getSubdomain().'.zendesk.com/oauth/tokens';
         $method = 'POST';
 
-        $curl = new CurlRequest($url);
+        $curl = (isset(self::$curl)) ? self::$curl : new CurlRequest;
+        $curl->setopt(CURLOPT_URL, $url);
         $curl->setopt(CURLOPT_POST, true);
         $curl->setopt(CURLOPT_POSTFIELDS, json_encode(array(
             'grant_type' => 'authorization_code',
@@ -165,6 +168,7 @@ class Http {
             substr($response, 0, $headerSize)
         );
         $curl->close();
+        self::$curl = NULL;
 
         return json_decode($responseBody);
     }
