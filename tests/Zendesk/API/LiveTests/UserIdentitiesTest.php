@@ -66,7 +66,6 @@ class UserIdentitiesTest extends BasicTest {
         $this->client->user($user->user->id)->delete();
     }
 
-
     public function testAll() {
         $identities = $this->client->user($this->user_id)->identities()->findAll();
         $this->assertEquals(is_object($identities), true, 'Should return an object');
@@ -111,5 +110,3 @@ class UserIdentitiesTest extends BasicTest {
     }
 
 }
-
-?>

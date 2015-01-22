@@ -202,5 +202,3 @@ class UsersTest extends BasicTest {
     }
 
 }
-
-?>

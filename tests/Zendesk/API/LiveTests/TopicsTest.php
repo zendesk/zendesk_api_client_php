@@ -83,5 +83,3 @@ class TopicsTest extends BasicTest {
     }
 
 }
-
-?>

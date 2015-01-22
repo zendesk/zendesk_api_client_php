@@ -47,5 +47,3 @@ class TicketImportTest extends BasicTest {
     }
 
 }
-
-?>

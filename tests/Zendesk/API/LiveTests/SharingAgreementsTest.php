@@ -25,5 +25,3 @@ class SharingAgreementsTest extends BasicTest {
     }
 
 }
-
-?>

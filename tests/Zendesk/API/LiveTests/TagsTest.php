@@ -78,5 +78,3 @@ class TagsTest extends BasicTest {
     }
 
 }
-
-?>

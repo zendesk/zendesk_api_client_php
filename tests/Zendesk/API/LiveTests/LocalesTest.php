@@ -58,5 +58,3 @@ class LocalsTest extends BasicTest {
     }
 
 }
-
-?>

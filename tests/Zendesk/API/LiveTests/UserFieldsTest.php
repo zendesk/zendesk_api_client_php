@@ -76,5 +76,3 @@ class UserFieldsTest extends BasicTest {
     }
 
 }
-
-?>

@@ -63,7 +63,6 @@ class TicketFormsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-
     public function testUpdate() {
         $form = $this->client->ticketForm($this->id)->update(array(
             'name' => 'Snowboard Fixed',
@@ -107,5 +106,3 @@ class TicketFormsTest extends BasicTest {
     }
 
 }
-
-?>

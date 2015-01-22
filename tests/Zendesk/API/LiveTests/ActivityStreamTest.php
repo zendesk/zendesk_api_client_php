@@ -57,5 +57,3 @@ class ActivityStreamTest extends BasicTest {
     }
 
 }
-
-?>

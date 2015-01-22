@@ -77,5 +77,3 @@ class OAuthClientsTest extends BasicTest {
     }
 
 }
-
-?>

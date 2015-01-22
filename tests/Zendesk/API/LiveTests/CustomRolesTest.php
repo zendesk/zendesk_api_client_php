@@ -26,5 +26,3 @@ class CustomRolesTest extends BasicTest {
     }
 
 }
-
-?>

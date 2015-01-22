@@ -71,5 +71,3 @@ class GroupsTest extends BasicTest {
     }
 
 }
-
-?>

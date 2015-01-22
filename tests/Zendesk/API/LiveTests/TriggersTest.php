@@ -98,5 +98,3 @@ class TriggersTest extends BasicTest {
     }
 
 }
-
-?>
