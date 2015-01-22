@@ -16,9 +16,9 @@ class AppsTests extends BasicTest {
     public function testUploadApps() {
         $apps = new \Zendesk\API\Apps($this->client);
         if (version_compare(PHP_VERSION, '5.5.0', '<'))
-            $file = ['file' => '@'.getcwd().'/tests/assets/cloudmetro.zip'];
+            $file = ['file' => '@'.getcwd().'/tests/assets/app.zip'];
         else
-            $file = ['file' => curl_file_create(getcwd().'/tests/assets/cloudmetro.zip')];
+            $file = ['file' => curl_file_create(getcwd().'/tests/assets/app.zip')];
 
         $upload = $apps->upload($file);
 
@@ -95,9 +95,9 @@ class AppsTests extends BasicTest {
         $apps = new \Zendesk\API\Apps($this->client);
 
         if (version_compare(PHP_VERSION, '5.5.0', '<'))
-            $file = ['id' => $jobStatus->app_id, 'file' => '@'.getcwd().'/tests/assets/cloudmetro.zip'];
+            $file = ['id' => $jobStatus->app_id, 'file' => '@'.getcwd().'/tests/assets/app.zip'];
         else
-            $file = ['id' => $jobStatus->app_id, 'file' => curl_file_create(getcwd().'/tests/assets/cloudmetro.zip')];
+            $file = ['id' => $jobStatus->app_id, 'file' => curl_file_create(getcwd().'/tests/assets/app.zip')];
 
         $upload = $apps->update($file);
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
