@@ -17,13 +17,13 @@ class AuditLogsTest extends BasicTest {
         parent::authTokenTest();
     }
     protected $ticket;
-    
+
     public function setUp(){
         $testTicket = array(
-            'subject' => 'The is for Audit Logs test', 
+            'subject' => 'The is for Audit Logs test',
             'comment' => array (
                 'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-            ), 
+            ),
             'priority' => 'normal'
         );
         $this->ticket = $this->client->tickets()->create($testTicket);

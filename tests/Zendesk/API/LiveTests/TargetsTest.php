@@ -18,7 +18,7 @@ class TargetsTest extends BasicTest {
     }
 
     protected $id;
-    
+
     public function setUp() {
         $target = $this->client->targets()->create(array(
             'type' => 'email_target',

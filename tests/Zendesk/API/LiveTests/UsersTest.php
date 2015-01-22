@@ -18,7 +18,7 @@ class UsersTest extends BasicTest {
     }
 
     protected $id, $id_s, $ticket_id, $number;
-    
+
     public function setUp() {
         $this->number = strval(time());
 
@@ -31,10 +31,10 @@ class UsersTest extends BasicTest {
         $this->id = $user->user->id;
 
         $testTicket = array(
-            'subject' => 'User Test', 
+            'subject' => 'User Test',
             'comment' => array (
                 'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-            ), 
+            ),
             'priority' => 'normal',
             'requester_id' => $this->id,
             'submitter_id' => $this->id
@@ -67,15 +67,15 @@ class UsersTest extends BasicTest {
     }
 
     public function testFind() {
-        $user = $this->client->user($this->id)->find(); 
+        $user = $this->client->user($this->id)->find();
         $this->assertEquals(is_object($user), true, 'Should return an object');
         $this->assertEquals(is_object($user->user), true, 'Should return an object called "user"');
         $this->assertGreaterThan(0, $user->user->id, 'Returns a non-numeric id for user');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
-    
+
     public function testFindMultiple() {
-        $users = $this->client->users(array($this->id, $this->id_s))->find(); 
+        $users = $this->client->users(array($this->id, $this->id_s))->find();
         $this->assertEquals(is_object($users), true, 'Should return an object');
         $this->assertEquals(is_array($users->users), true, 'Should return an array called "users"');
         $this->assertEquals(is_object($users->users[0]), true, 'Should return an object as first "users" array element');
@@ -180,7 +180,7 @@ class UsersTest extends BasicTest {
 
     public function testSetPassword() {
         $user = $this->client->user($this->id)->setPassword(array('password' => '12345'));
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');        
+        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
     public function testChangePassword() {
@@ -188,8 +188,8 @@ class UsersTest extends BasicTest {
             'Skipped for now because you can only change password of your own account.'
         );
         $user = $this->client->user(421450109)->changePassword(array('previous_password' => '12346', 'password' => '12345'));
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');        
-    }   
+        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+    }
 
     public function tearDown() {
         $this->client->ticket($this->ticket_id)->delete();
@@ -199,7 +199,7 @@ class UsersTest extends BasicTest {
         $user_s = $this->client->user($this->id_s)->delete();
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
 
-    } 
+    }
 
 }
 

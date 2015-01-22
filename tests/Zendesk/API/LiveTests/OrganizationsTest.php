@@ -84,7 +84,7 @@ class OrganizationsTest extends BasicTest {
         $organization = $this->client->organization($this->id)->delete();
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
-    
+
 }
 
 ?>

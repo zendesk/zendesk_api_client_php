@@ -18,7 +18,7 @@ class ViewsTest extends BasicTest {
     }
 
     protected $id;
-    
+
     public function setUp() {
         $view = $this->client->views()->create(array(
             'title' => 'Roger Wilco',
@@ -76,7 +76,7 @@ class ViewsTest extends BasicTest {
     }
 
     public function testFind() {
-        $view = $this->client->view($this->id)->find(); 
+        $view = $this->client->view($this->id)->find();
         $this->assertEquals(is_object($view), true, 'Should return an object');
         $this->assertEquals(is_object($view->view), true, 'Should return an object called "view"');
         $this->assertGreaterThan(0, $view->view->id, 'Returns a non-numeric id for view');

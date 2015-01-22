@@ -18,7 +18,7 @@ class TopicSubscriptionsTest extends BasicTest {
     }
 
     protected $id, $topic_id, $forum_id, $user_id, $number;
-    
+
     public function setUp() {
          /*
          * First start by creating a forum and a topic (we'll delete them later)

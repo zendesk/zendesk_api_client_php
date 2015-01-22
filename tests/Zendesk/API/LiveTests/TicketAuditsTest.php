@@ -8,7 +8,7 @@ use Zendesk\API\Client;
  * Ticket Audits test class
  */
 class TicketAuditsTest extends BasicTest {
-    
+
     public function testCredentials() {
         parent::credentialsTest();
     }
@@ -21,10 +21,10 @@ class TicketAuditsTest extends BasicTest {
 
     public function setUp(){
         $testTicket = array(
-            'subject' => 'The quick brown fox jumps over the lazy dog', 
+            'subject' => 'The quick brown fox jumps over the lazy dog',
             'comment' => array (
                 'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-            ), 
+            ),
             'priority' => 'normal'
         );
         $ticket = $this->client->tickets()->create($testTicket);
@@ -35,7 +35,7 @@ class TicketAuditsTest extends BasicTest {
         $ticket = $this->client->tickets()->update($update_testTicket);
 
         $this->ticket_id = $ticket->ticket->id;
-        
+
     }
     public function testAll() {
         $audits = $this->client->ticket($this->ticket_id)->audits()->findAll();
@@ -81,7 +81,7 @@ class TicketAuditsTest extends BasicTest {
     public function tearDown(){
         $this->client->tickets($this->ticket_id)->delete();
     }
-    
+
 }
 
 ?>

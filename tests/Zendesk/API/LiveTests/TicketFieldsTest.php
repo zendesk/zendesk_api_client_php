@@ -8,7 +8,7 @@ use Zendesk\API\Client;
  * Ticket Audits test class
  */
 class TicketFieldsTest extends BasicTest {
-    
+
     public function testCredentials() {
         parent::credentialsTest();
     }
@@ -42,7 +42,7 @@ class TicketFieldsTest extends BasicTest {
     }
 
     public function testFind() {
-        $fields = $this->client->ticketField($this->id)->find(); 
+        $fields = $this->client->ticketField($this->id)->find();
         $this->assertEquals(is_object($fields), true, 'Should return an object');
         $this->assertEquals(is_object($fields->ticket_field), true, 'Should return an object called "ticket_field"');
         $this->assertEquals($this->id, $fields->ticket_field->id, 'Returns an incorrect id in ticket field object');
@@ -65,7 +65,7 @@ class TicketFieldsTest extends BasicTest {
         $field = $this->client->ticketField($this->id)->delete();
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
-    
+
 }
 
 ?>

@@ -18,19 +18,19 @@ class TicketMetricsTest extends BasicTest {
     }
 
     protected $ticket_id;
-    
+
     public function setUP(){
         $testTicket = array(
-            'subject' => 'Ticket Metrics test', 
+            'subject' => 'Ticket Metrics test',
             'comment' => array (
                 'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-            ), 
+            ),
             'priority' => 'normal'
         );
         $ticket = $this->client->tickets()->create($testTicket);
         $this->ticket_id = $ticket->ticket->id;
     }
-    
+
     public function tearDown(){
         $this->client->ticket($this->ticket_id)->delete();
     }

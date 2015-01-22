@@ -18,7 +18,7 @@ class UserFieldsTest extends BasicTest {
     }
 
     protected $id, $number;
-    
+
     public function setUp() {
         $this->number = strval(time());
         $userField = $this->client->userFields()->create(array(
@@ -46,7 +46,7 @@ class UserFieldsTest extends BasicTest {
     }
 
     public function testFind() {
-        $userField = $this->client->userField($this->id)->find(); 
+        $userField = $this->client->userField($this->id)->find();
         $this->assertEquals(is_object($userField), true, 'Should return an object');
         $this->assertEquals(is_object($userField->user_field), true, 'Should return an object called "view"');
         $this->assertGreaterThan(0, $userField->user_field->id, 'Returns a non-numeric id for view');

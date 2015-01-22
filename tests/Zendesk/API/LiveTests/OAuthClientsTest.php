@@ -18,7 +18,7 @@ class OAuthClientsTest extends BasicTest {
     }
 
     protected $id, $user_id, $number;
-    
+
     public function setUP() {
         $this->number = strval(time());
         $user = $this->client->users()->create(array(
@@ -72,7 +72,7 @@ class OAuthClientsTest extends BasicTest {
         $this->assertGreaterThan(0, $this->id, 'Cannot find a client id to test with. Did setUp fail?');
         $topic = $this->client->oauthClient($this->id)->delete();
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-        
+
         $this->client->user($this->user_id)->delete();
     }
 

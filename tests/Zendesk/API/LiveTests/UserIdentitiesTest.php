@@ -50,7 +50,7 @@ class UserIdentitiesTest extends BasicTest {
             'role' => 'end-user',
             'verified' => true
         ));
-        
+
         $this->username = "roge2@example.org";
         $identity = $this->client->user($user->user->id)->identities()->create(array(
             'type' => 'email',
@@ -76,7 +76,7 @@ class UserIdentitiesTest extends BasicTest {
     }
 
     public function testFind() {
-        $identity = $this->client->user($this->user_id)->identity($this->id)->find(); 
+        $identity = $this->client->user($this->user_id)->identity($this->id)->find();
         $this->assertEquals(is_object($identity), true, 'Should return an object');
         $this->assertGreaterThan(0, $identity->identity->id, 'Returns a non-numeric id for identity');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');

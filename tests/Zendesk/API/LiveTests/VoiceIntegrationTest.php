@@ -16,7 +16,7 @@ class VoiceIntegrationTest extends BasicTest {
     public function testAuthToken() {
         parent::authTokenTest();
     }
-    
+
     // public function testOpenUserProfile() {
     //     $result = $this->client->voice()->agents()->openUserProfile(array(
     //         'agent_id' => '1',

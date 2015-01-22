@@ -8,7 +8,7 @@ use Zendesk\API\Client;
  * Triggers test class
  */
 class TriggersTest extends BasicTest {
-    
+
     public function testCredentials() {
         parent::credentialsTest();
     }
@@ -18,7 +18,7 @@ class TriggersTest extends BasicTest {
     }
 
     protected $id, $group_id;
-    
+
     public function setUp() {
         // Prep:
         $group = $this->client->groups()->create(array(
