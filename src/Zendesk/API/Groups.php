@@ -27,7 +27,7 @@ class Groups extends ClientAbstract {
             $this->client->users()->setLastId(null);
         }
         $endPoint = Http::prepare(
-                (isset($params['user_id']) ? 'users/'.$params['user_id'].'/groups.json' : 
+                (isset($params['user_id']) ? 'users/'.$params['user_id'].'/groups.json' :
                 (isset($params['assignable']) ? 'groups/assignable.json' : 'groups.json')), $this->client->getSideload($params), $params
         );
         $response = Http::send($this->client, $endPoint);

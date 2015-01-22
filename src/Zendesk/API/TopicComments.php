@@ -35,7 +35,7 @@ class TopicComments extends ClientAbstract {
             throw new MissingParametersException(__METHOD__, array('topic_id', 'user_id'));
         }
         $endPoint = Http::prepare(
-                (isset($params['topic_id']) ? 'topics/'.$params['topic_id'].'/comments.json' : 
+                (isset($params['topic_id']) ? 'topics/'.$params['topic_id'].'/comments.json' :
                 (isset($params['user_id']) ? 'users/'.$params['user_id'].'/topic_comments.json' : '')), $this->client->getSideload($params), $params
             );
         $response = Http::send($this->client, $endPoint);

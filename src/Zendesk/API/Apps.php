@@ -37,7 +37,7 @@ class Apps extends ClientAbstract {
             throw new MissingParametersException(__METHOD__, array('file'));
         }
         $endPoint = Http::prepare('apps/uploads.json');
-        $response = Http::send($this->client, $endPoint, array('uploaded_data' => $params['file']), 'POST', (isset($params['type']) ? $params['type'] : 'application/binary'));
+        $response = Http::send($this->client, $endPoint, array('uploaded_data' => $params['file']), 'POST');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
             throw new ResponseException(__METHOD__);
         }
@@ -58,6 +58,29 @@ class Apps extends ClientAbstract {
     public function create(array $params) {
         $endPoint = Http::prepare('apps.json');
         $response = Http::send($this->client, $endPoint, $params, 'POST');
+        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 202)) {
+            throw new ResponseException(__METHOD__);
+        }
+        $this->client->setSideload(null);
+        return $response;
+    }
+
+    /**
+     * Get a job status
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function jobStatus(array $params) {
+        if(!$this->hasKeys($params, array('id'))) {
+            throw new MissingParametersException(__METHOD__, array('id'));
+        }
+        $endPoint = Http::prepare('apps/job_statuses/'.$params['id'].'.json');
+        $response = Http::send($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
@@ -81,11 +104,11 @@ class Apps extends ClientAbstract {
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
-        if(!$this->hasKeys($params, array('id'))) {
-            throw new MissingParametersException(__METHOD__, array('id'));
+        if(!$this->hasKeys($params, array('file', 'id'))) {
+            throw new MissingParametersException(__METHOD__, array('file', 'id'));
         }
         $endPoint = Http::prepare('apps/'.$params['id'].'.json');
-        $response = Http::send($this->client, $endPoint, $params, 'PUT');
+        $response = Http::send($this->client, $endPoint, array('uploaded_data' => $params['file']), 'PUT');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }

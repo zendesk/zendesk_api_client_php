@@ -7,7 +7,7 @@ namespace Zendesk\API;
  * @package Zendesk\API
  */
 class Http {
-
+    public static $curl;
     /**
      * Prepares an endpoint URL with optional side-loading
      *
@@ -44,7 +44,7 @@ class Http {
      *
      * @param Client $client
      * @param string $endPoint
-     * @param mixed  $json
+     * @param array  $json
      * @param string $method
      * @param string $contentType
      *
@@ -52,88 +52,71 @@ class Http {
      *
      * @return mixed
      */
-    public static function send(Client $client, $endPoint, $json = null, $method = 'GET', $contentType = 'application/json') {
-
+    public static function send(Client $client, $endPoint, $json = array(), $method = 'GET', $contentType = 'application/json') {
         $url    = $client->getApiUrl() . $endPoint;
         $method = strtoupper($method);
-        if (null == $json) {
-            $json = new \stdClass();
-        } else if ($contentType == 'application/json' && $method != 'GET' && $method != 'DELETE') {
+
+        $curl = (isset(self::$curl)) ? self::$curl : new CurlRequest;
+        $curl->setopt(CURLOPT_URL, $url);
+
+        if ($method === 'POST') {
+            $curl->setopt(CURLOPT_POST, true);
+
+        } else if ($method === 'PUT') {
+            $curl->setopt(CURLOPT_CUSTOMREQUEST, 'PUT');
+
+        } else {
+            $st = http_build_query((array) $json);
+            $curl->setopt(CURLOPT_URL, $url . ($st !== array() ? (strpos($url, '?') === false ? '?' : '&') . $st : ''));
+            $curl->setopt(CURLOPT_CUSTOMREQUEST, $method);
+        }
+
+        $httpHeader = array('Accept: application/json');
+        if ($client->getAuthType() == 'oauth_token') {
+            $httpHeader[] = 'Authorization: Bearer ' . $client->getAuthText();
+
+        } else {
+            $curl->setopt(CURLOPT_USERPWD, $client->getAuthText());
+        }
+
+        /* DO NOT SET CONTENT TYPE IF UPLOADING */
+        if (!isset($json['uploaded_data'])) {
+            $httpHeader[] = 'Content-Type: '.$contentType;
+        } else {
+            $contentType = '';
+        }
+
+        if ($contentType === 'application/json') {
             $json = json_encode($json);
         }
 
-        if ($method == 'POST') {
-            $curl = curl_init($url);
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
-            if (is_array($json)) {
-                if (isset($json['body'])) {
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $json['body']);
-                    curl_setopt($curl, CURLOPT_INFILESIZE, strlen($json['body']));
-                } else if (isset($json['uploaded_data'])) {
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $json['uploaded_data']);
-                } else if (isset($json['filename'])) {
-                    $filename = $json['filename'];
-                    $file     = fopen($filename, 'r');
-                    $size     = filesize($filename);
-                    $fileData = fread($file, $size);
-                    curl_setopt($curl, CURLOPT_POSTFIELDS, $fileData);
-                    curl_setopt($curl, CURLOPT_INFILE, $file);
-                    curl_setopt($curl, CURLOPT_INFILESIZE, $size);
-                }
-            }
-        } else if ($method == 'PUT') {
-            $curl = curl_init($url);
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $json);
+        $curl->setopt(CURLOPT_POSTFIELDS, $json);
+        $curl->setopt(CURLOPT_HTTPHEADER, $httpHeader);
+        $curl->setopt(CURLINFO_HEADER_OUT, true);
+        $curl->setopt(CURLOPT_RETURNTRANSFER, true);
+        $curl->setopt(CURLOPT_CONNECTTIMEOUT, 30);
+        $curl->setopt(CURLOPT_TIMEOUT, 30);
+        $curl->setopt(CURLOPT_SSL_VERIFYPEER, false);
+        $curl->setopt(CURLOPT_HEADER, true);
+        $curl->setopt(CURLOPT_VERBOSE, true);
+        $curl->setopt(CURLOPT_FOLLOWLOCATION, true);
+        $curl->setopt(CURLOPT_MAXREDIRS, 3);
 
-        } else {
-            if (is_array($json)) {
-                $json = http_build_query($json);
-            }
-            $curl = curl_init(
-                $url . ($json != (object)null ? (strpos($url, '?') === false ? '?' : '&') . $json : '')
-            );
-            curl_setopt($curl, CURLOPT_CUSTOMREQUEST, ($method ? $method : 'GET'));
-        }
-        if ($client->getAuthType() == 'oauth_token') {
-            curl_setopt(
-                $curl,
-                CURLOPT_HTTPHEADER,
-                array(
-                    'Content-Type: ' . $contentType,
-                    'Accept: application/json',
-                    'Authorization: Bearer ' . $client->getAuthText()
-                )
-            );
-        } else {
-            curl_setopt($curl, CURLOPT_USERPWD, $client->getAuthText());
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: ' . $contentType, 'Accept: application/json'));
-        }
-        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 30);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_HEADER, true);
-        curl_setopt($curl, CURLOPT_VERBOSE, true);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
-        $response = curl_exec($curl);
+        $response = $curl->exec();
         if ($response === false) {
-            throw new \Exception(sprintf('Curl error message: "%s" in %s', curl_error($curl),  __METHOD__));
+            throw new \Exception(sprintf('Curl error message: "%s" in %s', $curl->error(),  __METHOD__));
         }
-        $headerSize   = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+        $headerSize   = $curl->getinfo(CURLINFO_HEADER_SIZE);
         $responseBody = substr($response, $headerSize);
         $client->setDebug(
-            curl_getinfo($curl, CURLINFO_HEADER_OUT),
-            curl_getinfo($curl, CURLINFO_HTTP_CODE),
+            $curl->getinfo(CURLINFO_HEADER_OUT),
+            $curl->getinfo(CURLINFO_HTTP_CODE),
             substr($response, 0, $headerSize)
         );
-        curl_close($curl);
+        $curl->close();
+        self::$curl = NULL;
 
         return json_decode($responseBody);
-
     }
 
     /**
@@ -149,13 +132,13 @@ class Http {
      * @return mixed
      */
     public static function oauth(Client $client, $code, $oAuthId, $oAuthSecret) {
-
         $url = 'https://'.$client->getSubdomain().'.zendesk.com/oauth/tokens';
         $method = 'POST';
 
-        $curl = curl_init($url);
-        curl_setopt($curl, CURLOPT_POST, true);
-        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode(array(
+        $curl = (isset(self::$curl)) ? self::$curl : new CurlRequest;
+        $curl->setopt(CURLOPT_URL, $url);
+        $curl->setopt(CURLOPT_POST, true);
+        $curl->setopt(CURLOPT_POSTFIELDS, json_encode(array(
             'grant_type' => 'authorization_code',
             'code' => $code,
             'client_id' => $oAuthId,
@@ -163,31 +146,30 @@ class Http {
             'redirect_uri' => ($_SERVER['HTTPS'] ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'],
             'scope' => 'read'
         )));
-        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-        curl_setopt($curl, CURLINFO_HEADER_OUT, true);
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 30);
-        curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($curl, CURLOPT_HEADER, true);
-        curl_setopt($curl, CURLOPT_VERBOSE, true);
-        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($curl, CURLOPT_MAXREDIRS, 3);
-        $response = curl_exec($curl);
+        $curl->setopt(CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+        $curl->setopt(CURLINFO_HEADER_OUT, true);
+        $curl->setopt(CURLOPT_RETURNTRANSFER, true);
+        $curl->setopt(CURLOPT_CONNECTTIMEOUT, 30);
+        $curl->setopt(CURLOPT_TIMEOUT, 30);
+        $curl->setopt(CURLOPT_SSL_VERIFYPEER, false);
+        $curl->setopt(CURLOPT_HEADER, true);
+        $curl->setopt(CURLOPT_VERBOSE, true);
+        $curl->setopt(CURLOPT_FOLLOWLOCATION, true);
+        $curl->setopt(CURLOPT_MAXREDIRS, 3);
+        $response = $curl->exec();
         if ($response === false) {
-            throw new \Exception(sprintf('Curl error message: "%s" in %s', curl_error($curl),  __METHOD__));
+            throw new \Exception(sprintf('Curl error message: "%s" in %s', $curl->error(),  __METHOD__));
         }
-        $headerSize = curl_getinfo($curl, CURLINFO_HEADER_SIZE);
+        $headerSize = $curl->getinfo(CURLINFO_HEADER_SIZE);
         $responseBody = substr($response, $headerSize);
         $client->setDebug(
-            curl_getinfo($curl, CURLINFO_HEADER_OUT),
-            curl_getinfo($curl, CURLINFO_HTTP_CODE),
+            $curl->getinfo(CURLINFO_HEADER_OUT),
+            $curl->getinfo(CURLINFO_HTTP_CODE),
             substr($response, 0, $headerSize)
         );
-        curl_close($curl);
+        $curl->close();
+        self::$curl = NULL;
 
         return json_decode($responseBody);
-
     }
-
 }
