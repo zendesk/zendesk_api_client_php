@@ -39,6 +39,7 @@ namespace Zendesk\API;
  * @method OAuthTokens oauthTokens()
  * @method OrganizationFields organizationFields()
  * @method Organizations organizations()
+ * @method SatisfactionRatings satisfactionRatings()
  * @method SharingAgreements sharingAgreements()
  * @method SuspendedTickets suspendedTickets()
  * @method Tags tags()
@@ -183,6 +184,10 @@ class Client {
      */
     protected $organizations;
     /**
+     * @var SatisfactionRatings
+     */
+    protected $satisfactionRatings;
+    /**
      * @var Search
      */
     protected $search;
@@ -254,6 +259,7 @@ class Client {
         $this->oauthTokens = new OAuthTokens($this);
         $this->organizationFields = new OrganizationFields($this);
         $this->organizations = new Organizations($this);
+        $this->satisfactionRatings = new SatisfactionRatings($this);
         $this->search = new Search($this);
         $this->sharingAgreements = new SharingAgreements($this);
         $this->suspendedTickets = new SuspendedTickets($this);

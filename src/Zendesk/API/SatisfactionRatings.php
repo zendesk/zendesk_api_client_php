@@ -27,7 +27,12 @@ class SatisfactionRatings extends ClientAbstract {
             $this->client->tickets()->setLastId(null);
         }
         $endPoint = Http::prepare('satisfaction_ratings.json', null, $params);
-        $response = Http::send($this->client, $endPoint);
+        $allowedFilter = array('score', 'start_time', 'end_time');
+        $response = Http::send(
+            $this->client,
+            $endPoint,
+            array_intersect_key($params, array_flip($allowedFilter))
+        );
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
