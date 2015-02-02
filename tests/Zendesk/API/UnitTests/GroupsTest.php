@@ -19,11 +19,11 @@ class GroupsTest extends BasicTest {
 
     protected $id;
     public function setUP() {
-	    // Create Mock Object
-	    $groups_mock_object = new \stdClass();
-	    $groups_mock_object->group = new \stdClass();
-	    $groups_mock_object->group->name = 'New Group';
-	    $groups_mock_object->group->id = 123456;
+	// Create Mock Object
+	$groups_mock_object = new \stdClass();
+	$groups_mock_object->group = new \stdClass();
+	$groups_mock_object->group->name = 'New Group';
+	$groups_mock_object->group->id = 123456;
 	    
         $this->assertEquals(is_object($groups_mock_object), true, 'Should return an object');
         $this->assertEquals(is_object($groups_mock_object->group), true, 'Should return an object called "group"');
@@ -34,7 +34,7 @@ class GroupsTest extends BasicTest {
     }
 
     public function testAll() {
-		$mock = $this->getMock('Groups', array('findAll'));
+    	$mock = $this->getMock('Groups', array('findAll'));
     	$mock->expects($this->any())->method('findAll')->willReturn($this->groups);
 	    	 
         $groups = $mock->findAll();
@@ -63,10 +63,10 @@ class GroupsTest extends BasicTest {
     }
 
     public function testUpdate() {
-	    $mock = $this->getMock('Groups', array('update'));
+	$mock = $this->getMock('Groups', array('update'));
     	$mock->expects($this->any())->method('update')->will($this->returnArgument(0));
 	    
-	    $this->groups->group->name = "New Group II";
+	$this->groups->group->name = "New Group II";
 	    
         $group = $mock->update($this->groups);
         $this->assertEquals(is_object($group), true, 'Should return an object');
@@ -76,7 +76,7 @@ class GroupsTest extends BasicTest {
     }
 
     public function tearDown() {
-	    $mock = $this->getMock('Groups', array('delete'));
+	$mock = $this->getMock('Groups', array('delete'));
     	$mock->expects($this->any())->method('delete')->willReturn(null);
     	
         $this->assertGreaterThan(0, $this->id, 'Cannot find a group id to test with. Did setUP fail?');
