@@ -19,12 +19,12 @@ class GroupsTest extends BasicTest {
 
     protected $id;
     public function setUP() {
-	// Create Mock Object
-	$groups_mock_object = new \stdClass();
-	$groups_mock_object->group = new \stdClass();
-	$groups_mock_object->group->name = 'New Group';
-	$groups_mock_object->group->id = 123456;
-	    
+		// Create Mock Object
+		$groups_mock_object = new \stdClass();
+		$groups_mock_object->group = new \stdClass();
+		$groups_mock_object->group->name = 'New Group';
+		$groups_mock_object->group->id = 123456;
+		    
         $this->assertEquals(is_object($groups_mock_object), true, 'Should return an object');
         $this->assertEquals(is_object($groups_mock_object->group), true, 'Should return an object called "group"');
         $this->assertGreaterThan(0, $groups_mock_object->group->id, 'Returns a non-numeric id for group');
@@ -35,7 +35,8 @@ class GroupsTest extends BasicTest {
 
     public function testAll() {
     	$mock = $this->getMock('Groups', array('findAll'));
-    	$mock->expects($this->any())->method('findAll')->willReturn($this->groups);
+    	$groups = $this->groups;
+    	$mock->expects($this->any())->method('findAll')->willReturn($groups);
 	    	 
         $groups = $mock->findAll();
         $this->assertEquals(is_object($groups), true, 'Should return an object');
@@ -45,7 +46,8 @@ class GroupsTest extends BasicTest {
 
     public function testAssignable() {
         $mock = $this->getMock('Groups', array('findAll'));
-    	$mock->expects($this->any())->method('findAll')->willReturn($this->groups);
+        $groups = $this->groups;
+    	$mock->expects($this->any())->method('findAll')->willReturn($groups);
         
         $groups = $mock->findAll(array('assignable' => true));
         $this->assertEquals(is_object($groups), true, 'Should return an object');
@@ -55,7 +57,8 @@ class GroupsTest extends BasicTest {
 
     public function testFind() {
         $mock = $this->getMock('Groups', array('find'));
-    	$mock->expects($this->any())->method('find')->willReturn($this->groups);
+        $groups = $this->groups;
+    	$mock->expects($this->any())->method('find')->willReturn($groups);
 
         $group = $mock->find($this->id);
         $this->assertEquals(is_object($group), true, 'Should return an object');
