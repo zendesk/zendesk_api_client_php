@@ -77,7 +77,7 @@ class GroupsTest extends BasicTest {
 
     public function tearDown() {
 	    $mock = $this->getMock('Groups', array('delete'));
-    	$mock->expects($this->any())->method('delete')->willReturn(null);
+    	$mock->expects($this->any())->method('delete')->will($this->returnArgument(null));
     	
         $this->assertGreaterThan(0, $this->id, 'Cannot find a group id to test with. Did setUP fail?');
         $group = $mock->delete();
