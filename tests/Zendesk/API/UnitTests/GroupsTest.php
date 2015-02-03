@@ -10,11 +10,11 @@ use Zendesk\API\Client;
 class GroupsTest extends BasicTest {
 
     public function testCredentials() {
-        parent::credentialsTest();
+        //parent::credentialsTest();
     }
 
     public function testAuthToken() {
-        parent::authTokenTest();
+        //parent::authTokenTest();
     }
 
     protected $id;
