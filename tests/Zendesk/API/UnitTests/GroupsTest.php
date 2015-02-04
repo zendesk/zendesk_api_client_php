@@ -35,7 +35,7 @@ class GroupsTest extends BasicTest {
 
     public function testAll() {
 		$mock = $this->getMock('Groups', array('findAll'));
-    	$mock->expects($this->any())->method('findAll')->willReturn($this->groups);
+    	$mock->expects($this->any())->method('findAll')->will($this->returnValue($this->groups));
 	    	 
         $groups = $mock->findAll();
         $this->assertEquals(is_object($groups), true, 'Should return an object');
@@ -45,7 +45,7 @@ class GroupsTest extends BasicTest {
 
     public function testAssignable() {
         $mock = $this->getMock('Groups', array('findAll'));
-    	$mock->expects($this->any())->method('findAll')->willReturn($this->groups);
+    	$mock->expects($this->any())->method('findAll')->will($this->returnValue($this->groups));
         
         $groups = $mock->findAll(array('assignable' => true));
         $this->assertEquals(is_object($groups), true, 'Should return an object');
@@ -55,7 +55,7 @@ class GroupsTest extends BasicTest {
 
     public function testFind() {
         $mock = $this->getMock('Groups', array('find'));
-    	$mock->expects($this->any())->method('find')->willReturn($this->groups);
+    	$mock->expects($this->any())->method('find')->will($this->returnValue($this->groups));
 
         $group = $mock->find($this->id);
         $this->assertEquals(is_object($group), true, 'Should return an object');
@@ -77,7 +77,7 @@ class GroupsTest extends BasicTest {
 
     public function tearDown() {
 	    $mock = $this->getMock('Groups', array('delete'));
-    	$mock->expects($this->any())->method('delete')->will($this->returnArgument(null));
+    	$mock->expects($this->any())->method('delete')->will($this->returnValue(null));
     	
         $this->assertGreaterThan(0, $this->id, 'Cannot find a group id to test with. Did setUP fail?');
         $group = $mock->delete();
