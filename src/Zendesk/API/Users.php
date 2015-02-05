@@ -138,15 +138,13 @@ class Users extends ClientAbstract {
      */
     public function merge(array $params = array()) {
         if($this->lastId != null) {
-            $params['id'] = $this->lastId;
+            $myId = $this->lastId;
             $this->lastId = null;
         }
         if(!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $id = $params['id'];
-        unset($params['id']);
-        $endPoint = Http::prepare('users/me/merge.json');
+        $endPoint = Http::prepare('users/'. ($myId != null ? $myId : 'me') . '/merge.json');
         $response = Http::send($this->client, $endPoint, array (self::OBJ_NAME => $params), 'PUT');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
