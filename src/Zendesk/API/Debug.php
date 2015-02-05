@@ -20,5 +20,9 @@ class Debug {
      * @var string
      */
     public $lastResponseHeaders;
+    /**
+     * @var mixed
+     */
+    public $lastResponseError;
 
 }

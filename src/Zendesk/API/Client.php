@@ -335,11 +335,13 @@ class Client {
      * @param mixed $lastRequestHeaders
      * @param mixed $lastResponseCode
      * @param string $lastResponseHeaders
+     * @param mixed $lastResponseError
      */
-    public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders) {
+    public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError) {
         $this->debug->lastRequestHeaders = $lastRequestHeaders;
         $this->debug->lastResponseCode = $lastResponseCode;
         $this->debug->lastResponseHeaders = $lastResponseHeaders;
+        $this->debug->lastResponseError = $lastResponseError;
     }
 
     /**
