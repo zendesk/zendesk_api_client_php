@@ -90,14 +90,56 @@ class UsersTest extends BasicTest {
     }
 
     public function testMerge() {
-        $this->markTestSkipped(
-            'Skipped for now because it may break my test login'
-        );
-        $user = $this->client->user(455060842)->merge(); // don't delete user #455060842
-        $this->assertEquals(is_object($user), true, 'Should return an object');
-        $this->assertEquals(is_object($user->user), true, 'Should return an object called "user"');
-        $this->assertGreaterThan(0, $user->user->id, 'Returns a non-numeric id for user');
+        // create users to merge
+        $mergeFrom1Email = 'mergefrom1.'.$this->number.'@example.org';
+        $user_m = $this->client->users()->create(array(
+            'name' => 'Merge From1'.$this->number,
+            'email' => $mergeFrom1Email,
+            'role' => 'end-user',
+            'verified' => true
+        ));
+        $mergeFrom1 = $user_m->user->id;
+        $user_m = $this->client->users()->create(array(
+            'name' => 'Merge From2'.$this->number,
+            'email' => 'mergefrom2.'.$this->number.'@example.org',
+            'role' => 'end-user',
+            'verified' => true
+        ));
+        $mergeFrom2 = $user_m->user->id;
+        $user_m = $this->client->users()->create(array(
+            'name' => 'Merge To'.$this->number,
+            'email' => 'mergeto.'.$this->number.'@example.org',
+            'role' => 'end-user',
+            'verified' => true
+        ));
+        $mergeTo = $user_m->user->id;
+
+        // set password for mergeFrom1 to be able to authenticate as end-user
+        $password = "aBc12345";
+        $user = $this->client->user($mergeFrom1)->setPassword(array('password' => $password));
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+
+        $username = $mergeFrom1Email;
+        $client_end_user = new Client($this->subdomain, $username);
+        $client_end_user->setAuth('password', $password);
+
+        // test merge 'me' to user 'mergeTo'
+        $user = $client_end_user->user()->merge(['id' => $mergeTo]);
+        $this->assertEquals(true, is_object($user), 'Should return an object');
+        $this->assertEquals(true, is_object($user->user), 'Should return an object called "user"');
+        $this->assertEquals($mergeTo, $user->user->id, 'Returned user should be the one merged to.');
+        $this->assertEquals('200', $this->client->getDebug()->lastResponseCode, 'Does not return HTTP code 200');
+
+        // test merge user 'mergeFrom2' to user 'mergeTo'
+        $user = $this->client->user($mergeFrom2)->merge(['id' => $mergeTo]);
+        $this->assertEquals(true, is_object($user), 'Should return an object');
+        $this->assertEquals(true, is_object($user->user), 'Should return an object called "user"');
+        $this->assertEquals($mergeTo, $user->user->id, 'Returned user should be the one merged to.');
+        $this->assertEquals('200', $this->client->getDebug()->lastResponseCode, 'Does not return HTTP code 200');
+
+        // clean up
+        $user = $this->client->user($mergeTo)->delete();
+        $this->assertEquals('200', $this->client->getDebug()->lastResponseCode, 'Does not return HTTP code 200');
     }
 
     public function testCreateMany() {
@@ -179,7 +221,7 @@ class UsersTest extends BasicTest {
     }
 
     public function testSetPassword() {
-        $user = $this->client->user($this->id)->setPassword(array('password' => '12345'));
+        $user = $this->client->user($this->id)->setPassword(array('password' => "aBc12345"));
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
