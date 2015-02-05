@@ -9,66 +9,64 @@ use Zendesk\API\Client;
  */
 class GroupsTest extends BasicTest {
 
-    public function testCredentials() {
-        //parent::credentialsTest();
-    }
-
-    public function testAuthToken() {
-        //parent::authTokenTest();
-    }
-
-    protected $id;
     public function setUP() {
-	// Create Mock Object
-	$groups_mock_object = new \stdClass();
-	$groups_mock_object->group = new \stdClass();
-	$groups_mock_object->group->name = 'New Group';
-	$groups_mock_object->group->id = 123456;
-		    
-        $this->assertEquals(is_object($groups_mock_object), true, 'Should return an object');
-        $this->assertEquals(is_object($groups_mock_object->group), true, 'Should return an object called "group"');
-        $this->assertGreaterThan(0, $groups_mock_object->group->id, 'Returns a non-numeric id for group');
-        $this->assertEquals($groups_mock_object->group->name, 'New Group', 'Name of test group does not match');
-        $this->id = $groups_mock_object->group->id;
-        $this->groups = $groups_mock_object;
+		// Create Group Mock Object
+		$group_mock_object = new \stdClass();
+		$group_mock_object->group = new \stdClass();
+		$group_mock_object->group->name = 'New Group';
+		$group_mock_object->group->id = 123456;
+		
+		// Set Variables that will be used in other tests
+		$this->mock = $this->getMock('Groups', array('create', 'findAll', 'find', 'update', 'delete'));
+		$this->group = $group_mock_object;
+    }
+    
+    public function create() {
+        // Test for Create Method
+   		$this->mock->expects($this->any())->method('create')->will($this->returnValue($this->returnArgument(0)));
+		$group = $this->mock->create($this->group);
+        
+		$this->assertEquals(is_object($group), true, 'Should return an object');
+		$this->assertEquals(is_object($group->group), true, 'Should return an object called "group"');
+		$this->assertGreaterThan(0, $group->group->id, 'Returns a non-numeric id for group');
+		$this->assertEquals($group->group->name, 'New Group', 'Name of test group does not match');
     }
 
     public function testAll() {
-	$mock = $this->getMock('Groups', array('findAll'));
-    	$mock->expects($this->any())->method('findAll')->will($this->returnValue($this->groups));
-	    	 
-        $groups = $mock->findAll();
+		// Test for FindAll Method
+    	$this->mock->expects($this->any())->method('findAll')->will($this->returnValue($this->group)); 
+        $groups = $this->mock->findAll();
+        
         $this->assertEquals(is_object($groups), true, 'Should return an object');
         $this->assertEquals(is_object($groups->group), true, 'Should return an object called "group"');
         $this->assertGreaterThan(0, $groups->group->id, 'Returns a non-numeric id for groups[0]');
     }
 
     public function testAssignable() {
-        $mock = $this->getMock('Groups', array('findAll'));
-    	$mock->expects($this->any())->method('findAll')->will($this->returnValue($this->groups));
-        
-        $groups = $mock->findAll(array('assignable' => true));
+		// Test for FindAll Method with 'assignable' parameter
+    	$this->mock->expects($this->any())->method('findAll')->will($this->returnValue($this->group));
+        $groups = $this->mock->findAll(array('assignable' => true));
+
         $this->assertEquals(is_object($groups), true, 'Should return an object');
         $this->assertEquals(is_object($groups->group), true, 'Should return an object containing an array called "groups"');
         $this->assertGreaterThan(0, $groups->group->id, 'Returns a non-numeric id for groups[0]');
     }
 
     public function testFind() {
-        $mock = $this->getMock('Groups', array('find'));
-    	$mock->expects($this->any())->method('find')->will($this->returnValue($this->groups));
-
-        $group = $mock->find($this->id);
+		// Test for Find Method
+    	$this->mock->expects($this->any())->method('find')->will($this->returnValue($this->group));
+        $group = $this->mock->find($this->group->group->id);
+        
         $this->assertEquals(is_object($group), true, 'Should return an object');
         $this->assertGreaterThan(0, $group->group->id, 'Returns a non-numeric id for group');
     }
 
     public function testUpdate() {
-	$mock = $this->getMock('Groups', array('update'));
-    	$mock->expects($this->any())->method('update')->will($this->returnArgument(0));
-	    
-	$this->groups->group->name = "New Group II";
-	    
-        $group = $mock->update($this->groups);
+		// Test for Update Method
+    	$this->mock->expects($this->any())->method('update')->will($this->returnArgument(0));
+		$this->group->group->name = "New Group II";
+        $group = $this->mock->update($this->group);
+        
         $this->assertEquals(is_object($group), true, 'Should return an object');
         $this->assertEquals(is_object($group->group), true, 'Should return an object called "group"');
         $this->assertGreaterThan(0, $group->group->id, 'Returns a non-numeric id for group');
@@ -76,11 +74,10 @@ class GroupsTest extends BasicTest {
     }
 
     public function tearDown() {
-	$mock = $this->getMock('Groups', array('delete'));
-    	$mock->expects($this->any())->method('delete')->will($this->returnValue(null));
-    	
-        $this->assertGreaterThan(0, $this->id, 'Cannot find a group id to test with. Did setUP fail?');
-        $group = $mock->delete();
+		// Test for Delete Method
+    	$this->mock->expects($this->any())->method('delete')->will($this->returnValue(null));
+    	$group = $this->mock->delete($this->group->group->id);
+
         $this->assertEquals(null, $group, 'Does not return a null object');
     }
 
