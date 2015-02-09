@@ -106,25 +106,31 @@ class UsersTest extends BasicTest {
             'verified' => true
         ));
         $mergeFrom2 = $user_m->user->id;
+        $mergeToEmail = 'mergeto.'.$this->number.'@example.org';
         $user_m = $this->client->users()->create(array(
             'name' => 'Merge To'.$this->number,
-            'email' => 'mergeto.'.$this->number.'@example.org',
+            'email' => $mergeToEmail,
             'role' => 'end-user',
             'verified' => true
         ));
         $mergeTo = $user_m->user->id;
 
         // set password for mergeFrom1 to be able to authenticate as end-user
-        $password = "aBc12345";
-        $user = $this->client->user($mergeFrom1)->setPassword(array('password' => $password));
+        $passwordFrom1 = "aBc12345";
+        $user = $this->client->user($mergeFrom1)->setPassword(array('password' => $passwordFrom1));
+        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+
+        // set password for mergeTo to be able to merge 'me' to
+        $passwordMergeTo = "abC12345";
+        $user = $this->client->user($mergeTo)->setPassword(array('password' => $passwordMergeTo));
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
 
         $username = $mergeFrom1Email;
         $client_end_user = new Client($this->subdomain, $username);
-        $client_end_user->setAuth('password', $password);
+        $client_end_user->setAuth('password', $passwordFrom1);
 
         // test merge 'me' to user 'mergeTo'
-        $user = $client_end_user->user()->merge(['id' => $mergeTo]);
+        $user = $client_end_user->user()->merge(['email' => $mergeToEmail, 'password' => $passwordMergeTo]);
         $this->assertEquals(true, is_object($user), 'Should return an object');
         $this->assertEquals(true, is_object($user->user), 'Should return an object called "user"');
         $this->assertEquals($mergeTo, $user->user->id, 'Returned user should be the one merged to.');

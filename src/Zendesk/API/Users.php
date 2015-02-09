@@ -136,16 +136,19 @@ class Users extends ClientAbstract {
      *
      * @return mixed
      */
-    public function merge(array $params = array()) {
-        if($this->lastId != null) {
+    public function merge(array $params = array())
+    {
+        if ($this->lastId != null) {
             $myId = $this->lastId;
             $this->lastId = null;
         }
-        if(!$this->hasKeys($params, array('id'))) {
-            throw new MissingParametersException(__METHOD__, array('id'));
+        $mergeMe = $myId == null;
+        $hasKeys = $mergeMe ? array('email', 'password') : array('id');
+        if ($myId != null && !$this->hasKeys($params, $hasKeys)) {
+            throw new MissingParametersException(__METHOD__, $hasKeys);
         }
-        $endPoint = Http::prepare('users/'. ($myId != null ? $myId : 'me') . '/merge.json');
-        $response = Http::send($this->client, $endPoint, array (self::OBJ_NAME => $params), 'PUT');
+        $endPoint = Http::prepare('users/' . ($mergeMe ? 'me' : $myId) . '/merge.json');
+        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'PUT');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
