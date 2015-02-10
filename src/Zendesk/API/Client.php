@@ -35,6 +35,7 @@ namespace Zendesk\API;
  * @method Automations automations()
  * @method JobStatuses jobStatuses()
  * @method Macros macros()
+ * @method DynamicContent dynamicContent()
  * @method OAuthClients oauthClients()
  * @method OAuthTokens oauthTokens()
  * @method OrganizationFields organizationFields()
@@ -168,6 +169,10 @@ class Client {
      */
     protected $macros;
     /**
+     * @var DynamicContent
+     */
+    protected $dynamicContent;
+    /**
      * @var OAuthClients
      */
     protected $oauthClients;
@@ -255,6 +260,7 @@ class Client {
         $this->automations = new Automations($this);
         $this->jobStatuses = new JobStatuses($this);
         $this->macros = new Macros($this);
+        $this->dynamicContent = new DynamicContent($this);
         $this->oauthClients = new OAuthClients($this);
         $this->oauthTokens = new OAuthTokens($this);
         $this->organizationFields = new OrganizationFields($this);
@@ -335,11 +341,13 @@ class Client {
      * @param mixed $lastRequestHeaders
      * @param mixed $lastResponseCode
      * @param string $lastResponseHeaders
+     * @param mixed $lastResponseError
      */
-    public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders) {
+    public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError) {
         $this->debug->lastRequestHeaders = $lastRequestHeaders;
         $this->debug->lastResponseCode = $lastResponseCode;
         $this->debug->lastResponseHeaders = $lastResponseHeaders;
+        $this->debug->lastResponseError = $lastResponseError;
     }
 
     /**

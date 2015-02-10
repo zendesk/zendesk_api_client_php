@@ -108,15 +108,17 @@ class Http {
         }
         $headerSize   = $curl->getinfo(CURLINFO_HEADER_SIZE);
         $responseBody = substr($response, $headerSize);
+        $responseObject = json_decode($responseBody);
         $client->setDebug(
             $curl->getinfo(CURLINFO_HEADER_OUT),
             $curl->getinfo(CURLINFO_HTTP_CODE),
-            substr($response, 0, $headerSize)
+            substr($response, 0, $headerSize),
+            (isset($responseObject->error) ? $responseObject : null)
         );
         $curl->close();
-        self::$curl = NULL;
+        self::$curl = null;
 
-        return json_decode($responseBody);
+        return $responseObject;
     }
 
     /**
@@ -162,14 +164,16 @@ class Http {
         }
         $headerSize = $curl->getinfo(CURLINFO_HEADER_SIZE);
         $responseBody = substr($response, $headerSize);
+        $responseObject = json_decode($responseBody);
         $client->setDebug(
             $curl->getinfo(CURLINFO_HEADER_OUT),
             $curl->getinfo(CURLINFO_HTTP_CODE),
-            substr($response, 0, $headerSize)
+            substr($response, 0, $headerSize),
+            (isset($responseObject->error) ? $responseObject : null)
         );
         $curl->close();
-        self::$curl = NULL;
+        self::$curl = null;
 
-        return json_decode($responseBody);
+        return $responseObject;
     }
 }
