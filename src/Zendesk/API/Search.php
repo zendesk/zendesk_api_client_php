@@ -24,8 +24,6 @@ class Search extends ClientAbstract {
             throw new MissingParametersException(__METHOD__, array('query'));
         }
         $endPoint = Http::prepare('search.json', null, $params);
-        // the '+' combining different search params breaks the search, should be replaced by space...
-        $params['query'] = str_replace('+', ' ', $params['query']);
         $response = Http::send($this->client, $endPoint, $params, 'GET', 'application/json', FALSE);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
