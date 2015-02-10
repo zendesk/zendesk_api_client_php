@@ -142,9 +142,9 @@ class Users extends ClientAbstract {
             $myId = $this->lastId;
             $this->lastId = null;
         }
-        $mergeMe = $myId == null;
+        $mergeMe = !isset($myId) || is_null($myId);
         $hasKeys = $mergeMe ? array('email', 'password') : array('id');
-        if ($myId != null && !$this->hasKeys($params, $hasKeys)) {
+        if (!$this->hasKeys($params, $hasKeys)) {
             throw new MissingParametersException(__METHOD__, $hasKeys);
         }
         $endPoint = Http::prepare('users/' . ($mergeMe ? 'me' : $myId) . '/merge.json');

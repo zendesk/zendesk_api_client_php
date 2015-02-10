@@ -130,7 +130,7 @@ class UsersTest extends BasicTest {
         $client_end_user->setAuth('password', $passwordFrom1);
 
         // test merge 'me' to user 'mergeTo'
-        $user = $client_end_user->user()->merge(['email' => $mergeToEmail, 'password' => $passwordMergeTo]);
+        $user = $client_end_user->users()->merge(['email' => $mergeToEmail, 'password' => $passwordMergeTo]);
         $this->assertEquals(true, is_object($user), 'Should return an object');
         $this->assertEquals(true, is_object($user->user), 'Should return an object called "user"');
         $this->assertEquals($mergeTo, $user->user->id, 'Returned user should be the one merged to.');
