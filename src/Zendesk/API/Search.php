@@ -24,7 +24,7 @@ class Search extends ClientAbstract {
             throw new MissingParametersException(__METHOD__, array('query'));
         }
         $endPoint = Http::prepare('search.json', null, $params);
-        $response = Http::send($this->client, $endPoint, 'query=' . $params['query'], 'GET', 'application/json', FALSE);
+        $response = Http::send($this->client, $endPoint, $params, 'GET', 'application/json', FALSE);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
