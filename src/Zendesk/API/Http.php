@@ -61,7 +61,7 @@ class Http {
 
         if ($method === 'POST') {
             $curl->setopt(CURLOPT_POST, true);
-
+            
         } else if ($method === 'PUT') {
             $curl->setopt(CURLOPT_CUSTOMREQUEST, 'PUT');
 
@@ -81,6 +81,14 @@ class Http {
 
         /* DO NOT SET CONTENT TYPE IF UPLOADING */
         if (!isset($json['uploaded_data'])) {
+            if (isset($json['filename'])) {
+                $filename = $json['filename'];
+                $file = fopen($filename, 'r');
+                $size = filesize($filename);
+                $fileData = fread($file, $size);
+                $json = $fileData;
+                $contentType = '';
+            }            
             $httpHeader[] = 'Content-Type: '.$contentType;
         } else {
             $contentType = '';
@@ -177,3 +185,4 @@ class Http {
         return $responseObject;
     }
 }
+
