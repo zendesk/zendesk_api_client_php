@@ -32,7 +32,7 @@ class GroupMembershipsTest extends BasicTest {
         $this->find_membership = $find_membership_mock_object;
     }
 
-   public function testFindAll() {
+    public function testFindAll() {
         // Test for FindAll Method - optionally accepts User_id, Group_id, or assignable as parameter
         $this->mock->expects($this->any())->method('findAll')->withConsecutive(array(),array($this->greaterThan(0)), array($this->greaterThan(0)), array($this->arrayHasKey('assignable')))->will($this->returnValue($this->group_memberships));
         
