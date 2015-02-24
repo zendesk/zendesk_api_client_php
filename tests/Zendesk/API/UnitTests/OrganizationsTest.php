@@ -16,11 +16,8 @@ class OrganizationsTest extends BasicTest {
         $organization_mock_object->organization->name = 'New Organization';
         $organization_mock_object->organization->id = 123456;
         $organization_mock_object->organization_related = new \stdClass();
-<<<<<<< HEAD
         $organization_mock_object->job_status = new \stdClass();
         $organization_mock_object->job_status->id = 123456;
-=======
->>>>>>> 66b8d9d683771c63fd73c9966ff646a70ce94b0e
         $organization_mock_object->organizations = Array($organization_mock_object->organization, clone $organization_mock_object->organization);
                 
         // Set Variables that will be used in other tests
