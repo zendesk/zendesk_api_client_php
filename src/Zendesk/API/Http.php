@@ -87,8 +87,14 @@ class Http {
                 $size = filesize($filename);
                 $fileData = fread($file, $size);
                 $json = $fileData;
-                $contentType = '';
-            }            
+                $curl->setopt(CURLOPT_INFILE, $file);
+                $curl->setopt(CURLOPT_INFILESIZE, $size);
+            }
+            else if (isset($json['body'])){
+                $curl->setopt(CURLOPT_INFILESIZE, strlen($json['body']));
+                $json = $json['body'];
+            }
+
             $httpHeader[] = 'Content-Type: '.$contentType;
         } else {
             $contentType = '';
