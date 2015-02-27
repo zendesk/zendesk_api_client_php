@@ -87,8 +87,7 @@ class Http {
                 $size = filesize($filename);
                 $fileData = fread($file, $size);
                 $json = $fileData;
-                $contentType = '';
-            }            
+            }
             $httpHeader[] = 'Content-Type: '.$contentType;
         } else {
             $contentType = '';
