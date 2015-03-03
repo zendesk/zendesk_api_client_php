@@ -377,8 +377,10 @@ class Tickets extends ClientAbstract {
         return $response;
     }
 
+
+
     /**
-     * List problems for a ticket
+     * List all problem tickets
      *
      * @param array $params
      *
@@ -388,16 +390,8 @@ class Tickets extends ClientAbstract {
      *
      * @return mixed
      */
-    public function problems(array $params) {
-        if($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
-        if(!$this->hasKeys($params, array('id'))) {
-            throw new MissingParametersException(__METHOD__, array('id'));
-        }
-        $id = $params['id'];
-        $endPoint = Http::prepare('tickets/'.$id.'/problems.json', $this->client->getSideload($params), $params);
+    public function problems($params) {
+        $endPoint = Http::prepare('problems.json', $this->client->getSideload($params), $params);
         $response = Http::send($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
