@@ -390,7 +390,7 @@ class Tickets extends ClientAbstract {
      *
      * @return mixed
      */
-    public function problems($params) {
+    public function problems(array $params) {
         $endPoint = Http::prepare('problems.json', $this->client->getSideload($params), $params);
         $response = Http::send($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
