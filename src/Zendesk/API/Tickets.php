@@ -484,6 +484,55 @@ class Tickets extends ClientAbstract {
     }
 
     /**
+     * Incremental ticket updates with a supplied start_time. The output differs
+     *  from /exports in that it uses the same structure for tickets as the
+     *  original ticket repository, instead of a flat output.
+     * 
+     * @link https://developer.zendesk.com/rest_api/docs/core/incremental_export
+     *
+     * @param array $params
+     *  int start_time Timestamp indicating the minimum updated_at of the tickets to retrieve.
+     *  
+     * @param boolean $sample Retrieve just a sample (for debugging/testing).
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function incremental(array $params, $sample = false)
+    {
+        // Sanitize and validate params.
+        /* @var $allowedParams array [param name => required] */
+        $allowedParams = array(
+            'start_time' => true
+        );
+        foreach ($allowedParams as $paramName => $paramRequired) {
+            if($paramRequired && !isset($params[$paramName])) {
+                throw new MissingParametersException(__METHOD__, array($paramName));
+            }
+        }
+        $params = array_intersect_key($params, $allowedParams);
+        
+        // Build endpoint.
+        $path = 'incremental/' . static::OBJ_NAME_PLURAL . ($sample ? '/sample' : '') . '.json';
+        $queryString = http_build_query($params);
+        $endPoint = Http::prepare($path . '?' . $queryString);
+        
+        // Send request.
+        $response = Http::send($this->client, $endPoint);
+        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
+            throw new ResponseException(__METHOD__);
+        }
+        
+        // Clear any sideloads.
+        $this->client->setSideload(null);
+        
+        return $response;
+    }
+
+    /**
      * Generic method to object getter. Since all objects are protected, this method
      * exposes a getter function with the same name as the protected variable, for example
      * $client->tickets can be referenced by $client->tickets()
