@@ -48,6 +48,7 @@ namespace Zendesk\API;
  * @method Triggers triggers()
  * @method Voice voice()
  * @method Locales locales()
+ * @method PushNotificationDevices push_notification_devices()
  */
 class Client {
 
@@ -225,6 +226,10 @@ class Client {
      */
     protected $locales;
     /**
+     * @var PushNotificationDevices
+     */
+    protected $push_notification_devices;
+    /**
      * @var Debug
      */
     protected $debug;
@@ -274,6 +279,7 @@ class Client {
         $this->triggers = new Triggers($this);
         $this->voice = new Voice($this);
         $this->locales = new Locales($this);
+        $this->push_notification_devices = new PushNotificationDevices($this);
     }
 
     /**
