@@ -80,7 +80,7 @@ class OrganizationsTest extends BasicTest {
     }
 
     public function testIncremental() {
-        $organizations = $this->client->organizations()->export(array('start_time' => '1332034771'));
+        $organizations = $this->client->organizations()->incremental(array('start_time' => '1332034771'));
         $this->assertEquals(is_object($organizations), true, 'Should return an object');
         $this->assertEquals(is_array($organizations->organizations), true, 'Should return an object containing an array called "organizations"');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
