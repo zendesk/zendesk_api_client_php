@@ -17,7 +17,7 @@ class PushNotificationDevices extends ClientAbstract {
     }
 
     /**
-     * Delete a ticket or series of tickets
+     * Unregister the mobile devices that are receiving push notifications
      *
      * @param array $devices
      *
