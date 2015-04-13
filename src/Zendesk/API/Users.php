@@ -207,6 +207,57 @@ class Users extends ClientAbstract {
     }
 
     /**
+     * Update multiple users
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+
+    public function updateMany(array $params) {
+        if(!$this->hasKeys($params, array('ids'))) {
+            throw new MissingParametersException(__METHOD__, array('ids'));
+        }
+        $ids = $params['ids'];
+        unset($params['ids']);
+        $endPoint = Http::prepare('users/update_many.json?ids='.$ids);            
+        $response = Http::send($this->client, $endPoint, array (self::OBJ_NAME => $params), 'PUT');
+        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
+            throw new ResponseException(__METHOD__);
+        }
+        $this->client->setSideload(null);
+        return $response;
+    }
+
+    /**
+     * Update multiple individual users
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+
+    public function updateManyIndividualUsers(array $params) {
+        $endPoint = Http::prepare('users/update_many.json');
+        $response = Http::send($this->client, $endPoint, array (self::OBJ_NAME_PLURAL => $params), 'PUT');
+
+        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
+            throw new ResponseException(__METHOD__);
+        }
+        $this->client->setSideload(null);
+        return $response;
+    }
+
+
+    /**
      * Suspend a user
      *
      * @param array $params
