@@ -24,5 +24,21 @@ class Debug {
      * @var mixed
      */
     public $lastResponseError;
-
+    
+    /**
+     * @return string 
+     */
+    public function __toString()
+    {
+    	$lastError = $this->lastResponseError;
+    	if (! is_string($lastError)) {
+    		$lastError = json_encode($lastError);
+    	} 
+    	$output = 'LastResponseCode: ' . $this->lastResponseCode
+    		. ', LastResponseError: ' . $lastError 
+    		. ', LastResponseHeaders: ' . $this->lastResponseHeaders
+    		. ', LastRequestHeaders: ' . $this->lastRequestHeaders;
+    	
+    	return $output;
+    }
 }
