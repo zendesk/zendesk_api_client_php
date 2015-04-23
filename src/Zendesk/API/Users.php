@@ -78,6 +78,38 @@ class Users extends ClientAbstract {
     }
 
     /**
+     * Find users by ids or external_ids
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function showMany(array $params = array()) {
+        if (isset($params['ids']) && isset($params['external_ids'])) {
+            throw new \Exception('Only one parameter of ids or external_ids is allowed');
+        } elseif (!isset($params['ids']) && !isset($params['external_ids'])) {
+            throw new \Exception('Missing parameters ids or external_ids');
+        } elseif (isset($params['ids']) && is_array($params['ids'])) {
+            $path = 'users/show_many.json?ids='.implode(',', $params['ids']);
+        } elseif (isset($params['external_ids']) && is_array($params['external_ids'])) {
+            $path = 'users/show_many.json?external_ids='.implode(',', $params['external_ids']);
+        } else {
+            throw new \Exception('Parameters ids or external_ids must be arrays');
+        }
+
+        $endPoint = Http::prepare($path, $this->client->getSideload($params));
+        $response = Http::send($this->client, $endPoint);
+        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
+            throw new ResponseException(__METHOD__);
+        }
+        $this->client->setSideload(null);
+        return $response;
+    }
+
+    /**
      * Get related information about the user
      *
      * @param array $params
