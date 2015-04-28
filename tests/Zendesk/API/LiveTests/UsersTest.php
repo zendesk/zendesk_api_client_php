@@ -181,6 +181,34 @@ class UsersTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
+    public function testUpdateMany() {
+        $jobStatus = $this->client->users()->updateMany(array(
+            'ids' => $this->id.','.$this->id_s,
+            'phone' => '1234567890'
+            ));
+        $this->assertEquals(is_object($jobStatus), true, 'Should return an array');
+        $this->assertEquals(is_object($jobStatus->job_status), true, 'Should return an object called "job_status"');
+        $this->assertGreaterThan(0, $jobStatus->job_status->id, 'Returns a non-numeric id for users[0]');
+        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'CreateMany does not return HTTP code 200');
+    }
+
+   public function testUpdateManyIndividualUsers() {
+        $jobStatus = $this->client->users()->updateManyIndividualUsers(array(
+            array( 
+                'id' => $this->id,
+                'phone' => '1234567890'
+            ),
+            array(
+                'id' => $this->id_s,
+                'phone' => '0987654321'
+            )
+            ));
+        $this->assertEquals(is_object($jobStatus), true, 'Should return an array');
+        $this->assertEquals(is_object($jobStatus->job_status), true, 'Should return an object called "job_status"');
+        $this->assertGreaterThan(0, $jobStatus->job_status->id, 'Returns a non-numeric id for users[0]');
+        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'CreateMany does not return HTTP code 200');
+    }
+
     public function testSuspend() {
         $user = $this->client->user($this->id)->suspend();
         $this->assertEquals(is_object($user), true, 'Should return an object');
