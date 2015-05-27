@@ -17,7 +17,7 @@ class UsersTest extends BasicTest {
         parent::authTokenTest();
     }
 
-    protected $id, $id_s, $ticket_id, $number;
+    protected $id, $id_s, $ticket_id, $number, $external_id, $external_id_s;
 
     public function setUp() {
         $this->number = strval(time());
@@ -26,9 +26,11 @@ class UsersTest extends BasicTest {
             'name' => 'Roger Wilco'.$this->number,
             'email' => 'roge'.$this->number.'@example.org',
             'role' => 'agent',
-            'verified' => true
+            'verified' => true,
+            'external_id' => '3000'
         ));
         $this->id = $user->user->id;
+        $this->external_id = $user->user->external_id;
 
         $testTicket = array(
             'subject' => 'User Test',
@@ -46,9 +48,11 @@ class UsersTest extends BasicTest {
             'name' => 'Roger Wilco2'.$this->number,
             'email' => 'roge2'.$this->number.'@example.org',
             'role' => 'agent',
-            'verified' => true
+            'verified' => true,
+            'external_id' => '3001'
         ));
         $this->id_s = $user_s->user->id;
+        $this->external_id_s = $user_s->user->external_id;
 
         $this->assertEquals(is_object($user), true, 'Should return an object');
         $this->assertEquals(is_object($user->user), true, 'Should return an object called "user"');
@@ -76,6 +80,20 @@ class UsersTest extends BasicTest {
 
     public function testFindMultiple() {
         $users = $this->client->users(array($this->id, $this->id_s))->find();
+        $this->assertEquals(is_object($users), true, 'Should return an object');
+        $this->assertEquals(is_array($users->users), true, 'Should return an array called "users"');
+        $this->assertEquals(is_object($users->users[0]), true, 'Should return an object as first "users" array element');
+    }
+
+    public function testShowManyUsingIds() {
+        $users = $this->client->users()->showMany(array('ids' => array($this->id, $this->id_s)));
+        $this->assertEquals(is_object($users), true, 'Should return an object');
+        $this->assertEquals(is_array($users->users), true, 'Should return an array called "users"');
+        $this->assertEquals(is_object($users->users[0]), true, 'Should return an object as first "users" array element');
+    }
+
+    public function testShowManyUsingExternalIds() {
+        $users = $this->client->users()->showMany(array('external_ids' => array($this->external_id, $this->external_id_s)));
         $this->assertEquals(is_object($users), true, 'Should return an object');
         $this->assertEquals(is_array($users->users), true, 'Should return an array called "users"');
         $this->assertEquals(is_object($users->users[0]), true, 'Should return an object as first "users" array element');
