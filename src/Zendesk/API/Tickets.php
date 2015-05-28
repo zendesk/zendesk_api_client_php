@@ -530,6 +530,15 @@ class Tickets extends ClientAbstract {
     /**
      * @param array $params
      *
+     * @throws ResponseException
+     *
+     * @return mixed
+     */
+    public function importMany(array $params) { return $this->import->importMany($params); }
+
+    /**
+     * @param array $params
+     *
      * @throws CustomException
      * @throws MissingParametersException
      * @throws ResponseException
