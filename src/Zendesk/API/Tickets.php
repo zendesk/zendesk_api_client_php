@@ -454,6 +454,30 @@ class Tickets extends ClientAbstract {
     }
 
     /**
+     * Incremental ticket exports with a supplied start_time
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function incremental(array $params) {
+        if (!$params['start_time']) {
+            throw new MissingParametersException(__METHOD__, array('start_time'));
+        }
+        $endPoint = Http::prepare('incremental/tickets.json?start_time=' . $params['start_time']);
+        $response = Http::send($this->client, $endPoint);
+        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
+            throw new ResponseException(__METHOD__);
+        }
+        $this->client->setSideload(null);
+        return $response;
+    }
+
+    /**
      * For testing of incremental tickets only
      *
      * @param array $params
