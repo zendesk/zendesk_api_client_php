@@ -7,17 +7,21 @@ use Zendesk\API\Client;
 /**
  * Autocomplete test class
  */
-class AutocompleteTest extends BasicTest {
+class AutocompleteTest extends BasicTest
+{
 
-    public function testCredentials() {
+    public function testCredentials()
+    {
         parent::credentialsTest();
     }
 
-    public function testAuthToken() {
+    public function testAuthToken()
+    {
         parent::authTokenTest();
     }
 
-    public function testTags() {
+    public function testTags()
+    {
         $tags = $this->client->autocomplete()->tags(array(
             'name' => 'att'
         ));

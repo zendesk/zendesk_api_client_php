@@ -7,19 +7,23 @@ use Zendesk\API\Client;
 /**
  * Triggers test class
  */
-class TriggersTest extends BasicTest {
+class TriggersTest extends BasicTest
+{
 
-    public function testCredentials() {
+    public function testCredentials()
+    {
         parent::credentialsTest();
     }
 
-    public function testAuthToken() {
+    public function testAuthToken()
+    {
         parent::authTokenTest();
     }
 
     protected $id, $group_id;
 
-    public function setUp() {
+    public function setUp()
+    {
         // Prep:
         $group = $this->client->groups()->create(array(
             'name' => 'New Group'
@@ -55,30 +59,36 @@ class TriggersTest extends BasicTest {
         $this->id = $trigger->trigger->id;
     }
 
-    public function testAll() {
+    public function testAll()
+    {
         $triggers = $this->client->triggers()->findAll();
         $this->assertEquals(is_object($triggers), true, 'Should return an object');
-        $this->assertEquals(is_array($triggers->triggers), true, 'Should return an object containing an array called "triggers"');
+        $this->assertEquals(is_array($triggers->triggers), true,
+            'Should return an object containing an array called "triggers"');
         $this->assertGreaterThan(0, $triggers->triggers[0]->id, 'Returns a non-numeric id for triggers[0]');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testActive() {
+    public function testActive()
+    {
         $triggers = $this->client->triggers()->active();
         $this->assertEquals(is_object($triggers), true, 'Should return an object');
-        $this->assertEquals(is_array($triggers->triggers), true, 'Should return an object containing an array called "triggers"');
+        $this->assertEquals(is_array($triggers->triggers), true,
+            'Should return an object containing an array called "triggers"');
         $this->assertGreaterThan(0, $triggers->triggers[0]->id, 'Returns a non-numeric id for triggers[0]');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testFind() {
+    public function testFind()
+    {
         $trigger = $this->client->trigger($this->id)->find();
         $this->assertEquals(is_object($trigger), true, 'Should return an object');
         $this->assertGreaterThan(0, $trigger->trigger->id, 'Returns a non-numeric id for trigger');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testUpdate() {
+    public function testUpdate()
+    {
         $trigger = $this->client->trigger($this->id)->update(array(
             'title' => 'Roger Wilco II'
         ));
@@ -89,10 +99,12 @@ class TriggersTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         $this->assertGreaterThan(0, $this->id, 'Cannot find a trigger id to test with. Did setUp fail?');
         $result = $this->client->trigger($this->id)->delete();
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Delete trigger does not return HTTP code 200');
+        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200',
+            'Delete trigger does not return HTTP code 200');
         // Clean-up
         $result = $this->client->group($this->group_id)->delete();
     }

@@ -6,7 +6,8 @@ namespace Zendesk\API;
  * The Search class exposes methods defined in http://developer.zendesk.com/documentation/rest_api/search.html
  * @package Zendesk\API
  */
-class Search extends ClientAbstract {
+class Search extends ClientAbstract
+{
 
     /**
      * Perform a search
@@ -19,16 +20,18 @@ class Search extends ClientAbstract {
      *
      * @return mixed
      */
-    public function performSearch(array $params) {
-        if(!$this->hasKeys($params, array('query'))) {
+    public function performSearch(array $params)
+    {
+        if (!$this->hasKeys($params, array('query'))) {
             throw new MissingParametersException(__METHOD__, array('query'));
         }
         $endPoint = Http::prepare('search.json', null, $params);
-        $response = Http::send($this->client, $endPoint, $params, 'GET', 'application/json', FALSE);
+        $response = Http::send($this->client, $endPoint, $params, 'GET', 'application/json', false);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -43,8 +46,9 @@ class Search extends ClientAbstract {
      *
      * @return mixed
      */
-    public function anonymousSearch(array $params) {
-        if(!$this->hasKeys($params, array('query'))) {
+    public function anonymousSearch(array $params)
+    {
+        if (!$this->hasKeys($params, array('query'))) {
             throw new MissingParametersException(__METHOD__, array('query'));
         }
         $endPoint = Http::prepare('portal/search.json', null, $params);
@@ -53,6 +57,7 @@ class Search extends ClientAbstract {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 

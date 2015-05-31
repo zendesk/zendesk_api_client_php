@@ -8,7 +8,8 @@ namespace Zendesk\API;
  *
  * @package Zendesk\API
  */
-class Users extends ClientAbstract {
+class Users extends ClientAbstract
+{
 
     const OBJ_NAME = 'user';
     const OBJ_NAME_PLURAL = 'users';
@@ -21,7 +22,8 @@ class Users extends ClientAbstract {
     /**
      * @param Client $client
      */
-    public function __construct(Client $client) {
+    public function __construct(Client $client)
+    {
         parent::__construct($client);
         $this->identities = new UserIdentities($client);
     }
@@ -36,16 +38,20 @@ class Users extends ClientAbstract {
      *
      * @return mixed
      */
-    public function findAll(array $params = array()) {
+    public function findAll(array $params = array())
+    {
         $endPoint = Http::prepare(
-                (isset($params['organization_id']) ? 'organizations/'.$params['organization_id'].'/users' :
-                (isset($params['group_id']) ? 'groups/'.$params['group_id'].'/users' : 'users')
-            ).'.json'.(isset($params['role']) ? (is_array($params['role']) ? '?role[]='.implode('&role[]=', $params['role']) : '?role='.$params['role']) : '').(isset($params['permission_set']) ? (isset($params['role']) ? '&' : '?').'permission_set='.$params['permission_set'] : ''), $this->client->getSideload($params), $params);
+            (isset($params['organization_id']) ? 'organizations/' . $params['organization_id'] . '/users' :
+                (isset($params['group_id']) ? 'groups/' . $params['group_id'] . '/users' : 'users')
+            ) . '.json' . (isset($params['role']) ? (is_array($params['role']) ? '?role[]=' . implode('&role[]=',
+                    $params['role']) : '?role=' . $params['role']) : '') . (isset($params['permission_set']) ? (isset($params['role']) ? '&' : '?') . 'permission_set=' . $params['permission_set'] : ''),
+            $this->client->getSideload($params), $params);
         $response = Http::send($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -60,20 +66,23 @@ class Users extends ClientAbstract {
      *
      * @return mixed
      */
-    public function find(array $params = array()) {
-        if($this->lastId != null) {
+    public function find(array $params = array())
+    {
+        if ($this->lastId != null) {
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
-        if(!$this->hasKeys($params, array('id'))) {
+        if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $endPoint = Http::prepare((is_array($params['id']) ? 'users/show_many.json?ids='.implode(',', $params['id']) : 'users/'.$params['id'].'.json'), $this->client->getSideload($params));
+        $endPoint = Http::prepare((is_array($params['id']) ? 'users/show_many.json?ids=' . implode(',',
+                $params['id']) : 'users/' . $params['id'] . '.json'), $this->client->getSideload($params));
         $response = Http::send($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -87,15 +96,16 @@ class Users extends ClientAbstract {
      *
      * @return mixed
      */
-    public function showMany(array $params = array()) {
+    public function showMany(array $params = array())
+    {
         if (isset($params['ids']) && isset($params['external_ids'])) {
             throw new \Exception('Only one parameter of ids or external_ids is allowed');
         } elseif (!isset($params['ids']) && !isset($params['external_ids'])) {
             throw new \Exception('Missing parameters ids or external_ids');
         } elseif (isset($params['ids']) && is_array($params['ids'])) {
-            $path = 'users/show_many.json?ids='.implode(',', $params['ids']);
+            $path = 'users/show_many.json?ids=' . implode(',', $params['ids']);
         } elseif (isset($params['external_ids']) && is_array($params['external_ids'])) {
-            $path = 'users/show_many.json?external_ids='.implode(',', $params['external_ids']);
+            $path = 'users/show_many.json?external_ids=' . implode(',', $params['external_ids']);
         } else {
             throw new \Exception('Parameters ids or external_ids must be arrays');
         }
@@ -106,6 +116,7 @@ class Users extends ClientAbstract {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -120,20 +131,23 @@ class Users extends ClientAbstract {
      *
      * @return mixed
      */
-    public function related(array $params = array()) {
-        if($this->lastId != null) {
+    public function related(array $params = array())
+    {
+        if ($this->lastId != null) {
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
-        if(!$this->hasKeys($params, array('id'))) {
+        if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $endPoint = Http::prepare('users/'.$params['id'].'/related.json', $this->client->getSideload($params), $params);
+        $endPoint = Http::prepare('users/' . $params['id'] . '/related.json', $this->client->getSideload($params),
+            $params);
         $response = Http::send($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -147,13 +161,15 @@ class Users extends ClientAbstract {
      *
      * @return mixed
      */
-    public function create(array $params) {
+    public function create(array $params)
+    {
         $endPoint = Http::prepare('users.json');
-        $response = Http::send($this->client, $endPoint, array (self::OBJ_NAME => $params), 'POST');
+        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'POST');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -185,6 +201,7 @@ class Users extends ClientAbstract {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -198,13 +215,15 @@ class Users extends ClientAbstract {
      *
      * @return mixed
      */
-    public function createMany(array $params) {
+    public function createMany(array $params)
+    {
         $endPoint = Http::prepare('users/create_many.json');
-        $response = Http::send($this->client, $endPoint, array (self::OBJ_NAME_PLURAL => $params), 'POST');
+        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME_PLURAL => $params), 'POST');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -219,22 +238,24 @@ class Users extends ClientAbstract {
      *
      * @return mixed
      */
-    public function update(array $params) {
-        if($this->lastId != null) {
+    public function update(array $params)
+    {
+        if ($this->lastId != null) {
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
-        if(!$this->hasKeys($params, array('id'))) {
+        if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
         $id = $params['id'];
         unset($params['id']);
-        $endPoint = Http::prepare('users/'.$id.'.json');
-        $response = Http::send($this->client, $endPoint, array (self::OBJ_NAME => $params), 'PUT');
+        $endPoint = Http::prepare('users/' . $id . '.json');
+        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'PUT');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -250,18 +271,20 @@ class Users extends ClientAbstract {
      * @return mixed
      */
 
-    public function updateMany(array $params) {
-        if(!$this->hasKeys($params, array('ids'))) {
+    public function updateMany(array $params)
+    {
+        if (!$this->hasKeys($params, array('ids'))) {
             throw new MissingParametersException(__METHOD__, array('ids'));
         }
         $ids = $params['ids'];
         unset($params['ids']);
-        $endPoint = Http::prepare('users/update_many.json?ids='.$ids);            
-        $response = Http::send($this->client, $endPoint, array (self::OBJ_NAME => $params), 'PUT');
+        $endPoint = Http::prepare('users/update_many.json?ids=' . $ids);
+        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'PUT');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -277,14 +300,16 @@ class Users extends ClientAbstract {
      * @return mixed
      */
 
-    public function updateManyIndividualUsers(array $params) {
+    public function updateManyIndividualUsers(array $params)
+    {
         $endPoint = Http::prepare('users/update_many.json');
-        $response = Http::send($this->client, $endPoint, array (self::OBJ_NAME_PLURAL => $params), 'PUT');
+        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME_PLURAL => $params), 'PUT');
 
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -299,15 +324,17 @@ class Users extends ClientAbstract {
      *
      * @return mixed
      */
-    public function suspend(array $params = array()) {
-        if($this->lastId != null) {
+    public function suspend(array $params = array())
+    {
+        if ($this->lastId != null) {
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
-        if(!$this->hasKeys($params, array('id'))) {
+        if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
         $params['suspended'] = true;
+
         return $this->update($params);
     }
 
@@ -322,21 +349,23 @@ class Users extends ClientAbstract {
      *
      * @return bool
      */
-    public function delete(array $params = array()) {
-        if($this->lastId != null) {
+    public function delete(array $params = array())
+    {
+        if ($this->lastId != null) {
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
-        if(!$this->hasKeys($params, array('id'))) {
+        if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
         $id = $params['id'];
-        $endPoint = Http::prepare('users/'.$id.'.json');
+        $endPoint = Http::prepare('users/' . $id . '.json');
         $response = Http::send($this->client, $endPoint, null, 'DELETE');
         if ($this->client->getDebug()->lastResponseCode != 200) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return true;
     }
 
@@ -350,13 +379,16 @@ class Users extends ClientAbstract {
      *
      * @return mixed
      */
-    public function search(array $params) {
-        $endPoint = Http::prepare('users/search.json?'.http_build_query($params), $this->client->getSideload($params), $params);
+    public function search(array $params)
+    {
+        $endPoint = Http::prepare('users/search.json?' . http_build_query($params), $this->client->getSideload($params),
+            $params);
         $response = Http::send($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -370,13 +402,15 @@ class Users extends ClientAbstract {
      *
      * @return mixed
      */
-    public function autocomplete(array $params) {
-        $endPoint = Http::prepare('users/autocomplete.json?'.http_build_query($params));
+    public function autocomplete(array $params)
+    {
+        $endPoint = Http::prepare('users/autocomplete.json?' . http_build_query($params));
         $response = Http::send($this->client, $endPoint, null, 'POST');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -392,29 +426,34 @@ class Users extends ClientAbstract {
      *
      * @return mixed
      */
-    public function updateProfileImage(array $params) {
-        if($this->lastId != null) {
+    public function updateProfileImage(array $params)
+    {
+        if ($this->lastId != null) {
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
-        if(!$this->hasKeys($params, array('id', 'file'))) {
+        if (!$this->hasKeys($params, array('id', 'file'))) {
             throw new MissingParametersException(__METHOD__, array('id', 'file'));
         }
-        if(!file_exists($params['file'])) {
-            throw new CustomException('File '.$params['file'].' could not be found in '.__METHOD__);
+        if (!file_exists($params['file'])) {
+            throw new CustomException('File ' . $params['file'] . ' could not be found in ' . __METHOD__);
         }
         $id = $params['id'];
         unset($params['id']);
-        $endPoint = Http::prepare('users/'.$id.'.json');
+        $endPoint = Http::prepare('users/' . $id . '.json');
         if (function_exists('curl_file_create')) {
-            $response = Http::send($this->client, $endPoint, $params['file'], 'PUT', (isset($params['type']) ? $params['type'] : 'application/binary'));
-        }else {
-            $response = Http::send($this->client, $endPoint, array('user[photo][uploaded_data]' => '@'.$params['file']), 'PUT', (isset($params['type']) ? $params['type'] : 'application/binary'));
+            $response = Http::send($this->client, $endPoint, $params['file'], 'PUT',
+                (isset($params['type']) ? $params['type'] : 'application/binary'));
+        } else {
+            $response = Http::send($this->client, $endPoint,
+                array('user[photo][uploaded_data]' => '@' . $params['file']), 'PUT',
+                (isset($params['type']) ? $params['type'] : 'application/binary'));
         }
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -428,8 +467,10 @@ class Users extends ClientAbstract {
      *
      * @return mixed
      */
-    public function me(array $params = array()) {
+    public function me(array $params = array())
+    {
         $params['id'] = 'me';
+
         return $this->find($params);
     }
 
@@ -444,22 +485,24 @@ class Users extends ClientAbstract {
      *
      * @return mixed
      */
-    public function setPassword(array $params) {
-        if($this->lastId != null) {
+    public function setPassword(array $params)
+    {
+        if ($this->lastId != null) {
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
-        if(!$this->hasKeys($params, array('id', 'password'))) {
+        if (!$this->hasKeys($params, array('id', 'password'))) {
             throw new MissingParametersException(__METHOD__, array('id', 'password'));
         }
         $id = $params['id'];
         unset($params['id']);
-        $endPoint = Http::prepare('users/'.$id.'/password.json');
+        $endPoint = Http::prepare('users/' . $id . '/password.json');
         $response = Http::send($this->client, $endPoint, $params, 'POST');
         if ($this->client->getDebug()->lastResponseCode != 200) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -474,22 +517,24 @@ class Users extends ClientAbstract {
      *
      * @return mixed
      */
-    public function changePassword(array $params) {
-        if($this->lastId != null) {
+    public function changePassword(array $params)
+    {
+        if ($this->lastId != null) {
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
-        if(!$this->hasKeys($params, array('id', 'previous_password', 'password'))) {
+        if (!$this->hasKeys($params, array('id', 'previous_password', 'password'))) {
             throw new MissingParametersException(__METHOD__, array('id', 'previous_password', 'password'));
         }
         $id = $params['id'];
         unset($params['id']);
-        $endPoint = Http::prepare('users/'.$id.'/password.json');
+        $endPoint = Http::prepare('users/' . $id . '/password.json');
         $response = Http::send($this->client, $endPoint, $params, 'PUT');
         if ($this->client->getDebug()->lastResponseCode != 200) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -503,55 +548,79 @@ class Users extends ClientAbstract {
      *
      * @return Tickets
      */
-    public function tickets($id = null) { return ($id != null ? $this->client->tickets()->setLastId($id) : $this->client->tickets()); }
+    public function tickets($id = null)
+    {
+        return ($id != null ? $this->client->tickets()->setLastId($id) : $this->client->tickets());
+    }
 
     /**
      * @param int $id
      *
      * @return Tickets
      */
-    public function ticket($id) { return $this->client->tickets()->setLastId($id); }
+    public function ticket($id)
+    {
+        return $this->client->tickets()->setLastId($id);
+    }
 
     /**
      * @param int|null $id
      *
      * @return UserIdentities
      */
-    public function identities($id = null) { return ($id != null ? $this->identities->setLastId($id) : $this->identities); }
+    public function identities($id = null)
+    {
+        return ($id != null ? $this->identities->setLastId($id) : $this->identities);
+    }
 
     /**
      * @param int $id
      *
      * @return UserIdentities
      */
-    public function identity($id) { return $this->identities->setLastId($id); }
+    public function identity($id)
+    {
+        return $this->identities->setLastId($id);
+    }
 
     /**
      * @param int|null $id
      *
      * @return Groups
      */
-    public function groups($id = null) { return ($id != null ? $this->client->groups()->setLastId($id) : $this->client->groups()); }
+    public function groups($id = null)
+    {
+        return ($id != null ? $this->client->groups()->setLastId($id) : $this->client->groups());
+    }
 
     /**
      * @param int $id
      *
      * @return Groups
      */
-    public function group($id) { return $this->client->groups()->setLastId($id); }
+    public function group($id)
+    {
+        return $this->client->groups()->setLastId($id);
+    }
 
     /**
      * @param int|null $id
      *
      * @return GroupMemberships
      */
-    public function groupMemberships($id = null) { return ($id != null ? $this->client->groupMemberships()->setLastId($id) : $this->client->groupMemberships()); }
+    public function groupMemberships($id = null)
+    {
+        return ($id != null ? $this->client->groupMemberships()->setLastId($id) : $this->client->groupMemberships());
+    }
 
     /**
      * @param int $id
      *
      * @return GroupMemberships
      */
-    public function groupMembership($id) { return $this->client->groupMemberships()->setLastId($id); }
+    public function groupMembership($id)
+    {
+        return $this->client->groupMemberships()->setLastId($id);
+    }
 
 }

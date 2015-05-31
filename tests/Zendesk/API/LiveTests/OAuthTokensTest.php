@@ -7,26 +7,31 @@ use Zendesk\API\Client;
 /**
  * OAuthTokens test class
  */
-class OAuthTokensTest extends BasicTest {
+class OAuthTokensTest extends BasicTest
+{
 
-    public function testCredentials() {
+    public function testCredentials()
+    {
         parent::credentialsTest();
     }
 
-    public function testAuthToken() {
+    public function testAuthToken()
+    {
         parent::authTokenTest();
     }
 
     /**
      * @depends testAuthToken
      */
-    public function testAll() {
+    public function testAll()
+    {
         $this->markTestSkipped(
             'Since there\'s no way to create a token programmatically, we can\'t test testAll'
         );
         $tokens = $this->client->oauthTokens()->findAll();
         $this->assertEquals(is_object($tokens), true, 'Should return an object');
-        $this->assertEquals(is_array($tokens->tokens), true, 'Should return an object containing an array called "tokens"');
+        $this->assertEquals(is_array($tokens->tokens), true,
+            'Should return an object containing an array called "tokens"');
         $this->assertGreaterThan(0, $tokens->tokens[0]->id, 'Returns a non-numeric id for tokens[0]');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
@@ -34,7 +39,8 @@ class OAuthTokensTest extends BasicTest {
     /**
      * @depends testAuthToken
      */
-    public function testFind() {
+    public function testFind()
+    {
         $this->markTestSkipped(
             'Since there\'s no way to create a token programmatically, we can\'t test testFind'
         );
@@ -48,7 +54,8 @@ class OAuthTokensTest extends BasicTest {
     /**
      * @depends testAuthToken
      */
-    public function testRevoke() {
+    public function testRevoke()
+    {
         $this->markTestSkipped(
             'Since there\'s no way to create a token programmatically, we can\'t test revoke'
         );

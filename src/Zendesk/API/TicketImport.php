@@ -6,7 +6,8 @@ namespace Zendesk\API;
  * The TicketImport class exposes import methods for tickets
  * @package Zendesk\API
  */
-class TicketImport extends ClientAbstract {
+class TicketImport extends ClientAbstract
+{
 
     const OBJ_NAME = 'ticket';
     const OBJ_NAME_PLURAL = 'tickets';
@@ -21,13 +22,15 @@ class TicketImport extends ClientAbstract {
      *
      * @return mixed
      */
-    public function import(array $params) {
+    public function import(array $params)
+    {
         $endPoint = Http::prepare('imports/tickets.json');
-        $response = Http::send($this->client, $endPoint, array (self::OBJ_NAME => $params), 'POST');
+        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'POST');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
