@@ -170,6 +170,13 @@ class TicketsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
+    public function testIncremental() {
+        $tickets = $this->client->tickets()->incremental(array('start_time' => '1332034771'));
+        $this->assertEquals(is_object($tickets), true, 'Should return an object');
+        $this->assertEquals(is_array($tickets->tickets), true, 'Should return an object containing an array called "tickets"');
+        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+    }
+
     public function testCreateFromTweet() {
         $this->markTestSkipped(
             'Skipped for now because it requires a new (unique) twitter id for each test'

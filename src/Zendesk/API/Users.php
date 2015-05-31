@@ -493,6 +493,29 @@ class Users extends ClientAbstract {
         return $response;
     }
 
+    /**
+     * Incremental user updates with a supplied start_time. 
+     * 
+     * @link https://developer.zendesk.com/rest_api/docs/core/incremental_export
+     *
+     * @param array $params
+     *  int start_time Timestamp indicating the minimum updated_at of the users to retrieve.
+     *  
+     * @param boolean $sample Retrieve just a sample (for debugging/testing).
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     * 
+     * @todo DRY up this copy of {@see Tickets#incremental}
+     *
+     * @return mixed
+     */
+    public function incremental(array $params, $sample = false)
+    {
+        return Tickets::incremental($params, $sample);
+    }
+
     /*
      * Syntactic sugar methods:
      * Handy aliases:

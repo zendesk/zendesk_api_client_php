@@ -19,10 +19,18 @@ class OrganizationsTest extends BasicTest {
         $organization_mock_object->job_status = new \stdClass();
         $organization_mock_object->job_status->id = 123456;
         $organization_mock_object->organizations = Array($organization_mock_object->organization, clone $organization_mock_object->organization);
+        
+        // Create incremental organizations result Mock Object
+        $organization_incr_mock_object = new \stdClass();
+        $organization_incr_mock_object->count = 1;
+        $organization_incr_mock_object->next_page = 'not_null';
+        $organization_incr_mock_object->end_time = time();
+        $organization_incr_mock_object->organizations = array(clone $organization_mock_object->organization);
                 
         // Set Variables that will be used in other tests
-        $this->mock = $this->getMock('Organizations', array('findAll', 'find', 'create', 'createMany', 'update', 'delete', 'autocomplete', 'related', 'search'));
-        $this->organizations = $organization_mock_object;          
+        $this->mock = $this->getMock('Organizations', array('findAll', 'incremental', 'find', 'create', 'createMany', 'update', 'delete', 'autocomplete', 'related', 'search'));
+        $this->organizations = $organization_mock_object;
+        $this->organizations_incr = $organization_incr_mock_object;
     }
 
     public function testFindAll() {
@@ -43,6 +51,21 @@ class OrganizationsTest extends BasicTest {
         $this->assertEquals(is_object($organizations), true, 'Should return an object');
         $this->assertEquals(is_array($organizations->organizations), true, 'Should return an object containing an array called "organizations"');
         $this->assertGreaterThan(0, $organizations->organizations[0]->id, 'Returns a non-numeric id for organizations[0]');
+    }
+    
+    public function testIncremental() {
+        // Test for incremental Method - requires paramters array containing the 'start_time'
+        $this->mock->expects($this->once())
+                    ->method('incremental')
+                    ->with($this->arrayHasKey('start_time'))
+                    ->will($this->returnValue($this->organizations_incr));
+        
+        // Run Test
+        $params = array('start_time' => 1332034771);
+        $pageWithNewOrganizations = $this->mock->incremental($params);
+        $this->assertEquals(is_object($pageWithNewOrganizations), true, 'Should return an object');
+        $this->assertEquals(is_array($pageWithNewOrganizations->organizations), true, 'Should return an object containing an array called "organizations"');
+        $this->assertGreaterThan(0, $pageWithNewOrganizations->organizations[0]->id, 'Returns a non-numeric id for organizations[0]');
     }
 
     public function testFind() {
