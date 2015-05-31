@@ -7,13 +7,16 @@ use Zendesk\API\Client;
 /**
  * VoiceIntegration test class
  */
-class VoiceIntegrationTest extends BasicTest {
+class VoiceIntegrationTest extends BasicTest
+{
 
-    public function testCredentials() {
+    public function testCredentials()
+    {
         parent::credentialsTest();
     }
 
-    public function testAuthToken() {
+    public function testAuthToken()
+    {
         parent::authTokenTest();
     }
 
@@ -33,7 +36,8 @@ class VoiceIntegrationTest extends BasicTest {
     //     $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     // }
 
-    public function testCreateVoiceTicket() {
+    public function testCreateVoiceTicket()
+    {
         $ticket = $this->client->voice()->tickets()->create(array(
             'ticket' => array(
                 'via_id' => 44,
@@ -47,11 +51,13 @@ class VoiceIntegrationTest extends BasicTest {
         $this->assertEquals(is_object($ticket), true, 'Should return an object');
         $this->assertEquals(is_object($ticket->ticket), true, 'Should return an object called "ticket"');
         $this->assertGreaterThan(0, $ticket->ticket->id, 'Returns a non-numeric id for ticket');
-        $this->assertEquals($ticket->ticket->subject, 'My printer is on fire!', 'Subject of test ticket does not match');
+        $this->assertEquals($ticket->ticket->subject, 'My printer is on fire!',
+            'Subject of test ticket does not match');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '201', 'Does not return HTTP code 201');
     }
 
-    public function testCreateVoicemailTicket() {
+    public function testCreateVoicemailTicket()
+    {
         $ticket = $this->client->voice()->tickets()->create(array(
             'ticket' => array(
                 'via_id' => 45,
@@ -71,7 +77,8 @@ class VoiceIntegrationTest extends BasicTest {
         $this->assertEquals(is_object($ticket), true, 'Should return an object');
         $this->assertEquals(is_object($ticket->ticket), true, 'Should return an object called "ticket"');
         $this->assertGreaterThan(0, $ticket->ticket->id, 'Returns a non-numeric id for ticket');
-        $this->assertEquals($ticket->ticket->description, 'Incoming phone call from: +16617480240', 'Description of test voicemail does not match');
+        $this->assertEquals($ticket->ticket->description, 'Incoming phone call from: +16617480240',
+            'Description of test voicemail does not match');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '201', 'Does not return HTTP code 201');
     }
 

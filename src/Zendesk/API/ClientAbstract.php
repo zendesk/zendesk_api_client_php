@@ -21,7 +21,8 @@ abstract class ClientAbstract
     /**
      * @param Client $client
      */
-     public function __construct(Client $client) {
+    public function __construct(Client $client)
+    {
         $this->client = $client;
     }
 
@@ -32,8 +33,10 @@ abstract class ClientAbstract
      *
      * @return $this
      */
-    public function setLastId($id) {
+    public function setLastId($id)
+    {
         $this->lastId = $id;
+
         return $this;
     }
 
@@ -42,7 +45,8 @@ abstract class ClientAbstract
      *
      * @return int
      */
-    public function getLastId() {
+    public function getLastId()
+    {
         return $this->lastId;
     }
 
@@ -54,12 +58,14 @@ abstract class ClientAbstract
      *
      * @return bool
      */
-    public function hasKeys(array $params, array $mandatory) {
-        for($i = 0; $i < count($mandatory); $i++) {
-            if(!array_key_exists($mandatory[$i], $params)) {
+    public function hasKeys(array $params, array $mandatory)
+    {
+        for ($i = 0; $i < count($mandatory); $i++) {
+            if (!array_key_exists($mandatory[$i], $params)) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -71,12 +77,14 @@ abstract class ClientAbstract
      *
      * @return bool
      */
-    public function hasAnyKey(array $params, array $mandatory) {
-        for($i = 0; $i < count($mandatory); $i++) {
-            if(array_key_exists($mandatory[$i], $params)) {
+    public function hasAnyKey(array $params, array $mandatory)
+    {
+        for ($i = 0; $i < count($mandatory); $i++) {
+            if (array_key_exists($mandatory[$i], $params)) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -87,8 +95,10 @@ abstract class ClientAbstract
      *
      * @return $this
      */
-    public function sideload(array $fields = array()) {
+    public function sideload(array $fields = array())
+    {
         $this->client->setSideload($fields);
+
         return $this;
     }
 

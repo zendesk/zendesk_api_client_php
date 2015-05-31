@@ -7,20 +7,24 @@ use Zendesk\API\Client;
 /**
  * JobStatuses test class
  */
-class JobStatusesTest extends BasicTest {
+class JobStatusesTest extends BasicTest
+{
 
-    public function testCredentials() {
+    public function testCredentials()
+    {
         parent::credentialsTest();
     }
 
-    public function testAuthToken() {
+    public function testAuthToken()
+    {
         parent::authTokenTest();
     }
 
-    public function testFind() {
+    public function testFind()
+    {
         $testTicket = array(
             'subject' => 'The quick brown fox jumps over the lazy dog',
-            'comment' => array (
+            'comment' => array(
                 'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
             ),
             'priority' => 'normal'
@@ -28,7 +32,7 @@ class JobStatusesTest extends BasicTest {
         $ticket = $this->client->tickets()->create($testTicket);
         $ticket2 = $this->client->tickets()->create($testTicket);
 
-        $testUpdateTicket['id'] = array($ticket->ticket->id,$ticket2->ticket->id);
+        $testUpdateTicket['id'] = array($ticket->ticket->id, $ticket2->ticket->id);
         $testUpdateTicket['subject'] = 'Updated subject';
         $testUpdateTicket['priority'] = 'urgent';
 

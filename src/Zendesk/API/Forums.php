@@ -6,7 +6,8 @@ namespace Zendesk\API;
  * The Forums class exposes forum information
  * @package Zendesk\API
  */
-class Forums extends ClientAbstract {
+class Forums extends ClientAbstract
+{
 
     const OBJ_NAME = 'forum';
     const OBJ_NAME_PLURAL = 'forums';
@@ -19,7 +20,8 @@ class Forums extends ClientAbstract {
     /**
      * @param Client $client
      */
-    public function __construct(Client $client) {
+    public function __construct(Client $client)
+    {
         parent::__construct($client);
         $this->subscriptions = new ForumSubscriptions($client);
     }
@@ -34,13 +36,16 @@ class Forums extends ClientAbstract {
      *
      * @return mixed
      */
-    public function findAll(array $params = array()) {
-        $endPoint = Http::prepare((isset($params['category_id']) ? 'categories/'.$params['category_id'].'/forums.json' : 'forums.json'), null, $params);
+    public function findAll(array $params = array())
+    {
+        $endPoint = Http::prepare((isset($params['category_id']) ? 'categories/' . $params['category_id'] . '/forums.json' : 'forums.json'),
+            null, $params);
         $response = Http::send($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -55,20 +60,22 @@ class Forums extends ClientAbstract {
      *
      * @return mixed
      */
-    public function find(array $params = array()) {
-        if($this->lastId != null) {
+    public function find(array $params = array())
+    {
+        if ($this->lastId != null) {
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
-        if(!$this->hasKeys($params, array('id'))) {
+        if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $endPoint = Http::prepare('forums/'.$params['id'].'.json');
+        $endPoint = Http::prepare('forums/' . $params['id'] . '.json');
         $response = Http::send($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -82,13 +89,15 @@ class Forums extends ClientAbstract {
      *
      * @return mixed
      */
-    public function create(array $params) {
+    public function create(array $params)
+    {
         $endPoint = Http::prepare('forums.json');
         $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'POST');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -103,22 +112,24 @@ class Forums extends ClientAbstract {
      *
      * @return mixed
      */
-    public function update(array $params) {
-        if($this->lastId != null) {
+    public function update(array $params)
+    {
+        if ($this->lastId != null) {
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
-        if(!$this->hasKeys($params, array('id'))) {
+        if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
         $id = $params['id'];
         unset($params['id']);
-        $endPoint = Http::prepare('forums/'.$id.'.json');
+        $endPoint = Http::prepare('forums/' . $id . '.json');
         $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'PUT');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -133,20 +144,22 @@ class Forums extends ClientAbstract {
      *
      * @return bool
      */
-    public function delete(array $params = array()) {
-        if($this->lastId != null) {
+    public function delete(array $params = array())
+    {
+        if ($this->lastId != null) {
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
-        if(!$this->hasKeys($params, array('id'))) {
+        if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $endPoint = Http::prepare('forums/'.$params['id'].'.json');
+        $endPoint = Http::prepare('forums/' . $params['id'] . '.json');
         $response = Http::send($this->client, $endPoint, null, 'DELETE');
         if ($this->client->getDebug()->lastResponseCode != 200) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return true;
     }
 
@@ -160,12 +173,18 @@ class Forums extends ClientAbstract {
      *
      * @return ForumSubscriptions
      */
-    public function subscriptions($id = null) { return ($id != null ? $this->subscriptions->setLastId($id) : $this->subscriptions); }
+    public function subscriptions($id = null)
+    {
+        return ($id != null ? $this->subscriptions->setLastId($id) : $this->subscriptions);
+    }
 
     /**
      * @param int $id
      *
      * @return ForumSubscriptions
      */
-    public function subscription($id) { return $this->subscriptions->setLastId($id); }
+    public function subscription($id)
+    {
+        return $this->subscriptions->setLastId($id);
+    }
 }
