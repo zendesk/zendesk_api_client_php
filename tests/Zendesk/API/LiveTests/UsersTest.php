@@ -266,9 +266,4 @@ class UsersTest extends BasicTest
         ));
     }
 
-    public function tearDown()
-    {
-        parent::tearDown();
-    }
-
 }
