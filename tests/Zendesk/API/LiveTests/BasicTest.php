@@ -15,6 +15,9 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
     protected $password;
     protected $token;
     protected $oAuthToken;
+    protected $hostname;
+    protected $scheme;
+    protected $port;
 
     public function __construct()
     {
@@ -23,7 +26,11 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
         $this->password = getenv('PASSWORD');
         $this->token = getenv('TOKEN');
         $this->oAuthToken = getenv('OAUTH_TOKEN');
-        $this->client = new Client($this->subdomain, $this->username);
+        $this->scheme = getenv('SCHEME');
+        $this->hostname = getenv('HOSTNAME');
+        $this->port = getenv('PORT');
+
+        $this->client = new Client($this->subdomain, $this->username, $this->scheme, $this->hostname, $this->port);
         $this->client->setAuth('token', $this->token);
     }
 
