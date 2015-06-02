@@ -9,6 +9,7 @@ use Zendesk\API\Client;
  */
 abstract class BasicTest extends \PHPUnit_Framework_TestCase
 {
+    use \InterNations\Component\HttpMock\PHPUnit\HttpMockTrait;
 
     protected $client;
     protected $subdomain;
@@ -32,6 +33,43 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
 
         $this->client = new Client($this->subdomain, $this->username, $this->scheme, $this->hostname, $this->port);
         $this->client->setAuth('token', $this->token);
+    }
+
+    protected function mockApiCall($httpMethod, $path, $response, $code = 200)
+    {
+        $this->http->mock
+            ->when()
+                ->methodIs($httpMethod)
+                ->pathIs('/api/v2' . $path)
+            ->then()
+                ->body(json_encode($response))
+                ->statusCode($code)
+            ->end();
+        $this->http->setUp();
+    }
+
+    public function setUp()
+    {
+        $this->setUpHttpMock();
+        parent::setUp();
+    }
+
+    public function tearDown()
+    {
+        $this->tearDownHttpMock();
+        parent::tearDown();
+    }
+
+    public static function setUpBeforeClass()
+    {
+        static::setUpHttpMockBeforeClass(getenv("PORT"), getenv("HOSTNAME"));
+        parent::setUpBeforeClass();
+    }
+
+    public static function tearDownAfterClass()
+    {
+        static::tearDownHttpMockAfterClass();
+        parent::tearDownAfterClass();
     }
 
     public function authTokenTest()
