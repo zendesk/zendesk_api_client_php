@@ -34,6 +34,39 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
         $this->client->setAuth('token', $this->token);
     }
 
+    protected function mockApiCall($httpMethod, $path, $response, $code = 200)
+    {
+        $this->http->mock
+            ->when()
+                ->methodIs($httpMethod)
+                ->pathIs('/api/v2' . $path)
+            ->then()
+                ->body(json_encode($response))
+                ->statusCode($code)
+            ->end();
+        $this->http->setUp();
+    }
+
+    public function setUp()
+    {
+        $this->setUpHttpMock();
+    }
+
+    public function tearDown()
+    {
+        $this->tearDownHttpMock();
+    }
+
+    public static function setUpBeforeClass()
+    {
+        static::setUpHttpMockBeforeClass(getenv("PORT"), getenv("HOSTNAME"));
+    }
+
+    public static function tearDownAfterClass()
+    {
+        static::tearDownHttpMockAfterClass();
+    }
+
     public function authTokenTest()
     {
         $tickets = $this->client->tickets()->findAll();

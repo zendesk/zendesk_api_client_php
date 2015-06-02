@@ -13,22 +13,10 @@ class TicketsTest extends BasicTest
 
     use \InterNations\Component\HttpMock\PHPUnit\HttpMockTrait;
 
-    public static function setUpBeforeClass()
-    {
-        static::setUpHttpMockBeforeClass(getenv("PORT"), getenv("HOSTNAME"));
-    }
-
-    public static function tearDownAfterClass()
-    {
-        static::tearDownHttpMockAfterClass();
-    }
-
     protected $testTicket;
 
     public function setUp()
     {
-        $this->setUpHttpMock();
-
         $this->testTicket = array(
             'subject' => 'The quick brown fox jumps over the lazy dog',
             'comment' => array(
@@ -37,6 +25,8 @@ class TicketsTest extends BasicTest
             'priority' => 'normal',
             'id' => "12345"
         );
+
+        parent::setUp();
     }
 
     public function testAll()
@@ -48,19 +38,6 @@ class TicketsTest extends BasicTest
         $this->assertEquals(is_array($tickets->tickets), true,
             'Should return an object containing an array called "tickets"');
         $this->assertEquals($this->testTicket['id'], $tickets->tickets[0]->id, 'Includes the id of the first ticket');
-    }
-
-    private function mockApiCall($httpMethod, $path, $response, $code = 200)
-    {
-        $this->http->mock
-            ->when()
-            ->methodIs($httpMethod)
-            ->pathIs('/api/v2' . $path)
-            ->then()
-            ->body(json_encode($response))
-            ->statusCode($code)
-            ->end();
-        $this->http->setUp();
     }
 
     public function testAllSideLoadedMethod()
@@ -188,9 +165,9 @@ class TicketsTest extends BasicTest
 
     public function tearDown()
     {
-        $this->tearDownHttpMock();
         $testTicket = $this->testTicket;
         $this->assertGreaterThan(0, $testTicket['id'], 'Cannot find a ticket id to test with. Did setUp fail?');
+        parent::tearDown();
     }
 
 }
