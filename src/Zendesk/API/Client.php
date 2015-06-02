@@ -64,6 +64,18 @@ class Client
     /**
      * @var string
      */
+    protected $scheme;
+    /**
+     * @var string
+     */
+    protected $hostname;
+    /**
+     * @var integer
+     */
+    protected $port;
+    /**
+     * @var string
+     */
     protected $password;
     /**
      * @var string
@@ -239,11 +251,21 @@ class Client
      * @param string $subdomain
      * @param string $username
      */
-    public function __construct($subdomain, $username)
+
+    public function __construct($subdomain, $username, $scheme = "https", $hostname = "zendesk.com", $port = 443)
     {
         $this->subdomain = $subdomain;
         $this->username = $username;
-        $this->apiUrl = 'https://' . $subdomain . '.zendesk.com/api/' . $this->apiVer . '/';
+        $this->hostname = $hostname;
+        $this->scheme = $scheme;
+        $this->port = $port;
+
+        if (empty($subdomain)) {
+            $this->apiUrl = "$scheme://$hostname:$port/api/{$this->apiVer}/";
+        } else {
+            $this->apiUrl = "$scheme://$subdomain.$hostname:$port/api/{$this->apiVer}/";
+        }
+
         $this->debug = new Debug();
         $this->tickets = new Tickets($this);
         $this->ticketFields = new TicketFields($this);

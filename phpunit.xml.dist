@@ -1,18 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <phpunit bootstrap="tests/bootstrap.php" colors="true">
-<!-- Need credentials for local test
     <php>
         <env name="SUBDOMAIN" value="" />
-        <env name="USERNAME" value="" />
-        <env name="PASSWORD" value="" />
-        <env name="TOKEN" value="" />
-        <env name="OAUTH_SECRET" value="" />
-        <env name="OAUTH_TOKEN" value="" />
-        <env name="END_USER_USERNAME" value="" />
-        <env name="END_USER_PASSWORD" value="" />
-        <env name="END_USER_OAUTH_TOKEN" value="" />
+        <env name="USERNAME" value="blah@zendesk.com" />
+        <env name="PASSWORD" value="123456" />
+        <env name="TOKEN" value="zgS0d8hrK13DgVs6OHT7OVS3G4MZQSUvleMyUJnC" />
+        <env name="OAUTH_SECRET" value="ea974e907f363a05c60be3120f336439bf4744c2285b4c8a9c902b5453497bae" />
+        <env name="OAUTH_TOKEN" value="4924186d99cfb4bb7a482a4307fb5f9a3a052d0c555ebb866f975b6084e38efd" />
+        <env name="END_USER_USERNAME" value="php@zendesk.com" />
+        <env name="END_USER_PASSWORD" value="123456" />
+        <env name="END_USER_OAUTH_TOKEN" value="e0a6eaa33ac9bbabc50a43ce388a35227e5d48975c1266006239ae0da4b3b9e1" />
+        <env name="SCHEME" value="http" />
+        <env name="HOSTNAME" value="localhost" />
+        <env name="PORT" value="8080" />
     </php>
--->
+
     <testsuites>
         <testsuite name="Zendesk API Unit Test Suites">
             <directory>./tests/Zendesk/API/UnitTests</directory>
