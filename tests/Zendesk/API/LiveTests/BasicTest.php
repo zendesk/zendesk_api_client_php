@@ -50,21 +50,25 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->setUpHttpMock();
+        parent::setUp();
     }
 
     public function tearDown()
     {
         $this->tearDownHttpMock();
+        parent::tearDown();
     }
 
     public static function setUpBeforeClass()
     {
         static::setUpHttpMockBeforeClass(getenv("PORT"), getenv("HOSTNAME"));
+        parent::setUpBeforeClass();
     }
 
     public static function tearDownAfterClass()
     {
         static::tearDownHttpMockAfterClass();
+        parent::tearDownAfterClass();
     }
 
     public function authTokenTest()
