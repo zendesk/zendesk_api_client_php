@@ -42,7 +42,6 @@ class TicketCommentsTest extends BasicTest
         $this->assertEquals(is_array($comments->comments), true,
             'Should return an object containing an array called "comments"');
         $this->assertGreaterThan(0, $comments->comments[0]->id, 'Returns a non-numeric id in first audit');
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
     /*
@@ -62,7 +61,6 @@ class TicketCommentsTest extends BasicTest
         $comment_id = $this->client->ticket($this->ticket_id)->comments()->findAll()->comments[0]->id;
 
         $this->mockApiCall('PUT', '/tickets/12345/comments/1/make_private.json', array());
-        $comments = $this->client->ticket($this->ticket_id)->comments($comment_id)->makePrivate();
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
+        $this->client->ticket($this->ticket_id)->comments($comment_id)->makePrivate();
     }
 }

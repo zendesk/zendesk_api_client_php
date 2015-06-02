@@ -35,9 +35,10 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
         $this->client->setAuth('token', $this->token);
     }
 
-    protected function mockApiCall($httpMethod, $path, $response, $code = 200)
+    protected function mockApiCall($httpMethod, $path, $response, $code = 200, $timesCalled = 1)
     {
         $this->http->mock
+            ->exactly($timesCalled)
             ->when()
                 ->methodIs($httpMethod)
                 ->pathIs('/api/v2' . $path)
