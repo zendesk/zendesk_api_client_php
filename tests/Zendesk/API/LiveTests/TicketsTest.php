@@ -10,9 +10,6 @@ use Zendesk\API\ResponseException;
  */
 class TicketsTest extends BasicTest
 {
-
-    use \InterNations\Component\HttpMock\PHPUnit\HttpMockTrait;
-
     protected $testTicket;
 
     public function setUp()
