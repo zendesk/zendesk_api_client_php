@@ -41,6 +41,7 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
             'code' => 200,
             'timesCalled' => 1
         ), $options);
+
         $this->http->mock
             ->exactly($options['timesCalled'])
             ->when()
