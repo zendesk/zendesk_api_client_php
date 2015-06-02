@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<phpunit bootstrap="tests/bootstrap.php" colors="true">
+<phpunit
+        bootstrap="tests/bootstrap.php"
+        colors="true"
+        backupGlobals="false"
+        convertErrorsToExceptions="true"
+        convertNoticesToExceptions="true"
+        convertWarningsToExceptions="true"
+        >
     <php>
         <env name="SUBDOMAIN" value="" />
         <env name="USERNAME" value="blah@zendesk.com" />
