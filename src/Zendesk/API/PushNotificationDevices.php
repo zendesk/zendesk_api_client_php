@@ -7,12 +7,14 @@ namespace Zendesk\API;
  * @package Zendesk\API
  *
  */
-class PushNotificationDevices extends ClientAbstract {
+class PushNotificationDevices extends ClientAbstract
+{
 
     /**
      * @param Client $client
      */
-    public function __construct(Client $client) {
+    public function __construct(Client $client)
+    {
         parent::__construct($client);
     }
 
@@ -27,13 +29,15 @@ class PushNotificationDevices extends ClientAbstract {
      *
      * @return bool
      */
-    public function delete(array $devices = array()) {
+    public function delete(array $devices = array())
+    {
         $endPoint = Http::prepare('push_notification_devices/destroy_many.json');
         $response = Http::send($this->client, $endPoint, array("push_notification_devices" => $devices), 'POST');
         if ($this->client->getDebug()->lastResponseCode != 200) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return true;
     }
 }

@@ -6,7 +6,8 @@ namespace Zendesk\API;
  * Debug helper class
  * @package Zendesk\API
  */
-class Debug {
+class Debug
+{
 
     /**
      * @var mixed
@@ -24,21 +25,21 @@ class Debug {
      * @var mixed
      */
     public $lastResponseError;
-    
+
     /**
-     * @return string 
+     * @return string
      */
     public function __toString()
     {
-    	$lastError = $this->lastResponseError;
-    	if (! is_string($lastError)) {
-    		$lastError = json_encode($lastError);
-    	} 
-    	$output = 'LastResponseCode: ' . $this->lastResponseCode
-    		. ', LastResponseError: ' . $lastError 
-    		. ', LastResponseHeaders: ' . $this->lastResponseHeaders
-    		. ', LastRequestHeaders: ' . $this->lastRequestHeaders;
-    	
-    	return $output;
+        $lastError = $this->lastResponseError;
+        if (!is_string($lastError)) {
+            $lastError = json_encode($lastError);
+        }
+        $output = 'LastResponseCode: ' . $this->lastResponseCode
+            . ', LastResponseError: ' . $lastError
+            . ', LastResponseHeaders: ' . $this->lastResponseHeaders
+            . ', LastRequestHeaders: ' . $this->lastRequestHeaders;
+
+        return $output;
     }
 }

@@ -7,19 +7,23 @@ use Zendesk\API\Client;
 /**
  * Topics test class
  */
-class TopicsTest extends BasicTest {
+class TopicsTest extends BasicTest
+{
 
-    public function testCredentials() {
+    public function testCredentials()
+    {
         parent::credentialsTest();
     }
 
-    public function testAuthToken() {
+    public function testAuthToken()
+    {
         parent::authTokenTest();
     }
 
     protected $id, $forum_id;
 
-    public function setUP() {
+    public function setUP()
+    {
         /*
          * First start by creating a forum and a topic (we'll delete them later)
          */
@@ -45,22 +49,26 @@ class TopicsTest extends BasicTest {
         $this->id = $topic->topic->id;
     }
 
-    public function testAll() {
+    public function testAll()
+    {
         $topics = $this->client->topics()->findAll();
         $this->assertEquals(is_object($topics), true, 'Should return an object');
-        $this->assertEquals(is_array($topics->topics), true, 'Should return an object containing an array called "topics"');
+        $this->assertEquals(is_array($topics->topics), true,
+            'Should return an object containing an array called "topics"');
         $this->assertGreaterThan(0, $topics->topics[0]->id, 'Returns a non-numeric id for topics[0]');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testFind() {
+    public function testFind()
+    {
         $topic = $this->client->topic($this->id)->find();
         $this->assertEquals(is_object($topic), true, 'Should return an object');
         $this->assertGreaterThan(0, $topic->topic->id, 'Returns a non-numeric id for topic');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testUpdate() {
+    public function testUpdate()
+    {
         $topic = $this->client->topic($this->id)->update(array(
             'title' => 'My Topic II'
         ));
@@ -71,7 +79,8 @@ class TopicsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         $this->assertGreaterThan(0, $this->id, 'Cannot find a topic id to test with. Did setUp fail?');
         $topic = $this->client->topic($this->id)->delete();
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
