@@ -9,6 +9,7 @@ use Zendesk\API\Client;
  */
 abstract class BasicTest extends \PHPUnit_Framework_TestCase
 {
+    use \InterNations\Component\HttpMock\PHPUnit\HttpMockTrait;
 
     protected $client;
     protected $subdomain;
