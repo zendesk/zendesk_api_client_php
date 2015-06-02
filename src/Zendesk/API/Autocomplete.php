@@ -6,7 +6,8 @@ namespace Zendesk\API;
  * The Autocomplete class is as per http://developer.zendesk.com/documentation/rest_api/autocomplete.html
  * @package Zendesk\API
  */
-class Autocomplete extends ClientAbstract {
+class Autocomplete extends ClientAbstract
+{
 
     const OBJ_NAME = 'name';
     const OBJ_NAME_PLURAL = 'names';
@@ -21,8 +22,9 @@ class Autocomplete extends ClientAbstract {
      * @throws \Exception
      * @return mixed
      */
-    public function tags(array $params) {
-        if(!$this->hasKeys($params, array('name'))) {
+    public function tags(array $params)
+    {
+        if (!$this->hasKeys($params, array('name'))) {
             throw new MissingParametersException(__METHOD__, array('name'));
         }
         $endPoint = Http::prepare('autocomplete/tags.json');
@@ -31,6 +33,7 @@ class Autocomplete extends ClientAbstract {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 

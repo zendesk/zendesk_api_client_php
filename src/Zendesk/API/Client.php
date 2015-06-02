@@ -2,10 +2,10 @@
 
 namespace Zendesk\API;
 
-/*
- * Dead simple autoloader:
- * spl_autoload_register(function($c){@include 'src/'.preg_replace('#\\\|_(?!.+\\\)#','/',$c).'.php';});
- */
+    /*
+     * Dead simple autoloader:
+     * spl_autoload_register(function($c){@include 'src/'.preg_replace('#\\\|_(?!.+\\\)#','/',$c).'.php';});
+     */
 
 /**
  * Client class, base level access
@@ -50,7 +50,8 @@ namespace Zendesk\API;
  * @method Locales locales()
  * @method PushNotificationDevices push_notification_devices()
  */
-class Client {
+class Client
+{
 
     /**
      * @var string
@@ -238,10 +239,11 @@ class Client {
      * @param string $subdomain
      * @param string $username
      */
-    public function __construct($subdomain, $username) {
+    public function __construct($subdomain, $username)
+    {
         $this->subdomain = $subdomain;
         $this->username = $username;
-        $this->apiUrl = 'https://'.$subdomain.'.zendesk.com/api/'.$this->apiVer.'/';
+        $this->apiUrl = 'https://' . $subdomain . '.zendesk.com/api/' . $this->apiVer . '/';
         $this->debug = new Debug();
         $this->tickets = new Tickets($this);
         $this->ticketFields = new TicketFields($this);
@@ -288,20 +290,24 @@ class Client {
      * @param string $method
      * @param string $value
      */
-    public function setAuth($method, $value) {
-        switch($method) {
-            case 'password':    $this->password = $value;
-                                $this->token = '';
-                                $this->oAuthToken = '';
-                                break;
-            case 'token':        $this->password = '';
-                                $this->token = $value;
-                                $this->oAuthToken = '';
-                                break;
-            case 'oauth_token':    $this->password = '';
-                                $this->token = '';
-                                $this->oAuthToken = $value;
-                                break;
+    public function setAuth($method, $value)
+    {
+        switch ($method) {
+            case 'password':
+                $this->password = $value;
+                $this->token = '';
+                $this->oAuthToken = '';
+                break;
+            case 'token':
+                $this->password = '';
+                $this->token = $value;
+                $this->oAuthToken = '';
+                break;
+            case 'oauth_token':
+                $this->password = '';
+                $this->token = '';
+                $this->oAuthToken = $value;
+                break;
         }
     }
 
@@ -310,7 +316,8 @@ class Client {
      *
      * @return string
      */
-    public function getSubdomain() {
+    public function getSubdomain()
+    {
         return $this->subdomain;
     }
 
@@ -319,7 +326,8 @@ class Client {
      *
      * @return string
      */
-    public function getApiUrl() {
+    public function getApiUrl()
+    {
         return $this->apiUrl;
     }
 
@@ -328,7 +336,8 @@ class Client {
      *
      * @return string
      */
-    public function getAuthType() {
+    public function getAuthType()
+    {
         return ($this->oAuthToken ? 'oauth_token' : ($this->token ? 'token' : 'password'));
     }
 
@@ -337,8 +346,9 @@ class Client {
      *
      * @return string
      */
-    public function getAuthText() {
-        return ($this->oAuthToken ? $this->oAuthToken : $this->username.($this->token ? '/token:'.$this->token : ':'.$this->password));
+    public function getAuthText()
+    {
+        return ($this->oAuthToken ? $this->oAuthToken : $this->username . ($this->token ? '/token:' . $this->token : ':' . $this->password));
     }
 
     /**
@@ -349,7 +359,8 @@ class Client {
      * @param string $lastResponseHeaders
      * @param mixed $lastResponseError
      */
-    public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError) {
+    public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError)
+    {
         $this->debug->lastRequestHeaders = $lastRequestHeaders;
         $this->debug->lastResponseCode = $lastResponseCode;
         $this->debug->lastResponseHeaders = $lastResponseHeaders;
@@ -361,7 +372,8 @@ class Client {
      *
      * @return Debug
      */
-    public function getDebug() {
+    public function getDebug()
+    {
         return $this->debug;
     }
 
@@ -372,8 +384,10 @@ class Client {
      *
      * @return Client
      */
-    public function setSideload(array $fields = null) {
+    public function setSideload(array $fields = null)
+    {
         $this->sideload = $fields;
+
         return $this;
     }
 
@@ -384,7 +398,8 @@ class Client {
      *
      * @return array|null
      */
-    public function getSideload(array $params = null) {
+    public function getSideload(array $params = null)
+    {
         return ((isset($params['sideload'])) && (is_array($params['sideload'])) ? $params['sideload'] : $this->sideload);
     }
 
@@ -398,15 +413,16 @@ class Client {
      *
      * @throws CustomException
      */
-    public function __call($name, $arguments) {
-        if(isset($this->$name)) {
+    public function __call($name, $arguments)
+    {
+        if (isset($this->$name)) {
             return ((isset($arguments[0])) && ($arguments[0] != null) ? $this->$name->setLastId($arguments[0]) : $this->$name);
         }
-        $namePlural = $name.'s'; // try pluralize
-        if(isset($this->$namePlural)) {
+        $namePlural = $name . 's'; // try pluralize
+        if (isset($this->$namePlural)) {
             return $this->$namePlural->setLastId($arguments[0]);
         } else {
-            throw new CustomException("No method called $name available in ".__CLASS__);
+            throw new CustomException("No method called $name available in " . __CLASS__);
         }
     }
 
@@ -419,28 +435,40 @@ class Client {
      *
      * @return $this
      */
-    public function category($id) { return $this->categories->setLastId($id); }
+    public function category($id)
+    {
+        return $this->categories->setLastId($id);
+    }
 
     /**
      * @param int|null $id
      *
      * @return ActivityStream
      */
-    public function activities($id = null) { return ($id != null ? $this->activityStream()->setLastId($id) : $this->activityStream()); }
+    public function activities($id = null)
+    {
+        return ($id != null ? $this->activityStream()->setLastId($id) : $this->activityStream());
+    }
 
     /**
      * @param int $id
      *
      * @return ActivityStream
      */
-    public function activity($id) { return $this->activityStream()->setLastId($id); }
+    public function activity($id)
+    {
+        return $this->activityStream()->setLastId($id);
+    }
 
     /**
      * @param int $id
      *
      * @return JobStatuses
      */
-    public function jobStatus($id) { return $this->jobStatuses()->setLastId($id); }
+    public function jobStatus($id)
+    {
+        return $this->jobStatuses()->setLastId($id);
+    }
 
     /**
      * @param array $params
@@ -450,7 +478,10 @@ class Client {
      *
      * @return mixed
      */
-    public function search(array $params) { return $this->search->performSearch($params); }
+    public function search(array $params)
+    {
+        return $this->search->performSearch($params);
+    }
 
     /**
      * @param array $params
@@ -460,6 +491,9 @@ class Client {
      *
      * @return mixed
      */
-    public function anonymousSearch(array $params) { return $this->search->anonymousSearch($params); }
+    public function anonymousSearch(array $params)
+    {
+        return $this->search->anonymousSearch($params);
+    }
 
 }

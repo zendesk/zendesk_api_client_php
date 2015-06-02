@@ -6,34 +6,37 @@ namespace Zendesk\API;
  * HTTP functions via curl
  * @package Zendesk\API
  */
-class Http {
+class Http
+{
     public static $curl;
+
     /**
      * Prepares an endpoint URL with optional side-loading
      *
      * @param string $endPoint
-     * @param array  $sideload
-     * @param array  $iterators
+     * @param array $sideload
+     * @param array $iterators
      *
      * @return string
      */
-    public static function prepare($endPoint, array $sideload = null, array $iterators = null) {
+    public static function prepare($endPoint, array $sideload = null, array $iterators = null)
+    {
         $addParams = array();
         // First look for side-loaded variables
-        if(is_array($sideload)) {
+        if (is_array($sideload)) {
             $addParams['include'] = implode(',', $sideload);
         }
         // Next look for special collection iterators
-        if(is_array($iterators)) {
-            foreach($iterators as $k => $v) {
-                if(in_array($k, array('per_page', 'page', 'sort_order', 'sort_by'))) {
+        if (is_array($iterators)) {
+            foreach ($iterators as $k => $v) {
+                if (in_array($k, array('per_page', 'page', 'sort_order', 'sort_by'))) {
                     $addParams[$k] = $v;
                 }
             }
         }
         // Send it back...
-        if(count($addParams)) {
-            return $endPoint.(strpos($endPoint, '?') === false ? '?' : '&').http_build_query($addParams);
+        if (count($addParams)) {
+            return $endPoint . (strpos($endPoint, '?') === false ? '?' : '&') . http_build_query($addParams);
         } else {
             return $endPoint;
         }
@@ -44,7 +47,7 @@ class Http {
      *
      * @param Client $client
      * @param string $endPoint
-     * @param array  $json
+     * @param array $json
      * @param string $method
      * @param string $contentType
      *
@@ -52,8 +55,14 @@ class Http {
      *
      * @return mixed
      */
-    public static function send(Client $client, $endPoint, $json = array(), $method = 'GET', $contentType = 'application/json') {
-        $url    = $client->getApiUrl() . $endPoint;
+    public static function send(
+        Client $client,
+        $endPoint,
+        $json = array(),
+        $method = 'GET',
+        $contentType = 'application/json'
+    ) {
+        $url = $client->getApiUrl() . $endPoint;
         $method = strtoupper($method);
 
         $curl = (isset(self::$curl)) ? self::$curl : new CurlRequest;
@@ -61,14 +70,17 @@ class Http {
 
         if ($method === 'POST') {
             $curl->setopt(CURLOPT_POST, true);
-            
-        } else if ($method === 'PUT') {
-            $curl->setopt(CURLOPT_CUSTOMREQUEST, 'PUT');
 
         } else {
-            $st = http_build_query((array) $json);
-            $curl->setopt(CURLOPT_URL, $url . ($st !== array() ? (strpos($url, '?') === false ? '?' : '&') . $st : ''));
-            $curl->setopt(CURLOPT_CUSTOMREQUEST, $method);
+            if ($method === 'PUT') {
+                $curl->setopt(CURLOPT_CUSTOMREQUEST, 'PUT');
+
+            } else {
+                $st = http_build_query((array)$json);
+                $curl->setopt(CURLOPT_URL,
+                    $url . ($st !== array() ? (strpos($url, '?') === false ? '?' : '&') . $st : ''));
+                $curl->setopt(CURLOPT_CUSTOMREQUEST, $method);
+            }
         }
 
         $httpHeader = array('Accept: application/json');
@@ -89,13 +101,14 @@ class Http {
                 $json = $fileData;
                 $curl->setopt(CURLOPT_INFILE, $file);
                 $curl->setopt(CURLOPT_INFILESIZE, $size);
-            }
-            else if (isset($json['body'])){
-                $curl->setopt(CURLOPT_INFILESIZE, strlen($json['body']));
-                $json = $json['body'];
+            } else {
+                if (isset($json['body'])) {
+                    $curl->setopt(CURLOPT_INFILESIZE, strlen($json['body']));
+                    $json = $json['body'];
+                }
             }
 
-            $httpHeader[] = 'Content-Type: '.$contentType;
+            $httpHeader[] = 'Content-Type: ' . $contentType;
         } else {
             $contentType = '';
         }
@@ -118,9 +131,9 @@ class Http {
 
         $response = $curl->exec();
         if ($response === false) {
-            throw new \Exception(sprintf('Curl error message: "%s" in %s', $curl->error(),  __METHOD__));
+            throw new \Exception(sprintf('Curl error message: "%s" in %s', $curl->error(), __METHOD__));
         }
-        $headerSize   = $curl->getinfo(CURLINFO_HEADER_SIZE);
+        $headerSize = $curl->getinfo(CURLINFO_HEADER_SIZE);
         $responseBody = substr($response, $headerSize);
         $responseObject = json_decode($responseBody);
         $client->setDebug(
@@ -147,8 +160,9 @@ class Http {
      *
      * @return mixed
      */
-    public static function oauth(Client $client, $code, $oAuthId, $oAuthSecret) {
-        $url = 'https://'.$client->getSubdomain().'.zendesk.com/oauth/tokens';
+    public static function oauth(Client $client, $code, $oAuthId, $oAuthSecret)
+    {
+        $url = 'https://' . $client->getSubdomain() . '.zendesk.com/oauth/tokens';
         $method = 'POST';
 
         $curl = (isset(self::$curl)) ? self::$curl : new CurlRequest;
@@ -159,7 +173,7 @@ class Http {
             'code' => $code,
             'client_id' => $oAuthId,
             'client_secret' => $oAuthSecret,
-            'redirect_uri' => ($_SERVER['HTTPS'] ? 'https://' : 'http://').$_SERVER['HTTP_HOST'].$_SERVER['PHP_SELF'],
+            'redirect_uri' => ($_SERVER['HTTPS'] ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'],
             'scope' => 'read'
         )));
         $curl->setopt(CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
@@ -174,7 +188,7 @@ class Http {
         $curl->setopt(CURLOPT_MAXREDIRS, 3);
         $response = $curl->exec();
         if ($response === false) {
-            throw new \Exception(sprintf('Curl error message: "%s" in %s', $curl->error(),  __METHOD__));
+            throw new \Exception(sprintf('Curl error message: "%s" in %s', $curl->error(), __METHOD__));
         }
         $headerSize = $curl->getinfo(CURLINFO_HEADER_SIZE);
         $responseBody = substr($response, $headerSize);

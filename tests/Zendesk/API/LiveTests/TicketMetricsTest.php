@@ -7,22 +7,26 @@ use Zendesk\API\Client;
 /**
  * Ticket Metrics test class
  */
-class TicketMetricsTest extends BasicTest {
+class TicketMetricsTest extends BasicTest
+{
 
-    public function testCredentials() {
+    public function testCredentials()
+    {
         parent::credentialsTest();
     }
 
-    public function testAuthToken() {
+    public function testAuthToken()
+    {
         parent::authTokenTest();
     }
 
     protected $ticket_id;
 
-    public function setUP(){
+    public function setUP()
+    {
         $testTicket = array(
             'subject' => 'Ticket Metrics test',
-            'comment' => array (
+            'comment' => array(
                 'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
             ),
             'priority' => 'normal'
@@ -31,19 +35,23 @@ class TicketMetricsTest extends BasicTest {
         $this->ticket_id = $ticket->ticket->id;
     }
 
-    public function tearDown(){
+    public function tearDown()
+    {
         $this->client->ticket($this->ticket_id)->delete();
     }
 
-    public function testAll() {
+    public function testAll()
+    {
         $metrics = $this->client->tickets()->metrics()->findAll();
         $this->assertEquals(is_object($metrics), true, 'Should return an object');
-        $this->assertEquals(is_array($metrics->ticket_metrics), true, 'Should return an object containing an array called "ticket_metrics"');
+        $this->assertEquals(is_array($metrics->ticket_metrics), true,
+            'Should return an object containing an array called "ticket_metrics"');
         $this->assertGreaterThan(0, $metrics->ticket_metrics[0]->id, 'Returns a non-numeric id for ticket_metrics[0]');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testFind() {
+    public function testFind()
+    {
         $metrics_id = $this->client->tickets()->metrics()->findAll()->ticket_metrics[0]->id;
         $metric = $this->client->tickets()->metric($metrics_id)->find();
         $this->assertEquals(is_object($metric), true, 'Should return an object');

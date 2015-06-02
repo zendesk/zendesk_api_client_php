@@ -6,7 +6,8 @@ namespace Zendesk\API;
  * The Attachments class exposes methods for uploading and retrieving attachments
  * @package Zendesk\API
  */
-class Attachments extends ClientAbstract {
+class Attachments extends ClientAbstract
+{
 
     /**
      * Upload an attachment
@@ -15,7 +16,7 @@ class Attachments extends ClientAbstract {
      *    'type' - the MIME type of the file
      * Optional:
      *    'optional_token' - an existing token
-     *		'name' - preferred filename
+     *        'name' - preferred filename
      *
      * @param array $params
      *
@@ -26,28 +27,31 @@ class Attachments extends ClientAbstract {
      *
      * @return mixed
      */
-    public function upload(array $params) {
-        if(!$this->hasKeys($params, array('file'))) {
+    public function upload(array $params)
+    {
+        if (!$this->hasKeys($params, array('file'))) {
             throw new MissingParametersException(__METHOD__, array('file'));
         }
-        if(!file_exists($params['file'])) {
-            throw new CustomException('File '.$params['file'].' could not be found in '.__METHOD__);
+        if (!file_exists($params['file'])) {
+            throw new CustomException('File ' . $params['file'] . ' could not be found in ' . __METHOD__);
         }
-        if(!$params['name'] && strrpos($params['file'], '/') > -1) {
-          $path_array = explode('/', $params['file']);
-          $file_index = count($path_array) - 1;
-          $params['name'] = $path_array[$file_index];
+        if (!$params['name'] && strrpos($params['file'], '/') > -1) {
+            $path_array = explode('/', $params['file']);
+            $file_index = count($path_array) - 1;
+            $params['name'] = $path_array[$file_index];
         }
-        if(!$params['name'] && strrpos($params['file'], '/') == FALSE) {
-	        $params['name'] = $params['file'];
+        if (!$params['name'] && strrpos($params['file'], '/') == false) {
+            $params['name'] = $params['file'];
         }
 
-        $endPoint = Http::prepare('uploads.json?filename='.urlencode($params['name']).(isset($params['optional_token']) ? '&token='.$params['optional_token'] : ''));
-        $response = Http::send($this->client, $endPoint, array('filename' => $params['file']), 'POST', (isset($params['type']) ? $params['type'] : 'application/binary'));
-       if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
+        $endPoint = Http::prepare('uploads.json?filename=' . urlencode($params['name']) . (isset($params['optional_token']) ? '&token=' . $params['optional_token'] : ''));
+        $response = Http::send($this->client, $endPoint, array('filename' => $params['file']), 'POST',
+            (isset($params['type']) ? $params['type'] : 'application/binary'));
+        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -69,19 +73,22 @@ class Attachments extends ClientAbstract {
      *
      * @return mixed
      */
-    public function uploadWithBody(array $params) {
-        if(!$this->hasKeys($params, array('body'))) {
+    public function uploadWithBody(array $params)
+    {
+        if (!$this->hasKeys($params, array('body'))) {
             throw new MissingParametersException(__METHOD__, array('body'));
         }
-        if(!$params['name']) {
+        if (!$params['name']) {
             throw new MissingParametersException(__METHOD__, array('name'));
         }
-        $endPoint = Http::prepare('uploads.json?filename='.$params['name'].(isset($params['optional_token']) ? '&token='.$params['optional_token'] : ''));
-        $response = Http::send($this->client, $endPoint, array('body' => $params['body']), 'POST', (isset($params['type']) ? $params['type'] : 'application/binary'));
+        $endPoint = Http::prepare('uploads.json?filename=' . $params['name'] . (isset($params['optional_token']) ? '&token=' . $params['optional_token'] : ''));
+        $response = Http::send($this->client, $endPoint, array('body' => $params['body']), 'POST',
+            (isset($params['type']) ? $params['type'] : 'application/binary'));
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 
@@ -99,16 +106,18 @@ class Attachments extends ClientAbstract {
      *
      * @return bool
      */
-    public function delete(array $params) {
-        if(!$this->hasAnyKey($params, array('id', 'token'))) {
+    public function delete(array $params)
+    {
+        if (!$this->hasAnyKey($params, array('id', 'token'))) {
             throw new MissingParametersException(__METHOD__, array('id', 'token'));
         }
-        $endPoint = Http::prepare(($params['token'] ? 'uploads/'.$params['token'] : 'attachments/'.$params['id']).'.json');
+        $endPoint = Http::prepare(($params['token'] ? 'uploads/' . $params['token'] : 'attachments/' . $params['id']) . '.json');
         $response = Http::send($this->client, $endPoint, null, 'DELETE');
         if ($this->client->getDebug()->lastResponseCode != 200) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return true;
     }
 
@@ -125,17 +134,19 @@ class Attachments extends ClientAbstract {
      *
      * @return mixed
      */
-    public function find(array $params) {
-        if(!$this->hasKeys($params, array('id'))) {
+    public function find(array $params)
+    {
+        if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
         $id = $params['id'];
-        $endPoint = Http::prepare('attachments/'.$id.'.json');
+        $endPoint = Http::prepare('attachments/' . $id . '.json');
         $response = Http::send($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
+
         return $response;
     }
 

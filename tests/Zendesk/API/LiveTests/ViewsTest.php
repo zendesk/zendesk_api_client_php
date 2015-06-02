@@ -7,19 +7,23 @@ use Zendesk\API\Client;
 /**
  * Views test class
  */
-class ViewsTest extends BasicTest {
+class ViewsTest extends BasicTest
+{
 
-    public function testCredentials() {
+    public function testCredentials()
+    {
         parent::credentialsTest();
     }
 
-    public function testAuthToken() {
+    public function testAuthToken()
+    {
         parent::authTokenTest();
     }
 
     protected $id;
 
-    public function setUp() {
+    public function setUp()
+    {
         $view = $this->client->views()->create(array(
             'title' => 'Roger Wilco',
             'active' => true,
@@ -51,31 +55,38 @@ class ViewsTest extends BasicTest {
         $this->id = $view->view->id;
     }
 
-    public function testAll() {
+    public function testAll()
+    {
         $views = $this->client->views()->findAll();
         $this->assertEquals(is_object($views), true, 'Should return an object');
-        $this->assertEquals(is_array($views->views), true, 'Should return an object containing an array called "views"');
+        $this->assertEquals(is_array($views->views), true,
+            'Should return an object containing an array called "views"');
         $this->assertGreaterThan(0, $views->views[0]->id, 'Returns a non-numeric id for views[0]');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testActive() {
+    public function testActive()
+    {
         $views = $this->client->views()->findAll(array('active' => true));
         $this->assertEquals(is_object($views), true, 'Should return an object');
-        $this->assertEquals(is_array($views->views), true, 'Should return an object containing an array called "views"');
+        $this->assertEquals(is_array($views->views), true,
+            'Should return an object containing an array called "views"');
         $this->assertGreaterThan(0, $views->views[0]->id, 'Returns a non-numeric id for views[0]');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testCompact() {
+    public function testCompact()
+    {
         $views = $this->client->views()->findAll(array('compact' => true));
         $this->assertEquals(is_object($views), true, 'Should return an object');
-        $this->assertEquals(is_array($views->views), true, 'Should return an object containing an array called "views"');
+        $this->assertEquals(is_array($views->views), true,
+            'Should return an object containing an array called "views"');
         $this->assertGreaterThan(0, $views->views[0]->id, 'Returns a non-numeric id for views[0]');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testFind() {
+    public function testFind()
+    {
         $view = $this->client->view($this->id)->find();
         $this->assertEquals(is_object($view), true, 'Should return an object');
         $this->assertEquals(is_object($view->view), true, 'Should return an object called "view"');
@@ -83,7 +94,8 @@ class ViewsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testUpdate() {
+    public function testUpdate()
+    {
         $view = $this->client->view($this->id)->update(array(
             'title' => 'Roger Wilco II'
         ));
@@ -94,7 +106,8 @@ class ViewsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testExecute() {
+    public function testExecute()
+    {
         $view = $this->client->view($this->id)->execute();
         $this->assertEquals(is_object($view), true, 'Should return an object');
         $this->assertEquals(is_object($view->view), true, 'Should return an object called "view"');
@@ -102,7 +115,8 @@ class ViewsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testCount() {
+    public function testCount()
+    {
         $counts = $this->client->view($this->id)->count();
         $this->assertEquals(is_object($counts), true, 'Should return an object');
         $this->assertEquals(is_object($counts->view_count), true, 'Should return an object called "view_count"');
@@ -110,22 +124,27 @@ class ViewsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testCountMany() {
+    public function testCountMany()
+    {
         $counts = $this->client->view(array($this->id, 38568252))->count();
         $this->assertEquals(is_object($counts), true, 'Should return an object');
-        $this->assertEquals(is_array($counts->view_counts), true, 'Should return an array of objects called "view_counts"');
-        $this->assertGreaterThan(0, $counts->view_counts[0]->view_id, 'Returns a non-numeric view_id for view_counts[0]');
+        $this->assertEquals(is_array($counts->view_counts), true,
+            'Should return an array of objects called "view_counts"');
+        $this->assertGreaterThan(0, $counts->view_counts[0]->view_id,
+            'Returns a non-numeric view_id for view_counts[0]');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testExport() {
+    public function testExport()
+    {
         $export = $this->client->view($this->id)->export();
         $this->assertEquals(is_object($export), true, 'Should return an object');
         $this->assertGreaterThan(0, $export->export->view_id, 'Returns a non-numeric view_id for export');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testPreview() {
+    public function testPreview()
+    {
         $preview = $this->client->views()->preview(array(
             'all' => array(
                 array(
@@ -144,7 +163,8 @@ class ViewsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testPreviewCount() {
+    public function testPreviewCount()
+    {
         $preview = $this->client->views()->previewCount(array(
             'all' => array(
                 array(
@@ -162,7 +182,8 @@ class ViewsTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function tearDown() {
+    public function tearDown()
+    {
         $this->assertGreaterThan(0, $this->id, 'Cannot find a view id to test with. Did setUp fail?');
         $view = $this->client->view($this->id)->delete();
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');

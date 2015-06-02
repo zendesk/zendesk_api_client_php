@@ -7,19 +7,23 @@ use Zendesk\API\Client;
 /**
  * ActivityStream test class
  */
-class ActivityStreamTest extends BasicTest {
+class ActivityStreamTest extends BasicTest
+{
 
-    public function testCredentials() {
+    public function testCredentials()
+    {
         parent::credentialsTest();
     }
 
-    public function testAuthToken() {
+    public function testAuthToken()
+    {
         parent::authTokenTest();
     }
 
     protected $ticket_id;
 
-    public function setUP() {
+    public function setUP()
+    {
 
         $username = getenv('END_USER_USERNAME');
         $password = getenv('END_USER_PASSWORD');
@@ -28,7 +32,7 @@ class ActivityStreamTest extends BasicTest {
 
         $testTicket = array(
             'subject' => 'Activity Stream Test',
-            'comment' => array (
+            'comment' => array(
                 'body' => 'ce est biche Actions test.'
             ),
             'priority' => 'normal'
@@ -37,14 +41,17 @@ class ActivityStreamTest extends BasicTest {
         $this->ticket_id = $request->request->id;
     }
 
-    public function testAll() {
+    public function testAll()
+    {
         $activities = $this->client->activities()->findAll();
         $this->assertEquals(is_object($activities), true, 'Should return an object');
-        $this->assertEquals(is_array($activities->activities), true, 'Should return an array of objects called "activities"');
+        $this->assertEquals(is_array($activities->activities), true,
+            'Should return an array of objects called "activities"');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function testFind() {
+    public function testFind()
+    {
         $activity_id = $this->client->activities()->findAll()->activities[0]->id;
         $activity = $this->client->activity($activity_id)->find();
         $this->assertEquals(is_object($activity), true, 'Should return an object');
@@ -52,7 +59,8 @@ class ActivityStreamTest extends BasicTest {
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
     }
 
-    public function tearDown(){
+    public function tearDown()
+    {
         $this->client->tickets($this->ticket_id)->delete();
     }
 

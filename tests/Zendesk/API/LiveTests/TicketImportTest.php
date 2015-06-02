@@ -7,17 +7,21 @@ use Zendesk\API\Client;
 /**
  * Ticket Imports test class
  */
-class TicketImportTest extends BasicTest {
+class TicketImportTest extends BasicTest
+{
 
-    public function testCredentials() {
+    public function testCredentials()
+    {
         parent::credentialsTest();
     }
 
-    public function testAuthToken() {
+    public function testAuthToken()
+    {
         parent::authTokenTest();
     }
 
-    public function testImport() {
+    public function testImport()
+    {
         /*
          * Create the user first, and we'll delete it later
          */
@@ -40,7 +44,8 @@ class TicketImportTest extends BasicTest {
         $this->assertEquals(is_object($confirm->ticket), true, 'Should return an object called "ticket"');
         $this->assertGreaterThan(0, $confirm->ticket->id, 'Returns a non-numeric id for ticket');
         $this->assertEquals($confirm->ticket->subject, 'Help', 'Subject of test ticket does not match');
-        $this->assertEquals($confirm->ticket->description, 'A description', 'Description of test ticket does not match');
+        $this->assertEquals($confirm->ticket->description, 'A description',
+            'Description of test ticket does not match');
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '201', 'Does not return HTTP code 201');
 
         $this->client->user($author_id)->delete();
