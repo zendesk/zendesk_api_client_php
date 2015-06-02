@@ -142,6 +142,12 @@ class Http
             substr($response, 0, $headerSize),
             (isset($responseObject->error) ? $responseObject : null)
         );
+
+        if ($client->getDebug()->lastResponseCode >= 400) {
+            print($client->getDebug());
+            throw new ResponseException(__METHOD__);
+        }
+
         $curl->close();
         self::$curl = null;
 
