@@ -143,8 +143,11 @@ class Http
             (isset($responseObject->error) ? $responseObject : null)
         );
 
-        if ($client->getDebug()->lastResponseCode >= 400) {
+        $responseCode = $client->getDebug()->lastResponseCode;
+
+        if ($responseCode >= 400) {
             print($client->getDebug());
+
             throw new ResponseException(__METHOD__);
         }
 
