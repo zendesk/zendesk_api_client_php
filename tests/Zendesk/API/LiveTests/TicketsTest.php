@@ -2,7 +2,7 @@
 
 namespace Zendesk\API\LiveTests;
 
-use Zendesk\API\Client;
+use Zendesk\API\HttpClient;
 use Zendesk\API\ResponseException;
 
 /**
@@ -28,7 +28,7 @@ class TicketsTest extends BasicTest
 
     public function testAll()
     {
-        $this->mockApiCall("GET", "/tickets.json?", array("tickets" => [$this->testTicket]));
+        $this->mockApiCall("GET", "/tickets.json", array("tickets" => [$this->testTicket]));
 
         $tickets = $this->client->tickets()->findAll();
 
@@ -39,7 +39,7 @@ class TicketsTest extends BasicTest
 
     public function testAllSideLoadedMethod()
     {
-        $this->mockApiCall("GET", "/tickets.json?include=users%2Cgroups&",
+        $this->mockApiCall("GET", "/tickets.json?include=users%2Cgroups",
             array(
                 "tickets" => [$this->testTicket],
                 "groups" => [],
@@ -57,7 +57,7 @@ class TicketsTest extends BasicTest
 
     public function testAllSideLoadedParameter()
     {
-        $this->mockApiCall("GET", "/tickets.json?include=users%2Cgroups&",
+        $this->mockApiCall("GET", "/tickets.json?include=users%2Cgroups",
             array(
                 "tickets" => [$this->testTicket],
                 "groups" => [],
@@ -73,7 +73,7 @@ class TicketsTest extends BasicTest
 
     public function testFindSingle()
     {
-        $this->mockApiCall("GET", '/tickets/' . $this->testTicket['id'] . ".json?",
+        $this->mockApiCall("GET", '/tickets/' . $this->testTicket['id'] . ".json",
             array("ticket" => $this->testTicket));
 
         $tickets = $this->client->ticket($this->testTicket['id'])->find();
@@ -94,7 +94,7 @@ class TicketsTest extends BasicTest
             'id' => '4321'
         );
 
-        $this->mockApiCall("GET", "/tickets/show_many.json?ids={$this->testTicket['id']},{$testTicket2['id']}&",
+        $this->mockApiCall("GET", "/tickets/show_many.json?ids={$this->testTicket['id']}%2C{$testTicket2['id']}",
             array("tickets" => array($this->testTicket, $testTicket2)));
 
         $tickets = $this->client->tickets(array($this->testTicket['id'], $testTicket2['id']))->find();
@@ -108,21 +108,23 @@ class TicketsTest extends BasicTest
         $this->mockApiCall("PUT", "/tickets/" . $this->testTicket['id'] . ".json", array("tickets" => $this->testTicket));
 
         $this->client->tickets()->update($this->testTicket);
+        $postFields = $this->http->requests->latest();
     }
 
     public function testDeleteMultiple()
     {
-        $this->mockApiCall("DELETE", "/tickets/destroy_many.json?ids=123,321&", array("tickets" => []));
+        $this->mockApiCall("DELETE", "/tickets/destroy_many.json?ids=123%2C321", array("tickets" => []));
 
         $this->client->tickets(array(123, 321))->delete();
     }
 
     public function testCreateWithAttachment()
     {
-        $this->mockApiCall("POST", "/uploads.json?filename=UK+test+non-alpha+chars.png", array("upload" => array("token" => "asdf")),
-          array('code' => 201));
+        $this->mockApiCall("POST", "/uploads.json?filename=UK%20test%20non-alpha%20chars.png",
+            array("upload" => array("token" => "asdf")), 201);
 
-        $this->mockApiCall("POST", "/tickets.json", array("ticket" => array("id" => "123")), array('code' => 201));
+        $this->mockApiCall("POST", "/tickets.json", array("ticket" => array("id" => "123")),
+            array('code' => 201));
 
         $ticket = $this->client->tickets()->attach(array(
             'file' => getcwd() . '/tests/assets/UK.png',
@@ -135,7 +137,7 @@ class TicketsTest extends BasicTest
 
     public function testExport()
     {
-        $this->mockApiCall("GET", "/exports/tickets.json?start_time=1332034771&", array("results" => []));
+        $this->mockApiCall("GET", "/exports/tickets.json?start_time=1332034771", array("results" => []));
         $tickets = $this->client->tickets()->export(array('start_time' => '1332034771'));
         $this->assertEquals(is_object($tickets), true, 'Should return an object');
         $this->assertEquals(is_array($tickets->results), true,

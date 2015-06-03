@@ -2,7 +2,7 @@
 
 namespace Zendesk\API\LiveTests;
 
-use Zendesk\API\Client;
+use Zendesk\API\HttpClient;
 
 /**
  * Ticket Imports test class

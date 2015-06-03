@@ -2,7 +2,7 @@
 
 namespace Zendesk\API\UnitTests;
 
-use Zendesk\API\Client;
+use Zendesk\API\HttpClient;
 
 /**
  * Basic test class
@@ -23,7 +23,7 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
         $this->password = getenv('PASSWORD');
         $this->token = getenv('TOKEN');
         $this->oAuthToken = getenv('OAUTH_TOKEN');
-        $this->client = new Client($this->subdomain, $this->username);
+        $this->client = new HttpClient($this->subdomain, $this->username);
         $this->client->setAuth('token', $this->token);
     }
 

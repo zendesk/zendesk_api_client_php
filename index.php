@@ -1,7 +1,7 @@
 <?php
 include("vendor/autoload.php");
 
-use Zendesk\API\Client as ZendeskAPI;
+use Zendesk\API\HttpClient as ZendeskAPI;
 
 $subdomain = "subdomain";
 $username = "username";

@@ -2,7 +2,7 @@
 
 namespace Zendesk\API\LiveTests;
 
-use Zendesk\API\Client;
+use Zendesk\API\HttpClient;
 
 /**
  * SatisfactionRatings test class
@@ -23,7 +23,7 @@ class SatisfactionRatingsTest extends BasicTest
         // Auth as end user
         $username = getenv('END_USER_USERNAME');
         $password = getenv('END_USER_PASSWORD');
-        $client_end_user = new Client($this->subdomain, $username);
+        $client_end_user = new HttpClient($this->subdomain, $username);
         $client_end_user->setAuth('password', $password);
 
         $testTicket = array(

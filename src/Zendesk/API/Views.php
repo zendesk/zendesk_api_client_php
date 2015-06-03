@@ -24,15 +24,21 @@ class Views extends ClientAbstract
      */
     public function findAll(array $params = array())
     {
-        $endPoint = Http::prepare(
-            (isset($params['active']) ? 'views/active.json' :
-                (isset($params['compact']) ? 'views/compact.json' : 'views.json')), $this->client->getSideload($params),
-            $params
-        );
-        $response = Http::send($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
+
+        if (isset($params['active'])) {
+            $endPoint = 'views/active.json';
+        } else if (isset($params['compact'])) {
+            $endPoint = 'views/compact.json';
+        } else {
+            $endPoint = 'views.json';
         }
+
+        $sideloads = $this->client->getSideload($params);
+
+        $queryParams = Http::prepareQueryParams($sideloads, $params);
+
+        $response = Http::send($this->client, $endPoint, $queryParams);
+
         $this->client->setSideload(null);
 
         return $response;

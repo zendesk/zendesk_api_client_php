@@ -2,7 +2,7 @@
 
 namespace Zendesk\API\UnitTests;
 
-use Zendesk\API\Client;
+use Zendesk\API\HttpClient;
 
 /**
  * Groups test class

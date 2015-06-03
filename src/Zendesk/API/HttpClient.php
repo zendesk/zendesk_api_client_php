@@ -50,7 +50,7 @@ namespace Zendesk\API;
  * @method Locales locales()
  * @method PushNotificationDevices push_notification_devices()
  */
-class Client
+class HttpClient
 {
 
     /**
@@ -404,7 +404,7 @@ class Client
      *
      * @param array|null $fields
      *
-     * @return Client
+     * @return HttpClient
      */
     public function setSideload(array $fields = null)
     {

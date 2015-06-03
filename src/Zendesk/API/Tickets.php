@@ -47,9 +47,9 @@ class Tickets extends ClientAbstract
     protected $lastAttachments = array();
 
     /**
-     * @param Client $client
+     * @param HttpClient $client
      */
-    public function __construct(Client $client)
+    public function __construct(HttpClient $client)
     {
         parent::__construct($client);
         $this->audits = new TicketAudits($client);
@@ -79,16 +79,19 @@ class Tickets extends ClientAbstract
             $params['user_id'] = $this->client->users()->getLastId();
             $this->client->users()->setLastId(null);
         }
-        $queryParams = array();
+
+        $endPoint = (isset($params['organization_id']) ? 'organizations/' . $params['organization_id'] . '/tickets' :
+            (isset($params['user_id']) ? 'users/' . $params['user_id'] . '/tickets/' . (isset($params['ccd']) ? 'ccd' : 'requested') :
+                (isset($params['recent']) ? 'tickets/recent' : 'tickets'))
+        );
+
+        $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
+
         if (isset($params['external_id'])) {
             $queryParams['external_id'] = $params['external_id'];
         }
-        $endPoint = Http::prepare(
-            (isset($params['organization_id']) ? 'organizations/' . $params['organization_id'] . '/tickets' :
-                (isset($params['user_id']) ? 'users/' . $params['user_id'] . '/tickets/' . (isset($params['ccd']) ? 'ccd' : 'requested') :
-                    (isset($params['recent']) ? 'tickets/recent' : 'tickets'))
-            ) . '.json', $this->client->getSideload($params), $params);
-        $response = Http::send($this->client, $endPoint, $queryParams);
+
+        $response = Http::send($this->client, $endPoint . ".json", $queryParams);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
@@ -110,19 +113,32 @@ class Tickets extends ClientAbstract
      */
     public function find(array $params = array())
     {
+        // lastId is set when tickets is instantiated, and is either a ticket id or an array of ticket IDs
+        // lastId doesn't have to be set, id can be passed in via $params
         if ($this->lastId != null) {
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
+
+        // flip table if tickets wasn't instantiated with IDs to find, or they weren't passed in
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $endPoint = Http::prepare((is_array($params['id']) ? 'tickets/show_many.json?ids=' . implode(',',
-                $params['id']) : 'tickets/' . $params['id'] . '.json'), $this->client->getSideload($params));
-        $response = Http::send($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
+
+        // if it's looking for many, use the show many endpoint, otherwise use tickets
+        $queryParams = [];
+        if (is_array($params['id'])) {
+            $endPoint = 'tickets/show_many.json';
+            $queryParams["ids"] = implode(",", $params["id"]);
+
+        } else {
+            $endPoint = 'tickets/' . $params['id'] . '.json';
         }
+
+        $extraParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
+        $queryParams = array_merge($queryParams, $extraParams);
+
+        $response = Http::send($this->client, $endPoint, $queryParams);
         $this->client->setSideload(null);
 
         return $response;
@@ -175,11 +191,11 @@ class Tickets extends ClientAbstract
             $params['comment']['uploads'] = $this->lastAttachments;
             $this->lastAttachments = array();
         }
-        $endPoint = Http::prepare('tickets.json');
-        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'POST');
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
-            throw new ResponseException(__METHOD__);
-        }
+        $endPoint = 'tickets.json';
+        $response = Http::send(
+            $this->client, $endPoint, [], array(self::OBJ_NAME => $params), 'POST'
+        );
+
         $this->client->setSideload(null);
 
         return $response;
@@ -230,22 +246,32 @@ class Tickets extends ClientAbstract
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
+
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
+
         if (count($this->lastAttachments)) {
             $params['comment']['uploads'] = $this->lastAttachments;
             $this->lastAttachments = array();
         }
+
         $id = $params['id'];
         unset($params['id']);
-        $endPoint = Http::prepare((is_array($id) ? 'tickets/update_many.json?ids=' . implode(',',
-                $id) : 'tickets/' . $id . '.json'));
-        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'PUT');
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__,
-                ($this->client->getDebug()->lastResponseCode == 422 ? ' (hint: you can\'t update a closed ticket)' : ''));
+
+        $queryParams = [];
+
+        if (is_array($id)) {
+            $endPoint = 'tickets/update_many.json';
+            $queryParams['ids'] = implode(",", $id);
+        } else {
+            $endPoint = 'tickets/' . $id . '.json';
         }
+
+        $postFields = array(self::OBJ_NAME => $params);
+
+        $response = Http::send($this->client, $endPoint, $queryParams, $postFields, 'PUT');
+
         $this->client->setSideload(null);
 
         return $response;
@@ -332,19 +358,28 @@ class Tickets extends ClientAbstract
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
+
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
+
         $id = $params['id'];
-        $endPoint = Http::prepare((is_array($id) ? 'tickets/destroy_many.json?ids=' . implode(',',
-                $id) : 'tickets/' . $id . '.json'));
-        $response = Http::send($this->client, $endPoint, null, 'DELETE');
-        if ($this->client->getDebug()->lastResponseCode != 200) {
-            throw new ResponseException(__METHOD__);
+
+
+        $queryParams = [];
+
+        if (is_array($id)) {
+            $endPoint = 'tickets/destroy_many.json';
+            $queryParams['ids'] = implode(",", $id);
+        } else {
+            $endPoint = 'tickets/' . $id . '.json';
         }
+
+        $response = Http::send($this->client, $endPoint, $queryParams, [], 'DELETE');
+
         $this->client->setSideload(null);
 
-        return true;
+        return $response;
     }
 
     /**
@@ -481,11 +516,12 @@ class Tickets extends ClientAbstract
         if (!$params['start_time']) {
             throw new MissingParametersException(__METHOD__, array('start_time'));
         }
-        $endPoint = Http::prepare('exports/tickets.json?start_time=' . $params['start_time']);
-        $response = Http::send($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
+
+        $endPoint = 'exports/tickets.json';
+        $queryParams = ["start_time" => $params["start_time"]];
+
+        $response = Http::send($this->client, $endPoint, $queryParams, [], "GET");
+
         $this->client->setSideload(null);
 
         return $response;
@@ -591,7 +627,9 @@ class Tickets extends ClientAbstract
         if (!$this->hasKeys($params, array('file'))) {
             throw new MissingParametersException(__METHOD__, array('file'));
         }
+
         $upload = $this->client->attachments()->upload($params);
+
         if ((!is_object($upload->upload)) || (!$upload->upload->token)) {
             throw new ResponseException(__METHOD__);
         }

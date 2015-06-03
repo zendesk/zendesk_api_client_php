@@ -54,6 +54,7 @@ class AuditLogs extends ClientAbstract
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
+        // TODO: check for exception
         $endPoint = Http::prepare('audit_logs/' . $params['id'] . '.json');
         $response = Http::send($this->client, $endPoint);
         $this->client->setSideload(null);

@@ -2,7 +2,7 @@
 
 namespace Zendesk\API\UnitTests;
 
-use Zendesk\API\Client;
+use Zendesk\API\HttpClient;
 use Zendesk\API\Http;
 
 //(Client $client, $endPoint, $json = array(), $method = 'GET', $contentType = 'application/json') {
