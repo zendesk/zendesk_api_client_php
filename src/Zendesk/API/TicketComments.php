@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The TicketComments class exposes comment methods for tickets
  * @package Zendesk\API
  */
-class TicketComments extends ClientAbstract
+class TicketComments extends ResourceAbstract
 {
 
     const OBJ_NAME = 'comment';

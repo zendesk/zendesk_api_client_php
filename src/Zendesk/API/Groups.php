@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Groups class exposes ticket group information
  * @package Zendesk\API
  */
-class Groups extends ClientAbstract
+class Groups extends ResourceAbstract
 {
 
     const OBJ_NAME = 'group';

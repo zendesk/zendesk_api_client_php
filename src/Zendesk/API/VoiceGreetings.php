@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The VoiceGreetings class exposes methods as outlined in http://developer.zendesk.com/documentation/rest_api/voice.html
  * @package Zendesk\API
  */
-class VoiceGreetings extends ClientAbstract
+class VoiceGreetings extends ResourceAbstract
 {
 
     const OBJ_NAME = 'greeting';

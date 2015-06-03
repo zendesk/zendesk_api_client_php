@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The SuspendedTickets class exposes methods as detailed on http://developer.zendesk.com/documentation/rest_api/suspended_tickets.html
  * @package Zendesk\API
  */
-class SuspendedTickets extends ClientAbstract
+class SuspendedTickets extends ResourceAbstract
 {
 
     const OBJ_NAME = 'suspended_ticket';

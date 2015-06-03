@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Triggers class exposes methods as detailed on http://developer.zendesk.com/documentation/rest_api/triggers.html
  * @package Zendesk\API
  */
-class Triggers extends ClientAbstract
+class Triggers extends ResourceAbstract
 {
 
     const OBJ_NAME = 'trigger';

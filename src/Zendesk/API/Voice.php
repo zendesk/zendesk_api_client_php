@@ -12,7 +12,7 @@ namespace Zendesk\API;
  * @method VoiceAgents agents()
  * @method VoiceTickets tickets()
  */
-class Voice extends ClientAbstract
+class Voice extends ResourceAbstract
 {
 
     /**

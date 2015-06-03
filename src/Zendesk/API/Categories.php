@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Categories class exposes category information
  * @package Zendesk\API
  */
-class Categories extends ClientAbstract
+class Categories extends ResourceAbstract
 {
 
     const OBJ_NAME = 'category';

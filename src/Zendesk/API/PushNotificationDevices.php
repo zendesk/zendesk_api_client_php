@@ -7,7 +7,7 @@ namespace Zendesk\API;
  * @package Zendesk\API
  *
  */
-class PushNotificationDevices extends ClientAbstract
+class PushNotificationDevices extends ResourceAbstract
 {
 
     /**

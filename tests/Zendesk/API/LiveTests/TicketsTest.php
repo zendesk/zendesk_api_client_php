@@ -121,7 +121,7 @@ class TicketsTest extends BasicTest
     public function testCreateWithAttachment()
     {
         $this->mockApiCall("POST", "/uploads.json?filename=UK%20test%20non-alpha%20chars.png",
-            array("upload" => array("token" => "asdf")), 201);
+            array("upload" => array("token" => "asdf")), ["code" => 201]);
 
         $this->mockApiCall("POST", "/tickets.json", array("ticket" => array("id" => "123")),
             array('code' => 201));

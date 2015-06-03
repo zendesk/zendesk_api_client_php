@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The SharingAgreements class exposes methods as detailed at http://developer.zendesk.com/documentation/rest_api/sharing_agreements.html
  * @package Zendesk\API
  */
-class SharingAgreements extends ClientAbstract
+class SharingAgreements extends ResourceAbstract
 {
 
     const OBJ_NAME = 'sharing_agreement';

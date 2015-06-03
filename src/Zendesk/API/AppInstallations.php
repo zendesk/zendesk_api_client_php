@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The AppInstallations class exposes app installation methods
  * @package Zendesk\API
  */
-class AppInstallations extends ClientAbstract
+class AppInstallations extends ResourceAbstract
 {
 
     const OBJ_NAME = 'installation';

@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Requests class exposes request management methods
  * Note: you must authenticate as a user!
  */
-class Requests extends ClientAbstract
+class Requests extends ResourceAbstract
 {
 
     const OBJ_NAME = 'request';

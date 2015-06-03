@@ -6,8 +6,10 @@ namespace Zendesk\API;
  * Abstract class for all endpoints
  * @package Zendesk\API
  */
-abstract class ClientAbstract
+abstract class ResourceAbstract
 {
+
+    protected $endpoint;
 
     /**
      * @var HttpClient
@@ -24,6 +26,23 @@ abstract class ClientAbstract
     public function __construct(HttpClient $client)
     {
         $this->client = $client;
+        if (empty($this->endpoint)) {
+            $this->endpoint = strtolower($this->getResourceNameFromClass()) . '.json';
+        }
+    }
+
+    /**
+     *
+     * Return the resource name using the name of the class (used for endpoints)
+     *
+     * @return string
+     */
+    private function getResourceNameFromClass()
+    {
+        $namespacedClassName = get_class($this);
+        $resourceName = join('', array_slice(explode('\\', $namespacedClassName), -1));
+
+        return $resourceName;
     }
 
     /**
@@ -101,5 +120,37 @@ abstract class ClientAbstract
 
         return $this;
     }
+
+    /**
+     * List all of this resource
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function findAll(array $params = array())
+    {
+        if (empty($this->endpoint)) {
+            throw new \Exception("Endpoint is not defined");
+        }
+
+        $sideloads = $this->client->getSideload($params);
+
+        $queryParams = Http::prepareQueryParams($sideloads, $params);
+
+        $response = Http::send_with_options(
+            $this->client,
+            $this->endpoint,
+            ['queryParams' => $queryParams]
+        );
+
+        $this->client->setSideload(null);
+
+        return $response;
+    }
+
 
 }

@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The DynamicContent class exposes methods seen at https://developer.zendesk.com/rest_api/docs/core/dynamic_content
  * @package Zendesk\API
  */
-class DynamicContent extends ClientAbstract
+class DynamicContent extends ResourceAbstract
 {
 
     const OBJ_NAME = 'item';

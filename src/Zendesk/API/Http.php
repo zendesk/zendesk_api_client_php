@@ -76,6 +76,69 @@ class Http
         return $addParams;
     }
 
+    /**
+     * Use the send method to call every endpoint except for oauth/tokens
+     *
+     * @param HttpClient $client
+     * @param string $endPoint E.g. "/tickets.json"
+     * @param array $queryParams Array of unencoded key-value pairs, e.g. ["ids" => "1,2,3,4"]
+     * @param array $postFields Array of unencoded key-value pairs, e.g. ["filename" => "blah.png"]
+     * @param string $method "GET", "POST", etc. Default is GET.
+     * @param string $contentType Default is "application/json"
+     * @return array The response body, parsed from JSON into an associative array
+     */
+    public static function send_with_options(
+        HttpClient $client,
+        $endPoint,
+        $options = []
+    ) {
+        $options = array_merge([
+            'method' => 'GET',
+            'contentType' => 'application/json',
+            'postFields' => [],
+            'queryParams' => []
+        ], $options);
+
+        $method = $options["method"];
+        $contentType = $options["contentType"];
+        $postFields = $options["postFields"];
+        $queryParams = $options["queryParams"];
+
+
+        $url = $client->getApiUrl() . $endPoint;
+
+        $guzzleClient = new Client();
+        $request = new Request($method, $url);
+
+        try {
+            $response = $guzzleClient->send(
+                $request,
+                [
+                    RequestOptions::QUERY => $queryParams,
+                    RequestOptions::JSON => $postFields,
+                    RequestOptions::HEADERS => [
+                        'Accept' => 'application/json',
+                        'Content-Type' => $contentType
+                    ]
+                ]
+            );
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            var_dump($e->getRequest()->getUri());
+            var_dump($e->getResponse()->getStatusCode());
+        }
+
+        $responseCode = $response->getStatusCode();
+        $parsedResponseBody = json_decode($response->getBody());
+
+        $client->setDebug(
+            $response->getHeaders(),
+            $responseCode,
+            10,
+            null
+        );
+
+        return $parsedResponseBody;
+    }
 
     /**
      * Use the send method to call every endpoint except for oauth/tokens
@@ -101,17 +164,22 @@ class Http
         $guzzleClient = new Client();
         $request = new Request($method, $url);
 
-        $response = $guzzleClient->send(
-            $request,
-            [
-                RequestOptions::QUERY => $queryParams,
-                RequestOptions::JSON => $postFields,
-                RequestOptions::HEADERS => [
-                    'Accept' => 'application/json',
-                    'Content-Type' => $contentType
+        try {
+            $response = $guzzleClient->send(
+                $request,
+                [
+                    RequestOptions::QUERY => $queryParams,
+                    RequestOptions::JSON => $postFields,
+                    RequestOptions::HEADERS => [
+                        'Accept' => 'application/json',
+                        'Content-Type' => $contentType
+                    ]
                 ]
-            ]
-        );
+            );
+        } catch (\GuzzleHttp\Exception\ClientException $e) {
+            var_dump($e->getRequest()->getUri());
+            var_dump($e->getResponse()->getStatusCode());
+        }
 
         $responseCode = $response->getStatusCode();
         $parsedResponseBody = json_decode($response->getBody());
@@ -124,73 +192,6 @@ class Http
         );
 
         return $parsedResponseBody;
-
-//
-//        $curl = (isset(self::$curl)) ? self::$curl : new CurlRequest;
-//        $curl->setopt(CURLOPT_URL, $url);
-//
-//        if ($method === 'POST') {
-//            $curl->setopt(CURLOPT_POST, true);
-//
-//        } else {
-//            if ($method === 'PUT') {
-//                $curl->setopt(CURLOPT_CUSTOMREQUEST, 'PUT');
-//
-//            } else {
-//                $st = http_build_query((array)$json);
-//                $curl->setopt(CURLOPT_URL,
-//                    $url . ($st !== array() ? (strpos($url, '?') === false ? '?' : '&') . $st : ''));
-//                $curl->setopt(CURLOPT_CUSTOMREQUEST, $method);
-//            }
-//        }
-
-//        $httpHeader = array('Accept: application/json');
-//        if ($client->getAuthType() == 'oauth_token') {
-//            $httpHeader[] = 'Authorization: Bearer ' . $client->getAuthText();
-//
-//        } else {
-//            $curl->setopt(CURLOPT_USERPWD, $client->getAuthText());
-//        }
-//
-//        /* DO NOT SET CONTENT TYPE IF UPLOADING */
-//        if (!isset($json['uploaded_data'])) {
-//            if (isset($json['filename'])) {
-//                $filename = $json['filename'];
-//                $file = fopen($filename, 'r');
-//                $size = filesize($filename);
-//                $fileData = fread($file, $size);
-//                $json = $fileData;
-//                $curl->setopt(CURLOPT_INFILE, $file);
-//                $curl->setopt(CURLOPT_INFILESIZE, $size);
-//            } else {
-//                if (isset($json['body'])) {
-//                    $curl->setopt(CURLOPT_INFILESIZE, strlen($json['body']));
-//                    $json = $json['body'];
-//                }
-//            }
-//
-//            $httpHeader[] = 'Content-Type: ' . $contentType;
-//        } else {
-//            $contentType = '';
-//        }
-
-//        $curl->setopt(CURLOPT_POSTFIELDS, $json);
-//        $curl->setopt(CURLOPT_HTTPHEADER, $httpHeader);
-//        $curl->setopt(CURLINFO_HEADER_OUT, true);
-//        $curl->setopt(CURLOPT_RETURNTRANSFER, true);
-//        $curl->setopt(CURLOPT_CONNECTTIMEOUT, 30);
-//        $curl->setopt(CURLOPT_TIMEOUT, 30);
-//        $curl->setopt(CURLOPT_SSL_VERIFYPEER, false);
-//        $curl->setopt(CURLOPT_HEADER, true);
-//        $curl->setopt(CURLOPT_VERBOSE, true);
-//        $curl->setopt(CURLOPT_FOLLOWLOCATION, true);
-//        $curl->setopt(CURLOPT_MAXREDIRS, 3);
-
-//        $response = $curl->exec();
-//        if ($response === false) {
-//            throw new \Exception(sprintf('Curl error message: "%s" in %s', $curl->error(), __METHOD__));
-//        }
-
     }
 
     /**

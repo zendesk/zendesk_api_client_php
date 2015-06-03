@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Views class exposes view management methods
  * @package Zendesk\API
  */
-class Views extends ClientAbstract
+class Views extends ResourceAbstract
 {
 
     const OBJ_NAME = 'view';
@@ -24,24 +24,17 @@ class Views extends ClientAbstract
      */
     public function findAll(array $params = array())
     {
-
         if (isset($params['active'])) {
-            $endPoint = 'views/active.json';
-        } else if (isset($params['compact'])) {
-            $endPoint = 'views/compact.json';
+            $this->endpoint = 'views/active.json';
         } else {
-            $endPoint = 'views.json';
+            if (isset($params['compact'])) {
+                $this->endpoint = 'views/compact.json';
+            } else {
+                $this->endpoint = 'views.json';
+            }
         }
 
-        $sideloads = $this->client->getSideload($params);
-
-        $queryParams = Http::prepareQueryParams($sideloads, $params);
-
-        $response = Http::send($this->client, $endPoint, $queryParams);
-
-        $this->client->setSideload(null);
-
-        return $response;
+        return parent::findAll($params);
     }
 
     /**
@@ -64,11 +57,15 @@ class Views extends ClientAbstract
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $endPoint = Http::prepare('views/' . $params['id'] . '.json', $this->client->getSideload($params));
-        $response = Http::send($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
+
+        $endPoint = 'views/' . $params['id'] . '.json';
+
+        $queryParams = Http::prepareQueryParams(
+            $this->client->getSideload($params), $params
+        );
+
+        $response = Http::send_with_options($this->client, $endPoint, ['queryParams' => $queryParams]);
+
         $this->client->setSideload(null);
 
         return $response;
@@ -86,11 +83,16 @@ class Views extends ClientAbstract
      */
     public function create(array $params)
     {
-        $endPoint = Http::prepare('views.json');
-        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'POST');
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
-            throw new ResponseException(__METHOD__);
-        }
+        $endPoint = 'views.json';
+        $response = Http::send_with_options(
+            $this->client,
+            $endPoint,
+            [
+                'postFields' => array(self::OBJ_NAME => $params),
+                'method' => 'POST'
+            ]
+        );
+
         $this->client->setSideload(null);
 
         return $response;
@@ -116,13 +118,19 @@ class Views extends ClientAbstract
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
+
         $id = $params['id'];
         unset($params['id']);
-        $endPoint = Http::prepare('views/' . $id . '.json');
-        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'PUT');
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
+
+        $endPoint = 'views/' . $id . '.json';
+
+        $response = Http::send_with_options(
+            $this->client, $endPoint, [
+                'postFields' => array(self::OBJ_NAME => $params),
+                'method' => 'PUT'
+            ]
+        );
+
         $this->client->setSideload(null);
 
         return $response;
@@ -148,15 +156,19 @@ class Views extends ClientAbstract
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
+
         $id = $params['id'];
-        $endPoint = Http::prepare('views/' . $id . '.json');
-        $response = Http::send($this->client, $endPoint, null, 'DELETE');
-        if ($this->client->getDebug()->lastResponseCode != 200) {
-            throw new ResponseException(__METHOD__);
-        }
+        $endPoint = 'views/' . $id . '.json';
+
+        $response = Http::send_with_options(
+            $this->client,
+            $endPoint,
+            ['method' => 'DELETE']
+        );
+
         $this->client->setSideload(null);
 
-        return true;
+        return $response;
     }
 
     /**
@@ -241,12 +253,25 @@ class Views extends ClientAbstract
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $endPoint = Http::prepare('views/' . (is_array($params['id']) ? 'count_many.json?ids=' . implode(',',
-                    $params['id']) : $params['id'] . '/count.json'), $this->client->getSideload($params), $params);
-        $response = Http::send($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
+
+        $queryParams = [];
+        if (is_array($params['id'])) {
+            $endPoint = 'views/count_many.json';
+            $queryParams['ids'] = implode(',', $params['id']);
+        } else {
+            $endPoint = 'views/' . $params['id'] . '/count.json';
         }
+
+        $extraParams = Http::prepareQueryParams(
+            $this->client->getSideload($params), $params
+        );
+
+        $response = Http::send_with_options(
+            $this->client, $endPoint, [
+                'queryParams' => array_merge($queryParams, $extraParams)
+            ]
+        );
+
         $this->client->setSideload(null);
 
         return $response;
@@ -295,11 +320,22 @@ class Views extends ClientAbstract
      */
     public function preview(array $params)
     {
-        $endPoint = Http::prepare('views/preview.json', $this->client->getSideload($params), $params);
-        $response = Http::send($this->client, $endPoint, array('view' => $params), 'POST');
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
+        $endPoint = 'views/preview.json';
+        $extraParams = Http::prepareQueryParams(
+            $this->client->getSideload($params),
+            $params
+        );
+
+        $response = Http::send_with_options(
+            $this->client,
+            $endPoint,
+            [
+                'postFields' => array('view' => $params),
+                'queryParams' => $extraParams,
+                'method' => 'POST'
+            ]
+        );
+
         $this->client->setSideload(null);
 
         return $response;
@@ -317,12 +353,21 @@ class Views extends ClientAbstract
      */
     public function previewCount(array $params)
     {
-        $endPoint = Http::prepare('views/preview/count.json', $this->client->getSideload($params), $params);
-        $response = Http::send($this->client, $endPoint, array('view' => $params), 'POST');
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
-        $this->client->setSideload(null);
+        $endPoint = 'views/preview/count.json';
+        $extraParams = Http::prepareQueryParams(
+            $this->client->getSideload($params),
+            $params
+        );
+
+        $response = Http::send_with_options(
+            $this->client,
+            $endPoint,
+            [
+                'postFields' => array('view' => $params),
+                'queryParams' => $extraParams,
+                'method' => 'POST'
+            ]
+        );
 
         return $response;
     }

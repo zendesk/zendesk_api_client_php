@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The TicketAudits class exposes read only audit methods
  * @package Zendesk\API
  */
-class TicketAudits extends ClientAbstract
+class TicketAudits extends ResourceAbstract
 {
 
     const OBJ_NAME = 'audit';

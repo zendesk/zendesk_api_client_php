@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Apps class exposes app management methods
  * @package Zendesk\API
  */
-class Apps extends ClientAbstract
+class Apps extends ResourceAbstract
 {
 
     /**

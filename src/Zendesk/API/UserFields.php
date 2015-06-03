@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The UserFields class exposes fields on the user profile page
  * @package Zendesk\API
  */
-class UserFields extends ClientAbstract
+class UserFields extends ResourceAbstract
 {
 
     const OBJ_NAME = 'user_field';

@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Targets class exposes methods as detailed on http://developer.zendesk.com/documentation/rest_api/targets.html
  * @package Zendesk\API
  */
-class Targets extends ClientAbstract
+class Targets extends ResourceAbstract
 {
 
     const OBJ_NAME = 'target';

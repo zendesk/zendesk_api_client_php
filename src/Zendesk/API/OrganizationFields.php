@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The OrganizationFields class exposes methods as detailed on http://developer.zendesk.com/documentation/rest_api/organization_fields.html
  * @package Zendesk\API
  */
-class OrganizationFields extends ClientAbstract
+class OrganizationFields extends ResourceAbstract
 {
 
     const OBJ_NAME = 'organization_field';

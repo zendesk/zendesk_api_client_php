@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The VoiceStats class exposes methods as outlined in http://developer.zendesk.com/documentation/rest_api/voice.html
  * @package Zendesk\API
  */
-class VoiceStats extends ClientAbstract
+class VoiceStats extends ResourceAbstract
 {
 
     /**

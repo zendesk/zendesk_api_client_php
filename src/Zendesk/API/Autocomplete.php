@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Autocomplete class is as per http://developer.zendesk.com/documentation/rest_api/autocomplete.html
  * @package Zendesk\API
  */
-class Autocomplete extends ClientAbstract
+class Autocomplete extends ResourceAbstract
 {
 
     const OBJ_NAME = 'name';

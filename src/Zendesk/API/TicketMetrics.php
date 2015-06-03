@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The TicketMetrics class exposes metrics methods for tickets
  * @package Zendesk\API
  */
-class TicketMetrics extends ClientAbstract
+class TicketMetrics extends ResourceAbstract
 {
 
     const OBJ_NAME = 'ticket_metric';

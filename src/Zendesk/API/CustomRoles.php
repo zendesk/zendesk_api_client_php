@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The CustomRoles class exposes access to custom roles
  * @package Zendesk\API
  */
-class CustomRoles extends ClientAbstract
+class CustomRoles extends ResourceAbstract
 {
 
     const OBJ_NAME = 'custom_role';

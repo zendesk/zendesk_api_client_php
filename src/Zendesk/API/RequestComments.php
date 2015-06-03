@@ -8,7 +8,7 @@ namespace Zendesk\API;
  *
  * @package Zendesk\API
  */
-class RequestComments extends ClientAbstract
+class RequestComments extends ResourceAbstract
 {
 
     const OBJ_NAME = 'comment';

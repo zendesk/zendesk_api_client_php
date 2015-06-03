@@ -11,7 +11,7 @@ namespace Zendesk\API;
  * @method TicketMetrics metrics()
  * @method SatisfactionRatings satisfactionRatings()
  */
-class Tickets extends ClientAbstract
+class Tickets extends ResourceAbstract
 {
 
     const OBJ_NAME = 'ticket';
@@ -57,47 +57,6 @@ class Tickets extends ClientAbstract
         $this->metrics = new TicketMetrics($client);
         $this->import = new TicketImport($client);
         $this->satisfactionRatings = new SatisfactionRatings($client);
-    }
-
-    /**
-     * Returns all recent tickets overall, per user or per organization
-     *
-     * @param array $params
-     *
-     * @throws ResponseException
-     * @throws \Exception
-     *
-     * @return mixed
-     */
-    public function findAll(array $params = array())
-    {
-        if ($this->client->organizations()->getLastId() != null) {
-            $params['organization_id'] = $this->client->organizations()->getLastId();
-            $this->client->organizations()->setLastId(null);
-        }
-        if ($this->client->users()->getLastId() != null) {
-            $params['user_id'] = $this->client->users()->getLastId();
-            $this->client->users()->setLastId(null);
-        }
-
-        $endPoint = (isset($params['organization_id']) ? 'organizations/' . $params['organization_id'] . '/tickets' :
-            (isset($params['user_id']) ? 'users/' . $params['user_id'] . '/tickets/' . (isset($params['ccd']) ? 'ccd' : 'requested') :
-                (isset($params['recent']) ? 'tickets/recent' : 'tickets'))
-        );
-
-        $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
-
-        if (isset($params['external_id'])) {
-            $queryParams['external_id'] = $params['external_id'];
-        }
-
-        $response = Http::send($this->client, $endPoint . ".json", $queryParams);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
-        $this->client->setSideload(null);
-
-        return $response;
     }
 
     /**

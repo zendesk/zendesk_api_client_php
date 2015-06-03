@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The TicketImport class exposes import methods for tickets
  * @package Zendesk\API
  */
-class TicketImport extends ClientAbstract
+class TicketImport extends ResourceAbstract
 {
 
     const OBJ_NAME = 'ticket';
