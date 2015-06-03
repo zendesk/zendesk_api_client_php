@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Search class exposes methods defined in http://developer.zendesk.com/documentation/rest_api/search.html
  * @package Zendesk\API
  */
-class Search extends ClientAbstract
+class Search extends ResourceAbstract
 {
 
     /**

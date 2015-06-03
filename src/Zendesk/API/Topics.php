@@ -10,7 +10,7 @@ namespace Zendesk\API;
  * @method TopicSubscriptions subscriptions()
  * @method TopicVotes votes()
  */
-class Topics extends ClientAbstract
+class Topics extends ResourceAbstract
 {
 
     const OBJ_NAME = 'topic';

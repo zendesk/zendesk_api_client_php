@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The TicketForms class exposes form management methods for tickets
  * @package Zendesk\API
  */
-class TicketForms extends ClientAbstract
+class TicketForms extends ResourceAbstract
 {
 
     const OBJ_NAME = 'ticket_form';

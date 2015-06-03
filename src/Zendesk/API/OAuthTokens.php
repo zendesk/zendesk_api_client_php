@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The OAuthTokens class exposes methods seen at http://developer.zendesk.com/documentation/rest_api/oauth_clients.html
  * @package Zendesk\API
  */
-class OAuthTokens extends ClientAbstract
+class OAuthTokens extends ResourceAbstract
 {
 
     const OBJ_NAME = 'token';

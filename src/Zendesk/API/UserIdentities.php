@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The UserIdentities class exposes fields on the user profile page
  * @package Zendesk\API
  */
-class UserIdentities extends ClientAbstract
+class UserIdentities extends ResourceAbstract
 {
 
     const OBJ_NAME = 'identity';

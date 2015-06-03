@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The GroupMemberships class exposes group membership information
  * @package Zendesk\API
  */
-class GroupMemberships extends ClientAbstract
+class GroupMemberships extends ResourceAbstract
 {
 
     const OBJ_NAME = 'group_membership';

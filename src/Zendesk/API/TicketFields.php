@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The TicketFields class exposes field management methods for tickets
  * @package Zendesk\API
  */
-class TicketFields extends ClientAbstract
+class TicketFields extends ResourceAbstract
 {
 
     const OBJ_NAME = 'ticket_field';

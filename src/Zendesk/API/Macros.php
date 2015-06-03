@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Macros class exposes methods seen at http://developer.zendesk.com/documentation/rest_api/macros.html
  * @package Zendesk\API
  */
-class Macros extends ClientAbstract
+class Macros extends ResourceAbstract
 {
 
     const OBJ_NAME = 'macro';

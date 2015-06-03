@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Settings class exposes methods for retrieving settings parameters
  * @package Zendesk\API
  */
-class Settings extends ClientAbstract
+class Settings extends ResourceAbstract
 {
 
     const OBJ_NAME = 'settings';

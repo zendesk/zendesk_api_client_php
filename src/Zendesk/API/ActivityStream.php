@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The ActivityStream class exposes methods for retrieving settings parameters
  * @package Zendesk\API
  */
-class ActivityStream extends ClientAbstract
+class ActivityStream extends ResourceAbstract
 {
 
     const OBJ_NAME = 'activity';

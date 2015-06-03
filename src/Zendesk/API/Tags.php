@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Tags class exposes methods as detailed on http://developer.zendesk.com/documentation/rest_api/tags.html
  * @package Zendesk\API
  */
-class Tags extends ClientAbstract
+class Tags extends ResourceAbstract
 {
 
     const OBJ_NAME = 'tags';

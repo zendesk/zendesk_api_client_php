@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The AuditLogs class is as per http://developer.zendesk.com/documentation/rest_api/audit_logs.html
  * @package Zendesk\API
  */
-class AuditLogs extends ClientAbstract
+class AuditLogs extends ResourceAbstract
 {
 
     const OBJ_NAME = 'audit_log';

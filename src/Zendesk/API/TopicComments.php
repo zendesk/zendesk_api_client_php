@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The TopicComments class exposes topic commentary information
  * @package Zendesk\API
  */
-class TopicComments extends ClientAbstract
+class TopicComments extends ResourceAbstract
 {
 
     const OBJ_NAME = 'topic_comment';

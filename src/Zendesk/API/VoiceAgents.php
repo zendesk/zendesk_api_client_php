@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The VoiceAgents class exposes methods as outlined in http://developer.zendesk.com/documentation/rest_api/voice_integration.html
  * @package Zendesk\API
  */
-class VoiceAgents extends ClientAbstract
+class VoiceAgents extends ResourceAbstract
 {
 
     /**

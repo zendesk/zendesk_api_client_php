@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Automations class exposes methods seen at http://developer.zendesk.com/documentation/rest_api/automations.html
  * @package Zendesk\API
  */
-class Automations extends ClientAbstract
+class Automations extends ResourceAbstract
 {
 
     const OBJ_NAME = 'automation';

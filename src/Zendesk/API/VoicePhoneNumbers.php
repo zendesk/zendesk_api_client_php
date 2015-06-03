@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The VoicePhoneNumbers class exposes methods as outlined in http://developer.zendesk.com/documentation/rest_api/voice.html
  * @package Zendesk\API
  */
-class VoicePhoneNumbers extends ClientAbstract
+class VoicePhoneNumbers extends ResourceAbstract
 {
 
     const OBJ_NAME = 'phone_number';

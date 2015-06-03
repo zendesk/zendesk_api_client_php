@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Attachments class exposes methods for uploading and retrieving attachments
  * @package Zendesk\API
  */
-class Attachments extends ClientAbstract
+class Attachments extends ResourceAbstract
 {
 
     /**

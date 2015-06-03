@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The TopicVotes class exposes topic subscription information
  * @package Zendesk\API
  */
-class TopicVotes extends ClientAbstract
+class TopicVotes extends ResourceAbstract
 {
 
     const OBJ_NAME = 'topic_vote';

@@ -13,7 +13,8 @@ class ViewsTest extends BasicTest
 
     public function testCreate()
     {
-        $this->mockApiCall('POST', '/views.json', array('view' => array('id' => $this->id, 'title' => 'Roger Wilco')), array('code' => 201));
+        $this->mockApiCall('POST', '/views.json', array('view' => array('id' => $this->id, 'title' => 'Roger Wilco')),
+            array('code' => 201));
 
         $view = $this->client->views()->create(array(
             'title' => 'Roger Wilco',
@@ -47,7 +48,7 @@ class ViewsTest extends BasicTest
 
     public function testAll()
     {
-        $this->mockApiCall('GET', '/views.json?', array('views' => array(array('id' => $this->id))));
+        $this->mockApiCall('GET', '/views.json', array('views' => array(array('id' => $this->id))));
 
         $views = $this->client->views()->findAll();
         $this->assertEquals(is_object($views), true, 'Should return an object');
@@ -58,7 +59,7 @@ class ViewsTest extends BasicTest
 
     public function testActive()
     {
-        $this->mockApiCall('GET', '/views/active.json?', array('views' => array(array('id' => $this->id))));
+        $this->mockApiCall('GET', '/views/active.json', array('views' => array(array('id' => $this->id))));
 
         $views = $this->client->views()->findAll(array('active' => true));
         $this->assertEquals(is_object($views), true, 'Should return an object');
@@ -69,7 +70,7 @@ class ViewsTest extends BasicTest
 
     public function testCompact()
     {
-        $this->mockApiCall('GET', '/views/compact.json?', array('views' => array(array('id' => $this->id))));
+        $this->mockApiCall('GET', '/views/compact.json', array('views' => array(array('id' => $this->id))));
         $views = $this->client->views()->findAll(array('compact' => true));
         $this->assertEquals(is_object($views), true, 'Should return an object');
         $this->assertEquals(is_array($views->views), true,
@@ -79,7 +80,7 @@ class ViewsTest extends BasicTest
 
     public function testFind()
     {
-        $this->mockApiCall('GET', '/views/' . $this->id . '.json?', array('view' => array('id' => $this->id)));
+        $this->mockApiCall('GET', '/views/' . $this->id . '.json', array('view' => array('id' => $this->id)));
         $view = $this->client->view($this->id)->find();
         $this->assertEquals(is_object($view), true, 'Should return an object');
         $this->assertEquals(is_object($view->view), true, 'Should return an object called "view"');
@@ -88,7 +89,8 @@ class ViewsTest extends BasicTest
 
     public function testUpdate()
     {
-        $this->mockApiCall('PUT', '/views/' . $this->id . '.json', array('view' => array('id' => $this->id, 'title' => 'Roger Wilco II')));
+        $this->mockApiCall('PUT', '/views/' . $this->id . '.json',
+            array('view' => array('id' => $this->id, 'title' => 'Roger Wilco II')));
 
         $view = $this->client->view($this->id)->update(array(
             'title' => 'Roger Wilco II'
@@ -101,7 +103,7 @@ class ViewsTest extends BasicTest
 
     public function testExecute()
     {
-        $this->mockApiCall('GET', '/views/' . $this->id . '/execute.json?', array('view' => array('id' => $this->id)));
+        $this->mockApiCall('GET', '/views/' . $this->id . '/execute.json', array('view' => array('id' => $this->id)));
 
         $view = $this->client->view($this->id)->execute();
         $this->assertEquals(is_object($view), true, 'Should return an object');
@@ -111,7 +113,8 @@ class ViewsTest extends BasicTest
 
     public function testCount()
     {
-        $this->mockApiCall('GET', '/views/' . $this->id . '/count.json?', array('view_count' => array('view_id' => $this->id)));
+        $this->mockApiCall('GET', '/views/' . $this->id . '/count.json',
+            array('view_count' => array('view_id' => $this->id)));
 
         $counts = $this->client->view($this->id)->count();
         $this->assertEquals(is_object($counts), true, 'Should return an object');
@@ -121,7 +124,11 @@ class ViewsTest extends BasicTest
 
     public function testCountMany()
     {
-        $this->mockApiCall('GET', '/views/count_many.json?ids=' . implode(',', array($this->id, 80085)) . '&', array('view_counts' => array(array('view_id' => $this->id))));
+        $this->mockApiCall(
+            'GET',
+            '/views/count_many.json?ids=' . urlencode(implode(',', array($this->id, 80085))),
+            array('view_counts' => array(array('view_id' => $this->id)))
+        );
 
         $counts = $this->client->view(array($this->id, 80085))->count();
         $this->assertEquals(is_object($counts), true, 'Should return an object');
@@ -133,7 +140,8 @@ class ViewsTest extends BasicTest
 
     public function testExport()
     {
-        $this->mockApiCall('GET', '/views/' . $this->id . '/export.json?', array('export' => array('view_id' => $this->id)));
+        $this->mockApiCall('GET', '/views/' . $this->id . '/export.json',
+            array('export' => array('view_id' => $this->id)));
 
         $export = $this->client->view($this->id)->export();
         $this->assertEquals(is_object($export), true, 'Should return an object');
@@ -183,7 +191,7 @@ class ViewsTest extends BasicTest
 
     public function testDelete()
     {
-        $this->mockApiCall('DELETE', '/views/' . $this->id . '.json?', array());
+        $this->mockApiCall('DELETE', '/views/' . $this->id . '.json', array());
         $this->client->views($this->id)->delete();
     }
 }

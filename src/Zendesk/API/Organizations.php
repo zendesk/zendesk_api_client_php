@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Organizations class exposes methods as detailed on http://developer.zendesk.com/documentation/rest_api/organizations.html
  * @package Zendesk\API
  */
-class Organizations extends ClientAbstract
+class Organizations extends ResourceAbstract
 {
 
     const OBJ_NAME = 'organization';

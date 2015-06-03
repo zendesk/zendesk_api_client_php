@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The TopicSubscriptions class exposes topic subscription information
  * @package Zendesk\API
  */
-class TopicSubscriptions extends ClientAbstract
+class TopicSubscriptions extends ResourceAbstract
 {
 
     const OBJ_NAME = 'topic_subscription';

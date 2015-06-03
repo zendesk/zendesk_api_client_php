@@ -8,7 +8,7 @@ namespace Zendesk\API;
  *
  * @package Zendesk\API
  */
-class Users extends ClientAbstract
+class Users extends ResourceAbstract
 {
 
     const OBJ_NAME = 'user';

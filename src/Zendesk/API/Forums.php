@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Forums class exposes forum information
  * @package Zendesk\API
  */
-class Forums extends ClientAbstract
+class Forums extends ResourceAbstract
 {
 
     const OBJ_NAME = 'forum';

@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Twitter class exposes methods for managing and monitoring Twitter posts
  * @package Zendesk\API
  */
-class Twitter extends ClientAbstract
+class Twitter extends ResourceAbstract
 {
 
     const OBJ_NAME = 'monitored_twitter_handle';

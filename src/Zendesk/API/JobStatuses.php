@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The JobStatuses class exposes information about the status of a job
  * @package Zendesk\API
  */
-class JobStatuses extends ClientAbstract
+class JobStatuses extends ResourceAbstract
 {
 
     /**

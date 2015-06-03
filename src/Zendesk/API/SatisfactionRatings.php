@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The SatisfactionRatings class exposes methods as detailed on http://developer.zendesk.com/documentation/rest_api/satisfaction_ratings.html
  * @package Zendesk\API
  */
-class SatisfactionRatings extends ClientAbstract
+class SatisfactionRatings extends ResourceAbstract
 {
 
     const OBJ_NAME = 'satisfaction_rating';

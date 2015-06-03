@@ -6,7 +6,7 @@ namespace Zendesk\API;
  * The Locales class exposes view management methods
  * @package Zendesk\API
  */
-class Locales extends ClientAbstract
+class Locales extends ResourceAbstract
 {
 
     const OBJ_NAME = 'locale';
