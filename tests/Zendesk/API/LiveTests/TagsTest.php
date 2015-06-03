@@ -3,7 +3,7 @@
 
 namespace Zendesk\API\LiveTests;
 
-use Zendesk\API\Client;
+use Zendesk\API\HttpClient;
 
 /**
  * Tags test class

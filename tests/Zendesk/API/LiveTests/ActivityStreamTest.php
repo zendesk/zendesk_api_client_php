@@ -2,7 +2,7 @@
 
 namespace Zendesk\API\LiveTests;
 
-use Zendesk\API\Client;
+use Zendesk\API\HttpClient;
 
 /**
  * ActivityStream test class
@@ -24,10 +24,9 @@ class ActivityStreamTest extends BasicTest
 
     public function setUP()
     {
-
         $username = getenv('END_USER_USERNAME');
         $password = getenv('END_USER_PASSWORD');
-        $client_end_user = new Client($this->subdomain, $username);
+        $client_end_user = new HttpClient($this->subdomain, $username);
         $client_end_user->setAuth('password', $password);
 
         $testTicket = array(
@@ -37,7 +36,12 @@ class ActivityStreamTest extends BasicTest
             ),
             'priority' => 'normal'
         );
-        $request = $client_end_user->requests()->create($testTicket);
+        try {
+            $request = $client_end_user->requests()->create($testTicket);
+        } catch (\Zendesk\API\ResponseException $e) {
+            print($client_end_user->getDebug());
+        }
+
         $this->ticket_id = $request->request->id;
     }
 

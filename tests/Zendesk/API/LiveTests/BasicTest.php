@@ -2,7 +2,7 @@
 
 namespace Zendesk\API\LiveTests;
 
-use Zendesk\API\Client;
+use Zendesk\API\HttpClient;
 
 /**
  * Basic test class
@@ -31,7 +31,7 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
         $this->hostname = getenv('HOSTNAME');
         $this->port = getenv('PORT');
 
-        $this->client = new Client($this->subdomain, $this->username, $this->scheme, $this->hostname, $this->port);
+        $this->client = new HttpClient($this->subdomain, $this->username, $this->scheme, $this->hostname, $this->port);
         $this->client->setAuth('token', $this->token);
     }
 

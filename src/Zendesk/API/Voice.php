@@ -37,9 +37,9 @@ class Voice extends ClientAbstract
     protected $tickets;
 
     /**
-     * @param Client $client
+     * @param HttpClient $client
      */
-    public function __construct(Client $client)
+    public function __construct(HttpClient $client)
     {
         parent::__construct($client);
         $this->phoneNumbers = new VoicePhoneNumbers($client);

@@ -18,9 +18,9 @@ class Requests extends ClientAbstract
     protected $comments;
 
     /**
-     * @param Client $client
+     * @param HttpClient $client
      */
-    public function __construct(Client $client)
+    public function __construct(HttpClient $client)
     {
         parent::__construct($client);
         $this->comments = new RequestComments($client);

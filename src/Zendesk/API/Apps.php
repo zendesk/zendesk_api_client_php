@@ -15,9 +15,9 @@ class Apps extends ClientAbstract
     protected $installations;
 
     /**
-     * @param Client $client
+     * @param HttpClient $client
      */
-    public function __construct(Client $client)
+    public function __construct(HttpClient $client)
     {
         parent::__construct($client);
         $this->installations = new AppInstallations($client);

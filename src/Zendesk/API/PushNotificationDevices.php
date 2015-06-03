@@ -11,9 +11,9 @@ class PushNotificationDevices extends ClientAbstract
 {
 
     /**
-     * @param Client $client
+     * @param HttpClient $client
      */
-    public function __construct(Client $client)
+    public function __construct(HttpClient $client)
     {
         parent::__construct($client);
     }

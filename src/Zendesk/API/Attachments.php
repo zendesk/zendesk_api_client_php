@@ -32,9 +32,11 @@ class Attachments extends ClientAbstract
         if (!$this->hasKeys($params, array('file'))) {
             throw new MissingParametersException(__METHOD__, array('file'));
         }
+
         if (!file_exists($params['file'])) {
             throw new CustomException('File ' . $params['file'] . ' could not be found in ' . __METHOD__);
         }
+
         if (!$params['name'] && strrpos($params['file'], '/') > -1) {
             $path_array = explode('/', $params['file']);
             $file_index = count($path_array) - 1;
@@ -44,12 +46,19 @@ class Attachments extends ClientAbstract
             $params['name'] = $params['file'];
         }
 
-        $endPoint = Http::prepare('uploads.json?filename=' . urlencode($params['name']) . (isset($params['optional_token']) ? '&token=' . $params['optional_token'] : ''));
-        $response = Http::send($this->client, $endPoint, array('filename' => $params['file']), 'POST',
-            (isset($params['type']) ? $params['type'] : 'application/binary'));
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
-            throw new ResponseException(__METHOD__);
-        }
+        $queryParams = [
+            "filename" => $params["name"],
+            "token" => (isset($params["optional_token"]) ? $params["optional_token"] : null)
+        ];
+
+        $endPoint = 'uploads.json';
+
+        $response = Http::send(
+            $this->client, $endPoint, $queryParams,
+            array('filename' => $params['file']),
+            'POST', (isset($params['type']) ? $params['type'] : 'application/binary')
+        );
+
         $this->client->setSideload(null);
 
         return $response;
