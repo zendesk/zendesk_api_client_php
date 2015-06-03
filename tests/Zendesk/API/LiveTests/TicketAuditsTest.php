@@ -19,12 +19,6 @@ class TicketAuditsTest extends BasicTest
             ),
             'priority' => 'normal'
         );
-//        $ticket = $this->client->tickets()->create($testTicket);
-//
-//        $update_testTicket['id'] = $ticket->ticket->id;
-//        $update_testTicket2['subject'] = 'Updated subject';
-//        $update_testTicket2['priority'] = 'urgent';
-//        $ticket = $this->client->tickets()->update($update_testTicket);
 
         $this->ticket_id = $testTicket['id'];
 
