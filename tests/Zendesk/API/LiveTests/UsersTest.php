@@ -22,7 +22,7 @@ class UsersTest extends BasicTest
             'external_id' => '3000'
         );
 
-        $this->mockApiCall('POST', '/users.json', array('user' => $testUser), 201);
+        $this->mockApiCall('POST', '/users.json', array('user' => $testUser), array('code' => 201));
 
         $user = $this->client->users()->create($testUser);
 
