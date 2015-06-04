@@ -11,3 +11,10 @@ Changed:
 Topics
 * removed Topics::create() - was implementing lastId
 * remove Topics::findAll() - can no longer do $client->users(123)->topics()->findAll()
+
+UserFields
+* remove CRUD methods
+
+Forums
+* remove CRUD methods - (most methods)
+* no unique case so test is empty
