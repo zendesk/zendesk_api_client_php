@@ -73,9 +73,16 @@ class Views extends ResourceAbstract
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $endPoint = Http::prepare('views/' . $params['id'] . '/execute.json' . (isset($params['sort_by']) ? '?sort_by=' . $params['sort_by'] . (isset($params['sort_order']) ? '&sort_order=' . $params['sort_order'] : '') : ''),
-            $this->client->getSideload($params), $params);
-        $response = Http::send($this->client, $endPoint);
+        $this->endpoint = "views/{$params['id']}/execute.json";
+
+        $params = Http::prepareQueryParams($this->client->getSideload($params), $params);
+
+        $response = Http::send_with_options($this->client, $this->endpoint,
+            [
+                'queryParams' => $params
+            ]
+        );
+
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
@@ -179,9 +186,11 @@ class Views extends ResourceAbstract
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $endPoint = Http::prepare('views/' . $params['id'] . '/export.json', $this->client->getSideload($params),
-            $params);
-        $response = Http::send($this->client, $endPoint);
+        // override the endpoint
+        $this->endpoint = "views/{$params['id']}/export.json";
+
+        $response = parent::findAll($params);
+
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }

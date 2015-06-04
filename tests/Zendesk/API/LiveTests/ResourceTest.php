@@ -1,8 +1,6 @@
 <?php
 namespace Zendesk\API\LiveTests;
 
-use Zendesk\API\ResponseException;
-
 class ResourceTest extends BasicTest
 {
 	private $_dummyResource;

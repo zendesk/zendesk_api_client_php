@@ -34,9 +34,9 @@ class ViewsTest extends BasicTest
 
     public function testExecute()
     {
-        $this->mockApiCall('GET', '/views/' . $this->id . '/execute.json', array('view' => array('id' => $this->id)));
+        $this->mockApiCall('GET', '/views/' . $this->id . '/execute.json?per_page=1', array('view' => array('id' => $this->id)));
 
-        $view = $this->client->view($this->id)->execute();
+        $view = $this->client->view($this->id)->execute(array('per_page' => 1));
         $this->assertEquals(is_object($view), true, 'Should return an object');
         $this->assertEquals(is_object($view->view), true, 'Should return an object called "view"');
         $this->assertGreaterThan(0, $view->view->id, 'Returns a non-numeric id for view');
