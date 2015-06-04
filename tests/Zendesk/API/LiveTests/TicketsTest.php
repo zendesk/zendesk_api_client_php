@@ -70,6 +70,30 @@ class TicketsTest extends BasicTest
             'Should return an object containing an array called "groups"');
     }
 
+    public function testFindSingle()
+    {
+        $this->mockApiCall("GET", '/tickets/' . $this->testTicket['id'] . ".json",
+            array("ticket" => $this->testTicket));
+
+        $tickets = $this->client->tickets()->find($this->testTicket['id']);
+
+        $this->assertEquals(is_object($tickets->ticket), true, 'Should return an object called "ticket"');
+        $this->assertEquals($tickets->ticket->id, $this->testTicket['id'],
+            'Should return an object with the right ticket ID');
+    }
+
+    public function testFindSingleChainPattern()
+    {
+        $this->mockApiCall("GET", '/tickets/' . $this->testTicket['id'] . ".json",
+          array("ticket" => $this->testTicket));
+
+        $tickets = $this->client->tickets($this->testTicket['id'])->find();
+
+        $this->assertEquals(is_object($tickets->ticket), true, 'Should return an object called "ticket"');
+        $this->assertEquals($tickets->ticket->id, $this->testTicket['id'],
+          'Should return an object with the right ticket ID');
+    }
+
     public function testFindMultiple()
     {
         $this->mockApiCall("GET", "/tickets/show_many.json?ids={$this->testTicket['id']}%2C{$this->testTicket2['id']}",
