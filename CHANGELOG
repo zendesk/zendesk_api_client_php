@@ -3,3 +3,5 @@ Changed:
 * on tickets, can no longer do $client->tickets(["organization_id" -> 1231])->findAll(), etc. (also user_id)
 * separate findMany method
 * change interface of find to just take ID, then params
+* added updateMany method, support both ways of updating
+* change update so that it takes ID as first param

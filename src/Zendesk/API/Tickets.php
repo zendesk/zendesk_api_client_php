@@ -11,6 +11,7 @@ namespace Zendesk\API;
  * @method TicketMetrics metrics()
  * @method SatisfactionRatings satisfactionRatings()
  */
+
 class Tickets extends ResourceAbstract
 {
 
@@ -176,39 +177,54 @@ class Tickets extends ResourceAbstract
      *
      * @return mixed
      */
-    public function update(array $params)
+    public function update($id, array $params)
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
-
-        if (!$this->hasKeys($params, array('id'))) {
-            throw new MissingParametersException(__METHOD__, array('id'));
-        }
-
         if (count($this->lastAttachments)) {
             $params['comment']['uploads'] = $this->lastAttachments;
             $this->lastAttachments = array();
         }
 
-        $id = $params['id'];
-        unset($params['id']);
+        return parent::update($id, $params);
+    }
 
-        $queryParams = [];
-
-        if (is_array($id)) {
-            $endPoint = 'tickets/update_many.json';
-            $queryParams['ids'] = implode(",", $id);
-        } else {
-            $endPoint = 'tickets/' . $id . '.json';
+    /**
+     * Update a ticket or series of tickets
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function updateMany(array $params)
+    {
+        if (count($this->lastAttachments)) {
+            $params['comment']['uploads'] = $this->lastAttachments;
+            $this->lastAttachments = array();
         }
 
-        $postFields = array(self::OBJ_NAME => $params);
+        $resourceUpdateName = self::OBJ_NAME_PLURAL;
+        $queryParams = [];
+        if (isset($params['ids']) && is_array($params['ids'])) {
+            $queryParams['ids'] = implode(",", $params['ids']);
+            unset($params['ids']);
 
-        $response = Http::send($this->client, $endPoint, $queryParams, $postFields, 'PUT');
+            $resourceUpdateName = self::OBJ_NAME;
+        }
 
-        $this->client->setSideload(null);
+        $endPoint = 'tickets/update_many.json';
+
+        $response = Http::send_with_options(
+            $this->client,
+            $endPoint,
+            [
+                'method' => 'PUT',
+                'queryParams' => $queryParams,
+                'postFields' => [$resourceUpdateName => $params]
+            ]
+        );
 
         return $response;
     }

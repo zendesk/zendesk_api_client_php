@@ -92,9 +92,11 @@ class ViewsTest extends BasicTest
         $this->mockApiCall('PUT', '/views/' . $this->id . '.json',
             array('view' => array('id' => $this->id, 'title' => 'Roger Wilco II')));
 
-        $view = $this->client->view($this->id)->update(array(
-            'title' => 'Roger Wilco II'
-        ));
+        $view = $this->client->views()->update($this->id,
+            array(
+                'title' => 'Roger Wilco II'
+            )
+        );
         $this->assertEquals(is_object($view), true, 'Should return an object');
         $this->assertEquals(is_object($view->view), true, 'Should return an object called "view"');
         $this->assertGreaterThan(0, $view->view->id, 'Returns a non-numeric id for view');
