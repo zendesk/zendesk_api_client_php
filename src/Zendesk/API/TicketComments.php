@@ -25,21 +25,17 @@ class TicketComments extends ResourceAbstract
      */
     public function findAll(array $params = array())
     {
-        if ($this->client->tickets()->getLastId() != null) {
-            $params['ticket_id'] = $this->client->tickets()->getLastId();
-            $this->client->tickets()->setLastId(null);
-        }
+        $chainedParameters = $this->getChainedParameters();
+        if (array_key_exists(Tickets::class, $chainedParameters))
+            $params['ticket_id'] = $chainedParameters[Tickets::class];
+
         if (!$this->hasKeys($params, array('ticket_id'))) {
             throw new MissingParametersException(__METHOD__, array('ticket_id'));
         }
-        $endPoint = Http::prepare('tickets/' . $params['ticket_id'] . '/comments.json', null, $params);
-        $response = Http::send($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
-        $this->client->setSideload(null);
 
-        return $response;
+        $this->endpoint = 'tickets/' . $params['ticket_id'] . '/comments.json';
+
+        return parent::findAll($params);
     }
 
     /**
@@ -55,22 +51,21 @@ class TicketComments extends ResourceAbstract
      */
     public function makePrivate(array $params = array())
     {
-        if ($this->client->tickets()->getLastId() != null) {
-            $params['ticket_id'] = $this->client->tickets()->getLastId();
-            $this->client->tickets()->setLastId(null);
+        $chainedParameters = $this->getChainedParameters();
+        if (array_key_exists(Tickets::class, $chainedParameters)) {
+            $params['ticket_id'] = $chainedParameters[Tickets::class];
         }
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
+        if (array_key_exists(self::class, $chainedParameters)) {
+            $params['id'] = $chainedParameters[self::class];
         }
+
         if (!$this->hasKeys($params, array('id', 'ticket_id'))) {
             throw new MissingParametersException(__METHOD__, array('id', 'ticket_id'));
         }
-        $endPoint = Http::prepare('tickets/' . $params['ticket_id'] . '/comments/' . $params['id'] . '/make_private.json');
-        $response = Http::send($this->client, $endPoint, null, 'PUT');
-        if ($this->client->getDebug()->lastResponseCode != 200) {
-            throw new ResponseException(__METHOD__, ' (hint: you can\'t make a private ticket private again)');
-        }
+
+        $this->endpoint = 'tickets/' . $params['ticket_id'] . '/comments/' . $params['id'] . '/make_private.json';
+        $response = Http::send_with_options($this->client, $this->endpoint, ['method' => 'PUT']);
+
         $this->client->setSideload(null);
 
         return $response;
@@ -84,6 +79,7 @@ class TicketComments extends ResourceAbstract
     /**
      * @param array $params
      *
+     * @return mixed|void
      * @throws CustomException
      */
     public function find(array $params = array())
