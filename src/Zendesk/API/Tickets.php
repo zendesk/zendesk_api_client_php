@@ -455,7 +455,12 @@ class Tickets extends ResourceAbstract
         $endPoint = 'exports/tickets.json';
         $queryParams = ["start_time" => $params["start_time"]];
 
-        $response = Http::send($this->client, $endPoint, $queryParams, [], "GET");
+        $response = Http::send_with_options($this->client, $endPoint,
+            [
+                'queryParams' => $queryParams,
+                'method'      => 'GET',
+            ]
+        );
 
         $this->client->setSideload(null);
 
