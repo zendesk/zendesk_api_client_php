@@ -76,7 +76,7 @@ class TicketsTest extends BasicTest
         $this->mockApiCall("GET", '/tickets/' . $this->testTicket['id'] . ".json",
             array("ticket" => $this->testTicket));
 
-        $tickets = $this->client->ticket($this->testTicket['id'])->find();
+        $tickets = $this->client->tickets()->find($this->testTicket['id']);
 
         $this->assertEquals(is_object($tickets->ticket), true, 'Should return an object called "ticket"');
         $this->assertEquals($tickets->ticket->id, $this->testTicket['id'],
@@ -97,7 +97,8 @@ class TicketsTest extends BasicTest
         $this->mockApiCall("GET", "/tickets/show_many.json?ids={$this->testTicket['id']}%2C{$testTicket2['id']}",
             array("tickets" => array($this->testTicket, $testTicket2)));
 
-        $tickets = $this->client->tickets(array($this->testTicket['id'], $testTicket2['id']))->find();
+        $testTicketIds = ['ids' => [$this->testTicket['id'], $testTicket2['id']]];
+        $tickets = $this->client->tickets()->findMany($testTicketIds);
 
         $this->assertEquals($tickets->tickets[0]->id, $this->testTicket['id']);
         $this->assertEquals($tickets->tickets[1]->id, $testTicket2['id']);

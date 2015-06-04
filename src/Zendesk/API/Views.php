@@ -40,35 +40,17 @@ class Views extends ResourceAbstract
     /**
      * Show a specific view
      *
+     * @param int $id
      * @param array $params
-     *
-     * @throws MissingParametersException
-     * @throws ResponseException
-     * @throws \Exception
-     *
      * @return mixed
      */
-    public function find(array $params = array())
+    public function find($id, array $params = array())
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
-        if (!$this->hasKeys($params, array('id'))) {
-            throw new MissingParametersException(__METHOD__, array('id'));
-        }
-
-        $endPoint = 'views/' . $params['id'] . '.json';
-
         $queryParams = Http::prepareQueryParams(
             $this->client->getSideload($params), $params
         );
 
-        $response = Http::send_with_options($this->client, $endPoint, ['queryParams' => $queryParams]);
-
-        $this->client->setSideload(null);
-
-        return $response;
+        return parent::find($id, $queryParams);
     }
 
     /**

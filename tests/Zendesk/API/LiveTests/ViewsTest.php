@@ -81,7 +81,7 @@ class ViewsTest extends BasicTest
     public function testFind()
     {
         $this->mockApiCall('GET', '/views/' . $this->id . '.json', array('view' => array('id' => $this->id)));
-        $view = $this->client->view($this->id)->find();
+        $view = $this->client->views()->find($this->id);
         $this->assertEquals(is_object($view), true, 'Should return an object');
         $this->assertEquals(is_object($view->view), true, 'Should return an object called "view"');
         $this->assertGreaterThan(0, $view->view->id, 'Returns a non-numeric id for view');
