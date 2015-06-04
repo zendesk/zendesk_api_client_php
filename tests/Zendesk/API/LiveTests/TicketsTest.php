@@ -113,11 +113,17 @@ class TicketsTest extends BasicTest
         $postFields = $this->http->requests->latest();
     }
 
+    public function testDelete()
+    {
+        $this->mockApiCall('DELETE', '/tickets/' . $this->testTicket['id']. '.json', array());
+        $this->client->tickets()->delete($this->testTicket['id']);
+    }
+
     public function testDeleteMultiple()
     {
         $this->mockApiCall("DELETE", "/tickets/destroy_many.json?ids=123%2C321", array("tickets" => []));
 
-        $this->client->tickets(array(123, 321))->delete();
+        $this->client->tickets()->deleteMany(array(123, 321));
     }
 
     public function testCreateWithAttachment()
