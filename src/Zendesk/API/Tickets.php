@@ -133,14 +133,8 @@ class Tickets extends ResourceAbstract
             $params['comment']['uploads'] = $this->lastAttachments;
             $this->lastAttachments = array();
         }
-        $endPoint = 'tickets.json';
-        $response = Http::send(
-            $this->client, $endPoint, [], array(self::OBJ_NAME => $params), 'POST'
-        );
 
-        $this->client->setSideload(null);
-
-        return $response;
+        return parent::create($params);
     }
 
     /**
