@@ -34,7 +34,6 @@ namespace Zendesk\API;
 
          if ((isset($arguments[0])) && ($arguments[0] != null)) {
              $chainedParams = array_merge($chainedParams, [get_class($class) => $arguments[0]]);
-             $class = $class->setLastId($arguments[0]);
          }
 
          $class = $class->setChainedParameters($chainedParams);
