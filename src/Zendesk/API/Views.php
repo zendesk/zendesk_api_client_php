@@ -54,44 +54,6 @@ class Views extends ResourceAbstract
     }
 
     /**
-     * Update a view
-     *
-     * @param array $params
-     *
-     * @throws MissingParametersException
-     * @throws ResponseException
-     * @throws \Exception
-     *
-     * @return mixed
-     */
-    public function update(array $params)
-    {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
-        if (!$this->hasKeys($params, array('id'))) {
-            throw new MissingParametersException(__METHOD__, array('id'));
-        }
-
-        $id = $params['id'];
-        unset($params['id']);
-
-        $endPoint = 'views/' . $id . '.json';
-
-        $response = Http::send_with_options(
-            $this->client, $endPoint, [
-                'postFields' => array(self::OBJ_NAME => $params),
-                'method' => 'PUT'
-            ]
-        );
-
-        $this->client->setSideload(null);
-
-        return $response;
-    }
-
-    /**
      * Delete a view
      *
      * @param array $params

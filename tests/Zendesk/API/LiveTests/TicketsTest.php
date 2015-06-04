@@ -11,6 +11,7 @@ use Zendesk\API\ResponseException;
 class TicketsTest extends BasicTest
 {
     protected $testTicket;
+    protected $testTicket2;
 
     public function setUp()
     {
@@ -21,6 +22,15 @@ class TicketsTest extends BasicTest
             ),
             'priority' => 'normal',
             'id' => "12345"
+        );
+
+        $this->testTicket2 = array(
+            'subject' => 'The second ticket',
+            'comment' => array(
+                'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            ),
+            'priority' => 'normal',
+            'id' => '4321'
         );
 
         parent::setUp();
@@ -85,30 +95,21 @@ class TicketsTest extends BasicTest
 
     public function testFindMultiple()
     {
-        $testTicket2 = array(
-            'subject' => 'The second ticket',
-            'comment' => array(
-                'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-            ),
-            'priority' => 'normal',
-            'id' => '4321'
-        );
+        $this->mockApiCall("GET", "/tickets/show_many.json?ids={$this->testTicket['id']}%2C{$this->testTicket2['id']}",
+            array("tickets" => array($this->testTicket, $this->testTicket2)));
 
-        $this->mockApiCall("GET", "/tickets/show_many.json?ids={$this->testTicket['id']}%2C{$testTicket2['id']}",
-            array("tickets" => array($this->testTicket, $testTicket2)));
-
-        $testTicketIds = ['ids' => [$this->testTicket['id'], $testTicket2['id']]];
+        $testTicketIds = ['ids' => [$this->testTicket['id'], $this->testTicket2['id']]];
         $tickets = $this->client->tickets()->findMany($testTicketIds);
 
         $this->assertEquals($tickets->tickets[0]->id, $this->testTicket['id']);
-        $this->assertEquals($tickets->tickets[1]->id, $testTicket2['id']);
+        $this->assertEquals($tickets->tickets[1]->id, $this->testTicket2['id']);
     }
 
     public function testUpdate()
     {
         $this->mockApiCall("PUT", "/tickets/" . $this->testTicket['id'] . ".json", array("tickets" => $this->testTicket));
 
-        $this->client->tickets()->update($this->testTicket);
+        $this->client->tickets()->update($this->testTicket['id'], $this->testTicket);
         $postFields = $this->http->requests->latest();
     }
 
@@ -162,6 +163,37 @@ class TicketsTest extends BasicTest
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '201', 'Create does not return HTTP code 201');
         $this->client->tickets()->delete(array('id' => $ticket->ticket->id));
         $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Delete does not return HTTP code 200');
+    }
+
+
+    public function testUpdateMany()
+    {
+        $this->mockApiCall(
+            "PUT",
+            "/tickets/update_many.json",
+            array("job_status" => ["job_status" => ["id" => "bugger off"]])
+        );
+
+        $this->client->tickets()->updateMany(
+            [$this->testTicket['id'], $this->testTicket2['id']]
+        );
+    }
+
+    public function testUpdateManyWithQueryParams()
+    {
+        $ticketIds = [$this->testTicket['id'], $this->testTicket2['id']];
+
+        $this->mockApiCall(
+            "PUT",
+            "/tickets/update_many.json?ids=" . urlencode(
+                implode(",", $ticketIds)
+            ),
+            array("job_status" => ["job_status" => ["id" => "bugger off"]])
+        );
+
+        $this->client->tickets()->updateMany(
+            ['ids' => $ticketIds, "status" => "closed"]
+        );
     }
 
     public function tearDown()

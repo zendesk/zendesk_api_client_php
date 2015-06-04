@@ -211,4 +211,35 @@ abstract class ResourceAbstract
     }
 
 
+    /**
+     * Update a ticket or series of tickets
+     *
+     * @param array $updateResourceFields
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function update($id, array $updateResourceFields = [], array $queryParams = [])
+    {
+        if (empty($this->endpoint)) {
+            $this->endpoint = $this->getResourceNameFromClass() . "/$id.json";
+        }
+
+        $class = get_class($this);
+        $postFields = array($class::OBJ_NAME => $updateResourceFields);
+
+        $response = Http::send_with_options(
+            $this->client,
+            $this->endpoint,
+            ['postFields' => $postFields, 'method' => 'PUT']
+        );
+
+        $this->client->setSideload(null);
+
+        return $response;
+    }
+
 }
