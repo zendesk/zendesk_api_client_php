@@ -54,33 +54,6 @@ class Views extends ResourceAbstract
     }
 
     /**
-     * Create a new view
-     *
-     * @param array $params
-     *
-     * @throws ResponseException
-     * @throws \Exception
-     *
-     * @return mixed
-     */
-    public function create(array $params)
-    {
-        $endPoint = 'views.json';
-        $response = Http::send_with_options(
-            $this->client,
-            $endPoint,
-            [
-                'postFields' => array(self::OBJ_NAME => $params),
-                'method' => 'POST'
-            ]
-        );
-
-        $this->client->setSideload(null);
-
-        return $response;
-    }
-
-    /**
      * Update a view
      *
      * @param array $params

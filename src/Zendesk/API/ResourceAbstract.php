@@ -177,4 +177,38 @@ abstract class ResourceAbstract
     }
 
 
+    /**
+     * Create a new view
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function create(array $params)
+    {
+        // TODO: what happens when endpoint was already set by a different method call?
+
+        if (empty($this->endpoint)) {
+            $this->endpoint = $this->getResourceNameFromClass() . ".json";
+        }
+
+        $class = get_class($this);
+        $response = Http::send_with_options(
+            $this->client,
+            $this->endpoint,
+            [
+                'postFields' => array($class::OBJ_NAME => $params),
+                'method' => 'POST'
+            ]
+        );
+
+        $this->client->setSideload(null);
+
+        return $response;
+    }
+
+
 }
