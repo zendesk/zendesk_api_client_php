@@ -212,7 +212,7 @@ abstract class ResourceAbstract
 
 
     /**
-     * Update a ticket or series of tickets
+     * Update a resource
      *
      * @param array $updateResourceFields
      *
@@ -222,7 +222,7 @@ abstract class ResourceAbstract
      *
      * @return mixed
      */
-    public function update($id, array $updateResourceFields = [], array $queryParams = [])
+    public function update($id, array $updateResourceFields = [])
     {
         if (empty($this->endpoint)) {
             $this->endpoint = $this->getResourceNameFromClass() . "/$id.json";
@@ -241,5 +241,35 @@ abstract class ResourceAbstract
 
         return $response;
     }
+
+
+    /**
+     * Delete a resource
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return bool
+     */
+    public function delete($id)
+    {
+        if (empty($this->endpoint)) {
+            $this->endpoint = $this->getResourceNameFromClass() . "/$id.json";
+        }
+
+        $response = Http::send_with_options(
+            $this->client,
+            $this->endpoint,
+            ['method' => 'DELETE']
+        );
+
+        $this->client->setSideload(null);
+
+        return $response;
+    }
+
 
 }

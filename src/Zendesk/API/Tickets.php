@@ -294,45 +294,28 @@ class Tickets extends ResourceAbstract
     }
 
     /**
-     * Delete a ticket or series of tickets
+     * Update a ticket or series of tickets
      *
-     * @param array $params
+     * @param array $ids
+     * @return mixed
      *
-     * @throws MissingParametersException
-     * @throws ResponseException
-     * @throws \Exception
-     *
-     * @return bool
      */
-    public function delete(array $params = array())
+    public function deleteMany(array $ids)
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
+        $this->endpoint = self::OBJ_NAME_PLURAL . '/destroy_many.json';
 
-        if (!$this->hasKeys($params, array('id'))) {
-            throw new MissingParametersException(__METHOD__, array('id'));
-        }
-
-        $id = $params['id'];
-
-
-        $queryParams = [];
-
-        if (is_array($id)) {
-            $endPoint = 'tickets/destroy_many.json';
-            $queryParams['ids'] = implode(",", $id);
-        } else {
-            $endPoint = 'tickets/' . $id . '.json';
-        }
-
-        $response = Http::send($this->client, $endPoint, $queryParams, [], 'DELETE');
-
-        $this->client->setSideload(null);
+        $response = Http::send_with_options(
+            $this->client,
+            $this->endpoint,
+            [
+                'method' => 'DELETE',
+                'queryParams' => ['ids' => implode(',', $ids)]
+            ]
+        );
 
         return $response;
     }
+
 
     /**
      * List collaborators for a ticket
