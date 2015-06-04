@@ -36,17 +36,6 @@ class TicketsTest extends BasicTest
         parent::setUp();
     }
 
-    public function testAll()
-    {
-        $this->mockApiCall("GET", "/tickets.json", array("tickets" => [$this->testTicket]));
-
-        $tickets = $this->client->tickets()->findAll();
-
-        $this->assertEquals(is_array($tickets->tickets), true,
-            'Should return an object containing an array called "tickets"');
-        $this->assertEquals($this->testTicket['id'], $tickets->tickets[0]->id, 'Includes the id of the first ticket');
-    }
-
     public function testAllSideLoadedMethod()
     {
         $this->mockApiCall("GET", "/tickets.json?include=users%2Cgroups",
@@ -81,18 +70,6 @@ class TicketsTest extends BasicTest
             'Should return an object containing an array called "groups"');
     }
 
-    public function testFindSingle()
-    {
-        $this->mockApiCall("GET", '/tickets/' . $this->testTicket['id'] . ".json",
-            array("ticket" => $this->testTicket));
-
-        $tickets = $this->client->tickets()->find($this->testTicket['id']);
-
-        $this->assertEquals(is_object($tickets->ticket), true, 'Should return an object called "ticket"');
-        $this->assertEquals($tickets->ticket->id, $this->testTicket['id'],
-            'Should return an object with the right ticket ID');
-    }
-
     public function testFindMultiple()
     {
         $this->mockApiCall("GET", "/tickets/show_many.json?ids={$this->testTicket['id']}%2C{$this->testTicket2['id']}",
@@ -103,20 +80,6 @@ class TicketsTest extends BasicTest
 
         $this->assertEquals($tickets->tickets[0]->id, $this->testTicket['id']);
         $this->assertEquals($tickets->tickets[1]->id, $this->testTicket2['id']);
-    }
-
-    public function testUpdate()
-    {
-        $this->mockApiCall("PUT", "/tickets/" . $this->testTicket['id'] . ".json", array("tickets" => $this->testTicket));
-
-        $this->client->tickets()->update($this->testTicket['id'], $this->testTicket);
-        $postFields = $this->http->requests->latest();
-    }
-
-    public function testDelete()
-    {
-        $this->mockApiCall('DELETE', '/tickets/' . $this->testTicket['id']. '.json', array());
-        $this->client->tickets()->delete($this->testTicket['id']);
     }
 
     public function testDeleteMultiple()
