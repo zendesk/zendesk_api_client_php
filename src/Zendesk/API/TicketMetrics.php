@@ -8,6 +8,7 @@ namespace Zendesk\API;
  */
 class TicketMetrics extends ResourceAbstract
 {
+    protected $endpoint = 'ticket_metrics';
 
     const OBJ_NAME = 'ticket_metric';
     const OBJ_NAME_PLURAL = 'ticket_metrics';
@@ -27,16 +28,10 @@ class TicketMetrics extends ResourceAbstract
         if ($this->client->tickets()->getLastId() != null) {
             $params['ticket_id'] = $this->client->tickets()->getLastId();
             $this->client->tickets()->setLastId(null);
+            $this->endpoint = "tickets/{$params['ticket_id']}/metrics.json";
         }
-        $endPoint = Http::prepare((isset($params['ticket_id']) ? 'tickets/' . $params['ticket_id'] . '/metrics.json' : 'ticket_metrics.json'),
-            null, $params);
-        $response = Http::send($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
-        $this->client->setSideload(null);
 
-        return $response;
+        return parent::findAll($params);
     }
 
     /**
@@ -55,22 +50,10 @@ class TicketMetrics extends ResourceAbstract
         if ($this->client->tickets()->getLastId() != null) {
             $params['ticket_id'] = $this->client->tickets()->getLastId();
             $this->client->tickets()->setLastId(null);
+            $this->endpoint = "tickets/{$params['ticket_id']}/metrics.json";
         }
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
-        if (!$this->hasAnyKey($params, array('id', 'ticket_id'))) {
-            throw new MissingParametersException(__METHOD__, array('id', 'ticket_id'));
-        }
-        $endPoint = Http::prepare((isset($params['ticket_id']) ? 'tickets/' . $params['ticket_id'] . '/metrics.json' : 'ticket_metrics/' . $params['id'] . '.json'));
-        $response = Http::send($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
-        $this->client->setSideload(null);
 
-        return $response;
+        return parent::find($params);
     }
 
 }
