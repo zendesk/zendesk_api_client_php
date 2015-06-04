@@ -26,9 +26,6 @@ abstract class ResourceAbstract
     public function __construct(HttpClient $client)
     {
         $this->client = $client;
-        if (empty($this->endpoint)) {
-            $this->endpoint = strtolower($this->getResourceNameFromClass()) . '.json';
-        }
     }
 
     /**
@@ -42,7 +39,7 @@ abstract class ResourceAbstract
         $namespacedClassName = get_class($this);
         $resourceName = join('', array_slice(explode('\\', $namespacedClassName), -1));
 
-        return $resourceName;
+        return strtolower($resourceName);
     }
 
     /**
@@ -134,7 +131,7 @@ abstract class ResourceAbstract
     public function findAll(array $params = array())
     {
         if (empty($this->endpoint)) {
-            throw new \Exception("Endpoint is not defined");
+            $this->endpoint = $this->getResourceNameFromClass() . '.json';
         }
 
         $sideloads = $this->client->getSideload($params);
@@ -147,6 +144,33 @@ abstract class ResourceAbstract
             ['queryParams' => $queryParams]
         );
 
+        $this->client->setSideload(null);
+
+        return $response;
+    }
+
+    /**
+     * Find a specific ticket by id or series of ids
+     *
+     * @param $id
+     * @param array $queryParams
+     * @return mixed
+     *
+     */
+    public function find($id, array $queryParams = array())
+    {
+        // lastId is set when tickets is instantiated, and is either a ticket id or an array of ticket IDs
+        // lastId doesn't have to be set, id can be passed in via $params
+        if ($this->lastId != null) {
+            $id = $this->lastId;
+            $this->lastId = null;
+        }
+
+        if (empty($this->endpoint)) {
+            $this->endpoint = $this->getResourceNameFromClass() . "/{$id}.json";
+        }
+
+        $response = Http::send($this->client, $this->endpoint, $queryParams);
         $this->client->setSideload(null);
 
         return $response;

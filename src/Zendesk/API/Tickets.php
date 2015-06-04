@@ -70,34 +70,17 @@ class Tickets extends ResourceAbstract
      *
      * @return mixed
      */
-    public function find(array $params = array())
+    public function findMany(array $params = array())
     {
-        // lastId is set when tickets is instantiated, and is either a ticket id or an array of ticket IDs
-        // lastId doesn't have to be set, id can be passed in via $params
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
+        $this->endpoint = 'tickets/show_many.json';
 
-        // flip table if tickets wasn't instantiated with IDs to find, or they weren't passed in
-        if (!$this->hasKeys($params, array('id'))) {
-            throw new MissingParametersException(__METHOD__, array('id'));
-        }
-
-        // if it's looking for many, use the show many endpoint, otherwise use tickets
-        $queryParams = [];
-        if (is_array($params['id'])) {
-            $endPoint = 'tickets/show_many.json';
-            $queryParams["ids"] = implode(",", $params["id"]);
-
-        } else {
-            $endPoint = 'tickets/' . $params['id'] . '.json';
-        }
+        $queryParams = ['ids' => implode(",", $params['ids'])];
 
         $extraParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
         $queryParams = array_merge($queryParams, $extraParams);
 
-        $response = Http::send($this->client, $endPoint, $queryParams);
+        $response = Http::send_with_options($this->client, $this->endpoint, ['queryParams' => $queryParams]);
+
         $this->client->setSideload(null);
 
         return $response;
