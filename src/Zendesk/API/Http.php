@@ -179,6 +179,7 @@ class Http
         } catch (\GuzzleHttp\Exception\ClientException $e) {
             var_dump($e->getRequest()->getUri());
             var_dump($e->getResponse()->getStatusCode());
+            return;
         }
 
         $responseCode = $response->getStatusCode();
