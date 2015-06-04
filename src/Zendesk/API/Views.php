@@ -66,9 +66,9 @@ class Views extends ResourceAbstract
      */
     public function delete(array $params = array())
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
+        $chainedParameters = $this->getChainedParameters();
+        if (array_key_exists(get_class($this), $chainedParameters)) {
+            $params['id'] = $chainedParameters[get_class($this)];
         }
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
@@ -101,10 +101,11 @@ class Views extends ResourceAbstract
      */
     public function execute(array $params = array())
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
+        $chainedParameters = $this->getChainedParameters();
+        if (array_key_exists(get_class($this), $chainedParameters)) {
+            $params['id'] = $chainedParameters[get_class($this)];
         }
+
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
@@ -163,9 +164,9 @@ class Views extends ResourceAbstract
      */
     public function count(array $params = array())
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
+        $chainedParameters = $this->getChainedParameters();
+        if (array_key_exists(get_class($this), $chainedParameters)) {
+            $params['id'] = $chainedParameters[get_class($this)];
         }
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
@@ -207,9 +208,9 @@ class Views extends ResourceAbstract
      */
     public function export(array $params = array())
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
+        $chainedParameters = $this->getChainedParameters();
+        if (array_key_exists(get_class($this), $chainedParameters)) {
+            $params['id'] = $chainedParameters[get_class($this)];
         }
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
