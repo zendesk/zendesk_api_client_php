@@ -187,16 +187,20 @@ abstract class ResourceAbstract
      *
      * @param $id
      * @param array $queryParams
-     * @return mixed
      *
+     * @return mixed
+     * @throws MissingParametersException
      */
-    public function find($id, array $queryParams = array())
+    public function find($id = null, array $queryParams = array())
     {
-        // lastId is set when tickets is instantiated, and is either a ticket id or an array of ticket IDs
-        // lastId doesn't have to be set, id can be passed in via $params
-        if ($this->lastId != null) {
-            $id = $this->lastId;
-            $this->lastId = null;
+        if (empty($id)) {
+            $chainedParameters = $this->getChainedParameters();
+            $className = get_class($this);
+            $id = isset($chainedParameters[$className]) ? $chainedParameters[$className] : null;
+        }
+
+        if (empty($id)) {
+            throw new MissingParametersException(__METHOD__, array('id'));
         }
 
         if (empty($this->endpoint)) {

@@ -8,3 +8,5 @@ Changed:
 * change delete so that it takes id
 * add deleteMany method to tickets
 * Add property chained properties to store all previous chained calls
+* Removed setting of last ID on instantiation of Resource
+* Allowed pattern `$client->ticket(id)->find()` for consistency with chaining pattern
