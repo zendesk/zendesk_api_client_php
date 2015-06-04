@@ -11,52 +11,6 @@ class ViewsTest extends BasicTest
 {
     protected $id = 12345;
 
-    public function testCreate()
-    {
-        $this->mockApiCall('POST', '/views.json', array('view' => array('id' => $this->id, 'title' => 'Roger Wilco')),
-            array('code' => 201));
-
-        $view = $this->client->views()->create(array(
-            'title' => 'Roger Wilco',
-            'active' => true,
-            'all' => array(
-                array(
-                    'field' => 'status',
-                    'operator' => 'is',
-                    'value' => 'open'
-                ),
-                array(
-                    'field' => 'priority',
-                    'operator' => 'less_than',
-                    'value' => 'high'
-                )
-            ),
-            'any' => array(
-                array(
-                    'field' => 'current_tags',
-                    'operator' => 'includes',
-                    'value' => 'hello'
-                )
-            )
-        ));
-        $this->assertEquals(is_object($view), true, 'Should return an object');
-        $this->assertEquals(is_object($view->view), true, 'Should return an object called "view"');
-        $this->assertGreaterThan(0, $view->view->id, 'Returns a non-numeric id for view');
-        $this->assertEquals($view->view->title, 'Roger Wilco', 'Title of test view does not match');
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '201', 'Does not return HTTP code 201');
-    }
-
-    public function testAll()
-    {
-        $this->mockApiCall('GET', '/views.json', array('views' => array(array('id' => $this->id))));
-
-        $views = $this->client->views()->findAll();
-        $this->assertEquals(is_object($views), true, 'Should return an object');
-        $this->assertEquals(is_array($views->views), true,
-            'Should return an object containing an array called "views"');
-        $this->assertGreaterThan(0, $views->views[0]->id, 'Returns a non-numeric id for views[0]');
-    }
-
     public function testActive()
     {
         $this->mockApiCall('GET', '/views/active.json', array('views' => array(array('id' => $this->id))));
@@ -76,31 +30,6 @@ class ViewsTest extends BasicTest
         $this->assertEquals(is_array($views->views), true,
             'Should return an object containing an array called "views"');
         $this->assertGreaterThan(0, $views->views[0]->id, 'Returns a non-numeric id for views[0]');
-    }
-
-    public function testFind()
-    {
-        $this->mockApiCall('GET', '/views/' . $this->id . '.json', array('view' => array('id' => $this->id)));
-        $view = $this->client->views()->find($this->id);
-        $this->assertEquals(is_object($view), true, 'Should return an object');
-        $this->assertEquals(is_object($view->view), true, 'Should return an object called "view"');
-        $this->assertGreaterThan(0, $view->view->id, 'Returns a non-numeric id for view');
-    }
-
-    public function testUpdate()
-    {
-        $this->mockApiCall('PUT', '/views/' . $this->id . '.json',
-            array('view' => array('id' => $this->id, 'title' => 'Roger Wilco II')));
-
-        $view = $this->client->views()->update($this->id,
-            array(
-                'title' => 'Roger Wilco II'
-            )
-        );
-        $this->assertEquals(is_object($view), true, 'Should return an object');
-        $this->assertEquals(is_object($view->view), true, 'Should return an object called "view"');
-        $this->assertGreaterThan(0, $view->view->id, 'Returns a non-numeric id for view');
-        $this->assertEquals($view->view->title, 'Roger Wilco II', 'Name of test view does not match');
     }
 
     public function testExecute()
@@ -189,11 +118,5 @@ class ViewsTest extends BasicTest
         ));
         $this->assertEquals(is_object($preview), true, 'Should return an object');
         $this->assertEquals(is_object($preview->view_count), true, 'Should return an object called "view_count"');
-    }
-
-    public function testDelete()
-    {
-        $this->mockApiCall('DELETE', '/views/' . $this->id . '.json', array());
-        $this->client->views($this->id)->delete();
     }
 }

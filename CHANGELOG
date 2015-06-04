@@ -7,3 +7,7 @@ Changed:
 * change update so that it takes ID as first param
 * change delete so that it takes id
 * add deleteMany method to tickets
+
+Topics
+* removed Topics::create() - was implementing lastId
+* remove Topics::findAll() - can no longer do $client->users(123)->topics()->findAll()
