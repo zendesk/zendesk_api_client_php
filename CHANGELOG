@@ -7,3 +7,4 @@ Changed:
 * change update so that it takes ID as first param
 * change delete so that it takes id
 * add deleteMany method to tickets
+* Add property chained properties to store all previous chained calls

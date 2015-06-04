@@ -52,6 +52,7 @@ namespace Zendesk\API;
  */
 class HttpClient
 {
+    use InstantiatorTrait;
 
     /**
      * @var string
@@ -423,29 +424,6 @@ class HttpClient
     public function getSideload(array $params = null)
     {
         return ((isset($params['sideload'])) && (is_array($params['sideload'])) ? $params['sideload'] : $this->sideload);
-    }
-
-    /**
-     * Generic method to object getter. Since all objects are protected, this method
-     * exposes a getter function with the same name as the protected variable, for example
-     * $client->tickets can be referenced by $client->tickets()
-     *
-     * @param $name
-     * @param $arguments
-     *
-     * @throws CustomException
-     */
-    public function __call($name, $arguments)
-    {
-        if (isset($this->$name)) {
-            return ((isset($arguments[0])) && ($arguments[0] != null) ? $this->$name->setLastId($arguments[0]) : $this->$name);
-        }
-        $namePlural = $name . 's'; // try pluralize
-        if (isset($this->$namePlural)) {
-            return $this->$namePlural->setLastId($arguments[0]);
-        } else {
-            throw new CustomException("No method called $name available in " . __CLASS__);
-        }
     }
 
     /*

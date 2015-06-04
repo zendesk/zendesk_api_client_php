@@ -27,7 +27,7 @@ class TicketCommentsTest extends BasicTest
 
     public function testAll()
     {
-        $this->mockApiCall('GET', '/tickets/12345/comments.json?',
+        $this->mockApiCall('GET', '/tickets/12345/comments.json',
           array(
             'comments' => array(
                 array(
@@ -49,7 +49,7 @@ class TicketCommentsTest extends BasicTest
      */
     public function testMakePrivate()
     {
-        $this->mockApiCall('GET', '/tickets/12345/comments.json?',
+        $this->mockApiCall('GET', '/tickets/12345/comments.json',
           array(
             'comments' => array(
               array(
