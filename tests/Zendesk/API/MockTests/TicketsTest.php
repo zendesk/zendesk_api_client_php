@@ -130,8 +130,9 @@ class TicketsTest extends BasicTest
     {
         $this->mockApiCall(
             "GET",
-            "tickets/show_many.json?ids={$this->testTicket['id']}%2C{$this->testTicket2['id']}",
-            ["tickets" => array($this->testTicket, $this->testTicket2)]
+            "tickets/show_many.json",
+            ["tickets" => array($this->testTicket, $this->testTicket2)],
+            ["queryParams" => array('ids' => implode(",", [$this->testTicket['id'], $this->testTicket2['id']]))]
         );
 
         $testTicketIds = ['ids' => [$this->testTicket['id'], $this->testTicket2['id']]];
@@ -148,7 +149,7 @@ class TicketsTest extends BasicTest
             "PUT",
             "tickets/" . $this->testTicket['id'] . ".json",
             array("ticket" => $this->testTicket),
-            $bodyParams = ["ticket" => $this->testTicket]
+            ["bodyParams" => ["ticket" => $this->testTicket]]
         );
 
         $this->client->tickets()->update($this->testTicket['id'], $this->testTicket);
@@ -163,7 +164,12 @@ class TicketsTest extends BasicTest
 
     public function testDeleteMultiple()
     {
-        $this->mockApiCall("DELETE", "tickets/destroy_many.json?ids=123%2C321", array("tickets" => []));
+        $this->mockApiCall(
+            "DELETE",
+            "tickets/destroy_many.json?ids=123%2C321",
+            array("tickets" => []),
+            ["queryParams" => array('ids' => implode(",", [123, 321]))]
+        );
 
         $this->client->tickets()->deleteMany(array(123, 321));
         $this->httpMock->verify();
@@ -171,6 +177,8 @@ class TicketsTest extends BasicTest
 
     public function testCreateWithAttachment()
     {
+        $this->markTestSkipped("Waiting for side chaining to support this");
+        
         $this->mockApiCall("POST", "/uploads.json?filename=UK%20test%20non-alpha%20chars.png",
             array("upload" => array("token" => "asdf")), ["code" => 201]);
 
@@ -202,35 +210,44 @@ class TicketsTest extends BasicTest
             'Should return an object containing an array called "results"');
     }
 
-    public function testUpdateMany()
-    {
-        $this->mockApiCall(
-            "PUT",
-            "tickets/update_many.json",
-            array("job_status" => ["job_status" => ["id" => "bugger off"]])
-        );
-
-        $this->client->tickets()->updateMany(
-            [$this->testTicket['id'], $this->testTicket2['id']]
-        );
-        $this->httpMock->verify();
-    }
-
     public function testUpdateManyWithQueryParams()
     {
         $ticketIds = [$this->testTicket['id'], $this->testTicket2['id']];
 
         $this->mockApiCall(
             "PUT",
-            "tickets/update_many.json?ids=" . urlencode(
-                implode(",", $ticketIds)
-            ),
-            array("job_status" => ["job_status" => ["id" => "bugger off"]])
+            "tickets/update_many.json",
+            array("job_status" => ["job_status" => ["id" => "bugger off"]]),
+            [
+                "queryParams" => ["ids" => implode(",", $ticketIds)],
+                "bodyParams" => ["ticket" => ["status" => "solved"]]
+            ]
         );
 
+
         $this->client->tickets()->updateMany(
-            ['ids' => $ticketIds, "status" => "closed"]
+            [
+                "ids" => $ticketIds,
+                "status" => "solved"
+            ]
         );
+        $this->httpMock->verify();
+    }
+
+    public function testUpdateMany()
+    {
+        $tickets = [$this->testTicket, $this->testTicket2];
+
+        $this->mockApiCall(
+            "PUT",
+            "tickets/update_many.json",
+            array("job_status" => ["job_status" => ["id" => "bugger off"]]),
+            [
+                "bodyParams" => ["tickets" => $tickets]
+            ]
+        );
+
+        $this->client->tickets()->updateMany($tickets);
         $this->httpMock->verify();
     }
 
