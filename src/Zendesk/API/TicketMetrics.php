@@ -13,6 +13,12 @@ class TicketMetrics extends ResourceAbstract
     const OBJ_NAME = 'ticket_metric';
     const OBJ_NAME_PLURAL = 'ticket_metrics';
 
+    protected function setUpRoutes()
+    {
+        parent::setUpRoutes();
+        $this->setRoute('findAll', 'tickets/{ticket_id}/metrics.json');
+    }
+
     /**
      * List all ticket metrics
      *
@@ -25,10 +31,9 @@ class TicketMetrics extends ResourceAbstract
      */
     public function findAll(array $params = array())
     {
-        if ($this->client->tickets()->getLastId() != null) {
-            $params['ticket_id'] = $this->client->tickets()->getLastId();
-            $this->client->tickets()->setLastId(null);
-            $this->endpoint = "tickets/{$params['ticket_id']}/metrics.json";
+        $chainedParameters = $this->getChainedParameters();
+        if (array_key_exists(get_class($this->client->tickets()), $chainedParameters)) {
+            $params['ticket_id'] = $chainedParameters[get_class($this->client->tickets())];
         }
 
         return parent::findAll($params);
@@ -47,10 +52,10 @@ class TicketMetrics extends ResourceAbstract
      */
     public function find(array $params = array())
     {
-        if ($this->client->tickets()->getLastId() != null) {
-            $params['ticket_id'] = $this->client->tickets()->getLastId();
-            $this->client->tickets()->setLastId(null);
-            $this->endpoint = "tickets/{$params['ticket_id']}/metrics.json";
+        $chainedParameters = $this->getChainedParameters();
+
+        if (array_key_exists(get_class($this->client->tickets()), $chainedParameters)) {
+            $params['ticket_id'] = $chainedParameters[get_class($this->client->tickets())];
         }
 
         return parent::find($params);
