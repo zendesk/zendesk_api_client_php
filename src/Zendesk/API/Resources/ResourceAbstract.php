@@ -3,6 +3,7 @@
 namespace Zendesk\API\Resources;
 
 use Zendesk\API\Http;
+use Zendesk\API\UtilityTraits\ChainedParametersTrait;
 
 /**
  * Abstract class for all endpoints
