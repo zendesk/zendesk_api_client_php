@@ -1,6 +1,6 @@
 <?php
 
-namespace Zendesk\API;
+namespace Zendesk\API\UtilityTraits;
 
 /**
  * The Instantiator trait which has the magic methods for instatiating Resources
@@ -17,7 +17,8 @@ namespace Zendesk\API;
       * @param $name
       * @param $arguments
       *
-      * @throws CustomException
+      * @return
+      * @throws \Exception
       */
      public function __call($name, $arguments)
      {

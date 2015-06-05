@@ -3,7 +3,7 @@
 namespace Zendesk\API\Resources;
 
 use Zendesk\API\Http;
-use Zendesk\API\InstantiatorTrait;
+use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
 /**
  * The Tickets class exposes key methods for reading and updating ticket data
