@@ -79,41 +79,47 @@ class Http
      *
      * @param HttpClient $client
      * @param string $endPoint E.g. "/tickets.json"
-     * @param array $queryParams Array of unencoded key-value pairs, e.g. ["ids" => "1,2,3,4"]
-     * @param array $postFields Array of unencoded key-value pairs, e.g. ["filename" => "blah.png"]
-     * @param string $method "GET", "POST", etc. Default is GET.
-     * @param string $contentType Default is "application/json"
+     * @param array $options
      * @return array The response body, parsed from JSON into an associative array
+     * @internal param array $queryParams Array of unencoded key-value pairs, e.g. ["ids" => "1,2,3,4"]
+     * @internal param array $postFields Array of unencoded key-value pairs, e.g. ["filename" => "blah.png"]
+     * @internal param string $method "GET", "POST", etc. Default is GET.
+     * @internal param string $contentType Default is "application/json"
      */
     public static function send_with_options(
         HttpClient $client,
         $endPoint,
         $options = []
     ) {
-        $options = array_merge([
-            'method' => 'GET',
-            'contentType' => 'application/json',
-            'postFields' => [],
-            'queryParams' => []
-        ], $options);
+        $options = array_merge(
+            [
+                'method' => 'GET',
+                'contentType' => 'application/json',
+                'postFields' => [],
+                'queryParams' => []
+            ],
+            $options
+        );
 
         $method = $options["method"];
         $contentType = $options["contentType"];
         $postFields = $options["postFields"];
         $queryParams = $options["queryParams"];
 
-//        $url = "http://requestb.in/123dgc31";
         $url = $client->getApiUrl() . $endPoint;
-//        $url = "http://requestb.in/1mkp30k1";
 
-        $request = $client->guzzle->createRequest($method, $url, [
-            'query' => $queryParams,
-            'body' => json_encode($postFields),
-            'headers' => [
-                'Accept' => 'application/json',
-                'Content-Type' => $contentType
+        $request = $client->guzzle->createRequest(
+            $method,
+            $url,
+            [
+                'query' => $queryParams,
+                'body' => json_encode($postFields),
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Content-Type' => $contentType
+                ]
             ]
-        ]);
+        );
 
         try {
             $response = $client->guzzle->send($request);
@@ -174,6 +180,7 @@ class Http
         } catch (\GuzzleHttp\Exception\ClientException $e) {
             var_dump($e->getRequest()->getUri());
             var_dump($e->getResponse()->getStatusCode());
+
             return;
         }
 
