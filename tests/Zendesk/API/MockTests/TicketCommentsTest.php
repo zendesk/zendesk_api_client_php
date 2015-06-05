@@ -27,16 +27,15 @@ class TicketCommentsTest extends BasicTest
 
     public function testAll()
     {
-        $this->markTestSkipped('Re-enable after merging chaining');
         $this->mockApiCall('GET',
           'tickets/12345/comments.json',
-          array(
-            'comments' => array(
-                array(
-                    'id' => 1
-                )
-            )
-          )
+          [
+            'comments' => [
+              [
+                'id' => 1
+              ]
+            ]
+          ]
         );
 
         $comments = $this->client->ticket($this->ticket_id)->comments()->findAll();
@@ -53,8 +52,7 @@ class TicketCommentsTest extends BasicTest
      */
     public function testMakePrivate()
     {
-        $this->markTestSkipped('Re-enable after merging chaining');
-        $this->mockApiCall('GET', '/tickets/12345/comments.json',
+        $this->mockApiCall('GET', 'tickets/12345/comments.json',
           [
             'comments' => [
               [
@@ -66,7 +64,7 @@ class TicketCommentsTest extends BasicTest
         $comment_id = $this->client->ticket($this->ticket_id)->comments()->findAll()->comments[0]->id;
         $this->httpMock->verify();
 
-        $this->mockApiCall('PUT', '/tickets/12345/comments/1/make_private.json', []);
+        $this->mockApiCall('PUT', 'tickets/12345/comments/1/make_private.json', []);
         $this->client->ticket($this->ticket_id)->comments($comment_id)->makePrivate();
         $this->httpMock->verify();
     }

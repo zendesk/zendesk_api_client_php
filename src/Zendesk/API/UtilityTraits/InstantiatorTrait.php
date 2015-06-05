@@ -2,6 +2,8 @@
 
 namespace Zendesk\API\UtilityTraits;
 
+use Zendesk\API\Resources\ResourceAbstract;
+
 /**
  * The Instantiator trait which has the magic methods for instatiating Resources
  * @package Zendesk\API
