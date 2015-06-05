@@ -27,7 +27,7 @@ namespace Zendesk\API;
          } elseif (isset($this->$namePlural)) {
              $class = $this->$namePlural;
          } else {
-             throw new CustomException("No method called $name available in " . __CLASS__);
+             throw new \Exception("No method called $name available in " . __CLASS__);
          }
 
          $chainedParams = ($this instanceof ResourceAbstract) ? $this->getChainedParameters() : [];
