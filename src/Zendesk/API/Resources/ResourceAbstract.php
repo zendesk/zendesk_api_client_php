@@ -1,6 +1,8 @@
 <?php
 
-namespace Zendesk\API;
+namespace Zendesk\API\Resources;
+
+use Zendesk\API\Http;
 
 /**
  * Abstract class for all endpoints
@@ -30,7 +32,7 @@ abstract class ResourceAbstract
     /**
      * @param HttpClient $client
      */
-    public function __construct(HttpClient $client)
+    public function __construct(\Zendesk\API\HttpClient $client)
     {
         $this->client = $client;
     }
@@ -171,7 +173,7 @@ abstract class ResourceAbstract
 
         $queryParams = Http::prepareQueryParams($sideloads, $params);
 
-        $response = Http::sendRequest(
+        $response = Http::send_with_options(
             $this->client,
             $this->endpoint,
             ['queryParams' => $queryParams]
@@ -186,7 +188,7 @@ abstract class ResourceAbstract
      * Find a specific ticket by id or series of ids
      *
      * @param $id
-     * @param array $queryParams
+     * @param array $queryQueryParams
      *
      * @return mixed
      * @throws MissingParametersException
@@ -207,7 +209,7 @@ abstract class ResourceAbstract
             $this->endpoint = $this->getResourceNameFromClass() . "/{$id}.json";
         }
 
-        $response = Http::sendRequest(
+        $response = Http::send_with_options(
             $this->client,
             $this->endpoint,
             ["queryParams" => $queryParams]
@@ -237,7 +239,7 @@ abstract class ResourceAbstract
         }
 
         $class = get_class($this);
-        $response = Http::sendRequest(
+        $response = Http::send_with_options(
             $this->client,
             $this->endpoint,
             [
@@ -272,7 +274,7 @@ abstract class ResourceAbstract
         $class = get_class($this);
         $postFields = array($class::OBJ_NAME => $updateResourceFields);
 
-        $response = Http::sendRequest(
+        $response = Http::send_with_options(
             $this->client,
             $this->endpoint,
             ['postFields' => $postFields, 'method' => 'PUT']
@@ -301,7 +303,7 @@ abstract class ResourceAbstract
             $this->endpoint = $this->getResourceNameFromClass() . "/$id.json";
         }
 
-        $response = Http::sendRequest(
+        $response = Http::send_with_options(
             $this->client,
             $this->endpoint,
             ['method' => 'DELETE']

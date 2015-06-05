@@ -1,6 +1,9 @@
 <?php
 
-namespace Zendesk\API;
+namespace Zendesk\API\Resources;
+
+use Zendesk\API\Http;
+use Zendesk\API\InstantiatorTrait;
 
 /**
  * The Tickets class exposes key methods for reading and updating ticket data
@@ -51,14 +54,10 @@ class Tickets extends ResourceAbstract
     /**
      * @param HttpClient $client
      */
-    public function __construct(HttpClient $client)
+    public function __construct(\Zendesk\API\HttpClient $client)
     {
         parent::__construct($client);
-        $this->audits = new TicketAudits($client);
         $this->comments = new TicketComments($client);
-        $this->metrics = new TicketMetrics($client);
-        $this->import = new TicketImport($client);
-        $this->satisfactionRatings = new SatisfactionRatings($client);
     }
 
     /**
@@ -110,7 +109,7 @@ class Tickets extends ResourceAbstract
         }
         $endPoint = Http::prepare('channels/twitter/tickets/' . $params['id'] . '/statuses.json' . (is_array($params['comment_ids']) ? '?' . implode(',',
                     $params['comment_ids']) : ''), $this->client->getSideload($params));
-        $response = Http::send($this->client, $endPoint);
+        $response = Http::send_with_options($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
@@ -157,7 +156,7 @@ class Tickets extends ResourceAbstract
                 array('twitter_status_message_id', 'monitored_twitter_handle_id'));
         }
         $endPoint = Http::prepare('channels/twitter/tickets.json');
-        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'POST');
+        $response = Http::send_with_options($this->client, $endPoint, array(self::OBJ_NAME => $params), 'POST');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
             throw new ResponseException(__METHOD__,
                 ($this->client->getDebug()->lastResponseCode == 422 ? ' (hint: you can\'t create two tickets from the same tweet)' : ''));
@@ -170,7 +169,7 @@ class Tickets extends ResourceAbstract
     /**
      * Update a ticket or series of tickets
      *
-     * @param array $params
+     * @param array $updateResourceFields
      *
      * @throws MissingParametersException
      * @throws ResponseException
@@ -178,14 +177,14 @@ class Tickets extends ResourceAbstract
      *
      * @return mixed
      */
-    public function update($id, array $params)
+    public function update($id, array $updateResourceFields = [])
     {
         if (count($this->lastAttachments)) {
-            $params['comment']['uploads'] = $this->lastAttachments;
+            $updateResourceFields['comment']['uploads'] = $this->lastAttachments;
             $this->lastAttachments = array();
         }
 
-        return parent::update($id, $params);
+        return parent::update($id, $updateResourceFields);
     }
 
     /**
@@ -252,7 +251,7 @@ class Tickets extends ResourceAbstract
         }
         $id = $params['id'];
         $endPoint = Http::prepare('tickets/' . $id . '/mark_as_spam.json');
-        $response = Http::send($this->client, $endPoint, null, 'PUT');
+        $response = Http::send_with_options($this->client, $endPoint, null, 'PUT');
         // Seems to be a bug in the service, it may respond with 422 even when it succeeds
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__,
@@ -285,7 +284,7 @@ class Tickets extends ResourceAbstract
         }
         $id = $params['id'];
         $endPoint = Http::prepare('tickets/' . $id . '/related.json', $this->client->getSideload($params), $params);
-        $response = Http::send($this->client, $endPoint);
+        $response = Http::send_with_options($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
@@ -340,7 +339,7 @@ class Tickets extends ResourceAbstract
         $id = $params['id'];
         $endPoint = Http::prepare('tickets/' . $id . '/collaborators.json', $this->client->getSideload($params),
             $params);
-        $response = Http::send($this->client, $endPoint);
+        $response = Http::send_with_options($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
@@ -371,7 +370,7 @@ class Tickets extends ResourceAbstract
         }
         $id = $params['id'];
         $endPoint = Http::prepare('tickets/' . $id . '/incidents.json', $this->client->getSideload($params), $params);
-        $response = Http::send($this->client, $endPoint);
+        $response = Http::send_with_options($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
@@ -395,7 +394,7 @@ class Tickets extends ResourceAbstract
     public function problems(array $params)
     {
         $endPoint = Http::prepare('problems.json', $this->client->getSideload($params), $params);
-        $response = Http::send($this->client, $endPoint);
+        $response = Http::send_with_options($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
@@ -426,7 +425,7 @@ class Tickets extends ResourceAbstract
         }
         $id = $params['id'];
         $endPoint = Http::prepare('tickets/' . $id . '/problems/autocomplete.json');
-        $response = Http::send($this->client, $endPoint, array('text' => $params['text']), 'POST');
+        $response = Http::send_with_options($this->client, $endPoint, array('text' => $params['text']), 'POST');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
@@ -455,7 +454,7 @@ class Tickets extends ResourceAbstract
         $endPoint = 'exports/tickets.json';
         $queryParams = ["start_time" => $params["start_time"]];
 
-        $response = Http::send($this->client, $endPoint, $queryParams, [], "GET");
+        $response = Http::send_with_options($this->client, $endPoint, $queryParams, [], "GET");
 
         $this->client->setSideload(null);
 
@@ -479,7 +478,7 @@ class Tickets extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, array('start_time'));
         }
         $endPoint = Http::prepare('exports/tickets/sample.json?start_time=' . $params['start_time']);
-        $response = Http::send($this->client, $endPoint);
+        $response = Http::send_with_options($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
