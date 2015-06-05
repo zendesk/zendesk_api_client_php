@@ -1,7 +1,7 @@
 <?php
-namespace Zendesk\API\LiveTests;
+namespace Zendesk\API\MockTests;
 
-use Zendesk\API\ResourceAbstract;
+use Zendesk\API\Resources\ResourceAbstract;
 
 class DummyResource extends ResourceAbstract {
 	const OBJ_NAME = 'dummy';
