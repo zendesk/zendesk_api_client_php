@@ -39,11 +39,12 @@ class TicketsTest extends BasicTest
     public function testAll()
     {
         $this->mockApiCall("GET",
-            "/tickets.json",
+            "tickets.json",
             array("tickets" => [$this->testTicket])
         );
 
         $tickets = $this->client->tickets()->findAll();
+        $this->httpMock->verify();
 
         $this->assertEquals(is_array($tickets->tickets), true,
             'Should return an object containing an array called "tickets"');
@@ -54,15 +55,17 @@ class TicketsTest extends BasicTest
     {
         $this->mockApiCall(
             "GET",
-            "/tickets.json?include=users%2Cgroups",
+            "tickets.json",
             array(
                 "tickets" => [$this->testTicket],
                 "groups" => [],
                 "users" => []
-            )
+            ),
+            ["queryParams" => ["include" => "users,groups"]]
         );
 
         $tickets = $this->client->tickets()->sideload(array('users', 'groups'))->findAll();
+        $this->httpMock->verify();
 
         $this->assertEquals(is_array($tickets->users), true,
             'Should return an object containing an array called "users"');
@@ -74,15 +77,18 @@ class TicketsTest extends BasicTest
     {
         $this->mockApiCall(
             "GET",
-            "/tickets.json?include=users%2Cgroups",
+            "tickets.json",
             array(
                 "tickets" => [$this->testTicket],
                 "groups" => [],
                 "users" => []
-            )
+            ),
+            ["queryParams" => array('include' => implode(",", array('users', 'groups')))]
         );
 
         $tickets = $this->client->tickets()->findAll(array('sideload' => array('users', 'groups')));
+        $this->httpMock->verify();
+
         $this->assertEquals(is_array($tickets->users), true,
             'Should return an object containing an array called "users"');
         $this->assertEquals(is_array($tickets->groups), true,
@@ -92,26 +98,29 @@ class TicketsTest extends BasicTest
     public function testFindSingle()
     {
         $this->mockApiCall(
-            "GET", '/tickets/' . $this->testTicket['id'] . ".json",
+            "GET", 'tickets/' . $this->testTicket['id'] . ".json",
             ["ticket" => $this->testTicket]
         );
 
         $tickets = $this->client->tickets()->find($this->testTicket['id']);
+        $this->httpMock->verify();
 
         $this->assertEquals(is_object($tickets->ticket), true, 'Should return an object called "ticket"');
         $this->assertEquals($tickets->ticket->id, $this->testTicket['id'],
             'Should return an object with the right ticket ID');
+
     }
 
     public function testFindSingleChainPattern()
     {
         $this->mockApiCall(
             "GET",
-            '/tickets/' . $this->testTicket['id'] . ".json",
+            'tickets/' . $this->testTicket['id'] . ".json",
             ["ticket" => $this->testTicket]
         );
 
         $tickets = $this->client->tickets($this->testTicket['id'])->find();
+        $this->httpMock->verify();
 
         $this->assertEquals(is_object($tickets->ticket), true, 'Should return an object called "ticket"');
         $this->assertEquals($tickets->ticket->id, $this->testTicket['id'],
@@ -122,12 +131,13 @@ class TicketsTest extends BasicTest
     {
         $this->mockApiCall(
             "GET",
-            "/tickets/show_many.json?ids={$this->testTicket['id']}%2C{$this->testTicket2['id']}",
+            "tickets/show_many.json?ids={$this->testTicket['id']}%2C{$this->testTicket2['id']}",
             ["tickets" => array($this->testTicket, $this->testTicket2)]
         );
 
         $testTicketIds = ['ids' => [$this->testTicket['id'], $this->testTicket2['id']]];
         $tickets = $this->client->tickets()->findMany($testTicketIds);
+        $this->httpMock->verify();
 
         $this->assertEquals($tickets->tickets[0]->id, $this->testTicket['id']);
         $this->assertEquals($tickets->tickets[1]->id, $this->testTicket2['id']);
@@ -148,15 +158,16 @@ class TicketsTest extends BasicTest
 
     public function testDelete()
     {
-        $this->mockApiCall('DELETE', '/tickets/' . $this->testTicket['id'] . '.json', array());
+        $this->mockApiCall('DELETE', 'tickets/' . $this->testTicket['id'] . '.json', array());
         $this->client->tickets()->delete($this->testTicket['id']);
     }
 
     public function testDeleteMultiple()
     {
-        $this->mockApiCall("DELETE", "/tickets/destroy_many.json?ids=123%2C321", array("tickets" => []));
+        $this->mockApiCall("DELETE", "tickets/destroy_many.json?ids=123%2C321", array("tickets" => []));
 
         $this->client->tickets()->deleteMany(array(123, 321));
+        $this->httpMock->verify();
     }
 
     public function testCreateWithAttachment()
@@ -164,13 +175,14 @@ class TicketsTest extends BasicTest
         $this->mockApiCall("POST", "/uploads.json?filename=UK%20test%20non-alpha%20chars.png",
             array("upload" => array("token" => "asdf")), ["code" => 201]);
 
-        $this->mockApiCall("POST", "/tickets.json", array("ticket" => array("id" => "123")),
+        $this->mockApiCall("POST", "tickets.json", array("ticket" => array("id" => "123")),
             array('code' => 201));
 
         $ticket = $this->client->tickets()->attach(array(
             'file' => getcwd() . '/tests/assets/UK.png',
             'name' => 'UK test non-alpha chars.png'
         ))->create($this->testTicket);
+        $this->httpMock->verify();
 
         $contentType = $this->http->requests->first()->getHeader("Content-Type")->toArray()[0];
         $this->assertEquals($contentType, "application/binary");
@@ -178,44 +190,31 @@ class TicketsTest extends BasicTest
 
     public function testExport()
     {
-        $this->mockApiCall("GET", "/exports/tickets.json?start_time=1332034771", array("results" => []));
+        $this->mockApiCall("GET",
+            "exports/tickets.json",
+            array("results" => []),
+            ["queryParams" => ["start_time" => "1332034771"]]
+        );
         $tickets = $this->client->tickets()->export(array('start_time' => '1332034771'));
+        $this->httpMock->verify();
+
         $this->assertEquals(is_object($tickets), true, 'Should return an object');
         $this->assertEquals(is_array($tickets->results), true,
             'Should return an object containing an array called "results"');
     }
 
-    public function testCreateFromTweet()
-    {
-        $this->markTestSkipped(
-            'Skipped for now because it requires a new (unique) twitter id for each test'
-        );
-        $twitter_id = $this->client->twitter()->handles()->monitored_twitter_handles[0]->id;
-        $params = array(
-            'monitored_twitter_handle_id' => $twitter_id,
-            'twitter_status_message_id' => '419191717649473536'
-        );
-        $ticket = $this->client->tickets()->createFromTweet($params);
-        $this->assertEquals(is_object($ticket), true, 'Should return an object');
-        $this->assertEquals(is_object($ticket->ticket), true, 'Should return an object called "ticket"');
-        $this->assertGreaterThan(0, $ticket->ticket->id, 'Returns a non-numeric id for ticket');
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '201', 'Create does not return HTTP code 201');
-        $this->client->tickets()->delete(array('id' => $ticket->ticket->id));
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Delete does not return HTTP code 200');
-    }
-
-
     public function testUpdateMany()
     {
         $this->mockApiCall(
             "PUT",
-            "/tickets/update_many.json",
+            "tickets/update_many.json",
             array("job_status" => ["job_status" => ["id" => "bugger off"]])
         );
 
         $this->client->tickets()->updateMany(
             [$this->testTicket['id'], $this->testTicket2['id']]
         );
+        $this->httpMock->verify();
     }
 
     public function testUpdateManyWithQueryParams()
@@ -224,7 +223,7 @@ class TicketsTest extends BasicTest
 
         $this->mockApiCall(
             "PUT",
-            "/tickets/update_many.json?ids=" . urlencode(
+            "tickets/update_many.json?ids=" . urlencode(
                 implode(",", $ticketIds)
             ),
             array("job_status" => ["job_status" => ["id" => "bugger off"]])
@@ -233,6 +232,7 @@ class TicketsTest extends BasicTest
         $this->client->tickets()->updateMany(
             ['ids' => $ticketIds, "status" => "closed"]
         );
+        $this->httpMock->verify();
     }
 
     public function tearDown()

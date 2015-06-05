@@ -49,13 +49,18 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
         $this->httpMock->attachToClient($this->client->guzzle);
     }
 
-    protected function mockApiCall($httpMethod, $path, $response, $bodyParams = [], $statusCode = 200)
+    protected function mockApiCall($httpMethod, $path, $response, $options = [])
     {
+        $bodyParams = isset($options["bodyParams"]) ? $options["bodyParams"] : [];
+        $queryParams = isset($options["queryParams"]) ? $options["queryParams"] : [];
+        $statusCode = isset($options["statusCode"]) ? $options["statusCode"] : [];
+
         $this->httpMock->shouldReceiveRequest()
             ->withMethod($httpMethod)
             ->withUrl($this->client->getApiUrl() . $path)
+            ->withQueryParams($queryParams)
             ->withJsonBodyParams($bodyParams)
-            ->andRespondWithJson($response, $statusCode);
+            ->andRespondWithJson($response, $statusCode = $statusCode);
     }
 
     public function authTokenTest()
