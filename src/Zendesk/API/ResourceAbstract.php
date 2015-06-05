@@ -8,7 +8,9 @@ namespace Zendesk\API;
  */
 abstract class ResourceAbstract
 {
-
+    /**
+     * @var String
+     */
     protected $endpoint;
 
     /**
@@ -19,6 +21,11 @@ abstract class ResourceAbstract
      * @var int
      */
     protected $lastId;
+
+    /**
+     * @var array
+     */
+    protected $chainedParameters = [];
 
     /**
      * @param HttpClient $client
@@ -54,6 +61,32 @@ abstract class ResourceAbstract
         $this->lastId = $id;
 
         return $this;
+    }
+
+    /**
+     * Sets the chained parameters
+     *
+     * @param $params
+     *
+     * @return $this
+     *
+     */
+    public function setChainedParameters($params)
+    {
+        $this->chainedParameters = $params;
+
+        return $this;
+    }
+
+    /**
+     * Returns chained parameters
+     *
+     * @return $this
+     */
+    public function getChainedParameters()
+    {
+
+        return $this->chainedParameters;
     }
 
     /**
@@ -154,16 +187,20 @@ abstract class ResourceAbstract
      *
      * @param $id
      * @param array $queryParams
-     * @return mixed
      *
+     * @return mixed
+     * @throws MissingParametersException
      */
-    public function find($id, array $queryParams = array())
+    public function find($id = null, array $queryParams = array())
     {
-        // lastId is set when tickets is instantiated, and is either a ticket id or an array of ticket IDs
-        // lastId doesn't have to be set, id can be passed in via $params
-        if ($this->lastId != null) {
-            $id = $this->lastId;
-            $this->lastId = null;
+        if (empty($id)) {
+            $chainedParameters = $this->getChainedParameters();
+            $className = get_class($this);
+            $id = isset($chainedParameters[$className]) ? $chainedParameters[$className] : null;
+        }
+
+        if (empty($id)) {
+            throw new MissingParametersException(__METHOD__, array('id'));
         }
 
         if (empty($this->endpoint)) {
