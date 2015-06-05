@@ -1,6 +1,6 @@
 <?php
 
-namespace Zendesk\API;
+namespace Zendesk\API\Resources;
 
 /**
  * The Views class exposes view management methods
@@ -41,13 +41,13 @@ class Views extends ResourceAbstract
      * Show a specific view
      *
      * @param int $id
-     * @param array $params
+     * @param array $queryParams
      * @return mixed
      */
-    public function find($id, array $params = array())
+    public function find($id = null, array $queryParams = array())
     {
         $queryParams = Http::prepareQueryParams(
-            $this->client->getSideload($params), $params
+            $this->client->getSideload($queryParams), $queryParams
         );
 
         return parent::find($id, $queryParams);
@@ -64,7 +64,7 @@ class Views extends ResourceAbstract
      *
      * @return bool
      */
-    public function delete(array $params = array())
+    public function delete($id)
     {
         $chainedParameters = $this->getChainedParameters();
         if (array_key_exists(get_class($this), $chainedParameters)) {

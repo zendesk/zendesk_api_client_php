@@ -1,6 +1,6 @@
 <?php
 
-namespace Zendesk\API;
+namespace Zendesk\API\Resources;
 
 /**
  * The TicketComments class exposes comment methods for tickets
@@ -15,7 +15,7 @@ class TicketComments extends ResourceAbstract
     /**
      * Returns all comments for a particular ticket
      *
-     * @param array $params
+     * @param array $queryParams
      *
      * @throws MissingParametersException
      * @throws ResponseException
@@ -23,19 +23,19 @@ class TicketComments extends ResourceAbstract
      *
      * @return mixed
      */
-    public function findAll(array $params = array())
+    public function findAll(array $queryParams = array())
     {
         $chainedParameters = $this->getChainedParameters();
         if (array_key_exists(Tickets::class, $chainedParameters))
-            $params['ticket_id'] = $chainedParameters[Tickets::class];
+            $queryParams['ticket_id'] = $chainedParameters[Tickets::class];
 
-        if (!$this->hasKeys($params, array('ticket_id'))) {
+        if (!$this->hasKeys($queryParams, array('ticket_id'))) {
             throw new MissingParametersException(__METHOD__, array('ticket_id'));
         }
 
-        $this->endpoint = 'tickets/' . $params['ticket_id'] . '/comments.json';
+        $this->endpoint = 'tickets/' . $queryParams['ticket_id'] . '/comments.json';
 
-        return parent::findAll($params);
+        return parent::findAll($queryParams);
     }
 
     /**
@@ -82,7 +82,7 @@ class TicketComments extends ResourceAbstract
      * @return mixed|void
      * @throws CustomException
      */
-    public function find(array $params = array())
+    public function find($id = null, array $queryQueryParams = array())
     {
         throw new CustomException('Method ' . __METHOD__ . ' does not exist. Try $client->ticket(ticket_id)->comments()->findAll() instead.');
     }

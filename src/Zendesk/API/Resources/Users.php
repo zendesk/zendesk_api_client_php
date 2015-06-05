@@ -1,6 +1,6 @@
 <?php
 
-namespace Zendesk\API;
+namespace Zendesk\API\Resources;
 
 /**
  * The Users class exposes user management methods
@@ -22,10 +22,9 @@ class Users extends ResourceAbstract
     /**
      * @param HttpClient $client
      */
-    public function __construct(HttpClient $client)
+    public function __construct(\Zendesk\API\HttpClient $client)
     {
         parent::__construct($client);
-        $this->identities = new UserIdentities($client);
     }
 
     /**
@@ -66,7 +65,7 @@ class Users extends ResourceAbstract
      *
      * @return mixed
      */
-    public function find(array $params = array())
+    public function find($id = null, array $params = array())
     {
         if ($this->lastId != null) {
             $params['id'] = $this->lastId;
@@ -238,7 +237,7 @@ class Users extends ResourceAbstract
      *
      * @return mixed
      */
-    public function update(array $params)
+    public function update($id, array $updateResourceFields = [])
     {
         if ($this->lastId != null) {
             $params['id'] = $this->lastId;
@@ -349,7 +348,7 @@ class Users extends ResourceAbstract
      *
      * @return bool
      */
-    public function delete(array $params = array())
+    public function delete($id)
     {
         if ($this->lastId != null) {
             $params['id'] = $this->lastId;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Zendesk\API\LiveTests;
+namespace Zendesk\API\MockTests;
 
 /**
  * Ticket Comments test class
