@@ -2,7 +2,6 @@
 
 namespace Zendesk\API\MockTests;
 
-use Zendesk\API\HttpClient;
 use Zendesk\API\ResponseException;
 
 /**
