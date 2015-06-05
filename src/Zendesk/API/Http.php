@@ -2,9 +2,7 @@
 
 namespace Zendesk\API;
 
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Client;
-use GuzzleHttp\RequestOptions;
+use GuzzleHttp\Message\Request;
 
 /**
  * HTTP functions via curl
@@ -104,24 +102,21 @@ class Http
         $postFields = $options["postFields"];
         $queryParams = $options["queryParams"];
 
-
+//        $url = "http://requestb.in/123dgc31";
         $url = $client->getApiUrl() . $endPoint;
+//        $url = "http://requestb.in/1mkp30k1";
 
-        $guzzleClient = new Client();
-        $request = new Request($method, $url);
+        $request = $client->guzzle->createRequest($method, $url, [
+            'query' => $queryParams,
+            'body' => json_encode($postFields),
+            'headers' => [
+                'Accept' => 'application/json',
+                'Content-Type' => $contentType
+            ]
+        ]);
 
         try {
-            $response = $guzzleClient->send(
-                $request,
-                [
-                    RequestOptions::QUERY => $queryParams,
-                    RequestOptions::JSON => $postFields,
-                    RequestOptions::HEADERS => [
-                        'Accept' => 'application/json',
-                        'Content-Type' => $contentType
-                    ]
-                ]
-            );
+            $response = $client->guzzle->send($request);
         } catch (\GuzzleHttp\Exception\ClientException $e) {
             var_dump($e->getRequest()->getUri());
             var_dump($e->getResponse()->getStatusCode());
