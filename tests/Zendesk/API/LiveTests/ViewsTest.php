@@ -2,6 +2,8 @@
 
 namespace Zendesk\API\LiveTests;
 
+use Zendesk\API\HttpClient;
+
 /**
  * Views test class
  */

@@ -8,8 +8,6 @@ namespace Zendesk\API;
  */
 abstract class ResourceAbstract
 {
-    use ChainedParametersTrait;
-
     /**
      * @var String
      */
@@ -23,6 +21,11 @@ abstract class ResourceAbstract
      * @var int
      */
     protected $lastId;
+
+    /**
+     * @var array
+     */
+    protected $chainedParameters = [];
 
     /**
      * @param HttpClient $client
@@ -58,6 +61,32 @@ abstract class ResourceAbstract
         $this->lastId = $id;
 
         return $this;
+    }
+
+    /**
+     * Sets the chained parameters
+     *
+     * @param $params
+     *
+     * @return $this
+     *
+     */
+    public function setChainedParameters($params)
+    {
+        $this->chainedParameters = $params;
+
+        return $this;
+    }
+
+    /**
+     * Returns chained parameters
+     *
+     * @return $this
+     */
+    public function getChainedParameters()
+    {
+
+        return $this->chainedParameters;
     }
 
     /**
