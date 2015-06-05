@@ -38,7 +38,10 @@ class TicketsTest extends BasicTest
 
     public function testAll()
     {
-        $this->mockApiCall("GET", "/tickets.json", array("tickets" => [$this->testTicket]));
+        $this->mockApiCall("GET",
+            "/tickets.json",
+            array("tickets" => [$this->testTicket])
+        );
 
         $tickets = $this->client->tickets()->findAll();
 
@@ -49,12 +52,15 @@ class TicketsTest extends BasicTest
 
     public function testAllSideLoadedMethod()
     {
-        $this->mockApiCall("GET", "/tickets.json?include=users%2Cgroups",
+        $this->mockApiCall(
+            "GET",
+            "/tickets.json?include=users%2Cgroups",
             array(
                 "tickets" => [$this->testTicket],
                 "groups" => [],
                 "users" => []
-            ));
+            )
+        );
 
         $tickets = $this->client->tickets()->sideload(array('users', 'groups'))->findAll();
 
@@ -66,12 +72,15 @@ class TicketsTest extends BasicTest
 
     public function testAllSideLoadedParameter()
     {
-        $this->mockApiCall("GET", "/tickets.json?include=users%2Cgroups",
+        $this->mockApiCall(
+            "GET",
+            "/tickets.json?include=users%2Cgroups",
             array(
                 "tickets" => [$this->testTicket],
                 "groups" => [],
                 "users" => []
-            ));
+            )
+        );
 
         $tickets = $this->client->tickets()->findAll(array('sideload' => array('users', 'groups')));
         $this->assertEquals(is_array($tickets->users), true,
@@ -82,8 +91,10 @@ class TicketsTest extends BasicTest
 
     public function testFindSingle()
     {
-        $this->mockApiCall("GET", '/tickets/' . $this->testTicket['id'] . ".json",
-            array("ticket" => $this->testTicket));
+        $this->mockApiCall(
+            "GET", '/tickets/' . $this->testTicket['id'] . ".json",
+            ["ticket" => $this->testTicket]
+        );
 
         $tickets = $this->client->tickets()->find($this->testTicket['id']);
 
@@ -94,20 +105,26 @@ class TicketsTest extends BasicTest
 
     public function testFindSingleChainPattern()
     {
-        $this->mockApiCall("GET", '/tickets/' . $this->testTicket['id'] . ".json",
-          array("ticket" => $this->testTicket));
+        $this->mockApiCall(
+            "GET",
+            '/tickets/' . $this->testTicket['id'] . ".json",
+            ["ticket" => $this->testTicket]
+        );
 
         $tickets = $this->client->tickets($this->testTicket['id'])->find();
 
         $this->assertEquals(is_object($tickets->ticket), true, 'Should return an object called "ticket"');
         $this->assertEquals($tickets->ticket->id, $this->testTicket['id'],
-          'Should return an object with the right ticket ID');
+            'Should return an object with the right ticket ID');
     }
 
     public function testFindMultiple()
     {
-        $this->mockApiCall("GET", "/tickets/show_many.json?ids={$this->testTicket['id']}%2C{$this->testTicket2['id']}",
-            array("tickets" => array($this->testTicket, $this->testTicket2)));
+        $this->mockApiCall(
+            "GET",
+            "/tickets/show_many.json?ids={$this->testTicket['id']}%2C{$this->testTicket2['id']}",
+            ["tickets" => array($this->testTicket, $this->testTicket2)]
+        );
 
         $testTicketIds = ['ids' => [$this->testTicket['id'], $this->testTicket2['id']]];
         $tickets = $this->client->tickets()->findMany($testTicketIds);
@@ -118,8 +135,12 @@ class TicketsTest extends BasicTest
 
     public function testUpdate()
     {
-        $this->mockApiCall("PUT", "tickets/" . $this->testTicket['id'] . ".json", array("ticket" => $this->testTicket),
-            ["postFields" => ["ticket" => $this->testTicket]]);
+        $this->mockApiCall(
+            "PUT",
+            "tickets/" . $this->testTicket['id'] . ".json",
+            array("ticket" => $this->testTicket),
+            $bodyParams = ["ticket" => $this->testTicket]
+        );
 
         $this->client->tickets()->update($this->testTicket['id'], $this->testTicket);
         $this->httpMock->verify();
@@ -127,7 +148,7 @@ class TicketsTest extends BasicTest
 
     public function testDelete()
     {
-        $this->mockApiCall('DELETE', '/tickets/' . $this->testTicket['id']. '.json', array());
+        $this->mockApiCall('DELETE', '/tickets/' . $this->testTicket['id'] . '.json', array());
         $this->client->tickets()->delete($this->testTicket['id']);
     }
 

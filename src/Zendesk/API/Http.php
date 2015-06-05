@@ -21,39 +21,6 @@ class Http
      *
      * @return string
      */
-    public static function prepare($endPoint, array $sideload = null, array $iterators = null)
-    {
-        $addParams = array();
-        // First look for side-loaded variables
-        if (is_array($sideload)) {
-            $addParams['include'] = implode(',', $sideload);
-        }
-        // Next look for special collection iterators
-        if (is_array($iterators)) {
-            foreach ($iterators as $k => $v) {
-                if (in_array($k, array('per_page', 'page', 'sort_order', 'sort_by'))) {
-                    $addParams[$k] = $v;
-                }
-            }
-        }
-        // Send it back...
-        if (count($addParams)) {
-            return $endPoint . (strpos($endPoint, '?') === false ? '?' : '&') . http_build_query($addParams);
-        } else {
-            return $endPoint;
-        }
-    }
-
-
-    /**
-     * Prepares an endpoint URL with optional side-loading
-     *
-     * @param string $endPoint
-     * @param array $sideload
-     * @param array $iterators
-     *
-     * @return string
-     */
     public static function prepareQueryParams(array $sideload = null, array $iterators = null)
     {
         $addParams = array();
@@ -86,7 +53,7 @@ class Http
      * @internal param string $method "GET", "POST", etc. Default is GET.
      * @internal param string $contentType Default is "application/json"
      */
-    public static function send_with_options(
+    public static function sendRequest(
         HttpClient $client,
         $endPoint,
         $options = []
@@ -128,61 +95,7 @@ class Http
             var_dump($e->getResponse()->getStatusCode());
         }
 
-        $responseCode = $response->getStatusCode();
-        $parsedResponseBody = json_decode($response->getBody());
-
-        $client->setDebug(
-            $response->getHeaders(),
-            $responseCode,
-            10,
-            null
-        );
-
-        return $parsedResponseBody;
-    }
-
-    /**
-     * Use the send method to call every endpoint except for oauth/tokens
-     *
-     * @param HttpClient $client
-     * @param string $endPoint E.g. "/tickets.json"
-     * @param array $queryParams Array of unencoded key-value pairs, e.g. ["ids" => "1,2,3,4"]
-     * @param array $postFields Array of unencoded key-value pairs, e.g. ["filename" => "blah.png"]
-     * @param string $method "GET", "POST", etc. Default is GET.
-     * @param string $contentType Default is "application/json"
-     * @return array The response body, parsed from JSON into an associative array
-     */
-    public static function send(
-        HttpClient $client,
-        $endPoint,
-        $queryParams = array(),
-        $postFields = array(),
-        $method = 'GET',
-        $contentType = 'application/json'
-    ) {
-        $url = $client->getApiUrl() . $endPoint;
-
-        $guzzleClient = new Client();
-        $request = new Request($method, $url);
-
-        try {
-            $response = $guzzleClient->send(
-                $request,
-                [
-                    RequestOptions::QUERY => $queryParams,
-                    RequestOptions::JSON => $postFields,
-                    RequestOptions::HEADERS => [
-                        'Accept' => 'application/json',
-                        'Content-Type' => $contentType
-                    ]
-                ]
-            );
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
-            var_dump($e->getRequest()->getUri());
-            var_dump($e->getResponse()->getStatusCode());
-
-            return;
-        }
+        var_dump($response);
 
         $responseCode = $response->getStatusCode();
         $parsedResponseBody = json_decode($response->getBody());

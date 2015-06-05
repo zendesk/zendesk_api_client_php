@@ -34,27 +34,28 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
         $this->scheme = getenv('SCHEME');
         $this->hostname = getenv('HOSTNAME');
         $this->port = getenv('PORT');
+    }
 
+    /**
+     * Sets up the fixture, for example, open a network connection.
+     * This method is called before a test is executed.
+     *
+     */
+    protected function setUp()
+    {
         $this->client = new HttpClient($this->subdomain, $this->username, $this->scheme, $this->hostname, $this->port);
         $this->client->setAuth('token', $this->token);
         $this->httpMock = new GuzzleHttpMock();
+        $this->httpMock->attachToClient($this->client->guzzle);
     }
 
-    protected function mockApiCall($httpMethod, $path, $response, $options = array())
+    protected function mockApiCall($httpMethod, $path, $response, $bodyParams = [], $statusCode = 200)
     {
-        $this->httpMock->attachToClient($this->client->guzzle);
-
-        $options = array_merge(array(
-            'code' => 200,
-            'timesCalled' => 1
-        ), $options);
-
         $this->httpMock->shouldReceiveRequest()
             ->withMethod($httpMethod)
             ->withUrl($this->client->getApiUrl() . $path)
-            ->withJsonBodyParams($options['postFields'])
-            ->andRespondWithJson($response, $statusCode = $options['code']);
-
+            ->withJsonBodyParams($bodyParams)
+            ->andRespondWithJson($response, $statusCode);
     }
 
     public function authTokenTest()
