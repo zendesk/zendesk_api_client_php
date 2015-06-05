@@ -16,6 +16,16 @@ class TicketComments extends ResourceAbstract
     const OBJ_NAME = 'comment';
     const OBJ_NAME_PLURAL = 'comments';
 
+    protected function setUpRoutes()
+    {
+        $this->setRoutes(
+            [
+                'findAll' => 'tickets/{ticket_id}/comments.json',
+                'makePrivate' => 'tickets/{ticket_id}/comments/{id}/make_private.json'
+            ]
+        );
+    }
+
     /**
      * Returns all comments for a particular ticket
      *
@@ -34,8 +44,6 @@ class TicketComments extends ResourceAbstract
         if (!$this->hasKeys($queryParams, array('ticket_id'))) {
             throw new MissingParametersException(__METHOD__, array('ticket_id'));
         }
-
-        $this->endpoint = 'tickets/' . $queryParams['ticket_id'] . '/comments.json';
 
         return parent::findAll($queryParams);
     }
@@ -59,8 +67,7 @@ class TicketComments extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, array('id', 'ticket_id'));
         }
 
-        $this->endpoint = 'tickets/' . $params['ticket_id'] . '/comments/' . $params['id'] . '/make_private.json';
-        $response = Http::send_with_options($this->client, $this->endpoint, ['method' => 'PUT']);
+        $response = Http::send_with_options($this->client, $this->getRoute('makePrivate', $params), ['method' => 'PUT']);
 
         $this->client->setSideload(null);
 

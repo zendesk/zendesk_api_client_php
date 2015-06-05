@@ -30,7 +30,7 @@ abstract class ResourceAbstract
     /**
      * @var array
      */
-    protected $chainedParameters = [];
+//    protected $chainedParameters = [];
 
     /**
      * @var array
