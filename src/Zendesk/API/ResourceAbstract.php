@@ -171,7 +171,7 @@ abstract class ResourceAbstract
 
         $queryParams = Http::prepareQueryParams($sideloads, $params);
 
-        $response = Http::send_with_options(
+        $response = Http::sendRequest(
             $this->client,
             $this->endpoint,
             ['queryParams' => $queryParams]
@@ -207,7 +207,11 @@ abstract class ResourceAbstract
             $this->endpoint = $this->getResourceNameFromClass() . "/{$id}.json";
         }
 
-        $response = Http::send($this->client, $this->endpoint, $queryParams);
+        $response = Http::sendRequest(
+            $this->client,
+            $this->endpoint,
+            ["queryParams" => $queryParams]
+        );
         $this->client->setSideload(null);
 
         return $response;
@@ -233,7 +237,7 @@ abstract class ResourceAbstract
         }
 
         $class = get_class($this);
-        $response = Http::send_with_options(
+        $response = Http::sendRequest(
             $this->client,
             $this->endpoint,
             [
@@ -268,7 +272,7 @@ abstract class ResourceAbstract
         $class = get_class($this);
         $postFields = array($class::OBJ_NAME => $updateResourceFields);
 
-        $response = Http::send_with_options(
+        $response = Http::sendRequest(
             $this->client,
             $this->endpoint,
             ['postFields' => $postFields, 'method' => 'PUT']
@@ -297,7 +301,7 @@ abstract class ResourceAbstract
             $this->endpoint = $this->getResourceNameFromClass() . "/$id.json";
         }
 
-        $response = Http::send_with_options(
+        $response = Http::sendRequest(
             $this->client,
             $this->endpoint,
             ['method' => 'DELETE']
