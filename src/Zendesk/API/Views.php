@@ -66,10 +66,7 @@ class Views extends ResourceAbstract
      */
     public function delete(array $params = array())
     {
-        $chainedParameters = $this->getChainedParameters();
-        if (array_key_exists(get_class($this), $chainedParameters)) {
-            $params['id'] = $chainedParameters[get_class($this)];
-        }
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
@@ -101,10 +98,7 @@ class Views extends ResourceAbstract
      */
     public function execute(array $params = array())
     {
-        $chainedParameters = $this->getChainedParameters();
-        if (array_key_exists(get_class($this), $chainedParameters)) {
-            $params['id'] = $chainedParameters[get_class($this)];
-        }
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
 
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
@@ -164,10 +158,7 @@ class Views extends ResourceAbstract
      */
     public function count(array $params = array())
     {
-        $chainedParameters = $this->getChainedParameters();
-        if (array_key_exists(get_class($this), $chainedParameters)) {
-            $params['id'] = $chainedParameters[get_class($this)];
-        }
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
@@ -208,10 +199,7 @@ class Views extends ResourceAbstract
      */
     public function export(array $params = array())
     {
-        $chainedParameters = $this->getChainedParameters();
-        if (array_key_exists(get_class($this), $chainedParameters)) {
-            $params['id'] = $chainedParameters[get_class($this)];
-        }
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
