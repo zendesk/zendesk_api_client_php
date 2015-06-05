@@ -12,6 +12,16 @@ class Views extends ResourceAbstract
     const OBJ_NAME = 'view';
     const OBJ_NAME_PLURAL = 'views';
 
+    protected function setUpRoutes()
+    {
+        parent::setUpRoutes();
+
+        $this->setRoute('findAll', 'views{modifier}.json');
+        $this->setRoute('export', 'views/{id}/export.json');
+        $this->setRoute('preview', 'views/preview.json');
+        $this->setRoute('previewCount', 'views/preview/count.json');
+    }
+
     /**
      * List all views
      *
@@ -25,13 +35,9 @@ class Views extends ResourceAbstract
     public function findAll(array $params = array())
     {
         if (isset($params['active'])) {
-            $this->endpoint = 'views/active.json';
-        } else {
-            if (isset($params['compact'])) {
-                $this->endpoint = 'views/compact.json';
-            } else {
-                $this->endpoint = 'views.json';
-            }
+            $params['modifier'] = '/active';
+        } else if (isset($params['compact'])) {
+            $params['modifier'] = '/compact';
         }
 
         return parent::findAll($params);
@@ -186,10 +192,14 @@ class Views extends ResourceAbstract
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        // override the endpoint
-        $this->endpoint = "views/{$params['id']}/export.json";
 
-        $response = parent::findAll($params);
+        $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
+
+        $response = Http::send_with_options(
+            $this->client,
+            $this->getRoute('export', array('id' => $params['id'])),
+            ['queryParams' => $queryParams]
+        );
 
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
@@ -211,7 +221,6 @@ class Views extends ResourceAbstract
      */
     public function preview(array $params)
     {
-        $endPoint = 'views/preview.json';
         $extraParams = Http::prepareQueryParams(
             $this->client->getSideload($params),
             $params
@@ -219,7 +228,7 @@ class Views extends ResourceAbstract
 
         $response = Http::send_with_options(
             $this->client,
-            $endPoint,
+            $this->getRoute('preview'),
             [
                 'postFields' => array('view' => $params),
                 'queryParams' => $extraParams,
@@ -244,7 +253,6 @@ class Views extends ResourceAbstract
      */
     public function previewCount(array $params)
     {
-        $endPoint = 'views/preview/count.json';
         $extraParams = Http::prepareQueryParams(
             $this->client->getSideload($params),
             $params
@@ -252,7 +260,7 @@ class Views extends ResourceAbstract
 
         $response = Http::send_with_options(
             $this->client,
-            $endPoint,
+            $this->getRoute('previewCount'),
             [
                 'postFields' => array('view' => $params),
                 'queryParams' => $extraParams,

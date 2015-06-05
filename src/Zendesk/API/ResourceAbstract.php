@@ -27,12 +27,16 @@ abstract class ResourceAbstract
      */
     protected $chainedParameters = [];
 
+    protected $routes;
+
     /**
      * @param HttpClient $client
      */
     public function __construct(HttpClient $client)
     {
         $this->client = $client;
+
+        $this->setUpRoutes();
     }
 
     /**
@@ -47,6 +51,23 @@ abstract class ResourceAbstract
         $resourceName = join('', array_slice(explode('\\', $namespacedClassName), -1));
 
         return strtolower($resourceName);
+    }
+
+    protected function setUpRoutes()
+    {
+        if (isset($this->endpoint)) {
+            $resource = $this->endpoint;
+        } else {
+            $resource = $this->getResourceNameFromClass();
+        }
+
+        $this->setRoutes([
+            'findAll' => "$resource.json",
+            'find'    => "$resource/{id}.json",
+            'create'  => "$resource.json",
+            'update'  => "$resource/{id}.json",
+            'delete'  => "$resource/{id}.json"
+        ]);
     }
 
     /**
@@ -151,6 +172,39 @@ abstract class ResourceAbstract
         return $this;
     }
 
+    public function setRoutes(array $routes)
+    {
+        foreach ($routes as $name => $route) {
+            $this->setRoute($name, $route);
+        }
+    }
+
+    public function setRoute($name, $route)
+    {
+        $this->routes[$name] = $route;
+    }
+
+    public function getRoutes()
+    {
+        return $this->routes;
+    }
+
+    public function getRoute($name, array $params = array())
+    {
+        if (!isset($this->routes[$name])) {
+            throw new \Exception('Route not found.');
+        }
+
+        $route = $this->routes[$name];
+        foreach ($params as $name => $value) {
+            if (is_scalar($value)) {
+                $route = str_replace('{' . $name . '}', $value, $route);
+            }
+        }
+
+        return $route;
+    }
+
     /**
      * List all of this resource
      *
@@ -163,17 +217,13 @@ abstract class ResourceAbstract
      */
     public function findAll(array $params = array())
     {
-        if (empty($this->endpoint)) {
-            $this->endpoint = $this->getResourceNameFromClass() . '.json';
-        }
-
         $sideloads = $this->client->getSideload($params);
 
         $queryParams = Http::prepareQueryParams($sideloads, $params);
 
         $response = Http::send_with_options(
             $this->client,
-            $this->endpoint,
+            $this->getRoute('findAll', $params),
             ['queryParams' => $queryParams]
         );
 
@@ -203,11 +253,9 @@ abstract class ResourceAbstract
             throw new MissingParametersException(__METHOD__, array('id'));
         }
 
-        if (empty($this->endpoint)) {
-            $this->endpoint = $this->getResourceNameFromClass() . "/{$id}.json";
-        }
+        $route = $this->getRoute('find', array('id' => $id));
 
-        $response = Http::send($this->client, $this->endpoint, $queryParams);
+        $response = Http::send($this->client, $route, $queryParams);
         $this->client->setSideload(null);
 
         return $response;
@@ -226,16 +274,10 @@ abstract class ResourceAbstract
      */
     public function create(array $params)
     {
-        // TODO: what happens when endpoint was already set by a different method call?
-
-        if (empty($this->endpoint)) {
-            $this->endpoint = $this->getResourceNameFromClass() . ".json";
-        }
-
         $class = get_class($this);
         $response = Http::send_with_options(
             $this->client,
-            $this->endpoint,
+            $this->getRoute('create'),
             [
                 'postFields' => array($class::OBJ_NAME => $params),
                 'method' => 'POST'
@@ -261,16 +303,14 @@ abstract class ResourceAbstract
      */
     public function update($id, array $updateResourceFields = [])
     {
-        if (empty($this->endpoint)) {
-            $this->endpoint = $this->getResourceNameFromClass() . "/$id.json";
-        }
+        $route = $this->getRoute('find', array('id' => $id));
 
         $class = get_class($this);
         $postFields = array($class::OBJ_NAME => $updateResourceFields);
 
         $response = Http::send_with_options(
             $this->client,
-            $this->endpoint,
+            $route,
             ['postFields' => $postFields, 'method' => 'PUT']
         );
 
@@ -293,13 +333,10 @@ abstract class ResourceAbstract
      */
     public function delete($id)
     {
-        if (empty($this->endpoint)) {
-            $this->endpoint = $this->getResourceNameFromClass() . "/$id.json";
-        }
-
+        $route = $this->getRoute('find', array('id' => $id));
         $response = Http::send_with_options(
             $this->client,
-            $this->endpoint,
+            $route,
             ['method' => 'DELETE']
         );
 

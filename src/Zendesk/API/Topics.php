@@ -40,6 +40,11 @@ class Topics extends ResourceAbstract
         $this->votes = new TopicVotes($client);
     }
 
+    protected function setUpRoutes()
+    {
+        parent::setUpRoutes();
+        $this->setRoute('import', 'import/topics.json');
+    }
     /**
      * Find a specific topic by id or series of ids
      *
@@ -79,8 +84,7 @@ class Topics extends ResourceAbstract
      */
     public function import(array $params)
     {
-        $this->endpoint = 'import/topics.json';
-        $response = Http::send_with_options($this->client, $this->endpoint,
+        $response = Http::send_with_options($this->client, $this->getRoute('import'),
             ['postFields' => [self::OBJ_NAME => $params], 'method' => 'POST']
         );
 
