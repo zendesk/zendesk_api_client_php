@@ -2,10 +2,12 @@
 
 namespace Zendesk\API;
 
-    /*
-     * Dead simple autoloader:
-     * spl_autoload_register(function($c){@include 'src/'.preg_replace('#\\\|_(?!.+\\\)#','/',$c).'.php';});
-     */
+/*
+ * Dead simple autoloader:
+ * spl_autoload_register(function($c){@include 'src/'.preg_replace('#\\\|_(?!.+\\\)#','/',$c).'.php';});
+ */
+
+use GuzzleHttp\Client;
 
 /**
  * Client class, base level access
@@ -247,14 +249,24 @@ class HttpClient
      * @var Debug
      */
     protected $debug;
+    /**
+     * @var Guzzle
+     */
+    public $guzzle;
 
     /**
      * @param string $subdomain
      * @param string $username
      */
 
-    public function __construct($subdomain, $username, $scheme = "https", $hostname = "zendesk.com", $port = 443)
+    public function __construct($subdomain, $username, $scheme = "https", $hostname = "zendesk.com", $port = 443, $guzzle = null)
     {
+        if (is_null($guzzle)) {
+            $this->guzzle = new \GuzzleHttp\Client();
+        } else {
+            $this->guzzle = $guzzle;
+        }
+
         $this->subdomain = $subdomain;
         $this->username = $username;
         $this->hostname = $hostname;
@@ -268,43 +280,9 @@ class HttpClient
         }
 
         $this->debug = new Debug();
-        $this->tickets = new Tickets($this);
-        $this->ticketFields = new TicketFields($this);
-        $this->ticketForms = new TicketForms($this);
-        $this->twitter = new Twitter($this);
-        $this->attachments = new Attachments($this);
-        $this->requests = new Requests($this);
-        $this->views = new Views($this);
-        $this->users = new Users($this);
-        $this->userFields = new UserFields($this);
-        $this->groups = new Groups($this);
-        $this->groupMemberships = new GroupMemberships($this);
-        $this->customRoles = new CustomRoles($this);
-        $this->forums = new Forums($this);
-        $this->categories = new Categories($this);
-        $this->topics = new Topics($this);
-        $this->settings = new Settings($this);
-        $this->activityStream = new ActivityStream($this);
-        $this->auditLogs = new AuditLogs($this);
-        $this->autocomplete = new Autocomplete($this);
-        $this->automations = new Automations($this);
-        $this->jobStatuses = new JobStatuses($this);
-        $this->macros = new Macros($this);
-        $this->dynamicContent = new DynamicContent($this);
-        $this->oauthClients = new OAuthClients($this);
-        $this->oauthTokens = new OAuthTokens($this);
-        $this->organizationFields = new OrganizationFields($this);
-        $this->organizations = new Organizations($this);
-        $this->satisfactionRatings = new SatisfactionRatings($this);
-        $this->search = new Search($this);
-        $this->sharingAgreements = new SharingAgreements($this);
-        $this->suspendedTickets = new SuspendedTickets($this);
-        $this->tags = new Tags($this);
-        $this->targets = new Targets($this);
-        $this->triggers = new Triggers($this);
-        $this->voice = new Voice($this);
-        $this->locales = new Locales($this);
-        $this->push_notification_devices = new PushNotificationDevices($this);
+        $this->tickets = new Resources\Tickets($this);
+        $this->views = new Resources\Views($this);
+        $this->users = new Resources\Users($this);
     }
 
     /**
