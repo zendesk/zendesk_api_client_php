@@ -45,7 +45,6 @@ namespace Zendesk\API\UtilityTraits;
       */
      public function getChainedParameters()
      {
-
          return $this->chainedParameters;
      }
 
