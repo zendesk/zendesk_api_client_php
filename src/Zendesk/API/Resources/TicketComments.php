@@ -2,6 +2,10 @@
 
 namespace Zendesk\API\Resources;
 
+use Zendesk\API\Exceptions\CustomException;
+use Zendesk\API\Exceptions\MissingParametersException;
+use Zendesk\API\Http;
+
 /**
  * The TicketComments class exposes comment methods for tickets
  * @package Zendesk\API
