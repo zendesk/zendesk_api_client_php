@@ -7,7 +7,7 @@ namespace Zendesk\API;
  * spl_autoload_register(function($c){@include 'src/'.preg_replace('#\\\|_(?!.+\\\)#','/',$c).'.php';});
  */
 
-use GuzzleHttp\Client;
+use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
 /**
  * Client class, base level access

@@ -29,9 +29,7 @@ class TicketComments extends ResourceAbstract
      */
     public function findAll(array $queryParams = array())
     {
-        $chainedParameters = $this->getChainedParameters();
-        if (array_key_exists(Tickets::class, $chainedParameters))
-            $queryParams['ticket_id'] = $chainedParameters[Tickets::class];
+        $queryParams = $this->addChainedParametersToParams($queryParams, ['ticket_id' => Tickets::class]);
 
         if (!$this->hasKeys($queryParams, array('ticket_id'))) {
             throw new MissingParametersException(__METHOD__, array('ticket_id'));
@@ -55,13 +53,7 @@ class TicketComments extends ResourceAbstract
      */
     public function makePrivate(array $params = array())
     {
-        $chainedParameters = $this->getChainedParameters();
-        if (array_key_exists(Tickets::class, $chainedParameters)) {
-            $params['ticket_id'] = $chainedParameters[Tickets::class];
-        }
-        if (array_key_exists(self::class, $chainedParameters)) {
-            $params['id'] = $chainedParameters[self::class];
-        }
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this), 'ticket_id' => Tickets::class]);
 
         if (!$this->hasKeys($params, array('id', 'ticket_id'))) {
             throw new MissingParametersException(__METHOD__, array('id', 'ticket_id'));
