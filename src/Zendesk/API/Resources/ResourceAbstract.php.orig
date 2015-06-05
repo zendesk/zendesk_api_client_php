@@ -28,16 +28,16 @@ abstract class ResourceAbstract
     protected $lastId;
 
     /**
+<<<<<<< HEAD
      * @var array
      */
     protected $chainedParameters = [];
 
-    /**
-     * @var array
-     */
     protected $routes;
 
     /**
+=======
+>>>>>>> d79f75a97664d3858c35bec85c09edadce9624a1
      * @param HttpClient $client
      */
     public function __construct(\Zendesk\API\HttpClient $client)
@@ -154,10 +154,6 @@ abstract class ResourceAbstract
         return $this;
     }
 
-    /**
-     * Wrapper for adding multiple routes via setRoute
-     * @param array $routes
-     */
     public function setRoutes(array $routes)
     {
         foreach ($routes as $name => $route) {
@@ -165,34 +161,16 @@ abstract class ResourceAbstract
         }
     }
 
-    /**
-     * Add or override an existing route
-     * @param $name
-     * @param $route
-     */
     public function setRoute($name, $route)
     {
         $this->routes[$name] = $route;
     }
 
-    /**
-     * Return all routes for this resource
-     * @return array
-     */
     public function getRoutes()
     {
         return $this->routes;
     }
 
-    /**
-     * Returns a route and replaces tokenized parts of the string with
-     * the passed params
-     * @param       $name
-     * @param array $params
-     *
-     * @return mixed
-     * @throws \Exception
-     */
     public function getRoute($name, array $params = array())
     {
         if (!isset($this->routes[$name])) {
@@ -271,7 +249,7 @@ abstract class ResourceAbstract
 
 
     /**
-     * Create a new resource
+     * Create a new view
      *
      * @param array $params
      *

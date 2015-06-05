@@ -2,8 +2,6 @@
 
 namespace Zendesk\API\MockTests;
 
-use Zendesk\API\HttpClient;
-
 /**
  * Views test class
  */

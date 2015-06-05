@@ -2,8 +2,6 @@
 
 namespace Zendesk\API;
 
-use GuzzleHttp\Message\Request;
-
 /**
  * HTTP functions via curl
  * @package Zendesk\API

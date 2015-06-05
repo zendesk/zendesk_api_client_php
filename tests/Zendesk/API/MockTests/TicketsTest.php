@@ -2,7 +2,6 @@
 
 namespace Zendesk\API\MockTests;
 
-use Zendesk\API\ResponseException;
 
 /**
  * Tickets test class
