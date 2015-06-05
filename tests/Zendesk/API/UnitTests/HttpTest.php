@@ -19,7 +19,7 @@ class HttpTest extends BasicTest
 
     public function testGetRequest()
     {
-        $response = Http::send($this->client, 'tickets.json');
+        $response = Http::send_with_options($this->client, 'tickets.json');
 
         $this->assertEquals(is_object($response), true, 'Should return an object');
         $this->assertEquals($response->{CURLOPT_URL}, $this->client->getApiUrl() . Http::prepare('tickets.json') . '?',
@@ -33,7 +33,7 @@ class HttpTest extends BasicTest
 
     public function testGetRequestWithQuery()
     {
-        $response = Http::send($this->client, 'tickets.json', ['check' => 1]);
+        $response = Http::send_with_options($this->client, 'tickets.json', ['check' => 1]);
 
         $this->assertEquals(is_object($response), true, 'Should return an object');
         $this->assertEquals($response->{CURLOPT_URL},
@@ -47,7 +47,7 @@ class HttpTest extends BasicTest
 
     public function testGetRequestWithContentType()
     {
-        $response = Http::send($this->client, 'tickets.json', [], 'GET', 'application/x-www-form-urlencoded');
+        $response = Http::send_with_options($this->client, 'tickets.json', [], 'GET', 'application/x-www-form-urlencoded');
 
         $this->assertEquals(is_object($response), true, 'Should return an object');
         $this->assertEquals($response->{CURLOPT_URL}, $this->client->getApiUrl() . Http::prepare('tickets.json') . '?',
@@ -61,7 +61,7 @@ class HttpTest extends BasicTest
 
     public function testPostRequest()
     {
-        $response = Http::send($this->client, 'tickets.json', [], 'POST');
+        $response = Http::send_with_options($this->client, 'tickets.json', [], 'POST');
 
         $this->assertEquals(is_object($response), true, 'Should return an object');
         $this->assertEquals($response->{CURLOPT_URL}, $this->client->getApiUrl() . Http::prepare('tickets.json'),
@@ -75,7 +75,7 @@ class HttpTest extends BasicTest
 
     public function testPostRequestWithData()
     {
-        $response = Http::send($this->client, 'tickets.json', ['check' => 1], 'POST');
+        $response = Http::send_with_options($this->client, 'tickets.json', ['check' => 1], 'POST');
 
         $this->assertEquals(is_object($response), true, 'Should return an object');
         $this->assertEquals($response->{CURLOPT_URL}, $this->client->getApiUrl() . Http::prepare('tickets.json'),
@@ -90,7 +90,7 @@ class HttpTest extends BasicTest
 
     public function testPostRequestWithContentType()
     {
-        $response = Http::send($this->client, 'tickets.json', ['check' => 1], 'POST',
+        $response = Http::send_with_options($this->client, 'tickets.json', ['check' => 1], 'POST',
             'application/x-www-form-urlencoded');
 
         $data = new \StdClass;
@@ -109,7 +109,7 @@ class HttpTest extends BasicTest
 
     public function testPutRequest()
     {
-        $response = Http::send($this->client, 'tickets.json', [], 'PUT');
+        $response = Http::send_with_options($this->client, 'tickets.json', [], 'PUT');
 
         $this->assertEquals(is_object($response), true, 'Should return an object');
         $this->assertEquals($response->{CURLOPT_URL}, $this->client->getApiUrl() . Http::prepare('tickets.json'),
@@ -123,7 +123,7 @@ class HttpTest extends BasicTest
 
     public function testPutRequestWithData()
     {
-        $response = Http::send($this->client, 'tickets.json', ['check' => 1], 'PUT');
+        $response = Http::send_with_options($this->client, 'tickets.json', ['check' => 1], 'PUT');
 
         $this->assertEquals(is_object($response), true, 'Should return an object');
         $this->assertEquals($response->{CURLOPT_URL}, $this->client->getApiUrl() . Http::prepare('tickets.json'),
@@ -138,7 +138,7 @@ class HttpTest extends BasicTest
 
     public function testPutRequestWithContentType()
     {
-        $response = Http::send($this->client, 'tickets.json', ['check' => 1], 'PUT',
+        $response = Http::send_with_options($this->client, 'tickets.json', ['check' => 1], 'PUT',
             'application/x-www-form-urlencoded');
 
         $data = new \StdClass;
