@@ -316,7 +316,6 @@ class Tickets extends ResourceAbstract
         return $response;
     }
 
-
     /**
      * List collaborators for a ticket
      *

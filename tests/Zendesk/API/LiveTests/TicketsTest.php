@@ -56,7 +56,6 @@ class TicketsTest extends BasicTest
                 "users" => []
             ));
 
-
         $tickets = $this->client->tickets()->sideload(array('users', 'groups'))->findAll();
 
         $this->assertEquals(is_array($tickets->users), true,
@@ -107,10 +106,11 @@ class TicketsTest extends BasicTest
 
     public function testUpdate()
     {
-        $this->mockApiCall("PUT", "/tickets/" . $this->testTicket['id'] . ".json", array("tickets" => $this->testTicket));
+        $this->mockApiCall("PUT", "tickets/" . $this->testTicket['id'] . ".json", array("ticket" => $this->testTicket),
+            ["postFields" => ["ticket" => $this->testTicket]]);
 
         $this->client->tickets()->update($this->testTicket['id'], $this->testTicket);
-        $postFields = $this->http->requests->latest();
+        $this->httpMock->verify();
     }
 
     public function testDelete()

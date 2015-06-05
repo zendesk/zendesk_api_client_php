@@ -7,6 +7,8 @@ namespace Zendesk\API;
      * spl_autoload_register(function($c){@include 'src/'.preg_replace('#\\\|_(?!.+\\\)#','/',$c).'.php';});
      */
 
+use GuzzleHttp\Client;
+
 /**
  * Client class, base level access
  * @package Zendesk\API
@@ -246,14 +248,24 @@ class HttpClient
      * @var Debug
      */
     protected $debug;
+    /**
+     * @var Guzzle
+     */
+    public $guzzle;
 
     /**
      * @param string $subdomain
      * @param string $username
      */
 
-    public function __construct($subdomain, $username, $scheme = "https", $hostname = "zendesk.com", $port = 443)
+    public function __construct($subdomain, $username, $scheme = "https", $hostname = "zendesk.com", $port = 443, $guzzle = null)
     {
+        if (is_null($guzzle)) {
+            $this->guzzle = new \GuzzleHttp\Client();
+        } else {
+            $this->guzzle = $guzzle;
+        }
+
         $this->subdomain = $subdomain;
         $this->username = $username;
         $this->hostname = $hostname;
