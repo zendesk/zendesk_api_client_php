@@ -94,7 +94,7 @@ class Http
             var_dump($e->getRequest()->getUri());
             var_dump($e->getResponse()->getStatusCode());
         }
-        
+
         $responseCode = $response->getStatusCode();
         $parsedResponseBody = json_decode($response->getBody());
 
