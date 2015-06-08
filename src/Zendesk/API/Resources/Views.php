@@ -20,10 +20,13 @@ class Views extends ResourceAbstract
     {
         parent::setUpRoutes();
 
-        $this->setRoute('findAll', 'views{modifier}.json');
-        $this->setRoute('export', 'views/{id}/export.json');
-        $this->setRoute('preview', 'views/preview.json');
-        $this->setRoute('previewCount', 'views/preview/count.json');
+        $this->setRoutes([
+            'findAll' => 'views{modifier}.json',
+            'export' => 'views/{id}/export.json',
+            'preview' => 'views/preview.json',
+            'previewCount' => 'views/preview/count.json',
+            'execute' => 'views/{id}/execute.json',
+        ]);
     }
 
     /**
@@ -113,12 +116,16 @@ class Views extends ResourceAbstract
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $endPoint = Http::prepare('views/' . $params['id'] . '/execute.json' . (isset($params['sort_by']) ? '?sort_by=' . $params['sort_by'] . (isset($params['sort_order']) ? '&sort_order=' . $params['sort_order'] : '') : ''),
-            $this->client->getSideload($params), $params);
-        $response = Http::send($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
+
+        $sideloads = $this->client->getSideload($params);
+        $queryParams = Http::prepareQueryParams($sideloads, $params);
+
+        $response = Http::send_with_options(
+          $this->client,
+          $this->getRoute(__FUNCTION__, ['id' => $params['id']]),
+          ['queryParams' => $queryParams]
+        );
+
         $this->client->setSideload(null);
 
         return $response;
@@ -218,13 +225,10 @@ class Views extends ResourceAbstract
 
         $response = Http::send_with_options(
             $this->client,
-            $this->getRoute('export', array('id' => $params['id'])),
+            $this->getRoute(__FUNCTION__, ['id' => $params['id']]),
             ['queryParams' => $queryParams]
         );
 
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
         $this->client->setSideload(null);
 
         return $response;
