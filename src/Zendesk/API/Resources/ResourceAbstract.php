@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\Resources;
 
+use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Http;
 use Zendesk\API\UtilityTraits\ChainedParametersTrait;
 
@@ -331,16 +332,26 @@ abstract class ResourceAbstract
     /**
      * Delete a resource
      *
-     * @param array $params
-     *
-     * @throws MissingParametersException
-     * @throws ResponseException
-     * @throws \Exception
+     * @param null $id
      *
      * @return bool
+     * @throws MissingParametersException
+     * @throws \Exception
+     *
      */
-    public function delete($id)
+    public function delete($id = null)
     {
+        if (empty($id)) {
+            $chainedParameters = $this->getChainedParameters();
+            if (array_key_exists(get_class($this), $chainedParameters)) {
+                $id = $chainedParameters[get_class($this)];
+            }
+        }
+
+        if (empty($id)) {
+            throw new MissingParametersException(__METHOD__, array('id'));
+        }
+
         $route = $this->getRoute('find', array('id' => $id));
         $response = Http::send_with_options(
             $this->client,

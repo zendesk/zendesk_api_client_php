@@ -2,6 +2,10 @@
 
 namespace Zendesk\API\Resources;
 
+use Zendesk\API\Exceptions\MissingParametersException;
+use Zendesk\API\Exceptions\ResponseException;
+use Zendesk\API\Http;
+
 /**
  * The Views class exposes view management methods
  * @package Zendesk\API
@@ -70,7 +74,7 @@ class Views extends ResourceAbstract
      *
      * @return mixed
      */
-    public function delete($id)
+    public function delete($id = null)
     {
         $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
         if (!$this->hasKeys($params, array('id'))) {
