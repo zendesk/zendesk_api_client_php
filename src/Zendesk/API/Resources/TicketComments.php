@@ -32,7 +32,6 @@ class TicketComments extends ResourceAbstract
      * @param array $queryParams
      *
      * @throws MissingParametersException
-     * @throws ResponseException
      * @throws \Exception
      *
      * @return mixed
@@ -54,7 +53,6 @@ class TicketComments extends ResourceAbstract
      * @param array $params
      *
      * @throws MissingParametersException
-     * @throws ResponseException
      * @throws \Exception
      *
      * @return mixed
@@ -67,7 +65,11 @@ class TicketComments extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, array('id', 'ticket_id'));
         }
 
-        $response = Http::send_with_options($this->client, $this->getRoute('makePrivate', $params), ['method' => 'PUT']);
+        $response = Http::send_with_options(
+          $this->client,
+          $this->getRoute(__FUNCTION__, $params),
+          ['method' => 'PUT']
+        );
 
         $this->client->setSideload(null);
 

@@ -2,6 +2,8 @@
 
 namespace Zendesk\API\MockTests;
 
+use Zendesk\API\Resources\Views;
+
 /**
  * Views test class
  */
@@ -11,10 +13,14 @@ class ViewsTest extends BasicTest
 
     public function testActive()
     {
-        $this->mockApiCall('GET', '/views/active.json', array('views' => array(array('id' => $this->id))));
+        $this->mockApiCall(
+          'GET',
+          'views/active.json',
+          ['views' => [['id' => $this->id]]]
+        );
 
-        $views = $this->client->views()->findAll(array('active' => true));
-        $this->assertEquals(is_object($views), true, 'Should return an object');
+        $views = $this->client->views()->findAll(['active' => true]);
+        $this->httpMock->verify();
         $this->assertEquals(is_array($views->views), true,
             'Should return an object containing an array called "views"');
         $this->assertGreaterThan(0, $views->views[0]->id, 'Returns a non-numeric id for views[0]');
@@ -22,8 +28,13 @@ class ViewsTest extends BasicTest
 
     public function testCompact()
     {
-        $this->mockApiCall('GET', '/views/compact.json', array('views' => array(array('id' => $this->id))));
-        $views = $this->client->views()->findAll(array('compact' => true));
+        $this->mockApiCall(
+          'GET',
+          'views/compact.json',
+          ['views' => [['id' => $this->id]]]
+        );
+        $views = $this->client->views()->findAll(['compact' => true]);
+        $this->httpMock->verify();
         $this->assertEquals(is_object($views), true, 'Should return an object');
         $this->assertEquals(is_array($views->views), true,
             'Should return an object containing an array called "views"');
@@ -32,9 +43,16 @@ class ViewsTest extends BasicTest
 
     public function testExecute()
     {
-        $this->mockApiCall('GET', '/views/' . $this->id . '/execute.json?per_page=1', array('view' => array('id' => $this->id)));
+        $queryParams = ['per_page' => 1];
+        $this->mockApiCall(
+          'GET',
+          'views/' . $this->id . '/execute.json',
+          ['view' => ['id' => $this->id]],
+          ['queryParams' => $queryParams]
+        );
 
-        $view = $this->client->view($this->id)->execute(array('per_page' => 1));
+        $view = $this->client->view($this->id)->execute($queryParams);
+        $this->httpMock->verify();
         $this->assertEquals(is_object($view), true, 'Should return an object');
         $this->assertEquals(is_object($view->view), true, 'Should return an object called "view"');
         $this->assertGreaterThan(0, $view->view->id, 'Returns a non-numeric id for view');
@@ -42,10 +60,14 @@ class ViewsTest extends BasicTest
 
     public function testCount()
     {
-        $this->mockApiCall('GET', '/views/' . $this->id . '/count.json',
-            array('view_count' => array('view_id' => $this->id)));
+        $this->mockApiCall(
+          'GET',
+          'views/' . $this->id . '/count.json',
+          ['view_count' => ['view_id' => $this->id]]
+        );
 
         $counts = $this->client->view($this->id)->count();
+        $this->httpMock->verify();
         $this->assertEquals(is_object($counts), true, 'Should return an object');
         $this->assertEquals(is_object($counts->view_count), true, 'Should return an object called "view_count"');
         $this->assertGreaterThan(0, $counts->view_count->view_id, 'Returns a non-numeric view_id for view_count');
@@ -53,14 +75,16 @@ class ViewsTest extends BasicTest
 
     public function testCountMany()
     {
+        $queryIds = [$this->id, 80085];
         $this->mockApiCall(
-            'GET',
-            '/views/count_many.json?ids=' . urlencode(implode(',', array($this->id, 80085))),
-            array('view_counts' => array(array('view_id' => $this->id)))
+          'GET',
+          'views/count_many.json',
+          ['view_counts' => [['view_id' => $this->id]]],
+          ['queryParams' => ['ids' => implode(',' , $queryIds)]]
         );
 
-        $counts = $this->client->view(array($this->id, 80085))->count();
-        $this->assertEquals(is_object($counts), true, 'Should return an object');
+        $counts = $this->client->view($queryIds)->count();
+        $this->httpMock->verify();
         $this->assertEquals(is_array($counts->view_counts), true,
             'Should return an array of objects called "view_counts"');
         $this->assertGreaterThan(0, $counts->view_counts[0]->view_id,
@@ -69,30 +93,42 @@ class ViewsTest extends BasicTest
 
     public function testExport()
     {
-        $this->mockApiCall('GET', '/views/' . $this->id . '/export.json',
-            array('export' => array('view_id' => $this->id)));
+        $this->mockApiCall(
+          'GET',
+          'views/' . $this->id . '/export.json',
+          ['export' => ['view_id' => $this->id]]
+        );
 
         $export = $this->client->view($this->id)->export();
+        $this->httpMock->verify();
         $this->assertEquals(is_object($export), true, 'Should return an object');
         $this->assertGreaterThan(0, $export->export->view_id, 'Returns a non-numeric view_id for export');
     }
 
     public function testPreview()
     {
-        $this->mockApiCall('POST', '/views/preview.json', array('rows' => array(), 'columns' => array()));
+        $bodyParams = [
+          'all'    => [
+            [
+              'operator' => 'is',
+              'value'    => 'open',
+              'field'    => 'status'
+            ]
+          ],
+          'output' => [
+            'columns' => [ 'subject' ]
+          ]
+        ];
 
-        $preview = $this->client->views()->preview(array(
-            'all' => array(
-                array(
-                    'operator' => 'is',
-                    'value' => 'open',
-                    'field' => 'status'
-                )
-            ),
-            'output' => array(
-                'columns' => array('subject')
-            )
-        ));
+        $this->mockApiCall(
+          'POST',
+          'views/preview.json',
+          ['rows' => [], 'columns' => []],
+          ['bodyParams' => [Views::OBJ_NAME => $bodyParams]]
+        );
+
+        $preview = $this->client->views()->preview($bodyParams);
+        $this->httpMock->verify();
         $this->assertEquals(is_object($preview), true, 'Should return an object');
         $this->assertEquals(is_array($preview->rows), true, 'Should return an array of objects called "rows"');
         $this->assertEquals(is_array($preview->columns), true, 'Should return an array of objects called "columns"');
@@ -100,21 +136,43 @@ class ViewsTest extends BasicTest
 
     public function testPreviewCount()
     {
-        $this->mockApiCall('POST', '/views/preview/count.json', array('view_count' => (new \stdClass())));
-
-        $preview = $this->client->views()->previewCount(array(
-            'all' => array(
-                array(
+        $bodyParams = [
+            'all' => [
+                [
                     'operator' => 'is',
                     'value' => 'open',
                     'field' => 'status'
-                )
-            ),
-            'output' => array(
-                'columns' => array('subject')
-            )
-        ));
+                ]
+            ],
+            'output' => [
+                'columns' => ['subject']
+            ]
+        ];
+
+        $this->mockApiCall(
+          'POST',
+          'views/preview/count.json',
+          ['view_count' => (new \stdClass())],
+          ['bodyParams' => [Views::OBJ_NAME => $bodyParams]]
+        );
+
+        $preview = $this->client->views()->previewCount($bodyParams);
+        $this->httpMock->verify();
         $this->assertEquals(is_object($preview), true, 'Should return an object');
         $this->assertEquals(is_object($preview->view_count), true, 'Should return an object called "view_count"');
+    }
+
+    public function testGetTickets()
+    {
+        $this->mockApiCall(
+          'GET',
+          "views/{$this->id}/tickets.json",
+          ['tickets' => ['id' => $this->id]]
+        );
+
+        $preview = $this->client->views($this->id)->tickets();
+        $this->httpMock->verify();
+        $this->assertEquals(is_object($preview), true, 'Should return an object');
+        $this->assertEquals(is_object($preview->tickets), true, 'Should return an object called "tickets"');
     }
 }

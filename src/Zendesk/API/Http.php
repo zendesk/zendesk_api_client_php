@@ -45,11 +45,13 @@ class Http
      * @param HttpClient $client
      * @param string $endPoint E.g. "/tickets.json"
      * @param array $options
+     *          Available options are listed below:
+     *          array $queryParams Array of unencoded key-value pairs, e.g. ["ids" => "1,2,3,4"]
+     *          array $postFields Array of unencoded key-value pairs, e.g. ["filename" => "blah.png"]
+     *          string $method "GET", "POST", etc. Default is GET.
+     *          string $contentType Default is "application/json"
+     *
      * @return array The response body, parsed from JSON into an associative array
-     * @internal param array $queryParams Array of unencoded key-value pairs, e.g. ["ids" => "1,2,3,4"]
-     * @internal param array $postFields Array of unencoded key-value pairs, e.g. ["filename" => "blah.png"]
-     * @internal param string $method "GET", "POST", etc. Default is GET.
-     * @internal param string $contentType Default is "application/json"
      */
     public static function send_with_options(
         HttpClient $client,
