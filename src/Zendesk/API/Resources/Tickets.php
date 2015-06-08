@@ -62,6 +62,24 @@ class Tickets extends ResourceAbstract
         $this->comments = new TicketComments($client);
     }
 
+    protected function setUpRoutes()
+    {
+        parent::setUpRoutes();
+
+        $this->setRoutes([
+            'findMany'            => 'tickets/show_many.json',
+            'updateMany'          => 'tickets/update_many.json',
+            'markAsSpam'          => 'tickets/{id}/mark_as_spam.json',
+            'related'             => 'tickets/{id}/related.json',
+            'deleteMany'          => 'tickets/destroy_many.json',
+            'collaborators'       => 'tickets/{id}/collaborators.json',
+            'incidents'           => 'tickets/{id}/incidents.json',
+            'problems'            => 'problems.json',
+            'export'              => 'exports/tickets.json',
+            'problemAutoComplete' => 'problems/autocomplete.json'
+        ]);
+    }
+
     /**
      * Find a specific ticket by id or series of ids
      *
@@ -75,14 +93,12 @@ class Tickets extends ResourceAbstract
      */
     public function findMany(array $params = array())
     {
-        $this->endpoint = 'tickets/show_many.json';
-
         $queryParams = ['ids' => implode(",", $params['ids'])];
 
         $extraParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
         $queryParams = array_merge($queryParams, $extraParams);
 
-        $response = Http::send_with_options($this->client, $this->endpoint, ['queryParams' => $queryParams]);
+        $response = Http::send_with_options($this->client, $this->getRoute('findMany'), ['queryParams' => $queryParams]);
 
         $this->client->setSideload(null);
 
@@ -216,11 +232,9 @@ class Tickets extends ResourceAbstract
             $resourceUpdateName = self::OBJ_NAME;
         }
 
-        $endPoint = 'tickets/update_many.json';
-
         $response = Http::send_with_options(
             $this->client,
-            $endPoint,
+            $this->getRoute('updateMany'),
             [
                 'method' => 'PUT',
                 'queryParams' => $queryParams,
@@ -244,16 +258,12 @@ class Tickets extends ResourceAbstract
      */
     public function markAsSpam(array $params = array())
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $id = $params['id'];
-        $endPoint = Http::prepare('tickets/' . $id . '/mark_as_spam.json');
-        $response = Http::send_with_options($this->client, $endPoint, null, 'PUT');
+        $response = Http::send_with_options($this->client, $this->getRoute('markAsSpam', $params), null, 'PUT');
         // Seems to be a bug in the service, it may respond with 422 even when it succeeds
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__,
@@ -277,16 +287,18 @@ class Tickets extends ResourceAbstract
      */
     public function related(array $params = array())
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $id = $params['id'];
-        $endPoint = Http::prepare('tickets/' . $id . '/related.json', $this->client->getSideload($params), $params);
-        $response = Http::send_with_options($this->client, $endPoint);
+        // @TODO: this bit can still be DRY'ed up
+        $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
+        $response = Http::send_with_options($this->client,
+            $this->getRoute('related', $params),
+            ['queryParams' => $queryParams]
+        );
+
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
@@ -304,11 +316,9 @@ class Tickets extends ResourceAbstract
      */
     public function deleteMany(array $ids)
     {
-        $this->endpoint = self::OBJ_NAME_PLURAL . '/destroy_many.json';
-
         $response = Http::send_with_options(
             $this->client,
-            $this->endpoint,
+            $this->getRoute('deleteMany'),
             [
                 'method' => 'DELETE',
                 'queryParams' => ['ids' => implode(',', $ids)]
@@ -331,17 +341,17 @@ class Tickets extends ResourceAbstract
      */
     public function collaborators(array $params)
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $id = $params['id'];
-        $endPoint = Http::prepare('tickets/' . $id . '/collaborators.json', $this->client->getSideload($params),
-            $params);
-        $response = Http::send_with_options($this->client, $endPoint);
+        $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
+        $response = Http::send_with_options($this->client,
+            $this->getRoute('collaborators', $params),
+            ['queryParams' => $queryParams]
+        );
+
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
@@ -363,16 +373,16 @@ class Tickets extends ResourceAbstract
      */
     public function incidents(array $params)
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $id = $params['id'];
-        $endPoint = Http::prepare('tickets/' . $id . '/incidents.json', $this->client->getSideload($params), $params);
-        $response = Http::send_with_options($this->client, $endPoint);
+        $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
+        $response = Http::send_with_options($this->client,
+            $this->getRoute('incidents', $params),
+            ['queryParams' => $queryParams]
+        );
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
@@ -393,10 +403,14 @@ class Tickets extends ResourceAbstract
      *
      * @return mixed
      */
-    public function problems(array $params)
+    public function problems(array $params = [])
     {
-        $endPoint = Http::prepare('problems.json', $this->client->getSideload($params), $params);
-        $response = Http::send_with_options($this->client, $endPoint);
+        $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
+        $response = Http::send_with_options($this->client,
+            $this->getRoute('problems', $params),
+            ['queryParams' => $queryParams]
+        );
+
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
@@ -418,19 +432,23 @@ class Tickets extends ResourceAbstract
      */
     public function problemAutoComplete(array $params)
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
+        if (!$params['text']) {
+            throw new MissingParametersException(__METHOD__, array('text'));
         }
-        if (!$this->hasKeys($params, array('id', 'text'))) {
-            throw new MissingParametersException(__METHOD__, array('id', 'text'));
-        }
-        $id = $params['id'];
-        $endPoint = Http::prepare('tickets/' . $id . '/problems/autocomplete.json');
-        $response = Http::send_with_options($this->client, $endPoint, array('text' => $params['text']), 'POST');
+
+        $response = Http::send_with_options(
+            $this->client,
+            $this->getRoute('problemAutoComplete'),
+            [
+                'method' => 'POST',
+                'postFields' => ['text' => $params['text']]
+            ]
+        );
+
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
         }
+
         $this->client->setSideload(null);
 
         return $response;
@@ -453,37 +471,10 @@ class Tickets extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, array('start_time'));
         }
 
-        $endPoint = 'exports/tickets.json';
         $queryParams = ["start_time" => $params["start_time"]];
 
-        $response = Http::send_with_options($this->client, $endPoint, ["queryParams" => $queryParams]);
+        $response = Http::send_with_options($this->client, $this->getRoute('export'), ["queryParams" => $queryParams]);
 
-        $this->client->setSideload(null);
-
-        return $response;
-    }
-
-    /**
-     * For testing of incremental tickets only
-     *
-     * @param array $params
-     *
-     * @throws MissingParametersException
-     * @throws ResponseException
-     * @throws \Exception
-     *
-     * @return mixed
-     */
-    public function exportSample(array $params)
-    {
-        if (!$params['start_time']) {
-            throw new MissingParametersException(__METHOD__, array('start_time'));
-        }
-        $endPoint = Http::prepare('exports/tickets/sample.json?start_time=' . $params['start_time']);
-        $response = Http::send_with_options($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
         $this->client->setSideload(null);
 
         return $response;
