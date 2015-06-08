@@ -19,7 +19,7 @@ class ViewsTest extends BasicTest
           ['views' => [['id' => $this->id]]]
         );
 
-        $views = $this->client->views()->findAll(array('active' => true));
+        $views = $this->client->views()->findAll(['active' => true]);
         $this->httpMock->verify();
         $this->assertEquals(is_array($views->views), true,
             'Should return an object containing an array called "views"');
@@ -33,7 +33,7 @@ class ViewsTest extends BasicTest
           'views/compact.json',
           ['views' => [['id' => $this->id]]]
         );
-        $views = $this->client->views()->findAll(array('compact' => true));
+        $views = $this->client->views()->findAll(['compact' => true]);
         $this->httpMock->verify();
         $this->assertEquals(is_object($views), true, 'Should return an object');
         $this->assertEquals(is_array($views->views), true,
@@ -160,5 +160,19 @@ class ViewsTest extends BasicTest
         $this->httpMock->verify();
         $this->assertEquals(is_object($preview), true, 'Should return an object');
         $this->assertEquals(is_object($preview->view_count), true, 'Should return an object called "view_count"');
+    }
+
+    public function testGetTickets()
+    {
+        $this->mockApiCall(
+          'GET',
+          "views/{$this->id}/tickets.json",
+          ['tickets' => ['id' => $this->id]]
+        );
+
+        $preview = $this->client->views($this->id)->tickets();
+        $this->httpMock->verify();
+        $this->assertEquals(is_object($preview), true, 'Should return an object');
+        $this->assertEquals(is_object($preview->tickets), true, 'Should return an object called "tickets"');
     }
 }

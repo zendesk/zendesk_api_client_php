@@ -26,6 +26,7 @@ class Views extends ResourceAbstract
             'preview' => 'views/preview.json',
             'previewCount' => 'views/preview/count.json',
             'execute' => 'views/{id}/execute.json',
+            'tickets' => 'views/{id}/tickets.json',
         ]);
     }
 
@@ -69,13 +70,11 @@ class Views extends ResourceAbstract
     /**
      * Execute a specific view
      *
-     * @param array $params
-     *
-     * @throws MissingParametersException
-     * @throws ResponseException
-     * @throws \Exception
+     * @param null $id
      *
      * @return mixed
+     * @throws MissingParametersException
+     *
      */
     public function delete($id = null)
     {
@@ -115,8 +114,9 @@ class Views extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, array('id'));
         }
 
-        $sideloads = $this->client->getSideload($params);
-        $queryParams = Http::prepareQueryParams($sideloads, $params);
+        $queryParams = Http::prepareQueryParams(
+          $this->client->getSideload($params), $params
+        );
 
         $response = Http::send_with_options(
           $this->client,
@@ -142,19 +142,21 @@ class Views extends ResourceAbstract
      */
     public function tickets(array $params = array())
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $endPoint = Http::prepare('views/' . $params['id'] . '/tickets.json', $this->client->getSideload($params),
-            $params);
-        $response = Http::send($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
+
+        $queryParams = Http::prepareQueryParams(
+          $this->client->getSideload($params), $params
+        );
+
+        $response = Http::send_with_options(
+          $this->client,
+          $this->getRoute(__FUNCTION__, ['id' => $params['id']]),
+          ['queryParams' => $queryParams]
+        );
         $this->client->setSideload(null);
 
         return $response;
@@ -178,12 +180,14 @@ class Views extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, array('id'));
         }
 
-        $queryParams = [];
+        $queryParams = $routeParams =  [];
         if (is_array($params['id'])) {
-            $endPoint = 'views/count_many.json';
+            $this->setRoute(__FUNCTION__, 'views/count_many.json');
             $queryParams['ids'] = implode(',', $params['id']);
+            unset($params['id']);
         } else {
-            $endPoint = 'views/' . $params['id'] . '/count.json';
+            $this->setRoute(__FUNCTION__, 'views/{id}/count.json');
+            $routeParams = ['id' => $params['id']];
         }
 
         $extraParams = Http::prepareQueryParams(
@@ -191,7 +195,7 @@ class Views extends ResourceAbstract
         );
 
         $response = Http::send_with_options(
-            $this->client, $endPoint, [
+            $this->client, $this->getRoute(__FUNCTION__, $routeParams), [
                 'queryParams' => array_merge($queryParams, $extraParams)
             ]
         );
@@ -219,7 +223,9 @@ class Views extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, array('id'));
         }
 
-        $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
+        $queryParams = Http::prepareQueryParams(
+          $this->client->getSideload($params), $params
+        );
 
         $response = Http::send_with_options(
             $this->client,
