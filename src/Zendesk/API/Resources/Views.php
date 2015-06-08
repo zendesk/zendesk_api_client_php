@@ -79,12 +79,10 @@ class Views extends ResourceAbstract
      */
     public function delete($id = null)
     {
-        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
-        if (!$this->hasKeys($params, array('id'))) {
+        if ((empty($id)) && !($this->getChainedParameter('id', false))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
 
-        $id = $params['id'];
         $endPoint = 'views/' . $id . '.json';
 
         $response = Http::send_with_options(
