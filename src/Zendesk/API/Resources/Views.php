@@ -251,7 +251,7 @@ class Views extends ResourceAbstract
 
         $response = Http::send_with_options(
             $this->client,
-            $this->getRoute('preview'),
+            $this->getRoute(__FUNCTION__),
             [
                 'postFields' => array('view' => $params),
                 'queryParams' => $extraParams,
@@ -283,7 +283,7 @@ class Views extends ResourceAbstract
 
         $response = Http::send_with_options(
             $this->client,
-            $this->getRoute('previewCount'),
+            $this->getRoute(__FUNCTION__),
             [
                 'postFields' => array('view' => $params),
                 'queryParams' => $extraParams,
