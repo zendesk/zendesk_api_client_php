@@ -2,6 +2,11 @@
 
 namespace Zendesk\API\Resources;
 
+use Zendesk\API\Exceptions\MissingParametersException;
+use Zendesk\API\Exceptions\ResponseException;
+use Zendesk\API\Http;
+use Zendesk\API\HttpClient;
+
 /**
  * The Users class exposes user management methods
  * Note: you must authenticate as a user!
@@ -10,7 +15,6 @@ namespace Zendesk\API\Resources;
  */
 class Users extends ResourceAbstract
 {
-
     const OBJ_NAME = 'user';
     const OBJ_NAME_PLURAL = 'users';
 
@@ -39,23 +43,19 @@ class Users extends ResourceAbstract
      */
     public function findAll(array $params = array())
     {
-        $endPoint = Http::prepare(
-            (isset($params['organization_id']) ? 'organizations/' . $params['organization_id'] . '/users' :
-                (isset($params['group_id']) ? 'groups/' . $params['group_id'] . '/users' : 'users')
-            ) . '.json' . (isset($params['role']) ? (is_array($params['role']) ? '?role[]=' . implode('&role[]=',
-                    $params['role']) : '?role=' . $params['role']) : '') . (isset($params['permission_set']) ? (isset($params['role']) ? '&' : '?') . 'permission_set=' . $params['permission_set'] : ''),
-            $this->client->getSideload($params), $params);
-        $response = Http::send($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
+        if (isset($params['organization_id'])) {
+            $this->endpoint = "organizations/{$params['organization_id']}/users.json";
+        } elseif (isset($params['group_id'])) {
+           $this->endpoint = 'groups/' . $params['group_id'] . '/users.json';
+        } else {
+            $this->endpoint = 'users.json';
         }
-        $this->client->setSideload(null);
 
-        return $response;
+        return parent::findAll();
     }
 
     /**
-     * Show a specific user
+     * Find many users
      *
      * @param array $params
      *
@@ -65,21 +65,18 @@ class Users extends ResourceAbstract
      *
      * @return mixed
      */
-    public function find($id = null, array $params = array())
+    public function findMany(array $params = array())
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
-        if (!$this->hasKeys($params, array('id'))) {
-            throw new MissingParametersException(__METHOD__, array('id'));
-        }
-        $endPoint = Http::prepare((is_array($params['id']) ? 'users/show_many.json?ids=' . implode(',',
-                $params['id']) : 'users/' . $params['id'] . '.json'), $this->client->getSideload($params));
-        $response = Http::send($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
+        $params = $this->addChainedParametersToParams($params, ['ids' => get_class($this)]);
+        $this->endpoint = 'users/show_many.json';
+
+        $queryParams = ['ids' => implode(",", $params['ids'])];
+
+        $extraParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
+        $queryParams = array_merge($queryParams, $extraParams);
+
+        $response = Http::send_with_options($this->client, $this->endpoint, ['queryParams' => $queryParams]);
+
         $this->client->setSideload(null);
 
         return $response;
@@ -102,18 +99,24 @@ class Users extends ResourceAbstract
         } elseif (!isset($params['ids']) && !isset($params['external_ids'])) {
             throw new \Exception('Missing parameters ids or external_ids');
         } elseif (isset($params['ids']) && is_array($params['ids'])) {
-            $path = 'users/show_many.json?ids=' . implode(',', $params['ids']);
+            $this->endpoint = 'users/show_many.json';
+            $queryParams = ['ids' => implode(',', $params['ids'])];
         } elseif (isset($params['external_ids']) && is_array($params['external_ids'])) {
-            $path = 'users/show_many.json?external_ids=' . implode(',', $params['external_ids']);
+            $this->endpoint = 'users/show_many.json';
+            $queryParams = ['external_ids' => implode(',', $params['external_ids'])];
         } else {
             throw new \Exception('Parameters ids or external_ids must be arrays');
         }
 
-        $endPoint = Http::prepare($path, $this->client->getSideload($params));
-        $response = Http::send($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
+        $extraParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
+        $queryParams = array_merge($queryParams, $extraParams);
+
+        $response = Http::send_with_options(
+          $this->client,
+          $this->endpoint,
+          ['queryParams' => $queryParams]
+        );
+
         $this->client->setSideload(null);
 
         return $response;
@@ -150,27 +153,27 @@ class Users extends ResourceAbstract
         return $response;
     }
 
-    /**
-     * Create a new user
-     *
-     * @param array $params
-     *
-     * @throws ResponseException
-     * @throws \Exception
-     *
-     * @return mixed
-     */
-    public function create(array $params)
-    {
-        $endPoint = Http::prepare('users.json');
-        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'POST');
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
-            throw new ResponseException(__METHOD__);
-        }
-        $this->client->setSideload(null);
-
-        return $response;
-    }
+//    /**
+//     * Create a new user
+//     *
+//     * @param array $params
+//     *
+//     * @throws ResponseException
+//     * @throws \Exception
+//     *
+//     * @return mixed
+//     */
+//    public function create(array $params)
+//    {
+//        $endPoint = Http::prepare('users.json');
+//        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'POST');
+//        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
+//            throw new ResponseException(__METHOD__);
+//        }
+//        $this->client->setSideload(null);
+//
+//        return $response;
+//    }
 
     /**
      * Merge the specified user (???)
@@ -216,11 +219,13 @@ class Users extends ResourceAbstract
      */
     public function createMany(array $params)
     {
-        $endPoint = Http::prepare('users/create_many.json');
-        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME_PLURAL => $params), 'POST');
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
+        $this->setRoute(__METHOD__, 'users/create_many.json');
+        $response = Http::send_with_options(
+          $this->client,
+          $this->getRoute(__METHOD__),
+          ['postFields' => [self::OBJ_NAME_PLURAL => $params], 'method' => 'POST']
+        );
+
         $this->client->setSideload(null);
 
         return $response;
@@ -277,11 +282,11 @@ class Users extends ResourceAbstract
         }
         $ids = $params['ids'];
         unset($params['ids']);
-        $endPoint = Http::prepare('users/update_many.json?ids=' . $ids);
-        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'PUT');
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
+        $this->setRoute(__METHOD__, 'users/update_many.json');
+        $response = Http::send_with_options(
+          $this->client,
+          $this->getRoute(__METHOD__),
+          ['postFields' => [self::OBJ_NAME => $params], 'method' => 'PUT']);
         $this->client->setSideload(null);
 
         return $response;
@@ -301,12 +306,12 @@ class Users extends ResourceAbstract
 
     public function updateManyIndividualUsers(array $params)
     {
-        $endPoint = Http::prepare('users/update_many.json');
-        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME_PLURAL => $params), 'PUT');
-
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
+        $this->setRoute(__METHOD__, 'users/update_many.json');
+        $response = Http::send_with_options(
+          $this->client,
+          $this->getRoute(__METHOD__),
+          ['postFields' => [self::OBJ_NAME_PLURAL => $params], 'method' => 'PUT']
+        );
         $this->client->setSideload(null);
 
         return $response;
@@ -337,36 +342,35 @@ class Users extends ResourceAbstract
         return $this->update($params);
     }
 
-    /**
-     * Delete a user
-     *
-     * @param array $params
-     *
-     * @throws MissingParametersException
-     * @throws ResponseException
-     * @throws \Exception
-     *
-     * @return bool
-     */
-    public function delete($id)
-    {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
-        if (!$this->hasKeys($params, array('id'))) {
-            throw new MissingParametersException(__METHOD__, array('id'));
-        }
-        $id = $params['id'];
-        $endPoint = Http::prepare('users/' . $id . '.json');
-        $response = Http::send($this->client, $endPoint, null, 'DELETE');
-        if ($this->client->getDebug()->lastResponseCode != 200) {
-            throw new ResponseException(__METHOD__);
-        }
-        $this->client->setSideload(null);
-
-        return true;
-    }
+//    /**
+//     * Delete a user
+//     *
+//     * @param $id
+//     *
+//     * @return bool
+//     * @throws MissingParametersException
+//     * @throws ResponseException
+//     *
+//     */
+//    public function delete($id)
+//    {
+//        if ($this->lastId != null) {
+//            $params['id'] = $this->lastId;
+//            $this->lastId = null;
+//        }
+//        if (!$this->hasKeys($params, array('id'))) {
+//            throw new MissingParametersException(__METHOD__, array('id'));
+//        }
+//        $id = $params['id'];
+//        $endPoint = Http::prepare('users/' . $id . '.json');
+//        $response = Http::send($this->client, $endPoint, null, 'DELETE');
+//        if ($this->client->getDebug()->lastResponseCode != 200) {
+//            throw new ResponseException(__METHOD__);
+//        }
+//        $this->client->setSideload(null);
+//
+//        return true;
+//    }
 
     /**
      * Search for users
