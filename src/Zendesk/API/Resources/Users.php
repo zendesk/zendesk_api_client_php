@@ -32,6 +32,18 @@ class Users extends ResourceAbstract
     }
 
     /**
+     * {@inheritdoc}
+     */
+    protected function setUpRoutes()
+    {
+        parent::setUpRoutes();
+
+        $this->setRoutes([
+            'related' => 'users/{id}/related.json',
+        ]);
+    }
+
+    /**
      * List all users
      *
      * @param array $params
@@ -135,19 +147,19 @@ class Users extends ResourceAbstract
      */
     public function related(array $params = array())
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $endPoint = Http::prepare('users/' . $params['id'] . '/related.json', $this->client->getSideload($params),
-            $params);
-        $response = Http::send($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
+
+        $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
+        $response = Http::send_with_options(
+          $this->client,
+          $this->getRoute(__FUNCTION__, ['id' => $params['id']]),
+          ['queryParams' => $queryParams]
+        );
+
         $this->client->setSideload(null);
 
         return $response;
