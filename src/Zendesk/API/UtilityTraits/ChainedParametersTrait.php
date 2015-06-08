@@ -48,6 +48,24 @@ namespace Zendesk\API\UtilityTraits;
          return $this->chainedParameters;
      }
 
+     /**
+      * Returns the named chained parameter
+      *
+      * @param $name
+      * @param null $default
+      *
+      * @return $this
+      */
+     public function getChainedParameter($name, $default = null)
+     {
+         $chainedParameters = $this->getChainedParameters();
+         if (array_key_exists($name, $chainedParameters)) {
+             return $chainedParameters[$name];
+         }
+
+         return $default;
+     }
+
 
      /**
       * A helper method to add the chained parameters to the existing parameters.
