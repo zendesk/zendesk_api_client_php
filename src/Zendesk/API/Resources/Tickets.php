@@ -193,7 +193,7 @@ class Tickets extends ResourceAbstract
      *
      * @return mixed
      */
-    public function update($id, array $updateResourceFields = [])
+    public function update($id = null, array $updateResourceFields = [])
     {
         if (count($this->lastAttachments)) {
             $updateResourceFields['comment']['uploads'] = $this->lastAttachments;
