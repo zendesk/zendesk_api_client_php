@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\Resources;
 
+use Zendesk\API\Exceptions\CustomException;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Http;
@@ -40,6 +41,11 @@ class Users extends ResourceAbstract
 
         $this->setRoutes([
             'related' => 'users/{id}/related.json',
+            'merge' => 'users/me/merge.json',
+            'search' => 'users/search.json',
+            'autocomplete' => 'users/autocomplete.json',
+            'setPassword' => 'users/{id}/password.json',
+            'changePassword' => 'users/{id}/password.json',
         ]);
     }
 
@@ -200,20 +206,18 @@ class Users extends ResourceAbstract
      */
     public function merge(array $params = array())
     {
-        if ($this->lastId != null) {
-            $myId = $this->lastId;
-            $this->lastId = null;
-        }
+        $myId = $this->getChainedParameter(get_class($this));
         $mergeMe = !isset($myId) || is_null($myId);
         $hasKeys = $mergeMe ? array('email', 'password') : array('id');
         if (!$this->hasKeys($params, $hasKeys)) {
             throw new MissingParametersException(__METHOD__, $hasKeys);
         }
-        $endPoint = Http::prepare('users/' . ($mergeMe ? 'me' : $myId) . '/merge.json');
-        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'PUT');
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
+
+        $response = Http::send_with_options(
+          $this->client,
+          $this->getRoute(__FUNCTION__),
+          ['postFields' => [self::OBJ_NAME => $params], 'method' => 'PUT']
+        );
         $this->client->setSideload(null);
 
         return $response;
@@ -243,37 +247,36 @@ class Users extends ResourceAbstract
         return $response;
     }
 
-    /**
-     * Update a user
-     *
-     * @param array $params
-     *
-     * @throws MissingParametersException
-     * @throws ResponseException
-     * @throws \Exception
-     *
-     * @return mixed
-     */
-    public function update($id, array $updateResourceFields = [])
-    {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
-        if (!$this->hasKeys($params, array('id'))) {
-            throw new MissingParametersException(__METHOD__, array('id'));
-        }
-        $id = $params['id'];
-        unset($params['id']);
-        $endPoint = Http::prepare('users/' . $id . '.json');
-        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'PUT');
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
-        $this->client->setSideload(null);
-
-        return $response;
-    }
+//    /**
+//     * Update a user
+//     *
+//     * @param $id
+//     * @param array $updateResourceFields
+//     *
+//     * @return mixed
+//     * @throws MissingParametersException
+//     * @throws ResponseException
+//     * @internal param array $params
+//     *
+//     */
+//    public function update($id, array $updateResourceFields = [])
+//    {
+//        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+//
+//        if (!$this->hasKeys($params, array('id'))) {
+//            throw new MissingParametersException(__METHOD__, array('id'));
+//        }
+//        $id = $params['id'];
+//        unset($params['id']);
+//        $endPoint = Http::prepare('users/' . $id . '.json');
+//        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME => $params), 'PUT');
+//        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
+//            throw new ResponseException(__METHOD__);
+//        }
+//        $this->client->setSideload(null);
+//
+//        return $response;
+//    }
 
     /**
      * Update multiple users
@@ -342,16 +345,13 @@ class Users extends ResourceAbstract
      */
     public function suspend(array $params = array())
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
         $params['suspended'] = true;
 
-        return $this->update($params);
+        return $this->update($params['id'], $params);
     }
 
 //    /**
@@ -396,12 +396,15 @@ class Users extends ResourceAbstract
      */
     public function search(array $params)
     {
-        $endPoint = Http::prepare('users/search.json?' . http_build_query($params), $this->client->getSideload($params),
-            $params);
-        $response = Http::send($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
+        $queryParams = isset($params['query']) ? ['query' => $params['query']] : [];
+        $extraParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
+
+        $response = Http::send_with_options(
+          $this->client,
+          $this->getRoute(__FUNCTION__),
+          ['queryParams' => array_merge($extraParams, $queryParams)]
+        );
+
         $this->client->setSideload(null);
 
         return $response;
@@ -419,11 +422,12 @@ class Users extends ResourceAbstract
      */
     public function autocomplete(array $params)
     {
-        $endPoint = Http::prepare('users/autocomplete.json?' . http_build_query($params));
-        $response = Http::send($this->client, $endPoint, null, 'POST');
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
+        $response = Http::send_with_options(
+          $this->client,
+          $this->getRoute(__FUNCTION__),
+          ['method' => 'POST', 'queryParams' => $params]
+        );
+
         $this->client->setSideload(null);
 
         return $response;
@@ -486,7 +490,7 @@ class Users extends ResourceAbstract
     {
         $params['id'] = 'me';
 
-        return $this->find($params);
+        return $this->find($params['id']);
     }
 
     /**
@@ -502,20 +506,18 @@ class Users extends ResourceAbstract
      */
     public function setPassword(array $params)
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
         if (!$this->hasKeys($params, array('id', 'password'))) {
             throw new MissingParametersException(__METHOD__, array('id', 'password'));
         }
         $id = $params['id'];
         unset($params['id']);
-        $endPoint = Http::prepare('users/' . $id . '/password.json');
-        $response = Http::send($this->client, $endPoint, $params, 'POST');
-        if ($this->client->getDebug()->lastResponseCode != 200) {
-            throw new ResponseException(__METHOD__);
-        }
+
+        $response = Http::send_with_options(
+          $this->client,
+          $this->getRoute(__FUNCTION__, ['id' => $id]),
+          ['postFields' => [self::OBJ_NAME => $params], 'method' => 'POST']);
+
         $this->client->setSideload(null);
 
         return $response;
@@ -534,20 +536,19 @@ class Users extends ResourceAbstract
      */
     public function changePassword(array $params)
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
         if (!$this->hasKeys($params, array('id', 'previous_password', 'password'))) {
             throw new MissingParametersException(__METHOD__, array('id', 'previous_password', 'password'));
         }
         $id = $params['id'];
         unset($params['id']);
-        $endPoint = Http::prepare('users/' . $id . '/password.json');
-        $response = Http::send($this->client, $endPoint, $params, 'PUT');
-        if ($this->client->getDebug()->lastResponseCode != 200) {
-            throw new ResponseException(__METHOD__);
-        }
+
+        $response = Http::send_with_options(
+          $this->client,
+          $this->getRoute(__FUNCTION__, ['id' => $id]),
+          ['postFields' => $params, 'method' => 'PUT']
+        );
+
         $this->client->setSideload(null);
 
         return $response;
