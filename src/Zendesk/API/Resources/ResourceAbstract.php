@@ -241,10 +241,12 @@ abstract class ResourceAbstract
      * Find a specific ticket by id or series of ids
      *
      * @param $id
-     * @param array $queryQueryParams
+     * @param array $queryParams
      *
      * @return mixed
      * @throws MissingParametersException
+     * @throws \Exception
+     *
      */
     public function find($id = null, array $queryParams = array())
     {
@@ -258,12 +260,10 @@ abstract class ResourceAbstract
             throw new MissingParametersException(__METHOD__, array('id'));
         }
 
-        $route = $this->getRoute('find', array('id' => $id));
-
         $response = Http::send_with_options(
             $this->client,
-            $route,
-            ["queryParams" => $queryParams]
+            $this->getRoute(__FUNCTION__, array('id' => $id)),
+            ['queryParams' => $queryParams]
         );
         $this->client->setSideload(null);
 
@@ -310,16 +310,17 @@ abstract class ResourceAbstract
      *
      * @return mixed
      */
-    public function update($id, array $updateResourceFields = [])
+    public function update($id = null, array $updateResourceFields = [])
     {
-        $route = $this->getRoute('find', array('id' => $id));
-
         $class = get_class($this);
+        if (empty($id))
+            $id = $this->getChainedParameter($class);
+
         $postFields = array($class::OBJ_NAME => $updateResourceFields);
 
         $response = Http::send_with_options(
             $this->client,
-            $route,
+            $this->getRoute(__FUNCTION__, array('id' => $id)),
             ['postFields' => $postFields, 'method' => 'PUT']
         );
 

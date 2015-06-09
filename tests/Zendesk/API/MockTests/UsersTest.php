@@ -170,9 +170,15 @@ class UsersTest extends BasicTest
 
     public function testMerge()
     {
-        $this->markTestSkipped( 'Need to refactor merge' );
-        $this->mockApiCall( 'PUT', '/users/me/merge.json', array( 'user' => array( 'id' => 12345 ) ) );
-        $this->client->user( 'me' )->merge( array( 'id' => 12345 ) );
+        $bodyParams = ['id' => 12345];
+        $this->mockApiCall(
+          'PUT',
+          'users/me/merge.json',
+          ['user' => [ 'id' => 12345 ]],
+          ['bodyParams' => [Users::OBJ_NAME => $bodyParams]]
+        );
+        $this->client->user('me')->merge($bodyParams);
+        $this->httpMock->verify();
     }
 
     public function testCreateMany()
@@ -206,11 +212,15 @@ class UsersTest extends BasicTest
 
     public function testUpdate()
     {
-        $this->markTestSkipped( 'Need to refactor update' );
-        $this->mockApiCall( 'PUT', '/users/12345.json', array( 'user' => array() ) );
-        $user = $this->client->user( 12345 )->update( array(
-          'name' => 'Joe Soap'
-        ) );
+        $bodyParams = ['name' => 'Joe Soap'];
+        $this->mockApiCall(
+          'PUT',
+          'users/12345.json',
+          ['user' => []],
+          ['bodyParams' => [Users::OBJ_NAME => $bodyParams]]
+        );
+
+        $user = $this->client->user(12345)->update(null, $bodyParams);
         $this->httpMock->verify();
     }
 
@@ -263,9 +273,15 @@ class UsersTest extends BasicTest
 
     public function testSuspend()
     {
-        $this->markTestSkipped( 'Need to refactor suspend' );
-        $this->mockApiCall( 'PUT', '/users/12345.json', array( 'user' => array( 'id' => 12345 ) ) );
-        $user = $this->client->user( 12345 )->suspend();
+        $userId = 12345;
+        $this->mockApiCall(
+          'PUT',
+          'users/12345.json',
+          ['user' => ['id' => $userId]],
+          ['bodyParams' => [Users::OBJ_NAME => ['id' => $userId, 'suspended' => true]]]
+        );
+        $user = $this->client->user($userId)->suspend();
+        $this->httpMock->verify();
         $this->assertEquals( is_object( $user ), true, 'Should return an object' );
         $this->assertEquals( is_object( $user->user ), true, 'Should return an object called "user"' );
         $this->assertGreaterThan( 0, $user->user->id, 'Returns a non-numeric id for request' );
@@ -273,10 +289,15 @@ class UsersTest extends BasicTest
 
     public function testSearch()
     {
-        $this->markTestSkipped( 'Need to refactor search' );
-        $this->mockApiCall( 'GET', '/users/search.json?query=Roger&',
-          array( 'users' => array( array( 'id' => 12345 ) ) ) );
-        $users = $this->client->users()->search( array( 'query' => 'Roger' ) );
+        $queryParams = ['query' => 'Roger'];
+        $this->mockApiCall(
+          'GET',
+          'users/search.json',
+          ['users' =>[['id' => 12345]]],
+          ['queryParams' => $queryParams]
+        );
+        $users = $this->client->users()->search($queryParams);
+        $this->httpMock->verify();
         $this->assertEquals( is_object( $users ), true, 'Should return an object' );
         $this->assertEquals( is_array( $users->users ), true,
           'Should return an object containing an array called "users"' );
@@ -288,11 +309,16 @@ class UsersTest extends BasicTest
      */
     public function testAutocomplete()
     {
-        $this->markTestSkipped( 'Need to refactor autocomplete' );
-        $this->mockApiCall( 'POST', '/users/autocomplete.json?name=joh',
-          array( 'users' => array( array( 'id' => 12345 ) ) ) );
+        $queryParams = ['name' => 'joh'];
+        $this->mockApiCall(
+          'POST',
+          'users/autocomplete.json',
+          ['users' =>[['id' => 12345]]],
+          ['queryParams' => $queryParams]
+        );
 
-        $users = $this->client->users()->autocomplete( array( 'name' => 'joh' ) );
+        $users = $this->client->users()->autocomplete($queryParams);
+        $this->httpMock->verify();
 
         $this->assertEquals( is_object( $users ), true, 'Should return an object' );
         $this->assertEquals( is_array( $users->users ), true,
@@ -302,7 +328,7 @@ class UsersTest extends BasicTest
 
     public function testUpdateProfileImage()
     {
-        $this->markTestSkipped( 'Need to refactor update profile image.' );
+        $this->markTestSkipped( 'Need to allow file uploads with Guzzle.' );
         $this->mockApiCall( 'GET', '/users/12345.json?', array( 'id' => 12345 ) );
         $this->mockApiCall( 'PUT', '/users/12345.json', array( 'user' => array( 'id' => 12345 ) ) );
 
@@ -320,9 +346,14 @@ class UsersTest extends BasicTest
 
     public function testAuthenticatedUser()
     {
-        $this->markTestSkipped( 'Need to refactor get authenticated user' );
-        $this->mockApiCall( 'GET', '/users/me.json?', array( 'user' => array( 'id' => 12345 ) ) );
+        $this->mockApiCall(
+          'GET',
+          'users/me.json',
+          ['user' => ['id' => 12345]]
+        );
         $user = $this->client->users()->me();
+        $this->httpMock->verify();
+
         $this->assertEquals( is_object( $user ), true, 'Should return an object' );
         $this->assertEquals( is_object( $user->user ), true, 'Should return an object called "user"' );
         $this->assertGreaterThan( 0, $user->user->id, 'Returns a non-numeric id for request' );
@@ -330,19 +361,33 @@ class UsersTest extends BasicTest
 
     public function testSetPassword()
     {
-        $this->markTestSkipped( 'Need to refactor set password' );
-        $this->mockApiCall( 'POST', '/users/12345/password.json', array() );
-        $user = $this->client->user( 12345 )->setPassword( array( 'password' => "aBc12345" ) );
+        $bodyParams = ['password' => 'aBc12345'];
+        $this->mockApiCall(
+          'POST',
+          'users/12345/password.json',
+          [],
+          ['bodyParams' => [Users::OBJ_NAME => $bodyParams]]
+        );
+
+        $user = $this->client->user(12345)->setPassword($bodyParams);
+        $this->httpMock->verify();
     }
 
     public function testChangePassword()
     {
-        $this->markTestSkipped( 'Need to refactor change password' );
-        $this->mockApiCall( 'PUT', '/users/421450109/password.json', array() );
-        $user = $this->client->user( 421450109 )->changePassword( array(
-          'previous_password' => '12346',
-          'password'          => '12345'
-        ) );
+        $bodyParams = [
+            'previous_password' => '12346',
+            'password'          => '12345'
+          ];
+        $this->mockApiCall(
+          'PUT',
+          'users/421450109/password.json',
+          [],
+          ['bodyParams' => $bodyParams]
+        );
+
+        $user = $this->client->user(421450109)->changePassword($bodyParams);
+        $this->httpMock->verify();
     }
 
 }
