@@ -62,6 +62,39 @@ class Tickets extends ResourceAbstract
         $this->comments = new TicketComments($client);
     }
 
+    /**
+     * Wrapper for common GET requests
+     *
+     * @param       $route
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     */
+    private function _send_get_request($route, array $params = array())
+    {
+        $queryParams = Http::prepareQueryParams(
+            $this->client->getSideload($params), $params
+        );
+        $response = Http::send_with_options(
+            $this->client,
+            $this->getRoute($route, $params),
+            ['queryParams' => $queryParams]
+        );
+
+        if ((!is_object($response))
+            || ($this->client->getDebug()->lastResponseCode != 200)
+        ) {
+            throw new ResponseException(__METHOD__);
+        }
+        $this->client->setSideload(null);
+
+        return $response;
+    }
+
+    /**
+     * Declares routes to be used by this resource.
+     */
     protected function setUpRoutes()
     {
         parent::setUpRoutes();
@@ -389,36 +422,6 @@ class Tickets extends ResourceAbstract
     }
 
     /**
-     *
-     *
-     * @param       $route
-     * @param array $params
-     *
-     * @throws ResponseException
-     * @throws \Exception
-     */
-    private function _send_get_request($route, array $params = array())
-    {
-        $queryParams = Http::prepareQueryParams(
-            $this->client->getSideload($params), $params
-        );
-        $response = Http::send_with_options(
-            $this->client,
-            $this->getRoute($route, $params),
-            ['queryParams' => $queryParams]
-        );
-
-        if ((!is_object($response))
-            || ($this->client->getDebug()->lastResponseCode != 200)
-        ) {
-            throw new ResponseException(__METHOD__);
-        }
-        $this->client->setSideload(null);
-
-        return $response;
-    }
-
-    /**
      * Add a problem autocomplete
      *
      * @param array $params
@@ -478,7 +481,7 @@ class Tickets extends ResourceAbstract
 
         return $response;
     }
-    
+
     /**
      * @param array $params
      *
