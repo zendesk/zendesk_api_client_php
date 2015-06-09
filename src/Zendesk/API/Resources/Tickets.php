@@ -478,44 +478,7 @@ class Tickets extends ResourceAbstract
 
         return $response;
     }
-
-    /**
-     * Syntactic sugar methods:
-     * Handy aliases:
-     */
-
-    /**
-     * @param int|null $id
-     *
-     * @return Tags
-     */
-    public function tags($id = null)
-    {
-        return ($id != null ? $this->client->tags()->setLastId($id) : $this->client->tags());
-    }
-
-    /**
-     * @param $id
-     *
-     * @return Tags
-     */
-    public function tag($id)
-    {
-        return $this->client->tags()->setLastId($id);
-    }
-
-    /**
-     * @param array $params
-     *
-     * @throws ResponseException
-     *
-     * @return mixed
-     */
-    public function import(array $params)
-    {
-        return $this->import->import($params);
-    }
-
+    
     /**
      * @param array $params
      *
