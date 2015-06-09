@@ -10,6 +10,7 @@ Changed:
 * Add property chained properties to store all previous chained calls
 * Removed setting of last ID on instantiation of Resource
 * Allowed pattern `$client->ticket(id)->find()` for consistency with chaining pattern
+* Make $id in delete and update optional to allow passing of the id via chaining pattern
 
 Topics
 * removed Topics::create() - was implementing lastId
