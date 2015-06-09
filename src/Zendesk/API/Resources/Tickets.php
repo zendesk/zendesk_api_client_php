@@ -70,6 +70,7 @@ class Tickets extends ResourceAbstract
             'findMany'            => 'tickets/show_many.json',
             'updateMany'          => 'tickets/update_many.json',
             'markAsSpam'          => 'tickets/{id}/mark_as_spam.json',
+            'markManyAsSpam'      => 'tickets/mark_many_as_spam.json',
             'related'             => 'tickets/{id}/related.json',
             'deleteMany'          => 'tickets/destroy_many.json',
             'collaborators'       => 'tickets/{id}/collaborators.json',
@@ -93,10 +94,9 @@ class Tickets extends ResourceAbstract
      */
     public function findMany(array $params = array())
     {
-        $queryParams = ['ids' => implode(",", $params['ids'])];
 
-        $extraParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
-        $queryParams = array_merge($queryParams, $extraParams);
+        $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
+        $queryParams['ids'] = implode(",", $params['ids']);
 
         $response = Http::send_with_options($this->client, $this->getRoute('findMany'), ['queryParams' => $queryParams]);
 
@@ -118,10 +118,8 @@ class Tickets extends ResourceAbstract
      */
     public function findTwicket(array $params = array())
     {
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
@@ -246,26 +244,38 @@ class Tickets extends ResourceAbstract
     }
 
     /**
-     * Mark a ticket as spam
+     * Mark a ticket as spam and suspend the requester
      *
-     * @param array $params
+     * @param mixed $id The ticket ID, or an array of ticket ID's to mark as spam
      *
-     * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
      *
      * @return mixed
      */
-    public function markAsSpam(array $params = array())
+    public function markAsSpam($id = null)
     {
-        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+        $options = ['method' => 'PUT'];
 
-        if (!$this->hasKeys($params, array('id'))) {
-            throw new MissingParametersException(__METHOD__, array('id'));
+        if (is_array($id)) {
+            $options['queryParams']['ids'] = implode(',', $id);
+            $route = $this->getRoute('markManyAsSpam');
+        } else {
+            $params = $this->addChainedParametersToParams(
+                ['id' => $id],
+                ['id' => get_class($this)]
+            );
+            $route = $this->getRoute('markAsSpam', $params);
         }
-        $response = Http::send_with_options($this->client, $this->getRoute('markAsSpam', $params), null, 'PUT');
+
+        $response = Http::send_with_options(
+            $this->client,
+            $route,
+            $options
+        );
+
         // Seems to be a bug in the service, it may respond with 422 even when it succeeds
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
+        if ($this->client->getDebug()->lastResponseCode != 200) {
             throw new ResponseException(__METHOD__,
                 ($this->client->getDebug()->lastResponseCode == 422 ? ' (note: there\'s currently a bug in the service so this call may have succeeded; call tickets->find to see if it still exists.)' : ''));
         }
