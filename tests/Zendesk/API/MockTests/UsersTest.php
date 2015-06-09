@@ -233,8 +233,11 @@ class UsersTest extends BasicTest
         );
         $this->mockApiCall( 'PUT',
           'users/update_many.json',
-          [ 'job_status' => [ 'id' => 1 ] ],
-          [ 'bodyParams' => [ Users::OBJ_NAME => [ 'phone' => $requestParams['phone'] ] ] ]
+          ['job_status' => ['id' => 1]],
+          [
+            'bodyParams' => [Users::OBJ_NAME => ['phone' => $requestParams['phone']]],
+            'queryParams' => ['ids' => $requestParams['ids']]
+          ]
         );
 
         $jobStatus = $this->client->users()->updateMany( $requestParams );
