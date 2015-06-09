@@ -46,6 +46,8 @@ class Views extends ResourceAbstract
             $params['modifier'] = '/active';
         } else if (isset($params['compact'])) {
             $params['modifier'] = '/compact';
+        } else {
+            $params['modifier'] = '';
         }
 
         return parent::findAll($params);
