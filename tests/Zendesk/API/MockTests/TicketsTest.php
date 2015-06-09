@@ -259,4 +259,33 @@ class TicketsTest extends BasicTest
 
         $this->httpMock->verify();
     }
+
+    public function testMarkAsSpam()
+    {
+        $this->mockApiCall(
+            'PUT',
+            'tickets/12345/mark_as_spam.json',
+            [],
+            ['statusCode' => 200]
+        );
+
+        $this->client->tickets(12345)->markAsSpam();
+        $this->httpMock->verify();
+    }
+
+    public function testMarkManyAsSpam()
+    {
+        $this->mockApiCall(
+            'PUT',
+            'tickets/mark_many_as_spam.json',
+            [],
+            [
+                'statusCode' => 200,
+                'queryParams' => ['ids' => '12345,54321']
+            ]
+        );
+
+        $this->client->tickets()->markAsSpam([12345, 54321]);
+        $this->httpMock->verify();
+    }
 }

@@ -21,3 +21,6 @@ UserFields
 Forums
 * remove CRUD methods - (most methods)
 * no unique case so test is empty
+
+Tickets
+* markAsSpam method now only accepts an int value for an ID or an array of ID's
