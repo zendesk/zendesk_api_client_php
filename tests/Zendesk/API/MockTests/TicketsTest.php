@@ -196,9 +196,12 @@ class TicketsTest extends BasicTest
             array('statusCode' => 200)
         );
 
-        $this->client->tickets(12345)->related();
+        $related = $this->client->tickets(12345)->related();
 
         $this->httpMock->verify();
+
+        // Test if the method returns readable data
+        $this->assertEquals(is_object($related), true, 'Should return an object');
     }
 
     public function testCollaborators()
@@ -210,9 +213,11 @@ class TicketsTest extends BasicTest
             array('statusCode' => 200)
         );
 
-        $this->client->tickets()->collaborators(array('id' => 12345));
+        $collaborators = $this->client->tickets()->collaborators(array('id' => 12345));
 
         $this->httpMock->verify();
+
+        $this->assertEquals(is_object($collaborators), true, 'Should return an object');
     }
 
     public function testIncidents()
@@ -224,9 +229,11 @@ class TicketsTest extends BasicTest
             array('statusCode' => 200)
         );
 
-        $this->client->tickets()->incidents(array('id' => 12345));
+        $incidents = $this->client->tickets()->incidents(array('id' => 12345));
 
         $this->httpMock->verify();
+
+        $this->assertEquals(is_object($incidents), true, 'Should return an object');
     }
 
     public function testProblems()
@@ -238,9 +245,11 @@ class TicketsTest extends BasicTest
             array('statusCode' => 200)
         );
 
-        $this->client->tickets()->problems();
+        $problems = $this->client->tickets()->problems();
 
         $this->httpMock->verify();
+
+        $this->assertEquals(is_object($problems), true, 'Should return an object');
     }
 
     public function testProblemAutoComplete()

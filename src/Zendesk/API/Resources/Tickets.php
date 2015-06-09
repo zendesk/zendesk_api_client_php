@@ -302,19 +302,8 @@ class Tickets extends ResourceAbstract
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        // @TODO: this bit can still be DRY'ed up
-        $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
-        $response = Http::send_with_options($this->client,
-            $this->getRoute('related', $params),
-            ['queryParams' => $queryParams]
-        );
 
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
-        $this->client->setSideload(null);
-
-        return $response;
+        return $this->_send_get_request(__FUNCTION__, $params);
     }
 
     /**
@@ -356,18 +345,8 @@ class Tickets extends ResourceAbstract
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
-        $response = Http::send_with_options($this->client,
-            $this->getRoute('collaborators', $params),
-            ['queryParams' => $queryParams]
-        );
 
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
-        $this->client->setSideload(null);
-
-        return $response;
+        return $this->_send_get_request(__FUNCTION__, $params);
     }
 
     /**
@@ -388,17 +367,8 @@ class Tickets extends ResourceAbstract
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
-        $response = Http::send_with_options($this->client,
-            $this->getRoute('incidents', $params),
-            ['queryParams' => $queryParams]
-        );
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
-        $this->client->setSideload(null);
 
-        return $response;
+        return $this->_send_get_request(__FUNCTION__, $params);
     }
 
 
@@ -415,13 +385,32 @@ class Tickets extends ResourceAbstract
      */
     public function problems(array $params = [])
     {
-        $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
-        $response = Http::send_with_options($this->client,
-            $this->getRoute('problems', $params),
+        return $this->_send_get_request(__FUNCTION__, $params);
+    }
+
+    /**
+     *
+     *
+     * @param       $route
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     */
+    private function _send_get_request($route, array $params = array())
+    {
+        $queryParams = Http::prepareQueryParams(
+            $this->client->getSideload($params), $params
+        );
+        $response = Http::send_with_options(
+            $this->client,
+            $this->getRoute($route, $params),
             ['queryParams' => $queryParams]
         );
 
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
+        if ((!is_object($response))
+            || ($this->client->getDebug()->lastResponseCode != 200)
+        ) {
             throw new ResponseException(__METHOD__);
         }
         $this->client->setSideload(null);
