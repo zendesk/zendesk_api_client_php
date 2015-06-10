@@ -283,6 +283,7 @@ class HttpClient
         $this->tickets = new Resources\Tickets($this);
         $this->views = new Resources\Views($this);
         $this->users = new Resources\Users($this);
+        $this->ticketFields = new Resources\TicketFields($this);
     }
 
     /**
