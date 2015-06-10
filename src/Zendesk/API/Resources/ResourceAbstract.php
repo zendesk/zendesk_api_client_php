@@ -4,6 +4,7 @@ namespace Zendesk\API\Resources;
 
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Http;
+use Zendesk\API\HttpClient;
 use Zendesk\API\UtilityTraits\ChainedParametersTrait;
 
 /**
@@ -17,7 +18,7 @@ abstract class ResourceAbstract
     /**
      * @var String
      */
-    protected $endpoint;
+    protected $resourceName;
 
     /**
      * @var HttpClient
@@ -31,17 +32,12 @@ abstract class ResourceAbstract
     /**
      * @var array
      */
-//    protected $chainedParameters = [];
-
-    /**
-     * @var array
-     */
     protected $routes;
 
     /**
      * @param HttpClient $client
      */
-    public function __construct(\Zendesk\API\HttpClient $client)
+    public function __construct( HttpClient $client)
     {
         $this->client = $client;
 
@@ -64,18 +60,16 @@ abstract class ResourceAbstract
 
     protected function setUpRoutes()
     {
-        if (isset($this->endpoint)) {
-            $resource = $this->endpoint;
-        } else {
-            $resource = $this->getResourceNameFromClass();
+        if (!isset($this->resourceName)) {
+            $this->resourceName = $this->getResourceNameFromClass();
         }
 
         $this->setRoutes([
-            'findAll' => "$resource.json",
-            'find'    => "$resource/{id}.json",
-            'create'  => "$resource.json",
-            'update'  => "$resource/{id}.json",
-            'delete'  => "$resource/{id}.json"
+            'findAll' => "{$this->resourceName}.json",
+            'find'    => "{$this->resourceName}/{id}.json",
+            'create'  => "{$this->resourceName}.json",
+            'update'  => "{$this->resourceName}/{id}.json",
+            'delete'  => "{$this->resourceName}/{id}.json"
         ]);
     }
 
@@ -215,7 +209,6 @@ abstract class ResourceAbstract
      *
      * @param array $params
      *
-     * @throws ResponseException
      * @throws \Exception
      *
      * @return mixed
@@ -305,7 +298,6 @@ abstract class ResourceAbstract
      * @param array $updateResourceFields
      *
      * @throws MissingParametersException
-     * @throws ResponseException
      * @throws \Exception
      *
      * @return mixed
