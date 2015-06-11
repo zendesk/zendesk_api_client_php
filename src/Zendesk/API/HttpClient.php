@@ -105,8 +105,9 @@ class HttpClient
       $hostname = "zendesk.com",
       $port = 443,
       $guzzle = null
-    ) {
-        if (is_null( $guzzle )) {
+    )
+    {
+        if (is_null($guzzle)) {
             $this->guzzle = new \GuzzleHttp\Client();
         } else {
             $this->guzzle = $guzzle;
@@ -118,7 +119,7 @@ class HttpClient
         $this->scheme    = $scheme;
         $this->port      = $port;
 
-        if (empty( $subdomain )) {
+        if (empty($subdomain)) {
             $this->apiUrl = "$scheme://$hostname:$port/api/{$this->apiVer}/";
         } else {
             $this->apiUrl = "$scheme://$subdomain.$hostname:$port/api/{$this->apiVer}/";
@@ -142,7 +143,7 @@ class HttpClient
      * @param string $method
      * @param string $value
      */
-    public function setAuth( $method, $value )
+    public function setAuth($method, $value)
     {
         switch ($method) {
             case 'password':
@@ -190,7 +191,7 @@ class HttpClient
      */
     public function getAuthType()
     {
-        return ( $this->oAuthToken ? 'oauth_token' : ( $this->token ? 'token' : 'password' ) );
+        return ($this->oAuthToken ? 'oauth_token' : ($this->token ? 'token' : 'password'));
     }
 
     /**
@@ -200,7 +201,7 @@ class HttpClient
      */
     public function getAuthText()
     {
-        return ( $this->oAuthToken ? $this->oAuthToken : $this->username . ( $this->token ? '/token:' . $this->token : ':' . $this->password ) );
+        return ($this->oAuthToken ? $this->oAuthToken : $this->username . ($this->token ? '/token:' . $this->token : ':' . $this->password));
     }
 
     /**
@@ -211,7 +212,7 @@ class HttpClient
      * @param string $lastResponseHeaders
      * @param mixed $lastResponseError
      */
-    public function setDebug( $lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError )
+    public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError)
     {
         $this->debug->lastRequestHeaders  = $lastRequestHeaders;
         $this->debug->lastResponseCode    = $lastResponseCode;
@@ -236,7 +237,7 @@ class HttpClient
      *
      * @return HttpClient
      */
-    public function setSideload( array $fields = null )
+    public function setSideload(array $fields = null)
     {
         $this->sideload = $fields;
 
@@ -250,9 +251,9 @@ class HttpClient
      *
      * @return array|null
      */
-    public function getSideload( array $params = null )
+    public function getSideload(array $params = null)
     {
-        return ( ( isset( $params['sideload'] ) ) && ( is_array( $params['sideload'] ) ) ? $params['sideload'] : $this->sideload );
+        return ((isset($params['sideload'])) && (is_array($params['sideload'])) ? $params['sideload'] : $this->sideload);
     }
 
     /*
@@ -264,9 +265,9 @@ class HttpClient
      *
      * @return $this
      */
-    public function category( $id )
+    public function category($id)
     {
-        return $this->categories->setLastId( $id );
+        return $this->categories->setLastId($id);
     }
 
     /**
@@ -274,9 +275,9 @@ class HttpClient
      *
      * @return ActivityStream
      */
-    public function activities( $id = null )
+    public function activities($id = null)
     {
-        return ( $id != null ? $this->activityStream()->setLastId( $id ) : $this->activityStream() );
+        return ($id != null ? $this->activityStream()->setLastId($id) : $this->activityStream());
     }
 
     /**
@@ -284,9 +285,9 @@ class HttpClient
      *
      * @return ActivityStream
      */
-    public function activity( $id )
+    public function activity($id)
     {
-        return $this->activityStream()->setLastId( $id );
+        return $this->activityStream()->setLastId($id);
     }
 
     /**
@@ -294,9 +295,9 @@ class HttpClient
      *
      * @return JobStatuses
      */
-    public function jobStatus( $id )
+    public function jobStatus($id)
     {
-        return $this->jobStatuses()->setLastId( $id );
+        return $this->jobStatuses()->setLastId($id);
     }
 
     /**
@@ -307,9 +308,9 @@ class HttpClient
      *
      * @return mixed
      */
-    public function search( array $params )
+    public function search(array $params)
     {
-        return $this->search->performSearch( $params );
+        return $this->search->performSearch($params);
     }
 
     /**
@@ -320,9 +321,9 @@ class HttpClient
      *
      * @return mixed
      */
-    public function anonymousSearch( array $params )
+    public function anonymousSearch(array $params)
     {
-        return $this->search->anonymousSearch( $params );
+        return $this->search->anonymousSearch($params);
     }
 
 }
