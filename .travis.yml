@@ -4,4 +4,4 @@ php:
   # - 5.4
   # - hhvm
 before_script: composer self-update && composer install
-script: phpunit --testsuite "Zendesk API Live Test Suites"
+script: phpunit --testsuite "Zendesk API Unit Test Suites"
