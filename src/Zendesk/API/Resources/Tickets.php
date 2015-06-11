@@ -11,10 +11,7 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
  * The Tickets class exposes key methods for reading and updating ticket data
  * @package Zendesk\API
  *
- * @method TicketAudits audits()
  * @method TicketComments comments()
- * @method TicketMetrics metrics()
- * @method SatisfactionRatings satisfactionRatings()
  */
 
 class Tickets extends ResourceAbstract
@@ -25,26 +22,11 @@ class Tickets extends ResourceAbstract
     const OBJ_NAME_PLURAL = 'tickets';
 
     /**
-     * @var TicketAudits
-     */
-    protected $audits;
-    /**
      * @var TicketComments
      */
     protected $comments;
+
     /**
-     * @var TicketMetrics
-     */
-    protected $metrics;
-    /**
-     * @var TicketImport
-     */
-    protected $import;
-    /**
-     * @var SatisfactionRatings
-     */
-    protected $satisfactionRatings;
-    /*
      * Helpers:
      */
 
@@ -54,12 +36,12 @@ class Tickets extends ResourceAbstract
     protected $lastAttachments = array();
 
     /**
-     * @param HttpClient $client
+     * {@inheritdoc}
      */
-    public function __construct(\Zendesk\API\HttpClient $client)
-    {
-        parent::__construct($client);
-        $this->comments = new TicketComments($client);
+    public static function getValidRelations() {
+        return [
+          'comments' => TicketComments::class,
+        ];
     }
 
     /**
@@ -68,6 +50,7 @@ class Tickets extends ResourceAbstract
      * @param       $route
      * @param array $params
      *
+     * @return array
      * @throws ResponseException
      * @throws \Exception
      */

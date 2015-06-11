@@ -31,21 +31,30 @@ abstract class ResourceAbstract
     /**
      * @var array
      */
-//    protected $chainedParameters = [];
-
-    /**
-     * @var array
-     */
     protected $routes;
 
     /**
-     * @param HttpClient $client
+     * @param \Zendesk\API\HttpClient $client
      */
     public function __construct(\Zendesk\API\HttpClient $client)
     {
         $this->client = $client;
 
         $this->setUpRoutes();
+    }
+
+    /**
+     * This returns the valid relations of this resource. Definition of what is allowed to chain after this resource.
+     * Example:
+     *    $client->ticket()->comments();
+     *    Where ticket would have a comments as a valid sub resource.
+     *    The array would look like:
+     *      ['comments' => '\Zendesk\API\Resources\TicketComments']
+     *
+     * @return array
+     */
+    public static function getValidSubResource() {
+        return [];
     }
 
     /**
@@ -276,7 +285,6 @@ abstract class ResourceAbstract
      *
      * @param array $params
      *
-     * @throws ResponseException
      * @throws \Exception
      *
      * @return mixed

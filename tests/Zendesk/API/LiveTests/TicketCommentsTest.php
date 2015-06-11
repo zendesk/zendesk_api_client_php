@@ -38,7 +38,7 @@ class TicketCommentsTest extends BasicTest
           ]
         );
 
-        $comments = $this->client->ticket($this->ticket_id)->comments()->findAll();
+        $comments = $this->client->tickets($this->ticket_id)->comments()->findAll();
         $this->httpMock->verify();
 
         $this->assertEquals(is_object($comments), true, 'Should return an object');
@@ -63,7 +63,7 @@ class TicketCommentsTest extends BasicTest
             ]
           ]
         );
-        $comment_id = $this->client->ticket($this->ticket_id)->comments()->findAll()->comments[0]->id;
+        $comment_id = $this->client->tickets($this->ticket_id)->comments()->findAll()->comments[0]->id;
         $this->httpMock->verify();
 
         $this->mockApiCall(
@@ -71,7 +71,7 @@ class TicketCommentsTest extends BasicTest
           'tickets/12345/comments/1/make_private.json',
           []
         );
-        $this->client->ticket($this->ticket_id)->comments($comment_id)->makePrivate();
+        $this->client->tickets($this->ticket_id)->comments($comment_id)->makePrivate();
         $this->httpMock->verify();
     }
 }
