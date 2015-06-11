@@ -9,6 +9,7 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
 /**
  * The Tickets class exposes key methods for reading and updating ticket data
+ *
  * @package Zendesk\API
  *
  * @method TicketAudits audits()
@@ -16,7 +17,6 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
  * @method TicketMetrics metrics()
  * @method SatisfactionRatings satisfactionRatings()
  */
-
 class Tickets extends ResourceAbstract
 {
     use InstantiatorTrait;
@@ -44,6 +44,10 @@ class Tickets extends ResourceAbstract
      * @var SatisfactionRatings
      */
     protected $satisfactionRatings;
+    /**
+     * @var Tags
+     */
+    protected $tags;
     /*
      * Helpers:
      */
@@ -60,6 +64,7 @@ class Tickets extends ResourceAbstract
     {
         parent::__construct($client);
         $this->comments = new TicketComments($client);
+        $this->tags = new Tags($client);
     }
 
     /**
@@ -156,7 +161,8 @@ class Tickets extends ResourceAbstract
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
-        $endPoint = Http::prepare('channels/twitter/tickets/' . $params['id'] . '/statuses.json' . (is_array($params['comment_ids']) ? '?' . implode(',',
+        $endPoint = Http::prepare('channels/twitter/tickets/' . $params['id'] . '/statuses.json' . (is_array($params['comment_ids']) ?
+                '?' . implode(',',
                     $params['comment_ids']) : ''), $this->client->getSideload($params));
         $response = Http::send_with_options($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
@@ -208,7 +214,8 @@ class Tickets extends ResourceAbstract
         $response = Http::send_with_options($this->client, $endPoint, array(self::OBJ_NAME => $params), 'POST');
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
             throw new ResponseException(__METHOD__,
-                ($this->client->getDebug()->lastResponseCode == 422 ? ' (hint: you can\'t create two tickets from the same tweet)' : ''));
+                ($this->client->getDebug()->lastResponseCode == 422 ? ' (hint: you can\'t create two tickets from the same tweet)'
+                    : ''));
         }
         $this->client->setSideload(null);
 
@@ -267,9 +274,9 @@ class Tickets extends ResourceAbstract
             $this->client,
             $this->getRoute('updateMany'),
             [
-                'method' => 'PUT',
+                'method'      => 'PUT',
                 'queryParams' => $queryParams,
-                'postFields' => [$resourceUpdateName => $params]
+                'postFields'  => [$resourceUpdateName => $params]
             ]
         );
 
@@ -310,7 +317,9 @@ class Tickets extends ResourceAbstract
         // Seems to be a bug in the service, it may respond with 422 even when it succeeds
         if ($this->client->getDebug()->lastResponseCode != 200) {
             throw new ResponseException(__METHOD__,
-                ($this->client->getDebug()->lastResponseCode == 422 ? ' (note: there\'s currently a bug in the service so this call may have succeeded; call tickets->find to see if it still exists.)' : ''));
+                ($this->client->getDebug()->lastResponseCode == 422
+                    ? ' (note: there\'s currently a bug in the service so this call may have succeeded; call tickets->find to see if it still exists.)'
+                    : ''));
         }
         $this->client->setSideload(null);
 
@@ -343,6 +352,7 @@ class Tickets extends ResourceAbstract
      * Update a ticket or series of tickets
      *
      * @param array $ids
+     *
      * @return mixed
      *
      */
@@ -352,7 +362,7 @@ class Tickets extends ResourceAbstract
             $this->client,
             $this->getRoute('deleteMany'),
             [
-                'method' => 'DELETE',
+                'method'      => 'DELETE',
                 'queryParams' => ['ids' => implode(',', $ids)]
             ]
         );
@@ -442,7 +452,7 @@ class Tickets extends ResourceAbstract
             $this->client,
             $this->getRoute('problemAutoComplete'),
             [
-                'method' => 'POST',
+                'method'     => 'POST',
                 'postFields' => ['text' => $params['text']]
             ]
         );
@@ -506,5 +516,4 @@ class Tickets extends ResourceAbstract
 
         return $this;
     }
-
 }

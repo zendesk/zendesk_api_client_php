@@ -8,6 +8,7 @@ use Zendesk\API\Http;
 
 /**
  * The Views class exposes view management methods
+ *
  * @package Zendesk\API
  */
 class Views extends ResourceAbstract
@@ -21,12 +22,12 @@ class Views extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
-            'findAll' => 'views{modifier}.json',
-            'export' => 'views/{id}/export.json',
-            'preview' => 'views/preview.json',
+            'findAll'      => 'views{modifier}.json',
+            'export'       => 'views/{id}/export.json',
+            'preview'      => 'views/preview.json',
             'previewCount' => 'views/preview/count.json',
-            'execute' => 'views/{id}/execute.json',
-            'tickets' => 'views/{id}/tickets.json',
+            'execute'      => 'views/{id}/execute.json',
+            'tickets'      => 'views/{id}/tickets.json',
         ]);
     }
 
@@ -44,10 +45,12 @@ class Views extends ResourceAbstract
     {
         if (isset($params['active'])) {
             $params['modifier'] = '/active';
-        } else if (isset($params['compact'])) {
-            $params['modifier'] = '/compact';
         } else {
-            $params['modifier'] = '';
+            if (isset($params['compact'])) {
+                $params['modifier'] = '/compact';
+            } else {
+                $params['modifier'] = '';
+            }
         }
 
         return parent::findAll($params);
@@ -56,8 +59,9 @@ class Views extends ResourceAbstract
     /**
      * Show a specific view
      *
-     * @param int $id
+     * @param int   $id
      * @param array $queryParams
+     *
      * @return mixed
      */
     public function find($id = null, array $queryParams = array())
@@ -110,20 +114,21 @@ class Views extends ResourceAbstract
      */
     public function execute(array $params = array())
     {
-        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+        $params = $this->addChainedParametersToParams($params,
+            ['id' => get_class($this)]);
 
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
 
         $queryParams = Http::prepareQueryParams(
-          $this->client->getSideload($params), $params
+            $this->client->getSideload($params), $params
         );
 
         $response = Http::send_with_options(
-          $this->client,
-          $this->getRoute(__FUNCTION__, ['id' => $params['id']]),
-          ['queryParams' => $queryParams]
+            $this->client,
+            $this->getRoute(__FUNCTION__, ['id' => $params['id']]),
+            ['queryParams' => $queryParams]
         );
 
         $this->client->setSideload(null);
@@ -144,20 +149,21 @@ class Views extends ResourceAbstract
      */
     public function tickets(array $params = array())
     {
-        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+        $params = $this->addChainedParametersToParams($params,
+            ['id' => get_class($this)]);
 
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
 
         $queryParams = Http::prepareQueryParams(
-          $this->client->getSideload($params), $params
+            $this->client->getSideload($params), $params
         );
 
         $response = Http::send_with_options(
-          $this->client,
-          $this->getRoute(__FUNCTION__, ['id' => $params['id']]),
-          ['queryParams' => $queryParams]
+            $this->client,
+            $this->getRoute(__FUNCTION__, ['id' => $params['id']]),
+            ['queryParams' => $queryParams]
         );
         $this->client->setSideload(null);
 
@@ -177,12 +183,13 @@ class Views extends ResourceAbstract
      */
     public function count(array $params = array())
     {
-        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+        $params = $this->addChainedParametersToParams($params,
+            ['id' => get_class($this)]);
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
 
-        $queryParams = $routeParams =  [];
+        $queryParams = $routeParams = [];
         if (is_array($params['id'])) {
             $this->setRoute(__FUNCTION__, 'views/count_many.json');
             $queryParams['ids'] = implode(',', $params['id']);
@@ -197,9 +204,8 @@ class Views extends ResourceAbstract
         );
 
         $response = Http::send_with_options(
-            $this->client, $this->getRoute(__FUNCTION__, $routeParams), [
-                'queryParams' => array_merge($queryParams, $extraParams)
-            ]
+            $this->client, $this->getRoute(__FUNCTION__, $routeParams),
+            ['queryParams' => array_merge($queryParams, $extraParams)]
         );
 
         $this->client->setSideload(null);
@@ -220,13 +226,14 @@ class Views extends ResourceAbstract
      */
     public function export(array $params = array())
     {
-        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+        $params = $this->addChainedParametersToParams($params,
+            ['id' => get_class($this)]);
         if (!$this->hasKeys($params, array('id'))) {
             throw new MissingParametersException(__METHOD__, array('id'));
         }
 
         $queryParams = Http::prepareQueryParams(
-          $this->client->getSideload($params), $params
+            $this->client->getSideload($params), $params
         );
 
         $response = Http::send_with_options(
@@ -261,9 +268,9 @@ class Views extends ResourceAbstract
             $this->client,
             $this->getRoute(__FUNCTION__),
             [
-                'postFields' => array('view' => $params),
+                'postFields'  => array('view' => $params),
                 'queryParams' => $extraParams,
-                'method' => 'POST'
+                'method'      => 'POST'
             ]
         );
 
@@ -293,9 +300,9 @@ class Views extends ResourceAbstract
             $this->client,
             $this->getRoute(__FUNCTION__),
             [
-                'postFields' => array('view' => $params),
+                'postFields'  => array('view' => $params),
                 'queryParams' => $extraParams,
-                'method' => 'POST'
+                'method'      => 'POST'
             ]
         );
 
