@@ -16,76 +16,76 @@ namespace Zendesk\API\UtilityTraits;
  *
  */
 
- trait ChainedParametersTrait
- {
-     /**
-      * @var array
-      */
-     protected $chainedParameters = [];
+trait ChainedParametersTrait
+{
+    /**
+     * @var array
+     */
+    protected $chainedParameters = [];
 
-     /**
-      * Sets the chained parameters
-      *
-      * @param $params
-      *
-      * @return $this
-      *
-      */
-     public function setChainedParameters($params)
-     {
-         $this->chainedParameters = $params;
-
-         return $this;
-     }
-
-     /**
-      * Returns chained parameters
-      *
-      * @return $this
-      */
-     public function getChainedParameters()
-     {
-         return $this->chainedParameters;
-     }
-
-     /**
-      * Returns the named chained parameter
-      *
-      * @param $name
-      * @param null $default
-      *
-      * @return $this
-      */
-     public function getChainedParameter($name, $default = null)
-     {
-         $chainedParameters = $this->getChainedParameters();
-         if (array_key_exists($name, $chainedParameters)) {
-             return $chainedParameters[$name];
-         }
-
-         return $default;
-     }
-
-
-     /**
-      * A helper method to add the chained parameters to the existing parameters.
-      *
-      * @param array $params The existing parameters
-      * @param array $map An array describing what parameter key corresponds to which classId
-      *     e.g. ['ticket_id' => 'Zendesk\API\Ticket']
-      *     normal usage would be ['id' => $this::class]
-      *
-      * @return array
-      */
-     public function addChainedParametersToParams($params, $map)
-     {
+    /**
+     * Returns the named chained parameter
+     *
+     * @param $name
+     * @param null $default
+     *
+     * @return $this
+     */
+    public function getChainedParameter($name, $default = null)
+    {
         $chainedParameters = $this->getChainedParameters();
-         foreach ($map as $key => $className) {
-             if (array_key_exists($className, $chainedParameters)) {
-                 $params[$key] = $chainedParameters[$className];
-             }
-         }
-         return $params;
-     }
+        if (array_key_exists($name, $chainedParameters)) {
+            return $chainedParameters[$name];
+        }
 
- }
+        return $default;
+    }
+
+    /**
+     * Returns chained parameters
+     *
+     * @return $this
+     */
+    public function getChainedParameters()
+    {
+        return $this->chainedParameters;
+    }
+
+    /**
+     * Sets the chained parameters
+     *
+     * @param $params
+     *
+     * @return $this
+     *
+     */
+    public function setChainedParameters($params)
+    {
+        $this->chainedParameters = $params;
+
+        return $this;
+    }
+
+    /**
+     * A helper method to add the chained parameters to the existing parameters.
+     *
+     * @param array $params The existing parameters
+     * @param array $map An array describing what parameter key corresponds to which classId
+     *     e.g. ['ticket_id' => 'Zendesk\API\Ticket']
+     *     normal usage would be ['id' => $this::class]
+     *
+     * @return array
+     */
+    public function addChainedParametersToParams($params, $map)
+    {
+        $chainedParameters = $this->getChainedParameters();
+        foreach ($map as $key => $className) {
+            if (array_key_exists($className, $chainedParameters)) {
+                $params[$key] = $chainedParameters[$className];
+            }
+        }
+
+        return $params;
+    }
+
+}
