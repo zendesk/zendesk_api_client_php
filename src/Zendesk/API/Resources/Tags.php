@@ -36,15 +36,15 @@ class Tags extends ResourceAbstract
             return parent::getRoute($name, $params);
         }
 
-        $chainedParameters = $this->getChainedParameters();
+        $lastChained = $this->getLatestChainedParameter();
 
-        if (count($chainedParameters) == 0) {
+        if (empty($lastChained)) {
             throw new CustomException('The ' . $name . '() method needs to be called while chaining.');
         }
 
-        $chainedResourceNames = array_keys($chainedParameters);
+        $chainedResourceNames = array_keys($lastChained);
 
-        $id = reset($chainedParameters);
+        $id = reset($lastChained);
         $resource = $chainedResourceNames[0]::OBJ_NAME_PLURAL;
 
         return "$resource/$id/tags.json";
