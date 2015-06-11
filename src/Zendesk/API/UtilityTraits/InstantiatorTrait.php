@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\UtilityTraits;
 
+use Zendesk\API\HttpClient;
 use Zendesk\API\Resources\ResourceAbstract;
 
 /**
@@ -9,39 +10,38 @@ use Zendesk\API\Resources\ResourceAbstract;
  * @package Zendesk\API
  *
  */
+trait InstantiatorTrait
+{
+    /**
+     * Generic method to object getter. Since all objects are protected, this method
+     * exposes a getter function with the same name as the protected variable, for example
+     * $client->tickets can be referenced by $client->tickets()
+     *
+     * @param $name
+     * @param $arguments
+     *
+     * @return
+     * @throws \Exception
+     */
+    public function __call( $name, $arguments )
+    {
+        if (( array_key_exists( $name, $validRelations = $this::getValidRelations() ) )) {
+            $className = $validRelations[$name];
+            $client    = ( $this instanceof HttpClient ) ? $this : $this->client;
+            $class     = new $className( $client );
+        } else {
+            throw new \Exception( "No method called $name available in " . __CLASS__ );
+        }
 
- trait InstantiatorTrait {
-     /**
-      * Generic method to object getter. Since all objects are protected, this method
-      * exposes a getter function with the same name as the protected variable, for example
-      * $client->tickets can be referenced by $client->tickets()
-      *
-      * @param $name
-      * @param $arguments
-      *
-      * @return
-      * @throws \Exception
-      */
-     public function __call($name, $arguments)
-     {
-         $namePlural = $name . 's'; // try pluralize
-         if (isset($this->$name)) {
-             $class = $this->$name;
-         } elseif (isset($this->$namePlural)) {
-             $class = $this->$namePlural;
-         } else {
-             throw new \Exception("No method called $name available in " . __CLASS__);
-         }
+        $chainedParams = ( $this instanceof ResourceAbstract ) ? $this->getChainedParameters() : [ ];
 
-         $chainedParams = ($this instanceof ResourceAbstract) ? $this->getChainedParameters() : [];
+        if (( isset( $arguments[0] ) ) && ( $arguments[0] != null )) {
+            $chainedParams = array_merge( $chainedParams, [ get_class( $class ) => $arguments[0] ] );
+        }
 
-         if ((isset($arguments[0])) && ($arguments[0] != null)) {
-             $chainedParams = array_merge($chainedParams, [get_class($class) => $arguments[0]]);
-         }
+        $class = $class->setChainedParameters( $chainedParams );
 
-         $class = $class->setChainedParameters($chainedParams);
+        return $class;
+    }
 
-         return $class;
-     }
-
- }
+}

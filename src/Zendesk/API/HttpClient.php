@@ -7,6 +7,9 @@ namespace Zendesk\API;
  * spl_autoload_register(function($c){@include 'src/'.preg_replace('#\\\|_(?!.+\\\)#','/',$c).'.php';});
  */
 
+use Zendesk\API\Resources\Tickets;
+use Zendesk\API\Resources\Users;
+use Zendesk\API\Resources\Views;
 use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
 /**
@@ -16,41 +19,8 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
  * @method Debug debug()
  * @method Tickets ticket()
  * @method Tickets tickets()
- * @method TicketFields ticketFields()
- * @method TicketForms ticketForms()
- * @method Twitter twitter()
- * @method Attachments attachments()
- * @method Requests requests()
  * @method Views views()
  * @method Users users()
- * @method UserFields userFields()
- * @method Groups groups()
- * @method GroupMemberships groupMemberships()
- * @method CustomRoles customRoles()
- * @method Forums forums()
- * @method Categories categories()
- * @method Topics topics()
- * @method Settings settings()
- * @method ActivityStream activityStream()
- * @method AuditLogs auditLogs()
- * @method Autocomplete autocomplete()
- * @method Automations automations()
- * @method JobStatuses jobStatuses()
- * @method Macros macros()
- * @method DynamicContent dynamicContent()
- * @method OAuthClients oauthClients()
- * @method OAuthTokens oauthTokens()
- * @method OrganizationFields organizationFields()
- * @method Organizations organizations()
- * @method SatisfactionRatings satisfactionRatings()
- * @method SharingAgreements sharingAgreements()
- * @method SuspendedTickets suspendedTickets()
- * @method Tags tags()
- * @method Targets targets()
- * @method Triggers triggers()
- * @method Voice voice()
- * @method Locales locales()
- * @method PushNotificationDevices push_notification_devices()
  */
 class HttpClient
 {
@@ -101,156 +71,25 @@ class HttpClient
      */
     protected $sideload;
 
+    // Properties
     /**
      * @var Tickets
      */
     protected $tickets;
     /**
-     * @var TicketFields
-     */
-    protected $ticketFields;
-    /**
-     * @var TicketForms
-     */
-    protected $ticketForms;
-    /**
-     * @var Twitter
-     */
-    protected $twitter;
-    /**
-     * @var Attachments
-     */
-    protected $attachments;
-    /**
-     * @var Requests
-     */
-    protected $requests;
-    /**
      * @var Users
      */
     protected $users;
     /**
-     * @var UserFields
+     * @var Views
      */
-    protected $userFields;
-    /**
-     * @var Groups
-     */
-    protected $groups;
-    /**
-     * @var GroupMemberships
-     */
-    protected $groupMemberships;
-    /**
-     * @var CustomRoles
-     */
-    protected $customRoles;
-    /**
-     * @var Forums
-     */
-    protected $forums;
-    /**
-     * @var Categories
-     */
-    protected $categories;
-    /**
-     * @var Topics
-     */
-    protected $topics;
-    /**
-     * @var Settings
-     */
-    protected $settings;
-    /**
-     * @var ActivityStream
-     */
-    protected $activityStream;
-    /**
-     * @var AuditLogs
-     */
-    protected $auditLogs;
-    /**
-     * @var Autocomplete
-     */
-    protected $autocomplete;
-    /**
-     * @var Automations
-     */
-    protected $automations;
-    /**
-     * @var JobStatuses
-     */
-    protected $jobStatuses;
-    /**
-     * @var Macros
-     */
-    protected $macros;
-    /**
-     * @var DynamicContent
-     */
-    protected $dynamicContent;
-    /**
-     * @var OAuthClients
-     */
-    protected $oauthClients;
-    /**
-     * @var OAuthTokens
-     */
-    protected $oauthTokens;
-    /**
-     * @var OrganizationFields
-     */
-    protected $organizationFields;
-    /**
-     * @var Organizations
-     */
-    protected $organizations;
-    /**
-     * @var SatisfactionRatings
-     */
-    protected $satisfactionRatings;
-    /**
-     * @var Search
-     */
-    protected $search;
-    /**
-     * @var SharingAgreements
-     */
-    protected $sharingAgreements;
-    /**
-     * @var SuspendedTickets
-     */
-    protected $suspendedTickets;
-    /**
-     * @var Tags
-     */
-    protected $tags;
-    /**
-     * @var Targets
-     */
-    protected $targets;
-    /**
-     * @var Triggers
-     */
-    protected $triggers;
-    /**
-     * @var Voice
-     */
-    protected $voice;
-    /**
-     * @var Locales
-     */
-    protected $locales;
-    /**
-     * @var PushNotificationDevices
-     */
-    protected $push_notification_devices;
+    protected $views;
     /**
      * @var Debug
      */
     protected $debug;
     /**
-     * @var Guzzle
+     * @var \GuzzleHttp\Client
      */
     public $guzzle;
 
@@ -280,9 +119,14 @@ class HttpClient
         }
 
         $this->debug = new Debug();
-        $this->tickets = new Resources\Tickets($this);
-        $this->views = new Resources\Views($this);
-        $this->users = new Resources\Users($this);
+    }
+
+    public static function getValidRelations() {
+        return [
+            'tickets' => Tickets::class,
+            'users' => Users::class,
+            'views' => Views::class,
+        ];
     }
 
     /**
