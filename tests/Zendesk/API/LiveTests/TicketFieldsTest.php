@@ -2,7 +2,6 @@
 
 namespace Zendesk\API\LiveTests;
 
-use Zendesk\API\HttpClient;
 use Zendesk\API\Resources\TicketFields;
 
 /**
