@@ -23,23 +23,23 @@ trait InstantiatorTrait
      * @return
      * @throws \Exception
      */
-    public function __call( $name, $arguments )
+    public function __call($name, $arguments)
     {
-        if (( array_key_exists( $name, $validRelations = $this::getValidRelations() ) )) {
+        if ((array_key_exists($name, $validRelations = $this::getValidRelations()))) {
             $className = $validRelations[$name];
-            $client    = ( $this instanceof HttpClient ) ? $this : $this->client;
-            $class     = new $className( $client );
+            $client = ($this instanceof HttpClient) ? $this : $this->client;
+            $class  = new $className($client);
         } else {
-            throw new \Exception( "No method called $name available in " . __CLASS__ );
+            throw new \Exception("No method called $name available in " . __CLASS__);
         }
 
-        $chainedParams = ( $this instanceof ResourceAbstract ) ? $this->getChainedParameters() : [ ];
+        $chainedParams = ($this instanceof ResourceAbstract) ? $this->getChainedParameters() : [];
 
-        if (( isset( $arguments[0] ) ) && ( $arguments[0] != null )) {
-            $chainedParams = array_merge( $chainedParams, [ get_class( $class ) => $arguments[0] ] );
+        if ((isset($arguments[0])) && ($arguments[0] != null)) {
+            $chainedParams = array_merge($chainedParams, [get_class($class) => $arguments[0]]);
         }
 
-        $class = $class->setChainedParameters( $chainedParams );
+        $class = $class->setChainedParameters($chainedParams);
 
         return $class;
     }

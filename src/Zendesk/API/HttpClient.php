@@ -98,21 +98,27 @@ class HttpClient
      * @param string $username
      */
 
-    public function __construct($subdomain, $username, $scheme = "https", $hostname = "zendesk.com", $port = 443, $guzzle = null)
-    {
-        if (is_null($guzzle)) {
+    public function __construct(
+      $subdomain,
+      $username,
+      $scheme = "https",
+      $hostname = "zendesk.com",
+      $port = 443,
+      $guzzle = null
+    ) {
+        if (is_null( $guzzle )) {
             $this->guzzle = new \GuzzleHttp\Client();
         } else {
             $this->guzzle = $guzzle;
         }
 
         $this->subdomain = $subdomain;
-        $this->username = $username;
-        $this->hostname = $hostname;
-        $this->scheme = $scheme;
-        $this->port = $port;
+        $this->username  = $username;
+        $this->hostname  = $hostname;
+        $this->scheme    = $scheme;
+        $this->port      = $port;
 
-        if (empty($subdomain)) {
+        if (empty( $subdomain )) {
             $this->apiUrl = "$scheme://$hostname:$port/api/{$this->apiVer}/";
         } else {
             $this->apiUrl = "$scheme://$subdomain.$hostname:$port/api/{$this->apiVer}/";
@@ -121,11 +127,12 @@ class HttpClient
         $this->debug = new Debug();
     }
 
-    public static function getValidRelations() {
+    public static function getValidRelations()
+    {
         return [
-            'tickets' => Tickets::class,
-            'users' => Users::class,
-            'views' => Views::class,
+          'tickets' => Tickets::class,
+          'users'   => Users::class,
+          'views'   => Views::class,
         ];
     }
 
@@ -135,22 +142,22 @@ class HttpClient
      * @param string $method
      * @param string $value
      */
-    public function setAuth($method, $value)
+    public function setAuth( $method, $value )
     {
         switch ($method) {
             case 'password':
-                $this->password = $value;
-                $this->token = '';
+                $this->password   = $value;
+                $this->token      = '';
                 $this->oAuthToken = '';
                 break;
             case 'token':
-                $this->password = '';
-                $this->token = $value;
+                $this->password   = '';
+                $this->token      = $value;
                 $this->oAuthToken = '';
                 break;
             case 'oauth_token':
-                $this->password = '';
-                $this->token = '';
+                $this->password   = '';
+                $this->token      = '';
                 $this->oAuthToken = $value;
                 break;
         }
@@ -183,7 +190,7 @@ class HttpClient
      */
     public function getAuthType()
     {
-        return ($this->oAuthToken ? 'oauth_token' : ($this->token ? 'token' : 'password'));
+        return ( $this->oAuthToken ? 'oauth_token' : ( $this->token ? 'token' : 'password' ) );
     }
 
     /**
@@ -193,7 +200,7 @@ class HttpClient
      */
     public function getAuthText()
     {
-        return ($this->oAuthToken ? $this->oAuthToken : $this->username . ($this->token ? '/token:' . $this->token : ':' . $this->password));
+        return ( $this->oAuthToken ? $this->oAuthToken : $this->username . ( $this->token ? '/token:' . $this->token : ':' . $this->password ) );
     }
 
     /**
@@ -204,12 +211,12 @@ class HttpClient
      * @param string $lastResponseHeaders
      * @param mixed $lastResponseError
      */
-    public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError)
+    public function setDebug( $lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError )
     {
-        $this->debug->lastRequestHeaders = $lastRequestHeaders;
-        $this->debug->lastResponseCode = $lastResponseCode;
+        $this->debug->lastRequestHeaders  = $lastRequestHeaders;
+        $this->debug->lastResponseCode    = $lastResponseCode;
         $this->debug->lastResponseHeaders = $lastResponseHeaders;
-        $this->debug->lastResponseError = $lastResponseError;
+        $this->debug->lastResponseError   = $lastResponseError;
     }
 
     /**
@@ -229,7 +236,7 @@ class HttpClient
      *
      * @return HttpClient
      */
-    public function setSideload(array $fields = null)
+    public function setSideload( array $fields = null )
     {
         $this->sideload = $fields;
 
@@ -243,9 +250,9 @@ class HttpClient
      *
      * @return array|null
      */
-    public function getSideload(array $params = null)
+    public function getSideload( array $params = null )
     {
-        return ((isset($params['sideload'])) && (is_array($params['sideload'])) ? $params['sideload'] : $this->sideload);
+        return ( ( isset( $params['sideload'] ) ) && ( is_array( $params['sideload'] ) ) ? $params['sideload'] : $this->sideload );
     }
 
     /*
@@ -257,9 +264,9 @@ class HttpClient
      *
      * @return $this
      */
-    public function category($id)
+    public function category( $id )
     {
-        return $this->categories->setLastId($id);
+        return $this->categories->setLastId( $id );
     }
 
     /**
@@ -267,9 +274,9 @@ class HttpClient
      *
      * @return ActivityStream
      */
-    public function activities($id = null)
+    public function activities( $id = null )
     {
-        return ($id != null ? $this->activityStream()->setLastId($id) : $this->activityStream());
+        return ( $id != null ? $this->activityStream()->setLastId( $id ) : $this->activityStream() );
     }
 
     /**
@@ -277,9 +284,9 @@ class HttpClient
      *
      * @return ActivityStream
      */
-    public function activity($id)
+    public function activity( $id )
     {
-        return $this->activityStream()->setLastId($id);
+        return $this->activityStream()->setLastId( $id );
     }
 
     /**
@@ -287,9 +294,9 @@ class HttpClient
      *
      * @return JobStatuses
      */
-    public function jobStatus($id)
+    public function jobStatus( $id )
     {
-        return $this->jobStatuses()->setLastId($id);
+        return $this->jobStatuses()->setLastId( $id );
     }
 
     /**
@@ -300,9 +307,9 @@ class HttpClient
      *
      * @return mixed
      */
-    public function search(array $params)
+    public function search( array $params )
     {
-        return $this->search->performSearch($params);
+        return $this->search->performSearch( $params );
     }
 
     /**
@@ -313,9 +320,9 @@ class HttpClient
      *
      * @return mixed
      */
-    public function anonymousSearch(array $params)
+    public function anonymousSearch( array $params )
     {
-        return $this->search->anonymousSearch($params);
+        return $this->search->anonymousSearch( $params );
     }
 
 }
