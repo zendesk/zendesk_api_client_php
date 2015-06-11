@@ -11,6 +11,7 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
 /**
  * Client class, base level access
+ *
  * @package Zendesk\API
  *
  * @method Debug debug()
@@ -283,6 +284,8 @@ class HttpClient
         $this->tickets = new Resources\Tickets($this);
         $this->views = new Resources\Views($this);
         $this->users = new Resources\Users($this);
+        $this->settings = new Resources\Settings($this);
+        $this->tags = new Resources\Tags($this);
     }
 
     /**
@@ -349,16 +352,17 @@ class HttpClient
      */
     public function getAuthText()
     {
-        return ($this->oAuthToken ? $this->oAuthToken : $this->username . ($this->token ? '/token:' . $this->token : ':' . $this->password));
+        return ($this->oAuthToken ? $this->oAuthToken
+            : $this->username . ($this->token ? '/token:' . $this->token : ':' . $this->password));
     }
 
     /**
      * Set debug information as an object
      *
-     * @param mixed $lastRequestHeaders
-     * @param mixed $lastResponseCode
+     * @param mixed  $lastRequestHeaders
+     * @param mixed  $lastResponseCode
      * @param string $lastResponseHeaders
-     * @param mixed $lastResponseError
+     * @param mixed  $lastResponseError
      */
     public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError)
     {
