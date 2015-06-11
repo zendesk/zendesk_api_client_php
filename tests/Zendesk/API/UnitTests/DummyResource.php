@@ -1,5 +1,5 @@
 <?php
-namespace Zendesk\API\LiveTests;
+namespace Zendesk\API\UnitTests;
 
 use Zendesk\API\Resources\ResourceAbstract;
 
