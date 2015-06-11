@@ -1,11 +1,11 @@
 <?php
 
-namespace Zendesk\API\MockTests;
+namespace Zendesk\API\LiveTests;
 
 use Zendesk\API\Resources\TicketFields;
 
 /**
- * Ticket Audits test class
+ * Ticket Fields test class
  */
 class TicketFieldsTest extends BasicTest
 {
