@@ -58,6 +58,14 @@ abstract class ResourceAbstract
         return strtolower($resourceName);
     }
 
+    /**
+     * @return String
+     */
+    public function getResourceName()
+    {
+        return $this->resourceName;
+    }
+
     protected function setUpRoutes()
     {
         if (!isset($this->resourceName)) {
@@ -356,6 +364,4 @@ abstract class ResourceAbstract
 
         return $response;
     }
-
-
 }
