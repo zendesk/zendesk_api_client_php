@@ -1,6 +1,6 @@
 <?php
 
-namespace Zendesk\API\MockTests;
+namespace Zendesk\API\LiveTests;
 
 use Zendesk\API\HttpClient;
 use \Aeris\GuzzleHttpMock\Mock as GuzzleHttpMock;

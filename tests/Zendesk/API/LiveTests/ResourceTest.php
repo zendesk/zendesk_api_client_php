@@ -1,5 +1,5 @@
 <?php
-namespace Zendesk\API\MockTests;
+namespace Zendesk\API\LiveTests;
 
 class ResourceTest extends BasicTest
 {
