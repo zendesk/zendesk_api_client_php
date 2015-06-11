@@ -284,7 +284,6 @@ class HttpClient
         $this->tickets = new Resources\Tickets($this);
         $this->views = new Resources\Views($this);
         $this->users = new Resources\Users($this);
-        $this->settings = new Resources\Settings($this);
         $this->tags = new Resources\Tags($this);
     }
 
