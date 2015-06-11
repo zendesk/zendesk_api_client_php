@@ -20,13 +20,24 @@ class TicketFieldsTest extends BasicTest
         $this->mockApiCall(
           'POST',
           'ticket_fields.json',
-          [ 'ticket_field' => [ 'id' => $this->id, 'type' => $postFields['type'], 'title' => $postFields['title'] ] ],
-          [ 'bodyParams' => [ TicketFields::OBJ_NAME => $postFields ], 'statusCode' => '201' ]
+          [
+            'ticket_field' =>
+              [
+                'id'    => $this->id,
+                'type'  => $postFields['type'],
+                'title' => $postFields['title']
+              ]
+          ],
+          [
+            'bodyParams' => [
+              TicketFields::OBJ_NAME => $postFields
+            ],
+            'statusCode' => '201'
+          ]
         );
 
         $field = $this->client->ticketFields()->create( $postFields );
         $this->httpMock->verify();
-        $this->assertEquals( is_object( $field ), true, 'Should return an object' );
         $this->assertEquals( is_object( $field->ticket_field ), true, 'Should return an object called "ticket_field"' );
         $this->assertGreaterThan( 0, $field->ticket_field->id, 'Returns a non-numeric id for ticket_field' );
         $this->assertEquals( $field->ticket_field->type, 'text', 'Type of test ticket field does not match' );
@@ -38,11 +49,19 @@ class TicketFieldsTest extends BasicTest
         $this->mockApiCall(
           'GET',
           'ticket_fields.json',
-          [ 'ticket_fields' => [ [ 'id' => 1 ] ] ]
+          [
+            'ticket_fields' => [
+              [
+                'id' => 1
+              ],
+              [
+                'id' => 1
+              ],
+            ]
+          ]
         );
         $fields = $this->client->ticketFields()->findAll();
         $this->httpMock->verify();
-        $this->assertEquals( is_object( $fields ), true, 'Should return an object' );
         $this->assertEquals( is_array( $fields->ticket_fields ), true,
           'Should return an object containing an array called "ticket_fields"' );
         $this->assertGreaterThan( 0, $fields->ticket_fields[0]->id, 'Returns a non-numeric id in first ticket field' );
@@ -53,10 +72,13 @@ class TicketFieldsTest extends BasicTest
         $this->mockApiCall(
           'GET',
           "ticket_fields/{$this->id}.json",
-          [ 'ticket_field' => [ 'id' => $this->id ] ]
+          [
+            'ticket_field' => [
+              'id' => $this->id
+            ]
+          ]
         );
         $fields = $this->client->ticketField( $this->id )->find();
-        $this->assertEquals( is_object( $fields ), true, 'Should return an object' );
         $this->assertEquals( is_object( $fields->ticket_field ), true,
           'Should return an object called "ticket_field"' );
         $this->assertEquals( $this->id, $fields->ticket_field->id, 'Returns an incorrect id in ticket field object' );
@@ -68,8 +90,18 @@ class TicketFieldsTest extends BasicTest
         $this->mockApiCall(
           'PUT',
           "ticket_fields/{$this->id}.json",
-          [ 'ticket_field' => [ 'id' => $this->id, 'type' => 'text', 'title' => 'Another value' ] ],
-          [ 'bodyParams' => [ TicketFields::OBJ_NAME => $bodyParams ] ]
+          [
+            'ticket_field' => [
+              'id'    => $this->id,
+              'type'  => 'text',
+              'title' => 'Another value'
+            ]
+          ],
+          [
+            'bodyParams' => [
+              TicketFields::OBJ_NAME => $bodyParams
+            ]
+          ]
         );
 
         $field = $this->client->ticketField( $this->id )->update(
@@ -78,7 +110,6 @@ class TicketFieldsTest extends BasicTest
         );
         $this->httpMock->verify();
 
-        $this->assertEquals( is_object( $field ), true, 'Should return an object' );
         $this->assertEquals( is_object( $field->ticket_field ), true, 'Should return an object called "ticket_field"' );
         $this->assertGreaterThan( 0, $field->ticket_field->id, 'Returns a non-numeric id for ticket_field' );
         $this->assertEquals( $field->ticket_field->type, 'text', 'Type of test ticket field does not match' );
