@@ -2,7 +2,6 @@
 
 namespace Zendesk\API\Resources;
 
-use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Http;
 use Zendesk\API\HttpClient;
 use Zendesk\API\UtilityTraits\ChainedParametersTrait;
@@ -37,11 +36,27 @@ abstract class ResourceAbstract
     /**
      * @param HttpClient $client
      */
-    public function __construct( HttpClient $client)
+    public function __construct(HttpClient $client)
     {
         $this->client = $client;
 
         $this->setUpRoutes();
+    }
+
+    /**
+     * This returns the valid relations of this resource. Definition of what is allowed to chain after this resource.
+     * Make sure to add in this method when adding new sub resources.
+     * Example:
+     *    $client->ticket()->comments();
+     *    Where ticket would have a comments as a valid sub resource.
+     *    The array would look like:
+     *      ['comments' => '\Zendesk\API\Resources\TicketComments']
+     *
+     * @return array
+     */
+    public static function getValidSubResource()
+    {
+        return [ ];
     }
 
     /**
@@ -52,10 +67,10 @@ abstract class ResourceAbstract
      */
     private function getResourceNameFromClass()
     {
-        $namespacedClassName = get_class($this);
-        $resourceName = join('', array_slice(explode('\\', $namespacedClassName), -1));
+        $namespacedClassName = get_class( $this );
+        $resourceName        = join( '', array_slice( explode( '\\', $namespacedClassName ), - 1 ) );
 
-        return strtolower($resourceName);
+        return strtolower( $resourceName );
     }
 
     /**
@@ -68,16 +83,16 @@ abstract class ResourceAbstract
 
     protected function setUpRoutes()
     {
-        if (!isset($this->resourceName)) {
+        if ( ! isset($this->resourceName)) {
             $this->resourceName = $this->getResourceNameFromClass();
         }
 
         $this->setRoutes([
-            'findAll' => "{$this->resourceName}.json",
-            'find'    => "{$this->resourceName}/{id}.json",
-            'create'  => "{$this->resourceName}.json",
-            'update'  => "{$this->resourceName}/{id}.json",
-            'delete'  => "{$this->resourceName}/{id}.json"
+          'findAll' => "{$this->resourceName}.json",
+          'find'    => "{$this->resourceName}/{id}.json",
+          'create'  => "{$this->resourceName}.json",
+          'update'  => "{$this->resourceName}/{id}.json",
+          'delete'  => "{$this->resourceName}/{id}.json"
         ]);
     }
 
@@ -88,7 +103,7 @@ abstract class ResourceAbstract
      *
      * @return $this
      */
-    public function setLastId($id)
+    public function setLastId( $id )
     {
         $this->lastId = $id;
 
@@ -113,10 +128,10 @@ abstract class ResourceAbstract
      *
      * @return bool
      */
-    public function hasKeys(array $params, array $mandatory)
+    public function hasKeys( array $params, array $mandatory )
     {
-        for ($i = 0; $i < count($mandatory); $i++) {
-            if (!array_key_exists($mandatory[$i], $params)) {
+        for ($i = 0; $i < count( $mandatory ); $i ++) {
+            if ( ! array_key_exists( $mandatory[$i], $params )) {
                 return false;
             }
         }
@@ -132,10 +147,10 @@ abstract class ResourceAbstract
      *
      * @return bool
      */
-    public function hasAnyKey(array $params, array $mandatory)
+    public function hasAnyKey( array $params, array $mandatory )
     {
-        for ($i = 0; $i < count($mandatory); $i++) {
-            if (array_key_exists($mandatory[$i], $params)) {
+        for ($i = 0; $i < count( $mandatory ); $i ++) {
+            if (array_key_exists( $mandatory[$i], $params )) {
                 return true;
             }
         }
@@ -150,30 +165,32 @@ abstract class ResourceAbstract
      *
      * @return $this
      */
-    public function sideload(array $fields = array())
+    public function sideload( array $fields = array() )
     {
-        $this->client->setSideload($fields);
+        $this->client->setSideload( $fields );
 
         return $this;
     }
 
     /**
      * Wrapper for adding multiple routes via setRoute
+     *
      * @param array $routes
      */
-    public function setRoutes(array $routes)
+    public function setRoutes( array $routes )
     {
         foreach ($routes as $name => $route) {
-            $this->setRoute($name, $route);
+            $this->setRoute( $name, $route );
         }
     }
 
     /**
      * Add or override an existing route
+     *
      * @param $name
      * @param $route
      */
-    public function setRoute($name, $route)
+    public function setRoute( $name, $route )
     {
         $this->routes[$name] = $route;
     }
@@ -190,22 +207,23 @@ abstract class ResourceAbstract
     /**
      * Returns a route and replaces tokenized parts of the string with
      * the passed params
+     *
      * @param       $name
      * @param array $params
      *
      * @return mixed
      * @throws \Exception
      */
-    public function getRoute($name, array $params = array())
+    public function getRoute( $name, array $params = array() )
     {
-        if (!isset($this->routes[$name])) {
-            throw new \Exception('Route not found.');
+        if ( ! isset( $this->routes[$name] )) {
+            throw new \Exception( 'Route not found.' );
         }
 
         $route = $this->routes[$name];
         foreach ($params as $name => $value) {
-            if (is_scalar($value)) {
-                $route = str_replace('{' . $name . '}', $value, $route);
+            if (is_scalar( $value )) {
+                $route = str_replace( '{' . $name . '}', $value, $route );
             }
         }
 
@@ -221,19 +239,19 @@ abstract class ResourceAbstract
      *
      * @return mixed
      */
-    public function findAll(array $params = array())
+    public function findAll( array $params = array() )
     {
-        $sideloads = $this->client->getSideload($params);
+        $sideloads = $this->client->getSideload( $params );
 
-        $queryParams = Http::prepareQueryParams($sideloads, $params);
+        $queryParams = Http::prepareQueryParams( $sideloads, $params );
 
         $response = Http::send_with_options(
-            $this->client,
-            $this->getRoute('findAll', $params),
-            ['queryParams' => $queryParams]
+          $this->client,
+          $this->getRoute( 'findAll', $params ),
+          [ 'queryParams' => $queryParams ]
         );
 
-        $this->client->setSideload(null);
+        $this->client->setSideload( null );
 
         return $response;
     }
@@ -249,24 +267,24 @@ abstract class ResourceAbstract
      * @throws \Exception
      *
      */
-    public function find($id = null, array $queryParams = array())
+    public function find( $id = null, array $queryParams = array() )
     {
-        if (empty($id)) {
+        if (empty( $id )) {
             $chainedParameters = $this->getChainedParameters();
-            $className = get_class($this);
-            $id = isset($chainedParameters[$className]) ? $chainedParameters[$className] : null;
+            $className         = get_class( $this );
+            $id                = isset( $chainedParameters[$className] ) ? $chainedParameters[$className] : null;
         }
 
-        if (empty($id)) {
-            throw new MissingParametersException(__METHOD__, array('id'));
+        if (empty( $id )) {
+            throw new MissingParametersException( __METHOD__, array( 'id' ) );
         }
 
         $response = Http::send_with_options(
-            $this->client,
-            $this->getRoute(__FUNCTION__, array('id' => $id)),
-            ['queryParams' => $queryParams]
+          $this->client,
+          $this->getRoute( __FUNCTION__, array( 'id' => $id ) ),
+          [ 'queryParams' => $queryParams ]
         );
-        $this->client->setSideload(null);
+        $this->client->setSideload( null );
 
         return $response;
     }
@@ -277,24 +295,23 @@ abstract class ResourceAbstract
      *
      * @param array $params
      *
-     * @throws ResponseException
      * @throws \Exception
      *
      * @return mixed
      */
-    public function create(array $params)
+    public function create( array $params )
     {
-        $class = get_class($this);
+        $class    = get_class( $this );
         $response = Http::send_with_options(
-            $this->client,
-            $this->getRoute('create'),
-            [
-                'postFields' => array($class::OBJ_NAME => $params),
-                'method' => 'POST'
-            ]
+          $this->client,
+          $this->getRoute( 'create' ),
+          [
+            'postFields' => array( $class::OBJ_NAME => $params ),
+            'method'     => 'POST'
+          ]
         );
 
-        $this->client->setSideload(null);
+        $this->client->setSideload( null );
 
         return $response;
     }
@@ -310,21 +327,22 @@ abstract class ResourceAbstract
      *
      * @return mixed
      */
-    public function update($id = null, array $updateResourceFields = [])
+    public function update( $id = null, array $updateResourceFields = [ ] )
     {
-        $class = get_class($this);
-        if (empty($id))
-            $id = $this->getChainedParameter($class);
+        $class = get_class( $this );
+        if (empty( $id )) {
+            $id = $this->getChainedParameter( $class );
+        }
 
-        $postFields = array($class::OBJ_NAME => $updateResourceFields);
+        $postFields = array( $class::OBJ_NAME => $updateResourceFields );
 
         $response = Http::send_with_options(
-            $this->client,
-            $this->getRoute(__FUNCTION__, array('id' => $id)),
-            ['postFields' => $postFields, 'method' => 'PUT']
+          $this->client,
+          $this->getRoute( __FUNCTION__, array( 'id' => $id ) ),
+          [ 'postFields' => $postFields, 'method' => 'PUT' ]
         );
 
-        $this->client->setSideload(null);
+        $this->client->setSideload( null );
 
         return $response;
     }
@@ -340,27 +358,27 @@ abstract class ResourceAbstract
      * @throws \Exception
      *
      */
-    public function delete($id = null)
+    public function delete( $id = null )
     {
-        if (empty($id)) {
+        if (empty( $id )) {
             $chainedParameters = $this->getChainedParameters();
-            if (array_key_exists(get_class($this), $chainedParameters)) {
-                $id = $chainedParameters[get_class($this)];
+            if (array_key_exists( get_class( $this ), $chainedParameters )) {
+                $id = $chainedParameters[get_class( $this )];
             }
         }
 
-        if (empty($id)) {
-            throw new MissingParametersException(__METHOD__, array('id'));
+        if (empty( $id )) {
+            throw new MissingParametersException( __METHOD__, array( 'id' ) );
         }
 
-        $route = $this->getRoute('find', array('id' => $id));
+        $route    = $this->getRoute( 'find', array( 'id' => $id ) );
         $response = Http::send_with_options(
-            $this->client,
-            $route,
-            ['method' => 'DELETE']
+          $this->client,
+          $route,
+          [ 'method' => 'DELETE' ]
         );
 
-        $this->client->setSideload(null);
+        $this->client->setSideload( null );
 
         return $response;
     }
