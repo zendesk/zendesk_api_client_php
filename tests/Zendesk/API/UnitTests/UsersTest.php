@@ -68,7 +68,7 @@ class UsersTest extends BasicTest
           [ 'user' => [ 'id' => 12345 ] ]
         );
 
-        $user = $this->client->user( 12345 )->find();
+        $user = $this->client->users( 12345 )->find();
         $this->httpMock->verify();
         $this->assertEquals( is_object( $user ), true, 'Should return an object' );
         $this->assertEquals( is_object( $user->user ), true, 'Should return an object called "user"' );
@@ -159,7 +159,7 @@ class UsersTest extends BasicTest
           [ 'user_related' => [ 'requested_tickets' => 1 ] ]
           );
 
-        $related = $this->client->user( 12345 )->related();
+        $related = $this->client->users( 12345 )->related();
         $this->httpMock->verify();
         $this->assertEquals( is_object( $related ), true, 'Should return an object' );
         $this->assertEquals( is_object( $related->user_related ), true,
@@ -177,7 +177,7 @@ class UsersTest extends BasicTest
           ['user' => [ 'id' => 12345 ]],
           ['bodyParams' => [Users::OBJ_NAME => $bodyParams]]
         );
-        $this->client->user('me')->merge($bodyParams);
+        $this->client->users('me')->merge($bodyParams);
         $this->httpMock->verify();
     }
 
@@ -220,7 +220,7 @@ class UsersTest extends BasicTest
           ['bodyParams' => [Users::OBJ_NAME => $bodyParams]]
         );
 
-        $user = $this->client->user(12345)->update(null, $bodyParams);
+        $user = $this->client->users(12345)->update(null, $bodyParams);
         $this->httpMock->verify();
     }
 
@@ -283,7 +283,7 @@ class UsersTest extends BasicTest
           ['user' => ['id' => $userId]],
           ['bodyParams' => [Users::OBJ_NAME => ['id' => $userId, 'suspended' => true]]]
         );
-        $user = $this->client->user($userId)->suspend();
+        $user = $this->client->users($userId)->suspend();
         $this->httpMock->verify();
         $this->assertEquals( is_object( $user ), true, 'Should return an object' );
         $this->assertEquals( is_object( $user->user ), true, 'Should return an object called "user"' );
@@ -335,7 +335,7 @@ class UsersTest extends BasicTest
         $this->mockApiCall( 'GET', '/users/12345.json?', array( 'id' => 12345 ) );
         $this->mockApiCall( 'PUT', '/users/12345.json', array( 'user' => array( 'id' => 12345 ) ) );
 
-        $user = $this->client->user( 12345 )->updateProfileImage( array(
+        $user = $this->client->users( 12345 )->updateProfileImage( array(
           'file' => getcwd() . '/tests/assets/UK.png'
         ) );
 
@@ -372,7 +372,7 @@ class UsersTest extends BasicTest
           ['bodyParams' => [Users::OBJ_NAME => $bodyParams]]
         );
 
-        $user = $this->client->user(12345)->setPassword($bodyParams);
+        $user = $this->client->users(12345)->setPassword($bodyParams);
         $this->httpMock->verify();
     }
 
@@ -389,7 +389,7 @@ class UsersTest extends BasicTest
           ['bodyParams' => $bodyParams]
         );
 
-        $user = $this->client->user(421450109)->changePassword($bodyParams);
+        $user = $this->client->users(421450109)->changePassword($bodyParams);
         $this->httpMock->verify();
     }
 

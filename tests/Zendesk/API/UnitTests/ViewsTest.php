@@ -51,7 +51,7 @@ class ViewsTest extends BasicTest
           ['queryParams' => $queryParams]
         );
 
-        $view = $this->client->view($this->id)->execute($queryParams);
+        $view = $this->client->views($this->id)->execute($queryParams);
         $this->httpMock->verify();
         $this->assertEquals(is_object($view), true, 'Should return an object');
         $this->assertEquals(is_object($view->view), true, 'Should return an object called "view"');
@@ -66,7 +66,7 @@ class ViewsTest extends BasicTest
           ['view_count' => ['view_id' => $this->id]]
         );
 
-        $counts = $this->client->view($this->id)->count();
+        $counts = $this->client->views($this->id)->count();
         $this->httpMock->verify();
         $this->assertEquals(is_object($counts), true, 'Should return an object');
         $this->assertEquals(is_object($counts->view_count), true, 'Should return an object called "view_count"');
@@ -83,7 +83,7 @@ class ViewsTest extends BasicTest
           ['queryParams' => ['ids' => implode(',' , $queryIds)]]
         );
 
-        $counts = $this->client->view($queryIds)->count();
+        $counts = $this->client->views($queryIds)->count();
         $this->httpMock->verify();
         $this->assertEquals(is_array($counts->view_counts), true,
             'Should return an array of objects called "view_counts"');
@@ -99,7 +99,7 @@ class ViewsTest extends BasicTest
           ['export' => ['view_id' => $this->id]]
         );
 
-        $export = $this->client->view($this->id)->export();
+        $export = $this->client->views($this->id)->export();
         $this->httpMock->verify();
         $this->assertEquals(is_object($export), true, 'Should return an object');
         $this->assertGreaterThan(0, $export->export->view_id, 'Returns a non-numeric view_id for export');
