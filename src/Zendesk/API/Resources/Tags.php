@@ -32,7 +32,9 @@ class Tags extends ResourceAbstract
      */
     public function getRoute($name, array $params = array())
     {
-        if (!in_array($name, array('update', 'find', 'create', 'delete'))) {
+        $allowedRoutes = array('update', 'find', 'create', 'delete');
+
+        if (!in_array($name, $allowedRoutes)) {
             return parent::getRoute($name, $params);
         }
 

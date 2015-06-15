@@ -9,6 +9,7 @@ use Zendesk\API\UtilityTraits\ChainedParametersTrait;
 
 /**
  * Abstract class for all endpoints
+ *
  * @package Zendesk\API
  */
 abstract class ResourceAbstract
@@ -37,7 +38,7 @@ abstract class ResourceAbstract
     /**
      * @param HttpClient $client
      */
-    public function __construct( HttpClient $client)
+    public function __construct(HttpClient $client)
     {
         $this->client = $client;
 
@@ -159,6 +160,7 @@ abstract class ResourceAbstract
 
     /**
      * Wrapper for adding multiple routes via setRoute
+     *
      * @param array $routes
      */
     public function setRoutes(array $routes)
@@ -170,6 +172,7 @@ abstract class ResourceAbstract
 
     /**
      * Add or override an existing route
+     *
      * @param $name
      * @param $route
      */
@@ -180,6 +183,7 @@ abstract class ResourceAbstract
 
     /**
      * Return all routes for this resource
+     *
      * @return array
      */
     public function getRoutes()
@@ -190,6 +194,7 @@ abstract class ResourceAbstract
     /**
      * Returns a route and replaces tokenized parts of the string with
      * the passed params
+     *
      * @param       $name
      * @param array $params
      *
@@ -241,7 +246,7 @@ abstract class ResourceAbstract
     /**
      * Find a specific ticket by id or series of ids
      *
-     * @param $id
+     * @param       $id
      * @param array $queryParams
      *
      * @return mixed
@@ -290,7 +295,7 @@ abstract class ResourceAbstract
             $this->getRoute('create'),
             [
                 'postFields' => array($class::OBJ_NAME => $params),
-                'method' => 'POST'
+                'method'     => 'POST'
             ]
         );
 
@@ -313,8 +318,9 @@ abstract class ResourceAbstract
     public function update($id = null, array $updateResourceFields = [])
     {
         $class = get_class($this);
-        if (empty($id))
+        if (empty($id)) {
             $id = $this->getChainedParameter($class);
+        }
 
         $postFields = array($class::OBJ_NAME => $updateResourceFields);
 
