@@ -3,7 +3,7 @@
 namespace Zendesk\API\UnitTests;
 
 use Zendesk\API\HttpClient;
-use \Aeris\GuzzleHttpMock\Mock as GuzzleHttpMock;
+use Aeris\GuzzleHttpMock\Mock as GuzzleHttpMock;
 
 
 /**

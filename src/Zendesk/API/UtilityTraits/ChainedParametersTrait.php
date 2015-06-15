@@ -24,6 +24,34 @@ trait ChainedParametersTrait
     protected $chainedParameters = [];
 
     /**
+     * Returns the named chained parameter
+     *
+     * @param $name
+     * @param null $default
+     *
+     * @return $this
+     */
+    public function getChainedParameter($name, $default = null)
+    {
+        $chainedParameters = $this->getChainedParameters();
+        if (array_key_exists($name, $chainedParameters)) {
+            return $chainedParameters[$name];
+        }
+
+        return $default;
+    }
+
+    /**
+     * Returns chained parameters
+     *
+     * @return $this
+     */
+    public function getChainedParameters()
+    {
+        return $this->chainedParameters;
+    }
+
+    /**
      * Sets the chained parameters
      *
      * @param $params
@@ -39,41 +67,12 @@ trait ChainedParametersTrait
     }
 
     /**
-     * Returns chained parameters
-     *
-     * @return $this
-     */
-    public function getChainedParameters()
-    {
-        return $this->chainedParameters;
-    }
-
-    /**
-     * Returns the named chained parameter
-     *
-     * @param      $name
-     * @param null $default
-     *
-     * @return $this
-     */
-    public function getChainedParameter($name, $default = null)
-    {
-        $chainedParameters = $this->getChainedParameters();
-        if (array_key_exists($name, $chainedParameters)) {
-            return $chainedParameters[$name];
-        }
-
-        return $default;
-    }
-
-
-    /**
      * A helper method to add the chained parameters to the existing parameters.
      *
      * @param array $params The existing parameters
-     * @param array $map    An array describing what parameter key corresponds to which classId
-     *                      e.g. ['ticket_id' => 'Zendesk\API\Ticket']
-     *                      normal usage would be ['id' => $this::class]
+     * @param array $map An array describing what parameter key corresponds to which classId
+     *     e.g. ['ticket_id' => 'Zendesk\API\Ticket']
+     *     normal usage would be ['id' => $this::class]
      *
      * @return array
      */
