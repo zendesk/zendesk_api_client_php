@@ -7,6 +7,7 @@ namespace Zendesk\API;
  * spl_autoload_register(function($c){@include 'src/'.preg_replace('#\\\|_(?!.+\\\)#','/',$c).'.php';});
  */
 
+use Zendesk\API\Resources\Tags;
 use Zendesk\API\Resources\Tickets;
 use Zendesk\API\Resources\Users;
 use Zendesk\API\Resources\Views;
@@ -100,14 +101,13 @@ class HttpClient
      */
 
     public function __construct(
-      $subdomain,
-      $username,
-      $scheme = "https",
-      $hostname = "zendesk.com",
-      $port = 443,
-      $guzzle = null
-    )
-    {
+        $subdomain,
+        $username,
+        $scheme = "https",
+        $hostname = "zendesk.com",
+        $port = 443,
+        $guzzle = null
+    ) {
         if (is_null($guzzle)) {
             $this->guzzle = new \GuzzleHttp\Client();
         } else {
@@ -115,10 +115,10 @@ class HttpClient
         }
 
         $this->subdomain = $subdomain;
-        $this->username  = $username;
-        $this->hostname  = $hostname;
-        $this->scheme    = $scheme;
-        $this->port      = $port;
+        $this->username = $username;
+        $this->hostname = $hostname;
+        $this->scheme = $scheme;
+        $this->port = $port;
 
         if (empty($subdomain)) {
             $this->apiUrl = "$scheme://$hostname:$port/api/{$this->apiVer}/";
@@ -132,9 +132,10 @@ class HttpClient
     public static function getValidRelations()
     {
         return [
-          'tickets' => Tickets::class,
-          'users'   => Users::class,
-          'views'   => Views::class,
+            'tickets' => Tickets::class,
+            'users'   => Users::class,
+            'views'   => Views::class,
+            'tags'    => Tags::class
         ];
     }
 
@@ -148,18 +149,18 @@ class HttpClient
     {
         switch ($method) {
             case 'password':
-                $this->password   = $value;
-                $this->token      = '';
+                $this->password = $value;
+                $this->token = '';
                 $this->oAuthToken = '';
                 break;
             case 'token':
-                $this->password   = '';
-                $this->token      = $value;
+                $this->password = '';
+                $this->token = $value;
                 $this->oAuthToken = '';
                 break;
             case 'oauth_token':
-                $this->password   = '';
-                $this->token      = '';
+                $this->password = '';
+                $this->token = '';
                 $this->oAuthToken = $value;
                 break;
         }
@@ -216,10 +217,10 @@ class HttpClient
      */
     public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError)
     {
-        $this->debug->lastRequestHeaders  = $lastRequestHeaders;
-        $this->debug->lastResponseCode    = $lastResponseCode;
+        $this->debug->lastRequestHeaders = $lastRequestHeaders;
+        $this->debug->lastResponseCode = $lastResponseCode;
         $this->debug->lastResponseHeaders = $lastResponseHeaders;
-        $this->debug->lastResponseError   = $lastResponseError;
+        $this->debug->lastResponseError = $lastResponseError;
     }
 
     /**
