@@ -8,6 +8,7 @@ use Zendesk\API\UtilityTraits\ChainedParametersTrait;
 
 /**
  * Abstract class for all endpoints
+ *
  * @package Zendesk\API
  */
 abstract class ResourceAbstract
@@ -197,6 +198,7 @@ abstract class ResourceAbstract
 
     /**
      * Return all routes for this resource
+     *
      * @return array
      */
     public function getRoutes()
@@ -259,7 +261,7 @@ abstract class ResourceAbstract
     /**
      * Find a specific ticket by id or series of ids
      *
-     * @param $id
+     * @param       $id
      * @param array $queryParams
      *
      * @return mixed
@@ -303,12 +305,12 @@ abstract class ResourceAbstract
     {
         $class    = get_class( $this );
         $response = Http::send_with_options(
-          $this->client,
-          $this->getRoute( 'create' ),
-          [
-            'postFields' => array( $class::OBJ_NAME => $params ),
-            'method'     => 'POST'
-          ]
+            $this->client,
+            $this->getRoute('create'),
+            [
+                'postFields' => array($class::OBJ_NAME => $params),
+                'method'     => 'POST'
+            ]
         );
 
         $this->client->setSideload( null );
@@ -329,9 +331,9 @@ abstract class ResourceAbstract
      */
     public function update( $id = null, array $updateResourceFields = [ ] )
     {
-        $class = get_class( $this );
-        if (empty( $id )) {
-            $id = $this->getChainedParameter( $class );
+        $class = get_class($this);
+        if (empty($id)) {
+            $id = $this->getChainedParameter($class);
         }
 
         $postFields = array( $class::OBJ_NAME => $updateResourceFields );

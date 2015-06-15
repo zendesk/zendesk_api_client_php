@@ -88,4 +88,15 @@ trait ChainedParametersTrait
         return $params;
     }
 
+    /**
+     * Returns the named chained parameter
+     *
+     * @return array
+     */
+    public function getLatestChainedParameter()
+    {
+        $chainedParameters = $this->getChainedParameters();
+
+        return array_slice($chainedParameters, -1);
+    }
 }
