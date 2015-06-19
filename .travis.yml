@@ -5,4 +5,6 @@ php:
   # - 5.4
   # - hhvm
 before_script: composer self-update && composer install
-script: phpunit --testsuite "Zendesk API Unit Test Suites"
+script:
+  - vendor/bin/phpunit --testsuite "Zendesk API Unit Test Suites"
+  - vendor/bin/phpcs --extensions=php --standard=PSR2 --report=summary -np src/ tests/
