@@ -5,7 +5,6 @@ namespace Zendesk\API\UnitTests;
 use Zendesk\API\HttpClient;
 use Aeris\GuzzleHttpMock\Mock as GuzzleHttpMock;
 
-
 /**
  * Basic test class
  */
@@ -71,11 +70,14 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
 
     public function credentialsTest()
     {
-        $this->assertNotEmpty($this->subdomain,
-            'Expecting $this->subdomain parameter; does phpunit.xml exist?');
+        $this->assertNotEmpty(
+            $this->subdomain,
+            'Expecting $this->subdomain parameter; does phpunit.xml exist?'
+        );
         $this->assertNotEmpty($this->token, 'Expecting $this->token parameter; does phpunit.xml exist?');
-        $this->assertNotEmpty($this->username,
-            'Expecting $this->username parameter; does phpunit.xml exist?');
+        $this->assertNotEmpty(
+            $this->username,
+            'Expecting $this->username parameter; does phpunit.xml exist?'
+        );
     }
 }
-

@@ -43,5 +43,4 @@ trait InstantiatorTrait
 
         return $class;
     }
-
 }

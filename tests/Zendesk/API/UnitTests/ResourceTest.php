@@ -14,7 +14,8 @@ class ResourceTest extends BasicTest
     public function testFindAll()
     {
         $this->mockApiCall(
-            'GET', 'dummyresource.json',
+            'GET',
+            'dummyresource.json',
             array('dummies' => true)
         );
 
@@ -32,7 +33,8 @@ class ResourceTest extends BasicTest
         $response = $this->_dummyResource->find(1);
 
         $this->assertEquals(
-            isset($response->dummy), true,
+            isset($response->dummy),
+            true,
             'Should return a response called "dummy"'
         );
     }
@@ -40,7 +42,8 @@ class ResourceTest extends BasicTest
     public function testCreate()
     {
         $this->mockApiCall(
-            'POST', 'dummyresource.json',
+            'POST',
+            'dummyresource.json',
             array('foo' => 'test response'),
             array(
                 'bodyParams' => array(
@@ -59,7 +62,8 @@ class ResourceTest extends BasicTest
     public function testUpdate()
     {
         $this->mockApiCall(
-            'PUT', 'dummyresource/1.json',
+            'PUT',
+            'dummyresource/1.json',
             array('foo' => 'test response'),
             array(
                 'bodyParams' => array(
