@@ -121,6 +121,7 @@ class Http
             throw new ApiResponseException($e);
         }
 
+
         return json_decode($response->getBody()->getContents());
     }
 
