@@ -2,16 +2,17 @@
 
 namespace Zendesk\API\UnitTests;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use Zendesk\API\HttpClient;
-use Aeris\GuzzleHttpMock\Mock as GuzzleHttpMock;
 
 /**
  * Basic test class
  */
 abstract class BasicTest extends \PHPUnit_Framework_TestCase
 {
-
-
     protected $client;
     protected $subdomain;
     protected $password;
@@ -20,11 +21,10 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
     protected $hostname;
     protected $scheme;
     protected $port;
-    protected $httpMock;
+    protected $mockedTransactionsContainer = [];
 
     public function __construct()
     {
-
         $this->subdomain = getenv('SUBDOMAIN');
         $this->username = getenv('USERNAME');
         $this->password = getenv('PASSWORD');
@@ -44,22 +44,28 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
     {
         $this->client = new HttpClient($this->subdomain, $this->username, $this->scheme, $this->hostname, $this->port);
         $this->client->setAuth('token', $this->token);
-        $this->httpMock = new GuzzleHttpMock();
-        $this->httpMock->attachToClient($this->client->guzzle);
     }
 
-    protected function mockApiCall($httpMethod, $path, $response, $options = [])
+    /**
+     * This will mock the next responses sent via guzzle
+     *
+     * @param array $responses
+     *   An array of GuzzleHttp\Psr7\Response objects
+     */
+    protected function mockApiResponses($responses = [])
     {
-        $bodyParams = isset($options['bodyParams']) ? $options['bodyParams'] : [];
-        $queryParams = isset($options['queryParams']) ? $options['queryParams'] : [];
-        $statusCode = isset($options['statusCode']) ? $options['statusCode'] : [];
+        if (empty($responses)) {
+            return;
+        } elseif (!is_array($responses)) {
+            $responses = [$responses];
+        }
 
-        $this->httpMock->shouldReceiveRequest()
-            ->withMethod($httpMethod)
-            ->withUrl($this->client->getApiUrl() . $path)
-            ->withQueryParams($queryParams)
-            ->withJsonBodyParams($bodyParams)
-            ->andRespondWithJson($response, $statusCode = $statusCode);
+        $history = Middleware::history($this->mockedTransactionsContainer);
+        $mock = new MockHandler($responses);
+        $handler = HandlerStack::create($mock);
+        $handler->push($history);
+
+        $this->client->guzzle = new Client(['handler' => $handler]);
     }
 
     public function authTokenTest()
@@ -79,5 +85,27 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
             $this->username,
             'Expecting $this->username parameter; does phpunit.xml exist?'
         );
+    }
+
+    public function assertLastRequestIs ($options) {
+        $this->assertRequestIs($options, count($this->mockedTransactionsContainer) - 1);
+    }
+
+    public function assertRequestIs ($options, $index = 0) {
+        $transaction = $this->mockedTransactionsContainer[$index];
+        $request = $transaction['request'];
+
+        if (isset($options['method'])) {
+            $this->assertEquals($options['method'], $request->getMethod());
+        }
+
+        if (isset($options['url'])) {
+            $this->assertEquals($options['url'], $request->getRequestTarget());
+        }
+
+        if (isset($options['postFields'])) {
+            $this->assertEquals(json_encode($options['postFields']), $request->getBody()->getContents());
+        }
+        // TODO: Add other asserts
     }
 }
