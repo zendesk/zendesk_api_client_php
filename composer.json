@@ -11,8 +11,8 @@
         "phpunit/phpunit": "4.5.*",
         "squizlabs/php_codesniffer": "2.*",
         "phpmd/phpmd": "@stable",
-        "aeris/guzzle-http-mock": "1.0.*"
-
+        "aeris/guzzle-http-mock": "1.0.*",
+        "squizlabs/php_codesniffer": "2.*"
     },
 	"autoload": {
         "psr-0": {

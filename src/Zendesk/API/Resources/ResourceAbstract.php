@@ -68,10 +68,10 @@ abstract class ResourceAbstract
      */
     private function getResourceNameFromClass()
     {
-        $namespacedClassName = get_class( $this );
-        $resourceName        = join( '', array_slice( explode( '\\', $namespacedClassName ), - 1 ) );
+        $namespacedClassName = get_class($this);
+        $resourceName        = join('', array_slice(explode('\\', $namespacedClassName), - 1));
 
-        return strtolower( $resourceName );
+        return strtolower($resourceName);
     }
 
     /**
@@ -84,7 +84,7 @@ abstract class ResourceAbstract
 
     protected function setUpRoutes()
     {
-        if ( ! isset($this->resourceName)) {
+        if (! isset($this->resourceName)) {
             $this->resourceName = $this->getResourceNameFromClass();
         }
 
@@ -104,7 +104,7 @@ abstract class ResourceAbstract
      *
      * @return $this
      */
-    public function setLastId( $id )
+    public function setLastId($id)
     {
         $this->lastId = $id;
 
@@ -129,10 +129,10 @@ abstract class ResourceAbstract
      *
      * @return bool
      */
-    public function hasKeys( array $params, array $mandatory )
+    public function hasKeys(array $params, array $mandatory)
     {
-        for ($i = 0; $i < count( $mandatory ); $i ++) {
-            if ( ! array_key_exists( $mandatory[$i], $params )) {
+        for ($i = 0; $i < count($mandatory); $i ++) {
+            if (! array_key_exists($mandatory[$i], $params)) {
                 return false;
             }
         }
@@ -148,10 +148,10 @@ abstract class ResourceAbstract
      *
      * @return bool
      */
-    public function hasAnyKey( array $params, array $mandatory )
+    public function hasAnyKey(array $params, array $mandatory)
     {
-        for ($i = 0; $i < count( $mandatory ); $i ++) {
-            if (array_key_exists( $mandatory[$i], $params )) {
+        for ($i = 0; $i < count($mandatory); $i ++) {
+            if (array_key_exists($mandatory[$i], $params)) {
                 return true;
             }
         }
@@ -166,9 +166,9 @@ abstract class ResourceAbstract
      *
      * @return $this
      */
-    public function sideload( array $fields = array() )
+    public function sideload(array $fields = array())
     {
-        $this->client->setSideload( $fields );
+        $this->client->setSideload($fields);
 
         return $this;
     }
@@ -178,10 +178,10 @@ abstract class ResourceAbstract
      *
      * @param array $routes
      */
-    public function setRoutes( array $routes )
+    public function setRoutes(array $routes)
     {
         foreach ($routes as $name => $route) {
-            $this->setRoute( $name, $route );
+            $this->setRoute($name, $route);
         }
     }
 
@@ -191,7 +191,7 @@ abstract class ResourceAbstract
      * @param $name
      * @param $route
      */
-    public function setRoute( $name, $route )
+    public function setRoute($name, $route)
     {
         $this->routes[$name] = $route;
     }
@@ -216,16 +216,16 @@ abstract class ResourceAbstract
      * @return mixed
      * @throws \Exception
      */
-    public function getRoute( $name, array $params = array() )
+    public function getRoute($name, array $params = array())
     {
-        if ( ! isset( $this->routes[$name] )) {
-            throw new \Exception( 'Route not found.' );
+        if (! isset( $this->routes[$name] )) {
+            throw new \Exception('Route not found.');
         }
 
         $route = $this->routes[$name];
         foreach ($params as $name => $value) {
-            if (is_scalar( $value )) {
-                $route = str_replace( '{' . $name . '}', $value, $route );
+            if (is_scalar($value)) {
+                $route = str_replace('{' . $name . '}', $value, $route);
             }
         }
 
@@ -241,19 +241,19 @@ abstract class ResourceAbstract
      *
      * @return mixed
      */
-    public function findAll( array $params = array() )
+    public function findAll(array $params = array())
     {
-        $sideloads = $this->client->getSideload( $params );
+        $sideloads = $this->client->getSideload($params);
 
-        $queryParams = Http::prepareQueryParams( $sideloads, $params );
+        $queryParams = Http::prepareQueryParams($sideloads, $params);
 
-        $response = Http::send_with_options(
-          $this->client,
-          $this->getRoute( 'findAll', $params ),
-          [ 'queryParams' => $queryParams ]
+        $response = Http::sendWithOptions(
+            $this->client,
+            $this->getRoute('findAll', $params),
+            [ 'queryParams' => $queryParams ]
         );
 
-        $this->client->setSideload( null );
+        $this->client->setSideload(null);
 
         return $response;
     }
@@ -269,24 +269,24 @@ abstract class ResourceAbstract
      * @throws \Exception
      *
      */
-    public function find( $id = null, array $queryParams = array() )
+    public function find($id = null, array $queryParams = array())
     {
         if (empty( $id )) {
             $chainedParameters = $this->getChainedParameters();
-            $className         = get_class( $this );
+            $className         = get_class($this);
             $id                = isset( $chainedParameters[$className] ) ? $chainedParameters[$className] : null;
         }
 
         if (empty( $id )) {
-            throw new MissingParametersException( __METHOD__, array( 'id' ) );
+            throw new MissingParametersException(__METHOD__, array( 'id' ));
         }
 
-        $response = Http::send_with_options(
-          $this->client,
-          $this->getRoute( __FUNCTION__, array( 'id' => $id ) ),
-          [ 'queryParams' => $queryParams ]
+        $response = Http::sendWithOptions(
+            $this->client,
+            $this->getRoute(__FUNCTION__, array( 'id' => $id )),
+            [ 'queryParams' => $queryParams ]
         );
-        $this->client->setSideload( null );
+        $this->client->setSideload(null);
 
         return $response;
     }
@@ -301,10 +301,10 @@ abstract class ResourceAbstract
      *
      * @return mixed
      */
-    public function create( array $params )
+    public function create(array $params)
     {
-        $class    = get_class( $this );
-        $response = Http::send_with_options(
+        $class    = get_class($this);
+        $response = Http::sendWithOptions(
             $this->client,
             $this->getRoute('create'),
             [
@@ -313,7 +313,7 @@ abstract class ResourceAbstract
             ]
         );
 
-        $this->client->setSideload( null );
+        $this->client->setSideload(null);
 
         return $response;
     }
@@ -329,7 +329,7 @@ abstract class ResourceAbstract
      *
      * @return mixed
      */
-    public function update( $id = null, array $updateResourceFields = [ ] )
+    public function update($id = null, array $updateResourceFields = [ ])
     {
         $class = get_class($this);
         if (empty($id)) {
@@ -338,13 +338,13 @@ abstract class ResourceAbstract
 
         $postFields = array( $class::OBJ_NAME => $updateResourceFields );
 
-        $response = Http::send_with_options(
-          $this->client,
-          $this->getRoute( __FUNCTION__, array( 'id' => $id ) ),
-          [ 'postFields' => $postFields, 'method' => 'PUT' ]
+        $response = Http::sendWithOptions(
+            $this->client,
+            $this->getRoute(__FUNCTION__, array( 'id' => $id )),
+            [ 'postFields' => $postFields, 'method' => 'PUT' ]
         );
 
-        $this->client->setSideload( null );
+        $this->client->setSideload(null);
 
         return $response;
     }
@@ -360,27 +360,27 @@ abstract class ResourceAbstract
      * @throws \Exception
      *
      */
-    public function delete( $id = null )
+    public function delete($id = null)
     {
         if (empty( $id )) {
             $chainedParameters = $this->getChainedParameters();
-            if (array_key_exists( get_class( $this ), $chainedParameters )) {
-                $id = $chainedParameters[get_class( $this )];
+            if (array_key_exists(get_class($this), $chainedParameters)) {
+                $id = $chainedParameters[get_class($this)];
             }
         }
 
         if (empty( $id )) {
-            throw new MissingParametersException( __METHOD__, array( 'id' ) );
+            throw new MissingParametersException(__METHOD__, array( 'id' ));
         }
 
-        $route    = $this->getRoute( 'find', array( 'id' => $id ) );
-        $response = Http::send_with_options(
-          $this->client,
-          $route,
-          [ 'method' => 'DELETE' ]
+        $route    = $this->getRoute('find', array( 'id' => $id ));
+        $response = Http::sendWithOptions(
+            $this->client,
+            $route,
+            [ 'method' => 'DELETE' ]
         );
 
-        $this->client->setSideload( null );
+        $this->client->setSideload(null);
 
         return $response;
     }
