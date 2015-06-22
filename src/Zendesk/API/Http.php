@@ -3,6 +3,8 @@
 namespace Zendesk\API;
 
 use Zendesk\API\Exceptions\ResponseException;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Stream;
 
 /**
  * HTTP functions via curl
@@ -46,8 +48,8 @@ class Http
      * Use the send method to call every endpoint except for oauth/tokens
      *
      * @param HttpClient $client
-     * @param string     $endPoint E.g. "/tickets.json"
-     * @param array      $options
+     * @param string $endPoint E.g. "/tickets.json"
+     * @param array $options
      *                             Available options are listed below:
      *                             array $queryParams Array of unencoded key-value pairs, e.g. ["ids" => "1,2,3,4"]
      *                             array $postFields Array of unencoded key-value pairs, e.g. ["filename" => "blah.png"]
@@ -55,52 +57,51 @@ class Http
      *                             string $contentType Default is "application/json"
      *
      * @return array The response body, parsed from JSON into an associative array
+     * @throws ResponseException
      */
     public static function sendWithOptions(
-        HttpClient $client,
-        $endPoint,
-        $options = []
+      HttpClient $client,
+      $endPoint,
+      $options = []
     ) {
         $options = array_merge(
-            [
-                'method'      => 'GET',
-                'contentType' => 'application/json',
-                'postFields'  => [],
-                'queryParams' => []
-            ],
-            $options
+          [
+            'method'      => 'GET',
+            'contentType' => 'application/json',
+            'postFields'  => null,
+            'queryParams' => null
+          ],
+          $options
         );
 
-        $method = $options["method"];
-        $contentType = $options["contentType"];
-        $postFields = $options["postFields"];
-        $queryParams = $options["queryParams"];
 
-        $url = $client->getApiUrl() . $endPoint;
+        $headers = [
+          'Accept'       => 'application/json',
+          'Content-Type' => $options['contentType']
+        ];
 
-        $request = $client->guzzle->createRequest(
-            $method,
-            $url,
-            [
-                'query'   => $queryParams,
-                'body'    => json_encode($postFields),
-                'headers' => [
-                    'Accept'       => 'application/json',
-                    'Content-Type' => $contentType
-                ]
-            ]
+        // TODO Add query parameters if they are present
+        $request = new Request(
+          $options['method'],
+          $client->getApiUrl() . $endPoint,
+          $headers
         );
+
+        if (isset($options['postFields'])) {
+            $request = $request->withBody(\GuzzleHttp\Psr7\stream_for(json_encode($options['postFields'])));
+        }
 
         try {
             $response = $client->guzzle->send($request);
 
-            $responseCode = $response->getStatusCode();
+            $responseCode       = $response->getStatusCode();
+            $parsedResponseBody = json_decode($response->getBody()->getContents());
 
             $client->setDebug(
-                $response->getHeaders(),
-                $responseCode,
-                10,
-                null
+              $response->getHeaders(),
+              $responseCode,
+              10,
+              null
             );
         } catch (\GuzzleHttp\Exception\ClientException $e) {
             throw new ResponseException($endPoint, null, null, $e);
