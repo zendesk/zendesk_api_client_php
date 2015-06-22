@@ -328,5 +328,4 @@ class HttpClient
     {
         return $this->search->anonymousSearch($params);
     }
-
 }

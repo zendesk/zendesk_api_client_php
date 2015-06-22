@@ -27,23 +27,27 @@ class TicketCommentsTest extends BasicTest
 
     public function testAll()
     {
-        $this->mockApiCall('GET',
-          'tickets/12345/comments.json',
-          [
+        $this->mockApiCall(
+            'GET',
+            'tickets/12345/comments.json',
+            [
             'comments' => [
               [
                 'id' => 1
               ]
             ]
-          ]
+            ]
         );
 
         $comments = $this->client->tickets($this->ticket_id)->comments()->findAll();
         $this->httpMock->verify();
 
         $this->assertEquals(is_object($comments), true, 'Should return an object');
-        $this->assertEquals(is_array($comments->comments), true,
-            'Should return an object containing an array called "comments"');
+        $this->assertEquals(
+            is_array($comments->comments),
+            true,
+            'Should return an object containing an array called "comments"'
+        );
         $this->assertGreaterThan(0, $comments->comments[0]->id, 'Returns a non-numeric id in first audit');
     }
 
@@ -53,23 +57,23 @@ class TicketCommentsTest extends BasicTest
     public function testMakePrivate()
     {
         $this->mockApiCall(
-          'GET',
-          'tickets/12345/comments.json',
-          [
+            'GET',
+            'tickets/12345/comments.json',
+            [
             'comments' => [
               [
                 'id' => 1
               ]
             ]
-          ]
+            ]
         );
         $comment_id = $this->client->tickets($this->ticket_id)->comments()->findAll()->comments[0]->id;
         $this->httpMock->verify();
 
         $this->mockApiCall(
-          'PUT',
-          'tickets/12345/comments/1/make_private.json',
-          []
+            'PUT',
+            'tickets/12345/comments/1/make_private.json',
+            []
         );
         $this->client->tickets($this->ticket_id)->comments($comment_id)->makePrivate();
         $this->httpMock->verify();

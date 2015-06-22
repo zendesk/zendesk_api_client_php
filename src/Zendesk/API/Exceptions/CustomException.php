@@ -18,5 +18,4 @@ class CustomException extends \Exception
     {
         parent::__construct($message, $code, $previous);
     }
-
 }

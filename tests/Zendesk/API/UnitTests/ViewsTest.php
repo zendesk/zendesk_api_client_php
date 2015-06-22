@@ -14,30 +14,36 @@ class ViewsTest extends BasicTest
     public function testActive()
     {
         $this->mockApiCall(
-          'GET',
-          'views/active.json',
-          ['views' => [['id' => $this->id]]]
+            'GET',
+            'views/active.json',
+            ['views' => [['id' => $this->id]]]
         );
 
         $views = $this->client->views()->findAll(['active' => true]);
         $this->httpMock->verify();
-        $this->assertEquals(is_array($views->views), true,
-            'Should return an object containing an array called "views"');
+        $this->assertEquals(
+            is_array($views->views),
+            true,
+            'Should return an object containing an array called "views"'
+        );
         $this->assertGreaterThan(0, $views->views[0]->id, 'Returns a non-numeric id for views[0]');
     }
 
     public function testCompact()
     {
         $this->mockApiCall(
-          'GET',
-          'views/compact.json',
-          ['views' => [['id' => $this->id]]]
+            'GET',
+            'views/compact.json',
+            ['views' => [['id' => $this->id]]]
         );
         $views = $this->client->views()->findAll(['compact' => true]);
         $this->httpMock->verify();
         $this->assertEquals(is_object($views), true, 'Should return an object');
-        $this->assertEquals(is_array($views->views), true,
-            'Should return an object containing an array called "views"');
+        $this->assertEquals(
+            is_array($views->views),
+            true,
+            'Should return an object containing an array called "views"'
+        );
         $this->assertGreaterThan(0, $views->views[0]->id, 'Returns a non-numeric id for views[0]');
     }
 
@@ -45,10 +51,10 @@ class ViewsTest extends BasicTest
     {
         $queryParams = ['per_page' => 1];
         $this->mockApiCall(
-          'GET',
-          'views/' . $this->id . '/execute.json',
-          ['view' => ['id' => $this->id]],
-          ['queryParams' => $queryParams]
+            'GET',
+            'views/' . $this->id . '/execute.json',
+            ['view' => ['id' => $this->id]],
+            ['queryParams' => $queryParams]
         );
 
         $view = $this->client->views($this->id)->execute($queryParams);
@@ -61,9 +67,9 @@ class ViewsTest extends BasicTest
     public function testCount()
     {
         $this->mockApiCall(
-          'GET',
-          'views/' . $this->id . '/count.json',
-          ['view_count' => ['view_id' => $this->id]]
+            'GET',
+            'views/' . $this->id . '/count.json',
+            ['view_count' => ['view_id' => $this->id]]
         );
 
         $counts = $this->client->views($this->id)->count();
@@ -77,26 +83,32 @@ class ViewsTest extends BasicTest
     {
         $queryIds = [$this->id, 80085];
         $this->mockApiCall(
-          'GET',
-          'views/count_many.json',
-          ['view_counts' => [['view_id' => $this->id]]],
-          ['queryParams' => ['ids' => implode(',' , $queryIds)]]
+            'GET',
+            'views/count_many.json',
+            ['view_counts' => [['view_id' => $this->id]]],
+            ['queryParams' => ['ids' => implode(',', $queryIds)]]
         );
 
         $counts = $this->client->views($queryIds)->count();
         $this->httpMock->verify();
-        $this->assertEquals(is_array($counts->view_counts), true,
-            'Should return an array of objects called "view_counts"');
-        $this->assertGreaterThan(0, $counts->view_counts[0]->view_id,
-            'Returns a non-numeric view_id for view_counts[0]');
+        $this->assertEquals(
+            is_array($counts->view_counts),
+            true,
+            'Should return an array of objects called "view_counts"'
+        );
+        $this->assertGreaterThan(
+            0,
+            $counts->view_counts[0]->view_id,
+            'Returns a non-numeric view_id for view_counts[0]'
+        );
     }
 
     public function testExport()
     {
         $this->mockApiCall(
-          'GET',
-          'views/' . $this->id . '/export.json',
-          ['export' => ['view_id' => $this->id]]
+            'GET',
+            'views/' . $this->id . '/export.json',
+            ['export' => ['view_id' => $this->id]]
         );
 
         $export = $this->client->views($this->id)->export();
@@ -121,10 +133,10 @@ class ViewsTest extends BasicTest
         ];
 
         $this->mockApiCall(
-          'POST',
-          'views/preview.json',
-          ['rows' => [], 'columns' => []],
-          ['bodyParams' => [Views::OBJ_NAME => $bodyParams]]
+            'POST',
+            'views/preview.json',
+            ['rows' => [], 'columns' => []],
+            ['bodyParams' => [Views::OBJ_NAME => $bodyParams]]
         );
 
         $preview = $this->client->views()->preview($bodyParams);
@@ -150,10 +162,10 @@ class ViewsTest extends BasicTest
         ];
 
         $this->mockApiCall(
-          'POST',
-          'views/preview/count.json',
-          ['view_count' => (new \stdClass())],
-          ['bodyParams' => [Views::OBJ_NAME => $bodyParams]]
+            'POST',
+            'views/preview/count.json',
+            ['view_count' => (new \stdClass())],
+            ['bodyParams' => [Views::OBJ_NAME => $bodyParams]]
         );
 
         $preview = $this->client->views()->previewCount($bodyParams);
@@ -165,9 +177,9 @@ class ViewsTest extends BasicTest
     public function testGetTickets()
     {
         $this->mockApiCall(
-          'GET',
-          "views/{$this->id}/tickets.json",
-          ['tickets' => ['id' => $this->id]]
+            'GET',
+            "views/{$this->id}/tickets.json",
+            ['tickets' => ['id' => $this->id]]
         );
 
         $preview = $this->client->views($this->id)->tickets();
