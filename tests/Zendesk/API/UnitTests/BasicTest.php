@@ -100,7 +100,9 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
         }
 
         if (isset($options['url'])) {
-            $this->assertEquals($options['url'], $request->getRequestTarget());
+            // Truncate the `/api/v2` part of the target
+            $url = str_replace('/api/v2/', '', $request->getRequestTarget());
+            $this->assertEquals($options['url'], $url);
         }
 
         if (isset($options['postFields'])) {
