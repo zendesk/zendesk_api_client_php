@@ -37,7 +37,7 @@ class TicketCommentsTest extends BasicTest
         $this->assertLastRequestIs(
           [
             'method' => 'GET',
-            'url' => 'tickets/12345/comments.json',
+            'endpoint' => 'tickets/12345/comments.json',
           ]
         );
 
@@ -64,7 +64,7 @@ class TicketCommentsTest extends BasicTest
         $this->assertLastRequestIs(
           [
             'method' => 'PUT',
-            'url' => 'tickets/12345/comments/1/make_private.json',
+            'endpoint' => 'tickets/12345/comments/1/make_private.json',
           ]
         );
     }
