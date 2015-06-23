@@ -50,14 +50,13 @@ class Http
      * @param HttpClient $client
      * @param string $endPoint E.g. "/tickets.json"
      * @param array $options
-     *                             Available options are listed below:
-     *                             array $queryParams Array of unencoded key-value pairs, e.g. ["ids" => "1,2,3,4"]
-     *                             array $postFields Array of unencoded key-value pairs, e.g. ["filename" => "blah.png"]
-     *                             string $method "GET", "POST", etc. Default is GET.
-     *                             string $contentType Default is "application/json"
+     *          Available options are listed below:
+     *          array $queryParams Array of unencoded key-value pairs, e.g. ["ids" => "1,2,3,4"]
+     *          array $postFields Array of unencoded key-value pairs, e.g. ["filename" => "blah.png"]
+     *          string $method "GET", "POST", etc. Default is GET.
+     *          string $contentType Default is "application/json"
      *
      * @return array The response body, parsed from JSON into an associative array
-     * @throws ResponseException
      */
     public static function sendWithOptions(
       HttpClient $client,
@@ -74,40 +73,47 @@ class Http
           $options
         );
 
-
         $headers = [
           'Accept'       => 'application/json',
           'Content-Type' => $options['contentType']
         ];
 
-        // TODO Add query parameters if they are present
         $request = new Request(
-            $options['method'],
-            $client->getApiUrl() . $endPoint,
-            $headers
+          $options['method'],
+          $client->getApiUrl() . $endPoint,
+          $headers
         );
 
-        if (isset($options['postFields'])) {
+        if (!empty($options['postFields'])) {
             $request = $request->withBody(\GuzzleHttp\Psr7\stream_for(json_encode($options['postFields'])));
+        }
+
+        if (!empty($options['queryParams'])) {
+            foreach ($options['queryParams'] as $queryKey => $queryValue) {
+                $uri = $request->getUri();
+                $uri = $uri->withQueryValue($uri, $queryKey, $queryValue);
+                $request = $request->withUri($uri, true);
+            }
         }
 
         try {
             $response = $client->guzzle->send($request);
-
-            $responseCode       = $response->getStatusCode();
-            $parsedResponseBody = json_decode($response->getBody()->getContents());
-
-            $client->setDebug(
-              $response->getHeaders(),
-              $responseCode,
-              10,
-              null
-            );
         } catch (\GuzzleHttp\Exception\ClientException $e) {
-            throw new ResponseException($endPoint, null, null, $e);
+            var_dump($e->getRequest()->getUri());
+            var_dump($e->getResponse()->getStatusCode());
         }
 
-        return json_decode($response->getBody());
+        $responseCode       = $response->getStatusCode();
+        $parsedResponseBody = json_decode($response->getBody()->getContents());
+
+        $client->setDebug(
+          $response->getHeaders(),
+          $responseCode,
+          10,
+          null
+        );
+
+        return $parsedResponseBody;
     }
 
     /**
