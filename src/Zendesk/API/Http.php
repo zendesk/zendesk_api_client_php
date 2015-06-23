@@ -82,9 +82,9 @@ class Http
 
         // TODO Add query parameters if they are present
         $request = new Request(
-          $options['method'],
-          $client->getApiUrl() . $endPoint,
-          $headers
+            $options['method'],
+            $client->getApiUrl() . $endPoint,
+            $headers
         );
 
         if (isset($options['postFields'])) {

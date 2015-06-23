@@ -87,11 +87,13 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function assertLastRequestIs ($options) {
+    public function assertLastRequestIs($options)
+    {
         $this->assertRequestIs($options, count($this->mockedTransactionsContainer) - 1);
     }
 
-    public function assertRequestIs ($options, $index = 0) {
+    public function assertRequestIs($options, $index = 0)
+    {
         $transaction = $this->mockedTransactionsContainer[$index];
         $request = $transaction['request'];
         $response = $transaction['response'];

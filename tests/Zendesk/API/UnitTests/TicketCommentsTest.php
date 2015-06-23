@@ -35,10 +35,10 @@ class TicketCommentsTest extends BasicTest
         $comments = $this->client->tickets($this->ticket_id)->comments()->findAll();
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'tickets/12345/comments.json',
-          ]
+            ]
         );
 
         $this->assertEquals(is_object($comments), true, 'Should return an object');
@@ -62,10 +62,10 @@ class TicketCommentsTest extends BasicTest
         $this->client->tickets(12345)->comments(1)->makePrivate();
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'PUT',
             'endpoint' => 'tickets/12345/comments/1/make_private.json',
-          ]
+            ]
         );
     }
 }
