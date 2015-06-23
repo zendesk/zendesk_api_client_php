@@ -92,6 +92,7 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
     }
 
     public function assertRequestIs ($options, $index = 0) {
+        // TODO Add assertions on headers
         $transaction = $this->mockedTransactionsContainer[$index];
         $request = $transaction['request'];
 
@@ -99,15 +100,19 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($options['method'], $request->getMethod());
         }
 
-        if (isset($options['url'])) {
+        if (isset($options['endpoint'])) {
             // Truncate the `/api/v2` part of the target
-            $url = str_replace('/api/v2/', '', $request->getRequestTarget());
-            $this->assertEquals($options['url'], $url);
+            $endpoint = str_replace('/api/v2/', '', $request->getUri()->getPath());
+            $this->assertEquals($options['endpoint'], $endpoint);
+        }
+
+        if (isset($options['queryParams'])) {
+            $expectedQueryParams = urldecode(http_build_query($options['queryParams']));
+            $this->assertEquals($expectedQueryParams, $request->getUri()->getQuery());
         }
 
         if (isset($options['postFields'])) {
             $this->assertEquals(json_encode($options['postFields']), $request->getBody()->getContents());
         }
-        // TODO: Add other asserts
     }
 }
