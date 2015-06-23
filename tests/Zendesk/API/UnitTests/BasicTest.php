@@ -92,9 +92,26 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
     }
 
     public function assertRequestIs ($options, $index = 0) {
-        // TODO Add assertions on headers
         $transaction = $this->mockedTransactionsContainer[$index];
         $request = $transaction['request'];
+        $response = $transaction['response'];
+
+        $options = array_merge([
+          'statusCode' => 200,
+          'headers' => [
+            'Accept'       => 'application/json',
+            'Content-Type' => 'application/json'
+          ]
+        ], $options);
+
+        $this->assertEquals($options['statusCode'], $response->getStatusCode());
+
+        if (isset($options['headers']) && is_array($options['headers'])) {
+            foreach ($options['headers'] as $headerKey => $value) {
+                $this->assertNotEmpty($header = $request->getHeader($headerKey));
+                $this->assertEquals($options['headers'][$headerKey], $value);
+            }
+        }
 
         if (isset($options['method'])) {
             $this->assertEquals($options['method'], $request->getMethod());
