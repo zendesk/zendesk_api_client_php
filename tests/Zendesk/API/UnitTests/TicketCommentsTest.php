@@ -2,6 +2,8 @@
 
 namespace Zendesk\API\UnitTests;
 
+use GuzzleHttp\Psr7\Response;
+
 /**
  * Ticket Comments test class
  */
@@ -11,7 +13,6 @@ class TicketCommentsTest extends BasicTest
 
     public function setUp()
     {
-
         $this->testTicket = array(
             'id' => "12345",
             'subject' => 'Ticket comment test',
@@ -27,20 +28,18 @@ class TicketCommentsTest extends BasicTest
 
     public function testAll()
     {
-        $this->mockApiCall(
-            'GET',
-            'tickets/12345/comments.json',
-            [
-            'comments' => [
-              [
-                'id' => 1
-              ]
-            ]
-            ]
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], json_encode(['comments' => [['id' => 1]]]))
+        ]);
 
         $comments = $this->client->tickets($this->ticket_id)->comments()->findAll();
-        $this->httpMock->verify();
+
+        $this->assertLastRequestIs(
+          [
+            'method' => 'GET',
+            'url' => 'tickets/12345/comments.json',
+          ]
+        );
 
         $this->assertEquals(is_object($comments), true, 'Should return an object');
         $this->assertEquals(
@@ -48,7 +47,7 @@ class TicketCommentsTest extends BasicTest
             true,
             'Should return an object containing an array called "comments"'
         );
-        $this->assertGreaterThan(0, $comments->comments[0]->id, 'Returns a non-numeric id in first audit');
+        $this->assertGreaterThan(0, $comments->comments[0]->id, 'Should return a numeric ID.');
     }
 
     /*
@@ -56,26 +55,17 @@ class TicketCommentsTest extends BasicTest
      */
     public function testMakePrivate()
     {
-        $this->mockApiCall(
-            'GET',
-            'tickets/12345/comments.json',
-            [
-            'comments' => [
-              [
-                'id' => 1
-              ]
-            ]
-            ]
-        );
-        $comment_id = $this->client->tickets($this->ticket_id)->comments()->findAll()->comments[0]->id;
-        $this->httpMock->verify();
+        $this->mockAPIResponses([
+          new Response(200, [], '')
+        ]);
 
-        $this->mockApiCall(
-            'PUT',
-            'tickets/12345/comments/1/make_private.json',
-            []
+        $this->client->tickets(12345)->comments(1)->makePrivate();
+
+        $this->assertLastRequestIs(
+          [
+            'method' => 'PUT',
+            'url' => 'tickets/12345/comments/1/make_private.json',
+          ]
         );
-        $this->client->tickets($this->ticket_id)->comments($comment_id)->makePrivate();
-        $this->httpMock->verify();
     }
 }
