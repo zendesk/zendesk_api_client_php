@@ -34,7 +34,7 @@ class TicketForms extends ResourceAbstract
      *
      * @return mixed
      */
-    function cloneForm($id = null)
+    public function cloneForm($id = null)
     {
         $class = get_class($this);
         if (empty($id)) {
@@ -66,7 +66,7 @@ class TicketForms extends ResourceAbstract
      *
      * @return mixed
      */
-    function reorder(array $ticketFormIds)
+    public function reorder(array $ticketFormIds)
     {
         $response = Http::sendWithOptions(
             $this->client,

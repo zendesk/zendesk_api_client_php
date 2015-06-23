@@ -41,8 +41,7 @@ class TicketFormsTest extends BasicTest
         $this->mockApiCall('PUT', 'ticket_forms/reorder.json', [], [
                 'statusCode' => 200,
                 'bodyParams' => ['ticket_form_ids' => [3, 4, 5, 1]]
-            ]
-        );
+            ]);
         $this->client->tickets()->forms()->reorder([3, 4, 5, 1]);
         $this->httpMock->verify();
     }
