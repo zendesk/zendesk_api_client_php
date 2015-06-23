@@ -30,7 +30,7 @@ class Http
             $addParams['include'] = implode(',', $sideload);
         }
 
-      // Next look for special collection iterators
+        // Next look for special collection iterators
         if (is_array($iterators)) {
             foreach ($iterators as $k => $v) {
                 if (in_array($k, ['per_page', 'page', 'sort_order', 'sort_by'])) {
@@ -56,7 +56,7 @@ class Http
      *
      * @return array The response body, parsed from JSON into an associative array
      */
-    public static function send_with_options(
+    public static function sendWithOptions(
         HttpClient $client,
         $endPoint,
         $options = []
@@ -71,9 +71,9 @@ class Http
             $options
         );
 
-        $method      = $options["method"];
+        $method = $options["method"];
         $contentType = $options["contentType"];
-        $postFields  = $options["postFields"];
+        $postFields = $options["postFields"];
         $queryParams = $options["queryParams"];
 
         $url = $client->getApiUrl() . $endPoint;
@@ -150,8 +150,8 @@ class Http
         if ($response === false) {
             throw new \Exception(sprintf('Curl error message: "%s" in %s', $curl->error(), __METHOD__));
         }
-        $headerSize     = $curl->getinfo(CURLINFO_HEADER_SIZE);
-        $responseBody   = substr($response, $headerSize);
+        $headerSize = $curl->getinfo(CURLINFO_HEADER_SIZE);
+        $responseBody = substr($response, $headerSize);
         $responseObject = json_decode($responseBody);
         $client->setDebug(
             $curl->getinfo(CURLINFO_HEADER_OUT),
