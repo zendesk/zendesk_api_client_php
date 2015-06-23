@@ -45,7 +45,7 @@ class TicketForms extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, ['id']);
         }
 
-        $response = Http::send_with_options(
+        $response = Http::sendWithOptions(
             $this->client,
             $this->getRoute('clone', ['id' => $id]),
             ['method' => 'POST']
@@ -68,7 +68,7 @@ class TicketForms extends ResourceAbstract
      */
     function reorder(array $ticketFormIds)
     {
-        $response = Http::send_with_options(
+        $response = Http::sendWithOptions(
             $this->client,
             $this->getRoute(__FUNCTION__),
             ['postFields' => ['ticket_form_ids' => $ticketFormIds], 'method' => 'PUT']
