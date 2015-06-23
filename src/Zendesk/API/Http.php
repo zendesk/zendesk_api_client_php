@@ -59,18 +59,18 @@ class Http
      * @return array The response body, parsed from JSON into an associative array
      */
     public static function sendWithOptions(
-      HttpClient $client,
-      $endPoint,
-      $options = []
+        HttpClient $client,
+        $endPoint,
+        $options = []
     ) {
         $options = array_merge(
-          [
+            [
             'method'      => 'GET',
             'contentType' => 'application/json',
             'postFields'  => null,
             'queryParams' => null
-          ],
-          $options
+            ],
+            $options
         );
 
         $headers = [
@@ -79,9 +79,9 @@ class Http
         ];
 
         $request = new Request(
-          $options['method'],
-          $client->getApiUrl() . $endPoint,
-          $headers
+            $options['method'],
+            $client->getApiUrl() . $endPoint,
+            $headers
         );
 
         if (!empty($options['postFields'])) {
@@ -107,10 +107,10 @@ class Http
         $parsedResponseBody = json_decode($response->getBody()->getContents());
 
         $client->setDebug(
-          $response->getHeaders(),
-          $responseCode,
-          10,
-          null
+            $response->getHeaders(),
+            $responseCode,
+            10,
+            null
         );
 
         return $parsedResponseBody;
