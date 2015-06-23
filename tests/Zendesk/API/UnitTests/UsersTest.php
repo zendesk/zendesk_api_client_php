@@ -30,11 +30,11 @@ class UsersTest extends BasicTest
         $user = $this->client->users()->create($testUser);
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'POST',
             'endpoint' => 'users.json',
             'postFields' => ['user' => $testUser],
-          ]
+            ]
         );
 
         $this->assertEquals(is_object($user), true, 'Should return an object');
@@ -51,21 +51,21 @@ class UsersTest extends BasicTest
         $this->client->users(12345)->delete();
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'DELETE',
             'endpoint' => 'users/12345.json',
-          ]
+            ]
         );
     }
 
     public function testAll()
     {
         $response = json_encode(
-          [
+            [
             'users' => [
               [ 'id' => 12345 ]
             ]
-          ]
+            ]
         );
 
         $this->mockAPIResponses([
@@ -75,10 +75,10 @@ class UsersTest extends BasicTest
         $users = $this->client->users()->findAll();
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'users.json',
-          ]
+            ]
         );
 
         $this->assertEquals(is_object($users), true, 'Should return an object');
@@ -100,10 +100,10 @@ class UsersTest extends BasicTest
         $user = $this->client->users(12345)->find();
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'users/12345.json',
-          ]
+            ]
         );
 
         $this->assertEquals(is_object($user), true, 'Should return an object');
@@ -128,11 +128,11 @@ class UsersTest extends BasicTest
         $users = $this->client->users($findIds)->findMany();
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'users/show_many.json',
             'queryParams' => ['ids' => implode(",", [$findIds[0], $findIds[1]])] ,
-          ]
+            ]
         );
         $this->assertEquals(is_object($users), true, 'Should return an object');
         $this->assertEquals(is_array($users->users), true, 'Should return an array called "users"');
@@ -182,11 +182,11 @@ class UsersTest extends BasicTest
         $users = $this->client->users()->showMany([ 'external_ids' => $findIds ]);
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'users/show_many.json',
             'queryParams' => ['external_ids' => implode(',', $findIds)]
-          ]
+            ]
         );
 
         $this->assertEquals(is_object($users), true, 'Should return an object');
@@ -207,10 +207,10 @@ class UsersTest extends BasicTest
         $related = $this->client->users(12345)->related();
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'users/12345/related.json',
-          ]
+            ]
         );
         $this->assertEquals(is_object($related), true, 'Should return an object');
         $this->assertEquals(
@@ -236,11 +236,11 @@ class UsersTest extends BasicTest
         $this->client->users('me')->merge($postFields);
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'PUT',
             'endpoint' => 'users/me/merge.json',
             'postFields' => [Users::OBJ_NAME => $postFields],
-          ]
+            ]
         );
     }
 
@@ -266,11 +266,11 @@ class UsersTest extends BasicTest
         $jobStatus = $this->client->users()->createMany($postFields);
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'POST',
             'endpoint' => 'users/create_many.json',
             'postFields' => [Users::OBJ_NAME_PLURAL => $postFields],
-          ]
+            ]
         );
 
         $this->assertEquals(is_object($jobStatus), true, 'Should return an object');
@@ -289,11 +289,11 @@ class UsersTest extends BasicTest
         $this->client->users(12345)->update(null, $postFields);
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'PUT',
             'endpoint' => 'users/12345.json',
             'postFields' => [Users::OBJ_NAME => $postFields],
-          ]
+            ]
         );
     }
 
@@ -312,12 +312,12 @@ class UsersTest extends BasicTest
         $jobStatus = $this->client->users()->updateMany($requestParams);
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'PUT',
             'endpoint' => 'users/update_many.json',
             'queryParams' => ['ids' => $requestParams['ids']],
             'postFields' => [Users::OBJ_NAME => ['phone' => $requestParams['phone']]]
-          ]
+            ]
         );
 
         $this->assertEquals(is_object($jobStatus), true, 'Should return an array');
@@ -346,11 +346,11 @@ class UsersTest extends BasicTest
         $jobStatus = $this->client->users()->updateManyIndividualUsers($requestParams);
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'PUT',
             'endpoint' => 'users/update_many.json',
             'postFields' => [Users::OBJ_NAME_PLURAL => $requestParams]
-          ]
+            ]
         );
 
         $this->assertEquals(is_object($jobStatus), true, 'Should return an array');
@@ -369,11 +369,11 @@ class UsersTest extends BasicTest
         $user = $this->client->users($userId)->suspend();
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'PUT',
             'endpoint' => 'users/12345.json',
             'postFields' => [Users::OBJ_NAME => ['id' => $userId, 'suspended' => true]],
-          ]
+            ]
         );
         
         $this->assertEquals(is_object($user), true, 'Should return an object');
@@ -392,11 +392,11 @@ class UsersTest extends BasicTest
         $users = $this->client->users()->search($queryParams);
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'users/search.json',
             'queryParams' => $queryParams,
-          ]
+            ]
         );
 
         $this->assertEquals(is_object($users), true, 'Should return an object');
@@ -422,11 +422,11 @@ class UsersTest extends BasicTest
         $users = $this->client->users()->autocomplete($queryParams);
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'POST',
             'endpoint' => 'users/autocomplete.json',
             'queryParams' => $queryParams,
-          ]
+            ]
         );
 
         $this->assertEquals(is_object($users), true, 'Should return an object');
@@ -465,10 +465,10 @@ class UsersTest extends BasicTest
         $user = $this->client->users()->me();
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'users/me.json',
-          ]
+            ]
         );
 
         $this->assertEquals(is_object($user), true, 'Should return an object');
@@ -487,11 +487,11 @@ class UsersTest extends BasicTest
         $this->client->users(12345)->setPassword($postFields);
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'POST',
             'endpoint' => 'users/12345/password.json',
             'postFields' => [Users::OBJ_NAME => $postFields],
-          ]
+            ]
         );
     }
 
@@ -509,11 +509,11 @@ class UsersTest extends BasicTest
         $this->client->users(421450109)->changePassword($postFields);
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'PUT',
             'endpoint' => 'users/421450109/password.json',
             'postFields' => $postFields,
-          ]
+            ]
         );
     }
 }

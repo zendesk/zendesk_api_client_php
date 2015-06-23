@@ -44,11 +44,11 @@ class TicketsTest extends BasicTest
         $this->client->tickets()->sideload(array( 'users', 'groups' ))->findAll();
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'tickets.json',
             'queryParams' => ['include' => 'users,groups'],
-          ]
+            ]
         );
     }
 
@@ -61,11 +61,11 @@ class TicketsTest extends BasicTest
         $this->client->tickets()->findAll(array( 'sideload' => array( 'users', 'groups' ) ));
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'tickets.json',
             'queryParams' => ['include' => 'users,groups'],
-          ]
+            ]
         );
     }
 
@@ -78,10 +78,10 @@ class TicketsTest extends BasicTest
         $this->client->tickets()->find($this->testTicket['id']);
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'tickets/' . $this->testTicket['id'] . '.json',
-          ]
+            ]
         );
 
     }
@@ -95,10 +95,10 @@ class TicketsTest extends BasicTest
         $this->client->tickets($this->testTicket['id'])->find();
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'tickets/' . $this->testTicket['id'] . '.json',
-          ]
+            ]
         );
     }
 
@@ -112,11 +112,11 @@ class TicketsTest extends BasicTest
         $this->client->tickets()->findMany($testTicketIds);
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'tickets/show_many.json',
             'queryParams' => ['ids' => implode(',', [ $this->testTicket['id'], $this->testTicket2['id'] ])],
-          ]
+            ]
         );
     }
 
@@ -128,11 +128,11 @@ class TicketsTest extends BasicTest
 
         $this->client->tickets()->deleteMany(array( 123, 321 ));
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'DELETE',
             'endpoint' => 'tickets/destroy_many.json',
             'queryParams' => ['ids' => implode(',', [ 123, 321 ])],
-          ]
+            ]
         );
     }
 
@@ -170,11 +170,11 @@ class TicketsTest extends BasicTest
         $this->client->tickets()->export(array( 'start_time' => '1332034771' ));
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'exports/tickets.json',
             'queryParams' => [ 'start_time' => '1332034771' ],
-          ]
+            ]
         );
     }
 
@@ -194,12 +194,12 @@ class TicketsTest extends BasicTest
         );
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'PUT',
             'endpoint' => 'tickets/update_many.json',
             'queryParams' => [ 'ids' => implode(',', $ticketIds) ],
             'postFields'  => [ 'ticket' => [ 'status' => 'solved' ] ]
-          ]
+            ]
         );
     }
 
@@ -214,11 +214,11 @@ class TicketsTest extends BasicTest
         $this->client->tickets()->updateMany($tickets);
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'PUT',
             'endpoint' => 'tickets/update_many.json',
             'postFields' => [ 'tickets' => $tickets ]
-          ]
+            ]
         );
     }
 
@@ -231,10 +231,10 @@ class TicketsTest extends BasicTest
         $related = $this->client->tickets(12345)->related();
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'tickets/12345/related.json',
-          ]
+            ]
         );
 
         // Test if the method returns readable data
@@ -250,10 +250,10 @@ class TicketsTest extends BasicTest
         $collaborators = $this->client->tickets()->collaborators(array( 'id' => 12345 ));
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'tickets/12345/collaborators.json',
-          ]
+            ]
         );
 
         $this->assertEquals(is_object($collaborators), true, 'Should return an object');
@@ -268,10 +268,10 @@ class TicketsTest extends BasicTest
         $incidents = $this->client->tickets()->incidents(array( 'id' => 12345 ));
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'tickets/12345/incidents.json',
-          ]
+            ]
         );
 
         $this->assertEquals(is_object($incidents), true, 'Should return an object');
@@ -286,10 +286,10 @@ class TicketsTest extends BasicTest
         $problems = $this->client->tickets()->problems();
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'GET',
             'endpoint' => 'problems.json',
-          ]
+            ]
         );
 
         $this->assertEquals(is_object($problems), true, 'Should return an object');
@@ -304,11 +304,11 @@ class TicketsTest extends BasicTest
         $this->client->tickets()->problemAutoComplete(array( 'text' => 'foo' ));
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'POST',
             'endpoint' => 'problems/autocomplete.json',
             'postFields' => ['text' => 'foo'],
-          ]
+            ]
         );
 
     }
@@ -322,10 +322,10 @@ class TicketsTest extends BasicTest
         $this->client->tickets(12345)->markAsSpam();
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'PUT',
             'endpoint' => 'tickets/12345/mark_as_spam.json',
-          ]
+            ]
         );
     }
 
@@ -338,11 +338,11 @@ class TicketsTest extends BasicTest
         $this->client->tickets()->markAsSpam([ 12345, 54321 ]);
 
         $this->assertLastRequestIs(
-          [
+            [
             'method' => 'PUT',
             'endpoint' => 'tickets/mark_many_as_spam.json',
             'queryParams' => [ 'ids' => '12345,54321' ]
-          ]
+            ]
         );
     }
 }
