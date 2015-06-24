@@ -6,6 +6,8 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use Zendesk\API\Exceptions\ApiResponseException;
 use Zendesk\API\Exceptions\AuthException;
+use GuzzleHttp\Psr7\Stream;
+
 
 /**
  * HTTP functions via curl
