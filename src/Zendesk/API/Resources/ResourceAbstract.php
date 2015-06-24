@@ -232,8 +232,8 @@ abstract class ResourceAbstract
 
         $substitutions = array_merge($params, $this->getAdditionalRouteParams());
         foreach ($substitutions as $name => $value) {
-            if (is_scalar( $value )) {
-                $route = str_replace( '{' . $name . '}', $value, $route );
+            if (is_scalar($value)) {
+                $route = str_replace('{' . $name . '}', $value, $route);
             }
         }
 
