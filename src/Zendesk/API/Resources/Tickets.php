@@ -59,8 +59,8 @@ class Tickets extends ResourceAbstract
         return [
             'comments' => TicketComments::class,
             'forms'    => TicketForms::class,
-						'tags'     => Tags::,
-						'audits'   => TicketAudits::class,
+            'tags'     => Tags::class,
+            'audits'   => TicketAudits::class,
         ];
     }
 
@@ -74,7 +74,7 @@ class Tickets extends ResourceAbstract
      * @throws ResponseException
      * @throws \Exception
      */
-    private function _sendGetRequest($route, array $params = array())
+    private function sendGetRequest($route, array $params = [])
     {
         $queryParams = Http::prepareQueryParams(
             $this->client->getSideload($params),
@@ -164,11 +164,11 @@ class Tickets extends ResourceAbstract
         if (!$this->hasKeys($params, ['id'])) {
             throw new MissingParametersException(__METHOD__, ['id']);
         }
-        $endPoint = Http::prepare('channels/twitter/tickets/' . $params['id'] . '/statuses.json' . (is_array($params['comment_ids']) ?
-                '?' . implode(
-                    ',',
-                    $params['comment_ids']
-                ) : ''), $this->client->getSideload($params));
+        $endPointBase = 'channels/twitter/tickets/' . $params['id'] . '/statuses.json';
+        $endPoint = Http::prepare(
+            $endPointBase . (is_array($params['comment_ids']) ? '?' . implode(',', $params['comment_ids']) : ''),
+            $this->client->getSideload($params)
+        );
         $response = Http::sendWithOptions($this->client, $endPoint);
         if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
             throw new ResponseException(__METHOD__);
@@ -214,16 +214,16 @@ class Tickets extends ResourceAbstract
         if ((!$params['twitter_status_message_id']) || (!$params['monitored_twitter_handle_id'])) {
             throw new MissingParametersException(
                 __METHOD__,
-                array('twitter_status_message_id', 'monitored_twitter_handle_id')
+                ['twitter_status_message_id', 'monitored_twitter_handle_id']
             );
         }
         $endPoint = Http::prepare('channels/twitter/tickets.json');
-        $response = Http::sendWithOptions($this->client, $endPoint, array(self::OBJ_NAME => $params), 'POST');
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
+        $response = Http::sendWithOptions($this->client, $endPoint, [self::OBJ_NAME => $params], 'POST');
+        $lastResponseCode = $this->client->getDebug()->lastResponseCode;
+        if ((!is_object($response)) || ($lastResponseCode != 201)) {
             throw new ResponseException(
                 __METHOD__,
-                ($this->client->getDebug()->lastResponseCode == 422 ? ' (hint: you can\'t create two tickets from the same tweet)'
-                    : '')
+                ($lastResponseCode == 422 ? ' (hint: you can\'t create two tickets from the same tweet)' : '')
             );
         }
         $this->client->setSideload(null);
@@ -323,13 +323,14 @@ class Tickets extends ResourceAbstract
             $options
         );
 
+        $lastResponseCode = $this->client->getDebug()->lastResponseCode;
         // Seems to be a bug in the service, it may respond with 422 even when it succeeds
-        if ($this->client->getDebug()->lastResponseCode != 200) {
+        if ($lastResponseCode != 200) {
+            $notice = ' (note: there\'s currently a bug in the service so this call may have succeeded;' .
+                'call tickets->find to see if it still exists.)';
             throw new ResponseException(
                 __METHOD__,
-                ($this->client->getDebug()->lastResponseCode == 422
-                    ? ' (note: there\'s currently a bug in the service so this call may have succeeded; call tickets->find to see if it still exists.)'
-                    : '')
+                ($lastResponseCode == 422 ? $notice : '')
             );
         }
         $this->client->setSideload(null);
@@ -356,7 +357,7 @@ class Tickets extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, ['id']);
         }
 
-        return $this->_sendGetRequest(__FUNCTION__, $params);
+        return $this->sendGetRequest(__FUNCTION__, $params);
     }
 
     /**
@@ -400,7 +401,7 @@ class Tickets extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, ['id']);
         }
 
-        return $this->_sendGetRequest(__FUNCTION__, $params);
+        return $this->sendGetRequest(__FUNCTION__, $params);
     }
 
     /**
@@ -422,7 +423,7 @@ class Tickets extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, ['id']);
         }
 
-        return $this->_sendGetRequest(__FUNCTION__, $params);
+        return $this->sendGetRequest(__FUNCTION__, $params);
     }
 
 
@@ -439,7 +440,7 @@ class Tickets extends ResourceAbstract
      */
     public function problems(array $params = [])
     {
-        return $this->_sendGetRequest(__FUNCTION__, $params);
+        return $this->sendGetRequest(__FUNCTION__, $params);
     }
 
     /**
