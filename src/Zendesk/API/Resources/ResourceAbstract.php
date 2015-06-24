@@ -36,6 +36,11 @@ abstract class ResourceAbstract
     protected $routes;
 
     /**
+     * @var array
+     */
+    protected $additionalRouteParams = [];
+
+    /**
      * @param HttpClient $client
      */
     public function __construct(HttpClient $client)
@@ -224,7 +229,9 @@ abstract class ResourceAbstract
         }
 
         $route = $this->routes[$name];
-        foreach ($params as $name => $value) {
+
+        $substitutions = array_merge($params, $this->getAdditionalRouteParams());
+        foreach ($substitutions as $name => $value) {
             if (is_scalar($value)) {
                 $route = str_replace('{' . $name . '}', $value, $route);
             }
@@ -273,9 +280,7 @@ abstract class ResourceAbstract
     public function find($id = null, array $queryParams = array())
     {
         if (empty( $id )) {
-            $chainedParameters = $this->getChainedParameters();
-            $className         = get_class($this);
-            $id                = isset( $chainedParameters[$className] ) ? $chainedParameters[$className] : null;
+            $id = $this->getChainedParameter(get_class($this));
         }
 
         if (empty( $id )) {
@@ -292,6 +297,21 @@ abstract class ResourceAbstract
         return $response;
     }
 
+    /**
+     * @param array $additionalRouteParams
+     */
+    public function setAdditionalRouteParams($additionalRouteParams)
+    {
+        $this->additionalRouteParams = $additionalRouteParams;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdditionalRouteParams()
+    {
+        return $this->additionalRouteParams;
+    }
 
     /**
      * Create a new resource

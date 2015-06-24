@@ -57,8 +57,9 @@ class Tickets extends ResourceAbstract
     public static function getValidRelations()
     {
         return [
-            'comments' => TicketComments::class,
-            'tags'     => Tags::class
+          'comments' => TicketComments::class,
+          'tags'     => Tags::class,
+          'audits'   => TicketAudits::class,
         ];
     }
 
