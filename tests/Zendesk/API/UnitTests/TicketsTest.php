@@ -2,6 +2,8 @@
 
 namespace Zendesk\API\UnitTests;
 
+use GuzzleHttp\Psr7\Response;
+
 /**
  * Tickets test class
  */
@@ -35,88 +37,103 @@ class TicketsTest extends BasicTest
 
     public function testAllSideLoadedMethod()
     {
-        $this->mockApiCall(
-            'GET',
-            'tickets.json',
-            array(
-            'tickets' => [ $this->testTicket ],
-            'groups'  => [ ],
-            'users'   => [ ]
-            ),
-            [ 'queryParams' => [ 'include' => 'users,groups' ] ]
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], '')
+        ]);
 
         $this->client->tickets()->sideload(array( 'users', 'groups' ))->findAll();
-        $this->httpMock->verify();
+
+        $this->assertLastRequestIs(
+            [
+            'method' => 'GET',
+            'endpoint' => 'tickets.json',
+            'queryParams' => ['include' => 'users,groups'],
+            ]
+        );
     }
 
     public function testAllSideLoadedParameter()
     {
-        $this->mockApiCall(
-            'GET',
-            'tickets.json',
-            array(
-            'tickets' => [ $this->testTicket ],
-            'groups'  => [ ],
-            'users'   => [ ]
-            ),
-            [ 'queryParams' => array( 'include' => implode(',', array( 'users', 'groups' )) ) ]
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], '')
+        ]);
 
         $this->client->tickets()->findAll(array( 'sideload' => array( 'users', 'groups' ) ));
-        $this->httpMock->verify();
+
+        $this->assertLastRequestIs(
+            [
+            'method' => 'GET',
+            'endpoint' => 'tickets.json',
+            'queryParams' => ['include' => 'users,groups'],
+            ]
+        );
     }
 
     public function testFindSingle()
     {
-        $this->mockApiCall(
-            'GET',
-            'tickets/' . $this->testTicket['id'] . '.json',
-            [ 'ticket' => $this->testTicket ]
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], '')
+        ]);
 
         $this->client->tickets()->find($this->testTicket['id']);
-        $this->httpMock->verify();
+
+        $this->assertLastRequestIs(
+            [
+            'method' => 'GET',
+            'endpoint' => 'tickets/' . $this->testTicket['id'] . '.json',
+            ]
+        );
 
     }
 
     public function testFindSingleChainPattern()
     {
-        $this->mockApiCall(
-            'GET',
-            'tickets/' . $this->testTicket['id'] . '.json',
-            [ 'ticket' => $this->testTicket ]
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], '')
+        ]);
 
         $this->client->tickets($this->testTicket['id'])->find();
-        $this->httpMock->verify();
+
+        $this->assertLastRequestIs(
+            [
+            'method' => 'GET',
+            'tickets/' . $this->testTicket['id'] . '.json',
+            ]
+        );
     }
 
     public function testFindMultiple()
     {
-        $this->mockApiCall(
-            'GET',
-            'tickets/show_many.json',
-            [ 'tickets' => array( $this->testTicket, $this->testTicket2 ) ],
-            [ 'queryParams' => array( 'ids' => implode(',', [ $this->testTicket['id'], $this->testTicket2['id'] ]) ) ]
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], '')
+        ]);
 
         $testTicketIds = [ 'ids' => [ $this->testTicket['id'], $this->testTicket2['id'] ] ];
         $this->client->tickets()->findMany($testTicketIds);
-        $this->httpMock->verify();
+
+        $this->assertLastRequestIs(
+            [
+            'method' => 'GET',
+            'endpoint' => 'tickets/show_many.json',
+            'queryParams' => ['ids' => implode(',', [ $this->testTicket['id'], $this->testTicket2['id'] ])],
+            ]
+        );
     }
 
     public function testDeleteMultiple()
     {
-        $this->mockApiCall(
-            'DELETE',
-            'tickets/destroy_many.json?ids=123%2C321',
-            array( 'tickets' => [ ] ),
-            [ 'queryParams' => array( 'ids' => implode(',', [ 123, 321 ]) ) ]
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], '')
+        ]);
 
         $this->client->tickets()->deleteMany(array( 123, 321 ));
-        $this->httpMock->verify();
+        $this->assertLastRequestIs(
+            [
+            'method' => 'DELETE',
+            'endpoint' => 'tickets/destroy_many.json',
+            'queryParams' => ['ids' => implode(',', [ 123, 321 ])],
+            ]
+        );
     }
 
     public function testCreateWithAttachment()
@@ -146,29 +163,28 @@ class TicketsTest extends BasicTest
 
     public function testExport()
     {
-        $this->mockApiCall(
-            'GET',
-            'exports/tickets.json',
-            array( 'results' => [ ] ),
-            [ 'queryParams' => [ 'start_time' => '1332034771' ] ]
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], '')
+        ]);
+
         $this->client->tickets()->export(array( 'start_time' => '1332034771' ));
-        $this->httpMock->verify();
+
+        $this->assertLastRequestIs(
+            [
+            'method' => 'GET',
+            'endpoint' => 'exports/tickets.json',
+            'queryParams' => [ 'start_time' => '1332034771' ],
+            ]
+        );
     }
 
     public function testUpdateManyWithQueryParams()
     {
         $ticketIds = [ $this->testTicket['id'], $this->testTicket2['id'] ];
 
-        $this->mockApiCall(
-            'PUT',
-            'tickets/update_many.json',
-            array( 'job_status' => [ 'job_status' => [ 'id' => 'bugger off' ] ] ),
-            [
-            'queryParams' => [ 'ids' => implode(',', $ticketIds) ],
-            'bodyParams'  => [ 'ticket' => [ 'status' => 'solved' ] ]
-            ]
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], '')
+        ]);
 
         $this->client->tickets()->updateMany(
             [
@@ -176,38 +192,50 @@ class TicketsTest extends BasicTest
             'status' => 'solved'
             ]
         );
-        $this->httpMock->verify();
+
+        $this->assertLastRequestIs(
+            [
+            'method' => 'PUT',
+            'endpoint' => 'tickets/update_many.json',
+            'queryParams' => [ 'ids' => implode(',', $ticketIds) ],
+            'postFields'  => [ 'ticket' => [ 'status' => 'solved' ] ]
+            ]
+        );
     }
 
     public function testUpdateMany()
     {
         $tickets = [ $this->testTicket, $this->testTicket2 ];
 
-        $this->mockApiCall(
-            'PUT',
-            'tickets/update_many.json',
-            array( 'job_status' => [ 'job_status' => [ 'id' => 'bugger off' ] ] ),
-            [
-            'bodyParams' => [ 'tickets' => $tickets ]
-            ]
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], '')
+        ]);
 
         $this->client->tickets()->updateMany($tickets);
-        $this->httpMock->verify();
+
+        $this->assertLastRequestIs(
+            [
+            'method' => 'PUT',
+            'endpoint' => 'tickets/update_many.json',
+            'postFields' => [ 'tickets' => $tickets ]
+            ]
+        );
     }
 
     public function testRelated()
     {
-        $this->mockApiCall(
-            'GET',
-            'tickets/12345/related.json',
-            array( 'topic_id' => 1 ),
-            array( 'statusCode' => 200 )
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], json_encode(['topic_id' => 1]))
+        ]);
 
         $related = $this->client->tickets(12345)->related();
 
-        $this->httpMock->verify();
+        $this->assertLastRequestIs(
+            [
+            'method' => 'GET',
+            'endpoint' => 'tickets/12345/related.json',
+            ]
+        );
 
         // Test if the method returns readable data
         $this->assertEquals(is_object($related), true, 'Should return an object');
@@ -215,95 +243,106 @@ class TicketsTest extends BasicTest
 
     public function testCollaborators()
     {
-        $this->mockApiCall(
-            'GET',
-            'tickets/12345/collaborators.json',
-            array( 'topic_id' => 1 ),
-            array( 'statusCode' => 200 )
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], json_encode(['topic_id' => 1]))
+        ]);
 
         $collaborators = $this->client->tickets()->collaborators(array( 'id' => 12345 ));
 
-        $this->httpMock->verify();
+        $this->assertLastRequestIs(
+            [
+            'method' => 'GET',
+            'endpoint' => 'tickets/12345/collaborators.json',
+            ]
+        );
 
         $this->assertEquals(is_object($collaborators), true, 'Should return an object');
     }
 
     public function testIncidents()
     {
-        $this->mockApiCall(
-            'GET',
-            'tickets/12345/incidents.json',
-            array( 'topic_id' => 1 ),
-            array( 'statusCode' => 200 )
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], json_encode(['topic_id' => 1]))
+        ]);
 
         $incidents = $this->client->tickets()->incidents(array( 'id' => 12345 ));
 
-        $this->httpMock->verify();
+        $this->assertLastRequestIs(
+            [
+            'method' => 'GET',
+            'endpoint' => 'tickets/12345/incidents.json',
+            ]
+        );
 
         $this->assertEquals(is_object($incidents), true, 'Should return an object');
     }
 
     public function testProblems()
     {
-        $this->mockApiCall(
-            'GET',
-            'problems.json',
-            array( 'tickets' => [ ] ),
-            array( 'statusCode' => 200 )
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], json_encode(['tickets' => []]))
+        ]);
 
         $problems = $this->client->tickets()->problems();
 
-        $this->httpMock->verify();
+        $this->assertLastRequestIs(
+            [
+            'method' => 'GET',
+            'endpoint' => 'problems.json',
+            ]
+        );
 
         $this->assertEquals(is_object($problems), true, 'Should return an object');
     }
 
     public function testProblemAutoComplete()
     {
-        $this->mockApiCall(
-            'POST',
-            'problems/autocomplete.json',
-            array( 'tickets' => [ ] ),
-            array(
-            'statusCode' => 200,
-            'bodyParams' => [ 'text' => 'foo' ]
-            )
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], json_encode(['tickets' => []]))
+        ]);
 
         $this->client->tickets()->problemAutoComplete(array( 'text' => 'foo' ));
 
-        $this->httpMock->verify();
+        $this->assertLastRequestIs(
+            [
+            'method' => 'POST',
+            'endpoint' => 'problems/autocomplete.json',
+            'postFields' => ['text' => 'foo'],
+            ]
+        );
+
     }
 
     public function testMarkAsSpam()
     {
-        $this->mockApiCall(
-            'PUT',
-            'tickets/12345/mark_as_spam.json',
-            [ ],
-            [ 'statusCode' => 200 ]
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], '')
+        ]);
 
         $this->client->tickets(12345)->markAsSpam();
-        $this->httpMock->verify();
+
+        $this->assertLastRequestIs(
+            [
+            'method' => 'PUT',
+            'endpoint' => 'tickets/12345/mark_as_spam.json',
+            ]
+        );
     }
 
     public function testMarkManyAsSpam()
     {
-        $this->mockApiCall(
-            'PUT',
-            'tickets/mark_many_as_spam.json',
-            [ ],
+        $this->mockAPIResponses([
+          new Response(200, [], '')
+        ]);
+
+        $this->client->tickets()->markAsSpam([ 12345, 54321 ]);
+
+        $this->assertLastRequestIs(
             [
-            'statusCode'  => 200,
+            'method' => 'PUT',
+            'endpoint' => 'tickets/mark_many_as_spam.json',
             'queryParams' => [ 'ids' => '12345,54321' ]
             ]
         );
-
-        $this->client->tickets()->markAsSpam([ 12345, 54321 ]);
-        $this->httpMock->verify();
     }
 }

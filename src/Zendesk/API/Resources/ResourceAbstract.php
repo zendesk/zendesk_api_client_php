@@ -5,6 +5,7 @@ namespace Zendesk\API\Resources;
 use Zendesk\API\Http;
 use Zendesk\API\HttpClient;
 use Zendesk\API\UtilityTraits\ChainedParametersTrait;
+use Zendesk\API\Exceptions\MissingParametersException;
 
 /**
  * Abstract class for all endpoints

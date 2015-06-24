@@ -1,6 +1,8 @@
 <?php
 namespace Zendesk\API\UnitTests;
 
+use GuzzleHttp\Psr7\Response;
+
 class ResourceTest extends BasicTest
 {
     private $_dummyResource;
@@ -13,74 +15,82 @@ class ResourceTest extends BasicTest
 
     public function testFindAll()
     {
-        $this->mockApiCall(
-            'GET',
-            'dummyresource.json',
-            array('dummies' => true)
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], '')
+        ]);
 
         $this->_dummyResource->findAll();
+
+        $this->assertLastRequestIs([
+            'method' => 'GET',
+            'endpoint' => 'dummyresource.json',
+          ]);
     }
 
     public function testFind()
     {
-        $this->mockApiCall(
-            'GET',
-            'dummyresource/1.json',
-            array('dummy' => true)
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], json_encode(['dummy' => true]))
+        ]);
 
-        $response = $this->_dummyResource->find(1);
+        $this->_dummyResource->find(1);
 
-        $this->assertEquals(
-            isset($response->dummy),
-            true,
-            'Should return a response called "dummy"'
-        );
+        $this->assertLastRequestIs([
+            'method' => 'GET',
+            'endpoint' => 'dummyresource/1.json',
+        ]);
     }
 
     public function testCreate()
     {
-        $this->mockApiCall(
-            'POST',
-            'dummyresource.json',
-            array('foo' => 'test response'),
-            array(
-                'bodyParams' => array(
-                    'dummy' => array('foo' => 'test body')
-                )
-            )
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], '')
+        ]);
 
-        $this->_dummyResource->create(
-            array('foo' => 'test body')
-        );
+        $postFields = ['foo' => 'test body'];
 
-        $this->httpMock->verify();
+        $this->_dummyResource->create($postFields);
+
+        $this->assertLastRequestIs(
+            [
+            'method' => 'POST',
+            'endpoint' => 'dummyresource.json',
+            'postFields' => ['dummy' => $postFields]
+            ]
+        );
     }
 
     public function testUpdate()
     {
-        $this->mockApiCall(
-            'PUT',
-            'dummyresource/1.json',
-            array('foo' => 'test response'),
-            array(
-                'bodyParams' => array(
-                    'dummy' => array('foo' => 'test body')
-                )
-            )
-        );
+        $this->mockAPIResponses([
+          new Response(200, [], '')
+        ]);
 
-        $this->_dummyResource->update(1, array('foo' => 'test body'));
-        $this->httpMock->verify();
+        $postFields = ['foo' => 'test body'];
+        $this->_dummyResource->update(1, $postFields);
+
+        $this->assertLastRequestIs(
+            [
+              'method' => 'PUT',
+              'endpoint' => 'dummyresource/1.json',
+              'postFields' => ['dummy' => $postFields],
+            ]
+        );
     }
 
     public function testDelete()
     {
-        $this->mockApiCall('DELETE', 'dummyresource/1.json', []);
+        $this->mockAPIResponses([
+          new Response(200, [], '')
+        ]);
 
         $this->_dummyResource->delete(1);
-        $this->httpMock->verify();
+
+        $this->assertLastRequestIs(
+            [
+              'method' => 'DELETE',
+              'endpoint' => 'dummyresource/1.json'
+            ]
+        );
     }
 }

@@ -2,16 +2,17 @@
 
 namespace Zendesk\API\UnitTests;
 
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Middleware;
 use Zendesk\API\HttpClient;
-use Aeris\GuzzleHttpMock\Mock as GuzzleHttpMock;
 
 /**
  * Basic test class
  */
 abstract class BasicTest extends \PHPUnit_Framework_TestCase
 {
-
-
     protected $client;
     protected $subdomain;
     protected $password;
@@ -20,11 +21,10 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
     protected $hostname;
     protected $scheme;
     protected $port;
-    protected $httpMock;
+    protected $mockedTransactionsContainer = [];
 
     public function __construct()
     {
-
         $this->subdomain = getenv('SUBDOMAIN');
         $this->username = getenv('USERNAME');
         $this->password = getenv('PASSWORD');
@@ -44,22 +44,28 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
     {
         $this->client = new HttpClient($this->subdomain, $this->username, $this->scheme, $this->hostname, $this->port);
         $this->client->setAuth('token', $this->token);
-        $this->httpMock = new GuzzleHttpMock();
-        $this->httpMock->attachToClient($this->client->guzzle);
     }
 
-    protected function mockApiCall($httpMethod, $path, $response, $options = [])
+    /**
+     * This will mock the next responses sent via guzzle
+     *
+     * @param array $responses
+     *   An array of GuzzleHttp\Psr7\Response objects
+     */
+    protected function mockApiResponses($responses = [])
     {
-        $bodyParams = isset($options['bodyParams']) ? $options['bodyParams'] : [];
-        $queryParams = isset($options['queryParams']) ? $options['queryParams'] : [];
-        $statusCode = isset($options['statusCode']) ? $options['statusCode'] : [];
+        if (empty($responses)) {
+            return;
+        } elseif (!is_array($responses)) {
+            $responses = [$responses];
+        }
 
-        $this->httpMock->shouldReceiveRequest()
-            ->withMethod($httpMethod)
-            ->withUrl($this->client->getApiUrl() . $path)
-            ->withQueryParams($queryParams)
-            ->withJsonBodyParams($bodyParams)
-            ->andRespondWithJson($response, $statusCode = $statusCode);
+        $history = Middleware::history($this->mockedTransactionsContainer);
+        $mock = new MockHandler($responses);
+        $handler = HandlerStack::create($mock);
+        $handler->push($history);
+
+        $this->client->guzzle = new Client(['handler' => $handler]);
     }
 
     public function authTokenTest()
@@ -79,5 +85,53 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
             $this->username,
             'Expecting $this->username parameter; does phpunit.xml exist?'
         );
+    }
+
+    public function assertLastRequestIs($options)
+    {
+        $this->assertRequestIs($options, count($this->mockedTransactionsContainer) - 1);
+    }
+
+    public function assertRequestIs($options, $index = 0)
+    {
+        $transaction = $this->mockedTransactionsContainer[$index];
+        $request = $transaction['request'];
+        $response = $transaction['response'];
+
+        $options = array_merge([
+          'statusCode' => 200,
+          'headers' => [
+            'Accept'       => 'application/json',
+            'Content-Type' => 'application/json'
+          ]
+        ], $options);
+
+        $this->assertEquals($options['statusCode'], $response->getStatusCode());
+
+        if (isset($options['headers']) && is_array($options['headers'])) {
+            foreach ($options['headers'] as $headerKey => $value) {
+                $this->assertNotEmpty($header = $request->getHeader($headerKey));
+                $this->assertEquals($options['headers'][$headerKey], $value);
+            }
+        }
+
+        if (isset($options['method'])) {
+            $this->assertEquals($options['method'], $request->getMethod());
+        }
+
+        if (isset($options['endpoint'])) {
+            // Truncate the `/api/v2` part of the target
+            $endpoint = str_replace('/api/v2/', '', $request->getUri()->getPath());
+            $this->assertEquals($options['endpoint'], $endpoint);
+        }
+
+        if (isset($options['queryParams'])) {
+            $expectedQueryParams = urldecode(http_build_query($options['queryParams']));
+            $this->assertEquals($expectedQueryParams, $request->getUri()->getQuery());
+        }
+
+        if (isset($options['postFields'])) {
+            $this->assertEquals(json_encode($options['postFields']), $request->getBody()->getContents());
+        }
     }
 }
