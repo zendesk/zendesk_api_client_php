@@ -18,8 +18,8 @@ class Http
     /**
      * Prepares an endpoint URL with optional side-loading
      *
-     * @param array $sideload
-     * @param array $iterators
+     * @param array  $sideload
+     * @param array  $iterators
      *
      * @return string
      */
@@ -79,6 +79,7 @@ class Http
             'Content-Type' => $options['contentType'],
         ];
 
+
         $request = new Request(
             $options['method'],
             $client->getApiUrl() . $endPoint,
@@ -120,7 +121,6 @@ class Http
         } catch (RequestException $e) {
             throw new ApiResponseException($e);
         }
-
 
         return json_decode($response->getBody()->getContents());
     }
