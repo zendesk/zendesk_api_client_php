@@ -2,6 +2,8 @@
 
 namespace Zendesk\API\UnitTests;
 
+use GuzzleHttp\Psr7\Response;
+
 /**
  * Ticket Audits test class
  */
@@ -12,15 +14,34 @@ class TicketFormsTest extends BasicTest
      */
     public function testDeleteThrowsException()
     {
-        $this->mockApiCall('DELETE', 'ticket_forms/1.json', [], ['statusCode' => 422]);
+        $this->mockAPIResponses([
+            new Response(422, [], '')
+        ]);
+
         $this->client->tickets()->forms(1)->delete();
+
+        $this->assertLastRequestIs(
+            [
+                'method'   => 'DELETE',
+                'endpoint' => 'ticket_forms/1.json'
+            ]
+        );
     }
 
     public function testCloneForm()
     {
-        $this->mockApiCall('POST', 'ticket_forms/1/clone.json', [], ['statusCode' => 200]);
+        $this->mockAPIResponses([
+            new Response(200, [], '')
+        ]);
+
         $this->client->tickets()->forms(1)->cloneForm();
-        $this->httpMock->verify();
+
+        $this->assertLastRequestIs(
+            [
+                'method'   => 'POST',
+                'endpoint' => 'ticket_forms/1/clone.json'
+            ]
+        );
     }
 
     /**
@@ -31,18 +52,34 @@ class TicketFormsTest extends BasicTest
      */
     public function testCloneFormThrowsException()
     {
-        $this->mockApiCall('POST', 'ticket_forms/1/clone.json', [], ['statusCode' => 200]);
+        $this->mockAPIResponses([
+            new Response(200, [], '')
+        ]);
+
         $this->client->tickets(1)->forms()->cloneForm();
-        $this->httpMock->verify();
+
+        $this->assertLastRequestIs(
+            [
+                'method'   => 'POST',
+                'endpoint' => 'ticket_forms/1/clone.json'
+            ]
+        );
     }
 
     public function testReorder()
     {
-        $this->mockApiCall('PUT', 'ticket_forms/reorder.json', [], [
-                'statusCode' => 200,
-                'bodyParams' => ['ticket_form_ids' => [3, 4, 5, 1]]
-            ]);
+        $this->mockAPIResponses([
+            new Response(200, [], '')
+        ]);
+
         $this->client->tickets()->forms()->reorder([3, 4, 5, 1]);
-        $this->httpMock->verify();
+
+        $this->assertLastRequestIs(
+            [
+                'method'     => 'PUT',
+                'endpoint'   => 'ticket_forms/reorder.json',
+                'postFields' => ['ticket_form_ids' => [3, 4, 5, 1]]
+            ]
+        );
     }
 }

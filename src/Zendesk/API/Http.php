@@ -2,9 +2,8 @@
 
 namespace Zendesk\API;
 
-use Zendesk\API\Exceptions\ResponseException;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Stream;
+use Zendesk\API\Exceptions\ResponseException;
 
 /**
  * HTTP functions via curl
@@ -48,13 +47,13 @@ class Http
      * Use the send method to call every endpoint except for oauth/tokens
      *
      * @param HttpClient $client
-     * @param string $endPoint E.g. "/tickets.json"
-     * @param array $options
-     *          Available options are listed below:
-     *          array $queryParams Array of unencoded key-value pairs, e.g. ["ids" => "1,2,3,4"]
-     *          array $postFields Array of unencoded key-value pairs, e.g. ["filename" => "blah.png"]
-     *          string $method "GET", "POST", etc. Default is GET.
-     *          string $contentType Default is "application/json"
+     * @param string     $endPoint E.g. "/tickets.json"
+     * @param array      $options
+     *                             Available options are listed below:
+     *                             array $queryParams Array of unencoded key-value pairs, e.g. ["ids" => "1,2,3,4"]
+     *                             array $postFields Array of unencoded key-value pairs, e.g. ["filename" => "blah.png"]
+     *                             string $method "GET", "POST", etc. Default is GET.
+     *                             string $contentType Default is "application/json"
      *
      * @return array The response body, parsed from JSON into an associative array
      */
@@ -65,17 +64,17 @@ class Http
     ) {
         $options = array_merge(
             [
-            'method'      => 'GET',
-            'contentType' => 'application/json',
-            'postFields'  => null,
-            'queryParams' => null
+                'method'      => 'GET',
+                'contentType' => 'application/json',
+                'postFields'  => null,
+                'queryParams' => null
             ],
             $options
         );
 
         $headers = [
-          'Accept'       => 'application/json',
-          'Content-Type' => $options['contentType']
+            'Accept'       => 'application/json',
+            'Content-Type' => $options['contentType']
         ];
 
         $request = new Request(
@@ -98,22 +97,20 @@ class Http
 
         try {
             $response = $client->guzzle->send($request);
+
+            $responseCode = $response->getStatusCode();
+
+            $client->setDebug(
+                $response->getHeaders(),
+                $responseCode,
+                10,
+                null
+            );
         } catch (\GuzzleHttp\Exception\ClientException $e) {
-            var_dump($e->getRequest()->getUri());
-            var_dump($e->getResponse()->getStatusCode());
+            throw new ResponseException($endPoint, null, null, $e);
         }
 
-        $responseCode       = $response->getStatusCode();
-        $parsedResponseBody = json_decode($response->getBody()->getContents());
-
-        $client->setDebug(
-            $response->getHeaders(),
-            $responseCode,
-            10,
-            null
-        );
-
-        return $parsedResponseBody;
+        return json_decode($response->getBody()->getContents());
     }
 
     /**
@@ -132,6 +129,8 @@ class Http
     {
         $url = 'https://' . $client->getSubdomain() . '.zendesk.com/oauth/tokens';
 
+        $protocol = ($_SERVER['HTTPS']) ? 'https://' : 'http://';
+
         $curl = (isset(self::$curl)) ? self::$curl : new CurlRequest;
         $curl->setopt(CURLOPT_URL, $url);
         $curl->setopt(CURLOPT_POST, true);
@@ -140,7 +139,7 @@ class Http
             'code'          => $code,
             'client_id'     => $oAuthId,
             'client_secret' => $oAuthSecret,
-            'redirect_uri'  => ($_SERVER['HTTPS'] ? 'https://' : 'http://') . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'],
+            'redirect_uri'  => $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'],
             'scope'         => 'read'
         ]));
         $curl->setopt(CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
