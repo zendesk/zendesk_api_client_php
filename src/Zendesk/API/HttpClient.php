@@ -256,7 +256,11 @@ class HttpClient
      */
     public function getSideload(array $params = null)
     {
-        return ((isset($params['sideload'])) && (is_array($params['sideload'])) ? $params['sideload'] : $this->sideload);
+        if ((isset($params['sideload'])) && (is_array($params['sideload']))) {
+            return $params['sideload'];
+        } else {
+            return $this->sideload;
+        }
     }
 
     /*
