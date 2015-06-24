@@ -38,7 +38,7 @@ class TicketAudits extends ResourceAbstract
     public function findAll(array $params = array())
     {
         $params = $this->addChainedParametersToParams($params, ['ticket_id' => Tickets::class]);
-        if ( ! $this->hasKeys($params, array('ticket_id'))) {
+        if (! $this->hasKeys($params, array('ticket_id'))) {
             throw new MissingParametersException(__METHOD__, array('ticket_id'));
         }
 
@@ -62,13 +62,13 @@ class TicketAudits extends ResourceAbstract
         }
 
         $params = $this->addChainedParametersToParams(
-          $params,
-          [
+            $params,
+            [
             'ticket_id' => Tickets::class,
-          ]
+            ]
         );
 
-        if ( ! $this->hasKeys($params, array('ticket_id'))) {
+        if (! $this->hasKeys($params, array('ticket_id'))) {
             throw new MissingParametersException(__METHOD__, array('ticket_id'));
         }
 
