@@ -18,8 +18,8 @@ class TicketForms extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
-            'clone'   => 'ticket_forms/{id}/clone.json',
-            'reorder' => 'ticket_forms/reorder.json'
+          'clone'   => 'ticket_forms/{id}/clone.json',
+          'reorder' => 'ticket_forms/reorder.json'
         ]);
     }
 
@@ -31,7 +31,6 @@ class TicketForms extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws Zendesk\API\Exceptions\MissingParametersException
-     *
      * @return mixed
      */
     public function cloneForm($id = null)
@@ -63,7 +62,6 @@ class TicketForms extends ResourceAbstract
      *
      * @throws ResponseException
      * @throws \Exception
-     *
      * @return mixed
      */
     public function reorder(array $ticketFormIds)

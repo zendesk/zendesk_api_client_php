@@ -7,6 +7,7 @@ namespace Zendesk\API;
  * spl_autoload_register(function($c){@include 'src/'.preg_replace('#\\\|_(?!.+\\\)#','/',$c).'.php';});
  */
 
+use Zendesk\API\Exceptions\AuthException;
 use Zendesk\API\Resources\Tags;
 use Zendesk\API\Resources\Tickets;
 use Zendesk\API\Resources\Users;
@@ -15,9 +16,7 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
 /**
  * Client class, base level access
- *
  * @package Zendesk\API
- *
  * @method Debug debug()
  * @method Tickets ticket()
  * @method Tickets tickets()
@@ -28,7 +27,17 @@ class HttpClient
 {
     use InstantiatorTrait;
 
-    protected $method;
+    const AUTH_OAUTH = 'oauth';
+    const AUTH_BASIC = 'basic';
+
+    /**
+     * @var string
+     */
+    protected $authStrategy;
+    /**
+     * @var Array
+     */
+    protected $authOptions;
     /**
      * @var string
      */
@@ -112,10 +121,10 @@ class HttpClient
         }
 
         $this->subdomain = $subdomain;
-        $this->username = $username;
-        $this->hostname = $hostname;
-        $this->scheme = $scheme;
-        $this->port = $port;
+        $this->username  = $username;
+        $this->hostname  = $hostname;
+        $this->scheme    = $scheme;
+        $this->port      = $port;
 
         if (empty($subdomain)) {
             $this->apiUrl = "$scheme://$hostname:$port/api/{$this->apiVer}/";
@@ -129,28 +138,47 @@ class HttpClient
     public static function getValidRelations()
     {
         return [
-            'tickets' => Tickets::class,
-            'users'   => Users::class,
-            'views'   => Views::class,
-            'tags'    => Tags::class
+          'tickets' => Tickets::class,
+          'users'   => Users::class,
+          'views'   => Views::class,
+          'tags'    => Tags::class
         ];
     }
 
     /**
      * Configure the authorization method
      *
-     * @param string $method
-     * @param array  $options
+     * @param $strategy
+     * @param array $options
+     *
+     * @throws AuthException
      */
-    public function setAuth($method, array $options)
+    public function setAuth($strategy, array $options)
     {
-        $this->method = $method;
+        $validAuthStrategies = [self::AUTH_BASIC, self::AUTH_OAUTH];
+        if (! in_array($strategy, $validAuthStrategies)) {
+            throw new AuthException('Invalid auth strategy set, please use `'
+                                    . implode('` or `', $validAuthStrategies)
+                                    . '`');
+        }
+
+        $this->authStrategy = $strategy;
+
+        if ($strategy == self::AUTH_BASIC) {
+            if (! array_key_exists('username', $options) || ! array_key_exists('token', $options)) {
+                throw new AuthException('Please supply `username` and `token` for basic auth.');
+            }
+        } elseif ($strategy == self::AUTH_OAUTH) {
+            if (! array_key_exists('token', $options)) {
+                throw new AuthException('Please supply `token` for oauth.');
+            }
+        }
+
         $this->authOptions = $options;
     }
 
     /**
      * Returns the supplied subdomain
-     *
      * @return string
      */
     public function getSubdomain()
@@ -160,7 +188,6 @@ class HttpClient
 
     /**
      * Returns the generated api URL
-     *
      * @return string
      */
     public function getApiUrl()
@@ -170,7 +197,6 @@ class HttpClient
 
     /**
      * Returns a text value indicating the type of authorization configured
-     *
      * @return string
      */
     public function getAuthOptions()
@@ -179,35 +205,31 @@ class HttpClient
     }
 
     /**
-     * Compiles an auth string with either token, password or OAuth credentials
-     *
      * @return string
      */
-    public function getAuthText()
+    public function getAuthStrategy()
     {
-        return ($this->oAuthToken ? $this->oAuthToken
-            : $this->username . ($this->token ? '/token:' . $this->token : ':' . $this->password));
+        return $this->authStrategy;
     }
 
     /**
      * Set debug information as an object
      *
-     * @param mixed  $lastRequestHeaders
-     * @param mixed  $lastResponseCode
+     * @param mixed $lastRequestHeaders
+     * @param mixed $lastResponseCode
      * @param string $lastResponseHeaders
-     * @param mixed  $lastResponseError
+     * @param mixed $lastResponseError
      */
     public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError)
     {
-        $this->debug->lastRequestHeaders = $lastRequestHeaders;
-        $this->debug->lastResponseCode = $lastResponseCode;
+        $this->debug->lastRequestHeaders  = $lastRequestHeaders;
+        $this->debug->lastResponseCode    = $lastResponseCode;
         $this->debug->lastResponseHeaders = $lastResponseHeaders;
-        $this->debug->lastResponseError = $lastResponseError;
+        $this->debug->lastResponseError   = $lastResponseError;
     }
 
     /**
      * Returns debug information in an object
-     *
      * @return Debug
      */
     public function getDebug()
@@ -294,7 +316,6 @@ class HttpClient
      *
      * @throws MissingParametersException
      * @throws ResponseException
-     *
      * @return mixed
      */
     public function search(array $params)
@@ -307,7 +328,6 @@ class HttpClient
      *
      * @throws MissingParametersException
      * @throws ResponseException
-     *
      * @return mixed
      */
     public function anonymousSearch(array $params)
