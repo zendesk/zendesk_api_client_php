@@ -13,16 +13,46 @@ use Zendesk\API\HttpClient;
  */
 abstract class BasicTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var HttpClient
+     */
     protected $client;
+    /**
+     * @var string
+     */
     protected $subdomain;
+    /**
+     * @var string
+     */
     protected $password;
+    /**
+     * @var string
+     */
     protected $token;
+    /**
+     * @var string
+     */
     protected $oAuthToken;
+    /**
+     * @var string
+     */
     protected $hostname;
+    /**
+     * @var string
+     */
     protected $scheme;
+    /**
+     * @var string
+     */
     protected $port;
+    /**
+     * @var array
+     */
     protected $mockedTransactionsContainer = [];
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct()
     {
         $this->subdomain  = getenv('SUBDOMAIN');
@@ -67,25 +97,11 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
 
     }
 
-    public function authTokenTest()
-    {
-        $tickets = $this->client->tickets()->findAll();
-        $this->assertEquals($this->client->getDebug()->lastResponseCode, '200', 'Does not return HTTP code 200');
-    }
-
-    public function credentialsTest()
-    {
-        $this->assertNotEmpty(
-            $this->subdomain,
-            'Expecting $this->subdomain parameter; does phpunit.xml exist?'
-        );
-        $this->assertNotEmpty($this->token, 'Expecting $this->token parameter; does phpunit.xml exist?');
-        $this->assertNotEmpty(
-            $this->username,
-            'Expecting $this->username parameter; does phpunit.xml exist?'
-        );
-    }
-
+    /**
+     * This checks the last request sent
+     *
+     * @param $options
+     */
     public function assertLastRequestIs($options)
     {
         $this->assertRequestIs($options, count($this->mockedTransactionsContainer) - 1);
