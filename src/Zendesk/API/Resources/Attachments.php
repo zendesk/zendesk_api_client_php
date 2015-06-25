@@ -35,35 +35,39 @@ class Attachments extends ResourceAbstract
      * @throws CustomException
      * @throws MissingParametersException
      * @throws \Exception
-     *
      * @return mixed
      */
     public function upload(array $params)
     {
-        if ( ! $this->hasKeys($params, array('file'))) {
+        if (! $this->hasKeys($params, array('file'))) {
             throw new MissingParametersException(__METHOD__, array('file'));
         }
-        if ( ! file_exists($params['file'])) {
+        if (! file_exists($params['file'])) {
             throw new CustomException('File ' . $params['file'] . ' could not be found in ' . __METHOD__);
         }
-        if ( ! $params['name'] && strrpos($params['file'], '/') > - 1) {
+        if (! $params['name'] && strrpos($params['file'], '/') > - 1) {
             $path_array     = explode('/', $params['file']);
             $file_index     = count($path_array) - 1;
             $params['name'] = $path_array[$file_index];
         }
-        if ( ! $params['name'] && strrpos($params['file'], '/') == false) {
+        if (! $params['name'] && strrpos($params['file'], '/') == false) {
             $params['name'] = $params['file'];
         }
 
-        $response = Http::send_with_options(
-          $this->client,
-          $this->getRoute(__FUNCTION__),
-          [
+        $queryParams = ['filename' => $params ['name']];
+        if (isset($params['token'])) {
+            $queryParams['token'] = $params['token'];
+        }
+
+        $response = Http::sendWithOptions(
+            $this->client,
+            $this->getRoute(__FUNCTION__),
+            [
             'method'      => 'POST',
             'contentType' => 'application/binary',
             'file'        => $params['file'],
-            'queryParams' => ['filename' => $params ['name']],
-          ]
+            'queryParams' => $queryParams,
+            ]
         );
 
         $this->client->setSideload(null);
@@ -97,7 +101,8 @@ class Attachments extends ResourceAbstract
 //        if ( ! $params['name']) {
 //            throw new MissingParametersException(__METHOD__, array('name'));
 //        }
-//        $endPoint = Http::prepare('uploads.json?filename=' . $params['name'] . (isset($params['optional_token']) ? '&token=' . $params['optional_token'] : ''));
+//        $endPoint = Http::prepare('uploads.json?filename='
+//             . $params['name'] . (isset($params['optional_token']) ? '&token=' . $params['optional_token'] : ''));
 //        $response = Http::send($this->client, $endPoint, array('body' => $params['body']), 'POST',
 //          (isset($params['type']) ? $params['type'] : 'application/binary'));
 //        if (( ! is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
