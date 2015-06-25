@@ -97,7 +97,7 @@ class Http
         }
 
         try {
-            $response = $client->guzzle->send($request);
+            $response = $client->guzzle->send($request, ['auth' => $client->getAuthOptions()]);
 
             $client->setDebug(
                 $response->getHeaders(),

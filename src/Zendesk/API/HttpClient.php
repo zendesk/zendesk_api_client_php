@@ -28,6 +28,7 @@ class HttpClient
 {
     use InstantiatorTrait;
 
+    protected $method;
     /**
      * @var string
      */
@@ -48,10 +49,6 @@ class HttpClient
      * @var integer
      */
     protected $port;
-    /**
-     * @var string
-     */
-    protected $password;
     /**
      * @var string
      */
@@ -143,27 +140,12 @@ class HttpClient
      * Configure the authorization method
      *
      * @param string $method
-     * @param string $value
+     * @param array  $options
      */
-    public function setAuth($method, $value)
+    public function setAuth($method, array $options)
     {
-        switch ($method) {
-            case 'password':
-                $this->password = $value;
-                $this->token = '';
-                $this->oAuthToken = '';
-                break;
-            case 'token':
-                $this->password = '';
-                $this->token = $value;
-                $this->oAuthToken = '';
-                break;
-            case 'oauth_token':
-                $this->password = '';
-                $this->token = '';
-                $this->oAuthToken = $value;
-                break;
-        }
+        $this->method = $method;
+        $this->authOptions = $options;
     }
 
     /**
@@ -191,9 +173,9 @@ class HttpClient
      *
      * @return string
      */
-    public function getAuthType()
+    public function getAuthOptions()
     {
-        return ($this->oAuthToken ? 'oauth_token' : ($this->token ? 'token' : 'password'));
+        return $this->authOptions;
     }
 
     /**
