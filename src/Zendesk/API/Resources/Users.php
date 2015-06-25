@@ -2,6 +2,8 @@
 
 namespace Zendesk\API\Resources;
 
+use GuzzleHttp\Psr7\LazyOpenStream;
+use GuzzleHttp\Psr7\MultipartStream;
 use Zendesk\API\Exceptions\CustomException;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
@@ -33,14 +35,15 @@ class Users extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
-            'related'        => 'users/{id}/related.json',
-            'merge'          => 'users/me/merge.json',
-            'search'         => 'users/search.json',
-            'autocomplete'   => 'users/autocomplete.json',
-            'setPassword'    => 'users/{id}/password.json',
-            'changePassword' => 'users/{id}/password.json',
-            'updateMany'     => 'users/update_many.json',
-            'createMany'     => 'users/create_many.json',
+          'related'            => 'users/{id}/related.json',
+          'merge'              => 'users/me/merge.json',
+          'search'             => 'users/search.json',
+          'autocomplete'       => 'users/autocomplete.json',
+          'setPassword'        => 'users/{id}/password.json',
+          'changePassword'     => 'users/{id}/password.json',
+          'updateMany'         => 'users/update_many.json',
+          'createMany'         => 'users/create_many.json',
+          'updateProfileImage' => 'users/{id}.json',
         ]);
     }
 
@@ -133,9 +136,9 @@ class Users extends ResourceAbstract
         $queryParams = array_merge($queryParams, $extraParams);
 
         $response = Http::sendWithOptions(
-            $this->client,
-            $this->endpoint,
-            ['queryParams' => $queryParams]
+          $this->client,
+          $this->endpoint,
+          ['queryParams' => $queryParams]
         );
 
         $this->client->setSideload(null);
@@ -163,9 +166,9 @@ class Users extends ResourceAbstract
 
         $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
         $response    = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__, ['id' => $params['id']]),
-            ['queryParams' => $queryParams]
+          $this->client,
+          $this->getRoute(__FUNCTION__, ['id' => $params['id']]),
+          ['queryParams' => $queryParams]
         );
 
         $this->client->setSideload(null);
@@ -187,15 +190,15 @@ class Users extends ResourceAbstract
     {
         $myId    = $this->getChainedParameter(get_class($this));
         $mergeMe = ! isset($myId) || is_null($myId);
-        $hasKeys = $mergeMe ? ['email', 'password'] : ['id'];
-        if (! $this->hasKeys($params, $hasKeys)) {
+        $hasKeys = $mergeMe ? array('email', 'password') : array('id');
+        if ( ! $this->hasKeys($params, $hasKeys)) {
             throw new MissingParametersException(__METHOD__, $hasKeys);
         }
 
         $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__),
-            ['postFields' => [self::OBJ_NAME => $params], 'method' => 'PUT']
+          $this->client,
+          $this->getRoute(__FUNCTION__),
+          ['postFields' => [self::OBJ_NAME => $params], 'method' => 'PUT']
         );
         $this->client->setSideload(null);
 
@@ -214,9 +217,9 @@ class Users extends ResourceAbstract
     public function createMany(array $params)
     {
         $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__),
-            ['postFields' => [self::OBJ_NAME_PLURAL => $params], 'method' => 'POST']
+          $this->client,
+          $this->getRoute(__FUNCTION__),
+          ['postFields' => [self::OBJ_NAME_PLURAL => $params], 'method' => 'POST']
         );
 
         $this->client->setSideload(null);
@@ -243,9 +246,9 @@ class Users extends ResourceAbstract
         $ids = $params['ids'];
         unset($params['ids']);
         $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__),
-            ['postFields' => [self::OBJ_NAME => $params], 'queryParams' => ['ids' => $ids], 'method' => 'PUT']
+          $this->client,
+          $this->getRoute(__FUNCTION__),
+          ['postFields' => [self::OBJ_NAME => $params], 'queryParams' => ['ids' => $ids], 'method' => 'PUT']
         );
 
         $this->client->setSideload(null);
@@ -268,9 +271,9 @@ class Users extends ResourceAbstract
     {
         $this->setRoute(__METHOD__, 'users/update_many.json');
         $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__METHOD__),
-            ['postFields' => [self::OBJ_NAME_PLURAL => $params], 'method' => 'PUT']
+          $this->client,
+          $this->getRoute(__METHOD__),
+          ['postFields' => [self::OBJ_NAME_PLURAL => $params], 'method' => 'PUT']
         );
         $this->client->setSideload(null);
 

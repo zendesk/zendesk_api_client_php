@@ -17,7 +17,8 @@ class TicketsTest extends BasicTest
         $this->testTicket = array(
           'subject'  => 'The quick brown fox jumps over the lazy dog',
           'comment'  => array(
-            'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod'
+                      . ' tempor incididunt ut labore et dolore magna aliqua.'
           ),
           'priority' => 'normal',
           'id'       => '12345'
@@ -26,7 +27,8 @@ class TicketsTest extends BasicTest
         $this->testTicket2 = array(
           'subject'  => 'The second ticket',
           'comment'  => array(
-            'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod'
+                      . ' tempor incididunt ut labore et dolore magna aliqua.'
           ),
           'priority' => 'normal',
           'id'       => '4321'
@@ -41,12 +43,12 @@ class TicketsTest extends BasicTest
           new Response(200, [], '')
         ]);
 
-        $this->client->tickets()->sideload(array( 'users', 'groups' ))->findAll();
+        $this->client->tickets()->sideload(array('users', 'groups'))->findAll();
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
-            'endpoint' => 'tickets.json',
+            'method'      => 'GET',
+            'endpoint'    => 'tickets.json',
             'queryParams' => ['include' => 'users,groups'],
             ]
         );
@@ -58,12 +60,12 @@ class TicketsTest extends BasicTest
           new Response(200, [], '')
         ]);
 
-        $this->client->tickets()->findAll(array( 'sideload' => array( 'users', 'groups' ) ));
+        $this->client->tickets()->findAll(array('sideload' => array('users', 'groups')));
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
-            'endpoint' => 'tickets.json',
+            'method'      => 'GET',
+            'endpoint'    => 'tickets.json',
             'queryParams' => ['include' => 'users,groups'],
             ]
         );
@@ -79,7 +81,7 @@ class TicketsTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
+            'method'   => 'GET',
             'endpoint' => 'tickets/' . $this->testTicket['id'] . '.json',
             ]
         );
@@ -108,14 +110,14 @@ class TicketsTest extends BasicTest
           new Response(200, [], '')
         ]);
 
-        $testTicketIds = [ 'ids' => [ $this->testTicket['id'], $this->testTicket2['id'] ] ];
+        $testTicketIds = ['ids' => [$this->testTicket['id'], $this->testTicket2['id']]];
         $this->client->tickets()->findMany($testTicketIds);
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
-            'endpoint' => 'tickets/show_many.json',
-            'queryParams' => ['ids' => implode(',', [ $this->testTicket['id'], $this->testTicket2['id'] ])],
+            'method'      => 'GET',
+            'endpoint'    => 'tickets/show_many.json',
+            'queryParams' => ['ids' => implode(',', [$this->testTicket['id'], $this->testTicket2['id']])],
             ]
         );
     }
@@ -126,39 +128,40 @@ class TicketsTest extends BasicTest
           new Response(200, [], '')
         ]);
 
-        $this->client->tickets()->deleteMany(array( 123, 321 ));
+        $this->client->tickets()->deleteMany(array(123, 321));
         $this->assertLastRequestIs(
             [
-            'method' => 'DELETE',
-            'endpoint' => 'tickets/destroy_many.json',
-            'queryParams' => ['ids' => implode(',', [ 123, 321 ])],
+            'method'      => 'DELETE',
+            'endpoint'    => 'tickets/destroy_many.json',
+            'queryParams' => ['ids' => implode(',', [123, 321])],
             ]
         );
     }
 
     public function testCreateWithAttachment()
     {
-        $this->markTestSkipped('Waiting for side chaining to support this');
+        $this->mockAPIResponses([
+          new Response(201, [], json_encode(['upload' => ['token' => 'asdf']])),
+          new Response(201, [], json_encode(['ticket' => ['id' => '123']])),
+        ]);
 
-        $this->mockApiCall(
-            'POST',
-            '/uploads.json?filename=UK%20test%20non-alpha%20chars.png',
-            array( 'upload' => array( 'token' => 'asdf' ) ),
-            [ 'code' => 201 ]
-        );
-
-        $this->mockApiCall(
-            'POST',
-            'tickets.json',
-            array( 'ticket' => array( 'id' => '123' ) ),
-            array( 'code' => 201 )
-        );
-
-        $this->client->tickets()->attach(array(
+        $attachmentData = [
           'file' => getcwd() . '/tests/assets/UK.png',
           'name' => 'UK test non-alpha chars.png'
-        ))->create($this->testTicket);
-        $this->httpMock->verify();
+        ];
+
+        $this->client->tickets()->attach($attachmentData)->create($this->testTicket);
+
+        $this->assertRequestIs(
+            [
+            'method'      => 'POST',
+            'endpoint'    => 'uploads.json',
+            'statusCode'  => 201,
+            'queryParams' => ['filename' => rawurlencode($attachmentData['name'])],
+            'file'        => $attachmentData['file'],
+            ],
+            0
+        );
     }
 
     public function testExport()
@@ -167,20 +170,20 @@ class TicketsTest extends BasicTest
           new Response(200, [], '')
         ]);
 
-        $this->client->tickets()->export(array( 'start_time' => '1332034771' ));
+        $this->client->tickets()->export(array('start_time' => '1332034771'));
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
-            'endpoint' => 'exports/tickets.json',
-            'queryParams' => [ 'start_time' => '1332034771' ],
+            'method'      => 'GET',
+            'endpoint'    => 'exports/tickets.json',
+            'queryParams' => ['start_time' => '1332034771'],
             ]
         );
     }
 
     public function testUpdateManyWithQueryParams()
     {
-        $ticketIds = [ $this->testTicket['id'], $this->testTicket2['id'] ];
+        $ticketIds = [$this->testTicket['id'], $this->testTicket2['id']];
 
         $this->mockAPIResponses([
           new Response(200, [], '')
@@ -195,17 +198,17 @@ class TicketsTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'PUT',
-            'endpoint' => 'tickets/update_many.json',
-            'queryParams' => [ 'ids' => implode(',', $ticketIds) ],
-            'postFields'  => [ 'ticket' => [ 'status' => 'solved' ] ]
+            'method'      => 'PUT',
+            'endpoint'    => 'tickets/update_many.json',
+            'queryParams' => ['ids' => implode(',', $ticketIds)],
+            'postFields'  => ['ticket' => ['status' => 'solved']]
             ]
         );
     }
 
     public function testUpdateMany()
     {
-        $tickets = [ $this->testTicket, $this->testTicket2 ];
+        $tickets = [$this->testTicket, $this->testTicket2];
 
         $this->mockAPIResponses([
           new Response(200, [], '')
@@ -215,9 +218,9 @@ class TicketsTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'PUT',
-            'endpoint' => 'tickets/update_many.json',
-            'postFields' => [ 'tickets' => $tickets ]
+            'method'     => 'PUT',
+            'endpoint'   => 'tickets/update_many.json',
+            'postFields' => ['tickets' => $tickets]
             ]
         );
     }
@@ -232,7 +235,7 @@ class TicketsTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
+            'method'   => 'GET',
             'endpoint' => 'tickets/12345/related.json',
             ]
         );
@@ -247,11 +250,11 @@ class TicketsTest extends BasicTest
           new Response(200, [], json_encode(['topic_id' => 1]))
         ]);
 
-        $collaborators = $this->client->tickets()->collaborators(array( 'id' => 12345 ));
+        $collaborators = $this->client->tickets()->collaborators(array('id' => 12345));
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
+            'method'   => 'GET',
             'endpoint' => 'tickets/12345/collaborators.json',
             ]
         );
@@ -265,11 +268,11 @@ class TicketsTest extends BasicTest
           new Response(200, [], json_encode(['topic_id' => 1]))
         ]);
 
-        $incidents = $this->client->tickets()->incidents(array( 'id' => 12345 ));
+        $incidents = $this->client->tickets()->incidents(array('id' => 12345));
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
+            'method'   => 'GET',
             'endpoint' => 'tickets/12345/incidents.json',
             ]
         );
@@ -287,7 +290,7 @@ class TicketsTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
+            'method'   => 'GET',
             'endpoint' => 'problems.json',
             ]
         );
@@ -301,12 +304,12 @@ class TicketsTest extends BasicTest
           new Response(200, [], json_encode(['tickets' => []]))
         ]);
 
-        $this->client->tickets()->problemAutoComplete(array( 'text' => 'foo' ));
+        $this->client->tickets()->problemAutoComplete(array('text' => 'foo'));
 
         $this->assertLastRequestIs(
             [
-            'method' => 'POST',
-            'endpoint' => 'problems/autocomplete.json',
+            'method'     => 'POST',
+            'endpoint'   => 'problems/autocomplete.json',
             'postFields' => ['text' => 'foo'],
             ]
         );
@@ -323,7 +326,7 @@ class TicketsTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'PUT',
+            'method'   => 'PUT',
             'endpoint' => 'tickets/12345/mark_as_spam.json',
             ]
         );
@@ -335,13 +338,13 @@ class TicketsTest extends BasicTest
           new Response(200, [], '')
         ]);
 
-        $this->client->tickets()->markAsSpam([ 12345, 54321 ]);
+        $this->client->tickets()->markAsSpam([12345, 54321]);
 
         $this->assertLastRequestIs(
             [
-            'method' => 'PUT',
-            'endpoint' => 'tickets/mark_many_as_spam.json',
-            'queryParams' => [ 'ids' => '12345,54321' ]
+            'method'      => 'PUT',
+            'endpoint'    => 'tickets/mark_many_as_spam.json',
+            'queryParams' => ['ids' => '12345,54321']
             ]
         );
     }

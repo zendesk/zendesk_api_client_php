@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\LazyOpenStream;
 use Zendesk\API\HttpClient;
 
 /**
@@ -154,6 +155,13 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
 
         if (isset($options['postFields'])) {
             $this->assertEquals(json_encode($options['postFields']), $request->getBody()->getContents());
+        }
+
+        if (isset($options['file'])) {
+            $body = $request->getBody();
+            $this->assertInstanceOf(LazyOpenStream::class, $body);
+            $this->assertGreaterThan(0, $body->getSize());
+            $this->assertEquals($options['file'], $body->getMetadata('uri'));
         }
     }
 }
