@@ -49,9 +49,9 @@ class Users extends ResourceAbstract
      */
     public function findAll(array $params = array())
     {
-        if (isset( $params['organization_id'] )) {
+        if (isset($params['organization_id'])) {
             $this->endpoint = "organizations/{$params['organization_id']}/users.json";
-        } elseif (isset( $params['group_id'] )) {
+        } elseif (isset($params['group_id'])) {
             $this->endpoint = 'groups/' . $params['group_id'] . '/users.json';
         } else {
             $this->endpoint = 'users.json';
@@ -100,14 +100,14 @@ class Users extends ResourceAbstract
      */
     public function showMany(array $params = array())
     {
-        if (isset( $params['ids'] ) && isset( $params['external_ids'] )) {
+        if (isset($params['ids']) && isset($params['external_ids'])) {
             throw new \Exception('Only one parameter of ids or external_ids is allowed');
-        } elseif (! isset( $params['ids'] ) && ! isset( $params['external_ids'] )) {
+        } elseif (! isset($params['ids']) && ! isset($params['external_ids'])) {
             throw new \Exception('Missing parameters ids or external_ids');
-        } elseif (isset( $params['ids'] ) && is_array($params['ids'])) {
+        } elseif (isset($params['ids']) && is_array($params['ids'])) {
             $this->endpoint = 'users/show_many.json';
             $queryParams    = [ 'ids' => implode(',', $params['ids']) ];
-        } elseif (isset( $params['external_ids'] ) && is_array($params['external_ids'])) {
+        } elseif (isset($params['external_ids']) && is_array($params['external_ids'])) {
             $this->endpoint = 'users/show_many.json';
             $queryParams    = [ 'external_ids' => implode(',', $params['external_ids']) ];
         } else {
@@ -173,7 +173,7 @@ class Users extends ResourceAbstract
     public function merge(array $params = array())
     {
         $myId    = $this->getChainedParameter(get_class($this));
-        $mergeMe = ! isset( $myId ) || is_null($myId);
+        $mergeMe = ! isset($myId) || is_null($myId);
         $hasKeys = $mergeMe ? array( 'email', 'password' ) : array( 'id' );
         if (! $this->hasKeys($params, $hasKeys)) {
             throw new MissingParametersException(__METHOD__, $hasKeys);
@@ -230,7 +230,7 @@ class Users extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, array( 'ids' ));
         }
         $ids = $params['ids'];
-        unset( $params['ids'] );
+        unset($params['ids']);
         $response = Http::sendWithOptions(
             $this->client,
             $this->getRoute(__FUNCTION__),
@@ -301,7 +301,7 @@ class Users extends ResourceAbstract
      */
     public function search(array $params)
     {
-        $queryParams = isset( $params['query'] ) ? [ 'query' => $params['query'] ] : [ ];
+        $queryParams = isset($params['query']) ? [ 'query' => $params['query'] ] : [ ];
         $extraParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
 
         $response = Http::sendWithOptions(
@@ -364,7 +364,7 @@ class Users extends ResourceAbstract
             throw new CustomException('File ' . $params['file'] . ' could not be found in ' . __METHOD__);
         }
         $id = $params['id'];
-        unset( $params['id'] );
+        unset($params['id']);
         $endPoint = Http::prepare('users/' . $id . '.json');
         if (function_exists('curl_file_create')) {
             $response = Http::send(
@@ -372,7 +372,7 @@ class Users extends ResourceAbstract
                 $endPoint,
                 $params['file'],
                 'PUT',
-                ( isset( $params['type'] ) ? $params['type'] : 'application/binary' )
+                ( isset($params['type']) ? $params['type'] : 'application/binary' )
             );
         } else {
             $response = Http::send(
@@ -380,7 +380,7 @@ class Users extends ResourceAbstract
                 $endPoint,
                 array( 'user[photo][uploaded_data]' => '@' . $params['file'] ),
                 'PUT',
-                ( isset( $params['type'] ) ? $params['type'] : 'application/binary' )
+                ( isset($params['type']) ? $params['type'] : 'application/binary' )
             );
         }
         if (( ! is_object($response) ) || ( $this->client->getDebug()->lastResponseCode != 200 )) {
@@ -426,7 +426,7 @@ class Users extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, array( 'id', 'password' ));
         }
         $id = $params['id'];
-        unset( $params['id'] );
+        unset($params['id']);
 
         $response = Http::sendWithOptions(
             $this->client,
@@ -457,7 +457,7 @@ class Users extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, array( 'id', 'previous_password', 'password' ));
         }
         $id = $params['id'];
-        unset( $params['id'] );
+        unset($params['id']);
 
         $response = Http::sendWithOptions(
             $this->client,

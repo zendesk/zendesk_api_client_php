@@ -224,7 +224,7 @@ abstract class ResourceAbstract
      */
     public function getRoute($name, array $params = array())
     {
-        if (! isset( $this->routes[$name] )) {
+        if (! isset($this->routes[$name])) {
             throw new \Exception('Route not found.');
         }
 
@@ -279,11 +279,11 @@ abstract class ResourceAbstract
      */
     public function find($id = null, array $queryParams = array())
     {
-        if (empty( $id )) {
+        if (empty($id)) {
             $id = $this->getChainedParameter(get_class($this));
         }
 
-        if (empty( $id )) {
+        if (empty($id)) {
             throw new MissingParametersException(__METHOD__, array( 'id' ));
         }
 
@@ -383,14 +383,14 @@ abstract class ResourceAbstract
      */
     public function delete($id = null)
     {
-        if (empty( $id )) {
+        if (empty($id)) {
             $chainedParameters = $this->getChainedParameters();
             if (array_key_exists(get_class($this), $chainedParameters)) {
                 $id = $chainedParameters[get_class($this)];
             }
         }
 
-        if (empty( $id )) {
+        if (empty($id)) {
             throw new MissingParametersException(__METHOD__, array( 'id' ));
         }
 
