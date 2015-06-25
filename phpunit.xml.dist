@@ -10,7 +10,6 @@
     <php>
         <env name="SUBDOMAIN" value="" />
         <env name="USERNAME" value="blah@zendesk.com" />
-        <env name="PASSWORD" value="123456" />
         <env name="TOKEN" value="zgS0d8hrK13DgVs6OHT7OVS3G4MZQSUvleMyUJnC" />
         <env name="OAUTH_SECRET" value="ea974e907f363a05c60be3120f336439bf4744c2285b4c8a9c902b5453497bae" />
         <env name="OAUTH_TOKEN" value="4924186d99cfb4bb7a482a4307fb5f9a3a052d0c555ebb866f975b6084e38efd" />
