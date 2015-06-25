@@ -43,9 +43,9 @@ class Views extends ResourceAbstract
      */
     public function findAll(array $params = array())
     {
-        if (isset( $params['active'] )) {
+        if (isset($params['active'])) {
             $params['modifier'] = '/active';
-        } elseif (isset( $params['compact'] )) {
+        } elseif (isset($params['compact'])) {
             $params['modifier'] = '/compact';
         } else {
             $params['modifier'] = '';
@@ -83,7 +83,7 @@ class Views extends ResourceAbstract
      */
     public function delete($id = null)
     {
-        if (( empty( $id ) ) && ! ( $this->getChainedParameter('id', false) )) {
+        if (( empty($id) ) && ! ( $this->getChainedParameter('id', false) )) {
             throw new MissingParametersException(__METHOD__, array( 'id' ));
         }
 
