@@ -95,10 +95,6 @@ abstract class ResourceAbstract
 
     protected function setUpRoutes()
     {
-        if (! isset($this->resourceName)) {
-            $this->resourceName = $this->getResourceNameFromClass();
-        }
-
         $this->setRoutes([
             'findAll' => "{$this->resourceName}.json",
             'find'    => "{$this->resourceName}/{id}.json",
@@ -329,8 +325,8 @@ abstract class ResourceAbstract
             $this->client,
             $this->getRoute('create'),
             [
-                'postFields' => [$class::OBJ_NAME => $params],
-                'method'     => 'POST'
+            'postFields' => [$class::OBJ_NAME => $params],
+            'method'     => 'POST'
             ]
         );
 
