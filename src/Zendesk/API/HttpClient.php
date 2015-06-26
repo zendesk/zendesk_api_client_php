@@ -8,6 +8,7 @@ namespace Zendesk\API;
  */
 
 use Zendesk\API\Exceptions\AuthException;
+use Zendesk\API\Resources\Macros;
 use Zendesk\API\Resources\Tags;
 use Zendesk\API\Resources\Tickets;
 use Zendesk\API\Resources\Users;
@@ -93,6 +94,10 @@ class HttpClient
      */
     protected $views;
     /**
+     * @var Macros
+     */
+    protected $macros;
+    /**
      * @var Debug
      */
     protected $debug;
@@ -141,7 +146,8 @@ class HttpClient
           'tickets' => Tickets::class,
           'users'   => Users::class,
           'views'   => Views::class,
-          'tags'    => Tags::class
+          'tags'    => Tags::class,
+          'macros'  => Macros::class,
         ];
     }
 
