@@ -2,8 +2,6 @@
 
 namespace Zendesk\API\Resources;
 
-use GuzzleHttp\Psr7\LazyOpenStream;
-use GuzzleHttp\Psr7\MultipartStream;
 use Zendesk\API\Exceptions\CustomException;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
