@@ -12,12 +12,13 @@ use Zendesk\API\Http;
  */
 class Attachments extends ResourceAbstract
 {
-
-
     protected function setUpRoutes()
     {
         $this->setRoutes([
-          'upload' => "uploads.json",
+          'upload'       => "uploads.json",
+          'deleteUpload' => "uploads/{token}.json",
+          'delete'       => "{$this->resourceName}/{id}.json",
+          'find'         => "{$this->resourceName}/{id}.json",
         ]);
     }
 
@@ -74,43 +75,27 @@ class Attachments extends ResourceAbstract
 
         return $response;
     }
-//
-//    /**
-//     * Upload an attachment from a buffer in memory
-//     * $params must include:
-//     *    'body' - the raw file data to upload
-//     *    'name' - the filename
-//     *    'type' - the MIME type of the file
-//     * Optional:
-//     *    'optional_token' - an existing token
-//     *
-//     * @param array $params
-//     *
-//     * @throws CustomException
-//     * @throws MissingParametersException
-//     * @throws ResponseException
-//     * @throws \Exception
-//     *
-//     * @return mixed
-//     */
-//    public function uploadWithBody(array $params)
-//    {
-//        if ( ! $this->hasKeys($params, array('body'))) {
-//            throw new MissingParametersException(__METHOD__, array('body'));
-//        }
-//        if ( ! $params['name']) {
-//            throw new MissingParametersException(__METHOD__, array('name'));
-//        }
-//        $endPoint = Http::prepare('uploads.json?filename='
-//             . $params['name'] . (isset($params['optional_token']) ? '&token=' . $params['optional_token'] : ''));
-//        $response = Http::send($this->client, $endPoint, array('body' => $params['body']), 'POST',
-//          (isset($params['type']) ? $params['type'] : 'application/binary'));
-//        if (( ! is_object($response)) || ($this->client->getDebug()->lastResponseCode != 201)) {
-//            throw new ResponseException(__METHOD__);
-//        }
-//        $this->client->setSideload(null);
-//
-//        return $response;
-//    }
-//
+
+    /**
+     * Delete a resource
+     *
+     * @param $token
+     *
+     * @return bool
+     * @throws MissingParametersException
+     * @throws \Exception
+     * @throws \Zendesk\API\Exceptions\ResponseException
+     */
+    public function deleteUpload($token)
+    {
+        $response = Http::sendWithOptions(
+            $this->client,
+            $this->getRoute(__FUNCTION__, array('token' => $token)),
+            ['method' => 'DELETE']
+        );
+
+        $this->client->setSideload(null);
+
+        return $response;
+    }
 }

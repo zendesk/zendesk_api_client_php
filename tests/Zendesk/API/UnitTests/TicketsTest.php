@@ -150,7 +150,7 @@ class TicketsTest extends BasicTest
           'name' => 'UK test non-alpha chars.png'
         ];
 
-        $this->client->tickets()->attach($attachmentData)->create($this->testTicket);
+        $response = $this->client->tickets()->attach($attachmentData)->create($this->testTicket);
 
         $this->assertRequestIs(
             [
