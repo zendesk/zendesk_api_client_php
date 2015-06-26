@@ -10,7 +10,6 @@ use Zendesk\API\Exceptions\ApiResponseException;
 use Zendesk\API\Exceptions\AuthException;
 use GuzzleHttp\Psr7\Stream;
 
-
 /**
  * HTTP functions via curl
  * @package Zendesk\API
@@ -22,8 +21,8 @@ class Http
     /**
      * Prepares an endpoint URL with optional side-loading
      *
-     * @param array  $sideload
-     * @param array  $iterators
+     * @param array $sideload
+     * @param array $iterators
      *
      * @return string
      */
@@ -127,9 +126,9 @@ class Http
                 10,
                 null
             );
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
+        } catch (ClientException $e) {
             throw new ResponseException($endPoint, null, null, $e);
-		}
+        }
 
         if (isset($file)) {
             fclose($file);
