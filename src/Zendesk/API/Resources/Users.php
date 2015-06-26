@@ -27,6 +27,16 @@ class Users extends ResourceAbstract
      */
     protected $identities;
 
+   /**
+     * {@inheritdoc}
+     */
+    public static function getValidRelations()
+    {
+        return [
+            'groups' => Groups::class,
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -136,9 +146,9 @@ class Users extends ResourceAbstract
         $queryParams = array_merge($queryParams, $extraParams);
 
         $response = Http::sendWithOptions(
-          $this->client,
-          $this->endpoint,
-          ['queryParams' => $queryParams]
+            $this->client,
+            $this->endpoint,
+            ['queryParams' => $queryParams]
         );
 
         $this->client->setSideload(null);
@@ -166,9 +176,9 @@ class Users extends ResourceAbstract
 
         $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
         $response    = Http::sendWithOptions(
-          $this->client,
-          $this->getRoute(__FUNCTION__, ['id' => $params['id']]),
-          ['queryParams' => $queryParams]
+            $this->client,
+            $this->getRoute(__FUNCTION__, ['id' => $params['id']]),
+            ['queryParams' => $queryParams]
         );
 
         $this->client->setSideload(null);
@@ -191,14 +201,14 @@ class Users extends ResourceAbstract
         $myId    = $this->getChainedParameter(get_class($this));
         $mergeMe = ! isset($myId) || is_null($myId);
         $hasKeys = $mergeMe ? array('email', 'password') : array('id');
-        if ( ! $this->hasKeys($params, $hasKeys)) {
+        if (! $this->hasKeys($params, $hasKeys)) {
             throw new MissingParametersException(__METHOD__, $hasKeys);
         }
 
         $response = Http::sendWithOptions(
-          $this->client,
-          $this->getRoute(__FUNCTION__),
-          ['postFields' => [self::OBJ_NAME => $params], 'method' => 'PUT']
+            $this->client,
+            $this->getRoute(__FUNCTION__),
+            ['postFields' => [self::OBJ_NAME => $params], 'method' => 'PUT']
         );
         $this->client->setSideload(null);
 
@@ -217,9 +227,9 @@ class Users extends ResourceAbstract
     public function createMany(array $params)
     {
         $response = Http::sendWithOptions(
-          $this->client,
-          $this->getRoute(__FUNCTION__),
-          ['postFields' => [self::OBJ_NAME_PLURAL => $params], 'method' => 'POST']
+            $this->client,
+            $this->getRoute(__FUNCTION__),
+            ['postFields' => [self::OBJ_NAME_PLURAL => $params], 'method' => 'POST']
         );
 
         $this->client->setSideload(null);
@@ -241,14 +251,14 @@ class Users extends ResourceAbstract
     public function updateMany(array $params)
     {
         if (! $this->hasKeys($params, ['ids'])) {
-            throw new MissingParametersException(__METHOD__, ['ids']);
+            throw new MissingParametersException(__METHOD__, array('ids'));
         }
         $ids = $params['ids'];
         unset($params['ids']);
         $response = Http::sendWithOptions(
-          $this->client,
-          $this->getRoute(__FUNCTION__),
-          ['postFields' => [self::OBJ_NAME => $params], 'queryParams' => ['ids' => $ids], 'method' => 'PUT']
+            $this->client,
+            $this->getRoute(__FUNCTION__),
+            ['postFields' => [self::OBJ_NAME => $params], 'queryParams' => ['ids' => $ids], 'method' => 'PUT']
         );
 
         $this->client->setSideload(null);
@@ -271,9 +281,9 @@ class Users extends ResourceAbstract
     {
         $this->setRoute(__METHOD__, 'users/update_many.json');
         $response = Http::sendWithOptions(
-          $this->client,
-          $this->getRoute(__METHOD__),
-          ['postFields' => [self::OBJ_NAME_PLURAL => $params], 'method' => 'PUT']
+            $this->client,
+            $this->getRoute(__METHOD__),
+            ['postFields' => [self::OBJ_NAME_PLURAL => $params], 'method' => 'PUT']
         );
         $this->client->setSideload(null);
 
