@@ -12,6 +12,7 @@ use Zendesk\API\Resources\Automations;
 use Zendesk\API\Resources\Groups;
 use Zendesk\API\Resources\Macros;
 use Zendesk\API\Resources\Tags;
+use Zendesk\API\Resources\Targets;
 use Zendesk\API\Resources\Tickets;
 use Zendesk\API\Resources\Triggers;
 use Zendesk\API\Resources\Users;
@@ -163,7 +164,8 @@ class HttpClient
             'macros'      => Macros::class,
             'groups'      => Groups::class,
             'automations' => Automations::class,
-            'triggers' => Triggers::class,
+'triggers' => Triggers::class,
+'targets'     => Targets::class,
         ];
     }
 
