@@ -211,6 +211,8 @@ class HttpClient
     }
 
     /**
+     * Returns the authentication strategy set
+     *
      * @return string
      */
     public function getAuthStrategy()
