@@ -6,6 +6,7 @@ use Zendesk\API\Exceptions\CustomException;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Http;
+use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
 /**
  * The Users class exposes user management methods
@@ -15,8 +16,20 @@ use Zendesk\API\Http;
  */
 class Users extends ResourceAbstract
 {
+    use InstantiatorTrait;
+
     const OBJ_NAME = 'user';
     const OBJ_NAME_PLURAL = 'users';
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getValidRelations()
+    {
+        return [
+            'groups' => Groups::class,
+        ];
+    }
 
     /**
      * {@inheritdoc}
@@ -26,14 +39,14 @@ class Users extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
-          'related'        => 'users/{id}/related.json',
-          'merge'          => 'users/me/merge.json',
-          'search'         => 'users/search.json',
-          'autocomplete'   => 'users/autocomplete.json',
-          'setPassword'    => 'users/{id}/password.json',
-          'changePassword' => 'users/{id}/password.json',
-          'updateMany'     => 'users/update_many.json',
-          'createMany'     => 'users/create_many.json',
+            'related'        => 'users/{id}/related.json',
+            'merge'          => 'users/me/merge.json',
+            'search'         => 'users/search.json',
+            'autocomplete'   => 'users/autocomplete.json',
+            'setPassword'    => 'users/{id}/password.json',
+            'changePassword' => 'users/{id}/password.json',
+            'updateMany'     => 'users/update_many.json',
+            'createMany'     => 'users/create_many.json',
         ]);
     }
 
@@ -47,7 +60,7 @@ class Users extends ResourceAbstract
      *
      * @return mixed
      */
-    public function findAll(array $params = array())
+    public function findAll(array $params = [])
     {
         if (isset($params['organization_id'])) {
             $this->endpoint = "organizations/{$params['organization_id']}/users.json";
@@ -71,17 +84,17 @@ class Users extends ResourceAbstract
      *
      * @return mixed
      */
-    public function findMany(array $params = array())
+    public function findMany(array $params = [])
     {
-        $params         = $this->addChainedParametersToParams($params, [ 'ids' => get_class($this) ]);
+        $params = $this->addChainedParametersToParams($params, ['ids' => get_class($this)]);
         $this->endpoint = 'users/show_many.json';
 
-        $queryParams = [ 'ids' => implode(",", $params['ids']) ];
+        $queryParams = ['ids' => implode(",", $params['ids'])];
 
         $extraParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
         $queryParams = array_merge($queryParams, $extraParams);
 
-        $response = Http::sendWithOptions($this->client, $this->endpoint, [ 'queryParams' => $queryParams ]);
+        $response = Http::sendWithOptions($this->client, $this->endpoint, ['queryParams' => $queryParams]);
 
         $this->client->setSideload(null);
 
@@ -98,18 +111,18 @@ class Users extends ResourceAbstract
      *
      * @return mixed
      */
-    public function showMany(array $params = array())
+    public function showMany(array $params = [])
     {
         if (isset($params['ids']) && isset($params['external_ids'])) {
             throw new \Exception('Only one parameter of ids or external_ids is allowed');
-        } elseif (! isset($params['ids']) && ! isset($params['external_ids'])) {
+        } elseif (!isset($params['ids']) && !isset($params['external_ids'])) {
             throw new \Exception('Missing parameters ids or external_ids');
         } elseif (isset($params['ids']) && is_array($params['ids'])) {
             $this->endpoint = 'users/show_many.json';
-            $queryParams    = [ 'ids' => implode(',', $params['ids']) ];
+            $queryParams = ['ids' => implode(',', $params['ids'])];
         } elseif (isset($params['external_ids']) && is_array($params['external_ids'])) {
             $this->endpoint = 'users/show_many.json';
-            $queryParams    = [ 'external_ids' => implode(',', $params['external_ids']) ];
+            $queryParams = ['external_ids' => implode(',', $params['external_ids'])];
         } else {
             throw new \Exception('Parameters ids or external_ids must be arrays');
         }
@@ -120,7 +133,7 @@ class Users extends ResourceAbstract
         $response = Http::sendWithOptions(
             $this->client,
             $this->endpoint,
-            [ 'queryParams' => $queryParams ]
+            ['queryParams' => $queryParams]
         );
 
         $this->client->setSideload(null);
@@ -139,19 +152,19 @@ class Users extends ResourceAbstract
      *
      * @return mixed
      */
-    public function related(array $params = array())
+    public function related(array $params = [])
     {
-        $params = $this->addChainedParametersToParams($params, [ 'id' => get_class($this) ]);
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
 
-        if (! $this->hasKeys($params, array( 'id' ))) {
-            throw new MissingParametersException(__METHOD__, array( 'id' ));
+        if (!$this->hasKeys($params, ['id'])) {
+            throw new MissingParametersException(__METHOD__, ['id']);
         }
 
         $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
-        $response    = Http::sendWithOptions(
+        $response = Http::sendWithOptions(
             $this->client,
-            $this->getRoute(__FUNCTION__, [ 'id' => $params['id'] ]),
-            [ 'queryParams' => $queryParams ]
+            $this->getRoute(__FUNCTION__, ['id' => $params['id']]),
+            ['queryParams' => $queryParams]
         );
 
         $this->client->setSideload(null);
@@ -170,19 +183,19 @@ class Users extends ResourceAbstract
      *
      * @return mixed
      */
-    public function merge(array $params = array())
+    public function merge(array $params = [])
     {
-        $myId    = $this->getChainedParameter(get_class($this));
-        $mergeMe = ! isset($myId) || is_null($myId);
-        $hasKeys = $mergeMe ? array( 'email', 'password' ) : array( 'id' );
-        if (! $this->hasKeys($params, $hasKeys)) {
+        $myId = $this->getChainedParameter(get_class($this));
+        $mergeMe = !isset($myId) || is_null($myId);
+        $hasKeys = $mergeMe ? ['email', 'password'] : ['id'];
+        if (!$this->hasKeys($params, $hasKeys)) {
             throw new MissingParametersException(__METHOD__, $hasKeys);
         }
 
         $response = Http::sendWithOptions(
             $this->client,
             $this->getRoute(__FUNCTION__),
-            [ 'postFields' => [ self::OBJ_NAME => $params ], 'method' => 'PUT' ]
+            ['postFields' => [self::OBJ_NAME => $params], 'method' => 'PUT']
         );
         $this->client->setSideload(null);
 
@@ -204,7 +217,7 @@ class Users extends ResourceAbstract
         $response = Http::sendWithOptions(
             $this->client,
             $this->getRoute(__FUNCTION__),
-            [ 'postFields' => [ self::OBJ_NAME_PLURAL => $params ], 'method' => 'POST' ]
+            ['postFields' => [self::OBJ_NAME_PLURAL => $params], 'method' => 'POST']
         );
 
         $this->client->setSideload(null);
@@ -226,15 +239,15 @@ class Users extends ResourceAbstract
 
     public function updateMany(array $params)
     {
-        if (! $this->hasKeys($params, array( 'ids' ))) {
-            throw new MissingParametersException(__METHOD__, array( 'ids' ));
+        if (!$this->hasKeys($params, ['ids'])) {
+            throw new MissingParametersException(__METHOD__, ['ids']);
         }
         $ids = $params['ids'];
         unset($params['ids']);
         $response = Http::sendWithOptions(
             $this->client,
             $this->getRoute(__FUNCTION__),
-            [ 'postFields' => [ self::OBJ_NAME => $params ], 'queryParams' => [ 'ids' => $ids ], 'method' => 'PUT' ]
+            ['postFields' => [self::OBJ_NAME => $params], 'queryParams' => ['ids' => $ids], 'method' => 'PUT']
         );
 
         $this->client->setSideload(null);
@@ -260,7 +273,7 @@ class Users extends ResourceAbstract
         $response = Http::sendWithOptions(
             $this->client,
             $this->getRoute(__METHOD__),
-            [ 'postFields' => [ self::OBJ_NAME_PLURAL => $params ], 'method' => 'PUT' ]
+            ['postFields' => [self::OBJ_NAME_PLURAL => $params], 'method' => 'PUT']
         );
         $this->client->setSideload(null);
 
@@ -278,11 +291,11 @@ class Users extends ResourceAbstract
      *
      * @return mixed
      */
-    public function suspend(array $params = array())
+    public function suspend(array $params = [])
     {
-        $params = $this->addChainedParametersToParams($params, [ 'id' => get_class($this) ]);
-        if (! $this->hasKeys($params, array( 'id' ))) {
-            throw new MissingParametersException(__METHOD__, array( 'id' ));
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+        if (!$this->hasKeys($params, ['id'])) {
+            throw new MissingParametersException(__METHOD__, ['id']);
         }
         $params['suspended'] = true;
 
@@ -301,13 +314,13 @@ class Users extends ResourceAbstract
      */
     public function search(array $params)
     {
-        $queryParams = isset($params['query']) ? [ 'query' => $params['query'] ] : [ ];
+        $queryParams = isset($params['query']) ? ['query' => $params['query']] : [];
         $extraParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
 
         $response = Http::sendWithOptions(
             $this->client,
             $this->getRoute(__FUNCTION__),
-            [ 'queryParams' => array_merge($extraParams, $queryParams) ]
+            ['queryParams' => array_merge($extraParams, $queryParams)]
         );
 
         $this->client->setSideload(null);
@@ -330,7 +343,7 @@ class Users extends ResourceAbstract
         $response = Http::sendWithOptions(
             $this->client,
             $this->getRoute(__FUNCTION__),
-            [ 'method' => 'POST', 'queryParams' => $params ]
+            ['method' => 'POST', 'queryParams' => $params]
         );
 
         $this->client->setSideload(null);
@@ -357,10 +370,10 @@ class Users extends ResourceAbstract
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
-        if (! $this->hasKeys($params, array( 'id', 'file' ))) {
-            throw new MissingParametersException(__METHOD__, array( 'id', 'file' ));
+        if (!$this->hasKeys($params, ['id', 'file'])) {
+            throw new MissingParametersException(__METHOD__, ['id', 'file']);
         }
-        if (! file_exists($params['file'])) {
+        if (!file_exists($params['file'])) {
             throw new CustomException('File ' . $params['file'] . ' could not be found in ' . __METHOD__);
         }
         $id = $params['id'];
@@ -372,15 +385,15 @@ class Users extends ResourceAbstract
                 $endPoint,
                 $params['file'],
                 'PUT',
-                ( isset($params['type']) ? $params['type'] : 'application/binary' )
+                (isset($params['type']) ? $params['type'] : 'application/binary')
             );
         } else {
             $response = Http::send(
                 $this->client,
                 $endPoint,
-                array( 'user[photo][uploaded_data]' => '@' . $params['file'] ),
+                ['user[photo][uploaded_data]' => '@' . $params['file']],
                 'PUT',
-                ( isset($params['type']) ? $params['type'] : 'application/binary' )
+                (isset($params['type']) ? $params['type'] : 'application/binary')
             );
         }
 
@@ -399,7 +412,7 @@ class Users extends ResourceAbstract
      *
      * @return mixed
      */
-    public function me(array $params = array())
+    public function me(array $params = [])
     {
         $params['id'] = 'me';
 
@@ -419,17 +432,17 @@ class Users extends ResourceAbstract
      */
     public function setPassword(array $params)
     {
-        $params = $this->addChainedParametersToParams($params, [ 'id' => get_class($this) ]);
-        if (! $this->hasKeys($params, array( 'id', 'password' ))) {
-            throw new MissingParametersException(__METHOD__, array( 'id', 'password' ));
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+        if (!$this->hasKeys($params, ['id', 'password'])) {
+            throw new MissingParametersException(__METHOD__, ['id', 'password']);
         }
         $id = $params['id'];
         unset($params['id']);
 
         $response = Http::sendWithOptions(
             $this->client,
-            $this->getRoute(__FUNCTION__, [ 'id' => $id ]),
-            [ 'postFields' => [ self::OBJ_NAME => $params ], 'method' => 'POST' ]
+            $this->getRoute(__FUNCTION__, ['id' => $id]),
+            ['postFields' => [self::OBJ_NAME => $params], 'method' => 'POST']
         );
 
         $this->client->setSideload(null);
@@ -450,17 +463,17 @@ class Users extends ResourceAbstract
      */
     public function changePassword(array $params)
     {
-        $params = $this->addChainedParametersToParams($params, [ 'id' => get_class($this) ]);
-        if (! $this->hasKeys($params, array( 'id', 'previous_password', 'password' ))) {
-            throw new MissingParametersException(__METHOD__, array( 'id', 'previous_password', 'password' ));
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+        if (!$this->hasKeys($params, ['id', 'previous_password', 'password'])) {
+            throw new MissingParametersException(__METHOD__, ['id', 'previous_password', 'password']);
         }
         $id = $params['id'];
         unset($params['id']);
 
         $response = Http::sendWithOptions(
             $this->client,
-            $this->getRoute(__FUNCTION__, [ 'id' => $id ]),
-            [ 'postFields' => $params, 'method' => 'PUT' ]
+            $this->getRoute(__FUNCTION__, ['id' => $id]),
+            ['postFields' => $params, 'method' => 'PUT']
         );
 
         $this->client->setSideload(null);
