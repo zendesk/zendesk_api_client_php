@@ -4,7 +4,8 @@ php:
   - 5.5
   # - 5.4
   # - hhvm
-before_script: composer self-update && composer install
+before_script:
+  - travis_retry composer self-update && composer install
 script:
   - vendor/bin/phpunit --testsuite "Zendesk API Unit Test Suites"
   - vendor/bin/phpcs --extensions=php --standard=PSR2 --report=summary -np src/ tests/
