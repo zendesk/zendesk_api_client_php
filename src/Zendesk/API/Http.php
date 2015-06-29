@@ -5,10 +5,10 @@ namespace Zendesk\API;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use Zendesk\API\Exceptions\ApiResponseException;
+use Zendesk\API\Exceptions\AuthException;
 
 /**
  * HTTP functions via curl
- *
  * @package Zendesk\API
  */
 class Http
@@ -18,9 +18,8 @@ class Http
     /**
      * Prepares an endpoint URL with optional side-loading
      *
-     * @param string $endPoint
-     * @param array  $sideload
-     * @param array  $iterators
+     * @param array $sideload
+     * @param array $iterators
      *
      * @return string
      */
@@ -48,8 +47,8 @@ class Http
      * Use the send method to call every endpoint except for oauth/tokens
      *
      * @param HttpClient $client
-     * @param string     $endPoint E.g. "/tickets.json"
-     * @param array      $options
+     * @param string $endPoint E.g. "/tickets.json"
+     * @param array $options
      *                             Available options are listed below:
      *                             array $queryParams Array of unencoded key-value pairs, e.g. ["ids" => "1,2,3,4"]
      *                             array $postFields Array of unencoded key-value pairs, e.g. ["filename" => "blah.png"]
@@ -57,6 +56,8 @@ class Http
      *                             string $contentType Default is "application/json"
      *
      * @return array The response body, parsed from JSON into an associative array
+     * @throws ApiResponseException
+     * @throws AuthException
      */
     public static function sendWithOptions(
         HttpClient $client,
@@ -84,20 +85,31 @@ class Http
             $headers
         );
 
-        if (!empty($options['postFields'])) {
+        if (! empty($options['postFields'])) {
             $request = $request->withBody(\GuzzleHttp\Psr7\stream_for(json_encode($options['postFields'])));
         }
 
-        if (!empty($options['queryParams'])) {
+        if (! empty($options['queryParams'])) {
             foreach ($options['queryParams'] as $queryKey => $queryValue) {
-                $uri = $request->getUri();
-                $uri = $uri->withQueryValue($uri, $queryKey, $queryValue);
+                $uri     = $request->getUri();
+                $uri     = $uri->withQueryValue($uri, $queryKey, $queryValue);
                 $request = $request->withUri($uri, true);
             }
         }
 
         try {
-            $response = $client->guzzle->send($request);
+            if ($client->getAuthStrategy() === HttpClient::AUTH_BASIC) {
+                $authOptions = $client->getAuthOptions();
+                $options     = ['auth' => [$authOptions['username'] . '/token', $authOptions['token'], 'basic']];
+                $response    = $client->guzzle->send($request, $options);
+            } elseif ($client->getAuthStrategy() === HttpClient::AUTH_OAUTH) {
+                $authOptions = $client->getAuthOptions();
+                $oAuthToken  = $authOptions['token'];
+                $request     = $request->withAddedHeader('Authorization', ' Bearer ' . $oAuthToken);
+                $response    = $client->guzzle->send($request);
+            } else {
+                throw new AuthException('Please set authentication to send requests.');
+            }
 
             $client->setDebug(
                 $response->getHeaders(),
@@ -116,12 +128,11 @@ class Http
      * Specific case for OAuth. Run /oauth.php via your browser to get an access token
      *
      * @param HttpClient $client
-     * @param string     $code
-     * @param string     $oAuthId
-     * @param string     $oAuthSecret
+     * @param string $code
+     * @param string $oAuthId
+     * @param string $oAuthSecret
      *
      * @throws \Exception
-     *
      * @return mixed
      */
     public static function oauth(HttpClient $client, $code, $oAuthId, $oAuthSecret)
@@ -155,8 +166,8 @@ class Http
         if ($response === false) {
             throw new \Exception(sprintf('Curl error message: "%s" in %s', $curl->error(), __METHOD__));
         }
-        $headerSize = $curl->getinfo(CURLINFO_HEADER_SIZE);
-        $responseBody = substr($response, $headerSize);
+        $headerSize     = $curl->getinfo(CURLINFO_HEADER_SIZE);
+        $responseBody   = substr($response, $headerSize);
         $responseObject = json_decode($responseBody);
         $client->setDebug(
             $curl->getinfo(CURLINFO_HEADER_OUT),
