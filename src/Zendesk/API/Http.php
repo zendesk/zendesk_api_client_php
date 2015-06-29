@@ -3,12 +3,10 @@
 namespace Zendesk\API;
 
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Psr7\LazyOpenStream;
 use GuzzleHttp\Psr7\Request;
 use Zendesk\API\Exceptions\ApiResponseException;
 use Zendesk\API\Exceptions\AuthException;
-use GuzzleHttp\Psr7\Stream;
 
 /**
  * HTTP functions via curl
@@ -69,10 +67,10 @@ class Http
     ) {
         $options = array_merge(
             [
-            'method'      => 'GET',
-            'contentType' => 'application/json',
-            'postFields'  => null,
-            'queryParams' => null
+                'method'      => 'GET',
+                'contentType' => 'application/json',
+                'postFields'  => null,
+                'queryParams' => null
             ],
             $options
         );
@@ -126,8 +124,8 @@ class Http
                 10,
                 null
             );
-        } catch (ClientException $e) {
-            throw new ResponseException($endPoint, null, null, $e);
+        } catch (RequestException $e) {
+            throw new ApiResponseException($e);
         }
 
         if (isset($file)) {
@@ -159,12 +157,12 @@ class Http
         $curl->setopt(CURLOPT_URL, $url);
         $curl->setopt(CURLOPT_POST, true);
         $curl->setopt(CURLOPT_POSTFIELDS, json_encode([
-          'grant_type'    => 'authorization_code',
-          'code'          => $code,
-          'client_id'     => $oAuthId,
-          'client_secret' => $oAuthSecret,
-          'redirect_uri'  => $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'],
-          'scope'         => 'read'
+            'grant_type'    => 'authorization_code',
+            'code'          => $code,
+            'client_id'     => $oAuthId,
+            'client_secret' => $oAuthSecret,
+            'redirect_uri'  => $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'],
+            'scope'         => 'read'
         ]));
         $curl->setopt(CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
         $curl->setopt(CURLINFO_HEADER_OUT, true);
