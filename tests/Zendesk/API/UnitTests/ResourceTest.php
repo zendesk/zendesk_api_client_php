@@ -5,38 +5,38 @@ use GuzzleHttp\Psr7\Response;
 
 class ResourceTest extends BasicTest
 {
-    private $_dummyResource;
+    private $dummyResource;
 
     public function setUp()
     {
         parent::setUp();
-        $this->_dummyResource = new DummyResource($this->client);
+        $this->dummyResource = new DummyResource($this->client);
     }
 
     public function testFindAll()
     {
         $this->mockAPIResponses([
-          new Response(200, [], '')
+            new Response(200, [], '')
         ]);
 
-        $this->_dummyResource->findAll();
+        $this->dummyResource->findAll();
 
         $this->assertLastRequestIs([
-            'method' => 'GET',
+            'method'   => 'GET',
             'endpoint' => 'dummyresource.json',
-          ]);
+        ]);
     }
 
     public function testFind()
     {
         $this->mockAPIResponses([
-          new Response(200, [], json_encode(['dummy' => true]))
+            new Response(200, [], json_encode(['dummy' => true]))
         ]);
 
-        $this->_dummyResource->find(1);
+        $this->dummyResource->find(1);
 
         $this->assertLastRequestIs([
-            'method' => 'GET',
+            'method'   => 'GET',
             'endpoint' => 'dummyresource/1.json',
         ]);
     }
@@ -44,18 +44,18 @@ class ResourceTest extends BasicTest
     public function testCreate()
     {
         $this->mockAPIResponses([
-          new Response(200, [], '')
+            new Response(200, [], '')
         ]);
 
         $postFields = ['foo' => 'test body'];
 
-        $this->_dummyResource->create($postFields);
+        $this->dummyResource->create($postFields);
 
         $this->assertLastRequestIs(
             [
-            'method' => 'POST',
-            'endpoint' => 'dummyresource.json',
-            'postFields' => ['dummy' => $postFields]
+                'method'     => 'POST',
+                'endpoint'   => 'dummyresource.json',
+                'postFields' => ['dummy' => $postFields]
             ]
         );
     }
@@ -63,17 +63,17 @@ class ResourceTest extends BasicTest
     public function testUpdate()
     {
         $this->mockAPIResponses([
-          new Response(200, [], '')
+            new Response(200, [], '')
         ]);
 
         $postFields = ['foo' => 'test body'];
-        $this->_dummyResource->update(1, $postFields);
+        $this->dummyResource->update(1, $postFields);
 
         $this->assertLastRequestIs(
             [
-              'method' => 'PUT',
-              'endpoint' => 'dummyresource/1.json',
-              'postFields' => ['dummy' => $postFields],
+                'method'     => 'PUT',
+                'endpoint'   => 'dummyresource/1.json',
+                'postFields' => ['dummy' => $postFields],
             ]
         );
     }
@@ -81,16 +81,42 @@ class ResourceTest extends BasicTest
     public function testDelete()
     {
         $this->mockAPIResponses([
-          new Response(200, [], '')
+            new Response(200, [], '')
         ]);
 
-        $this->_dummyResource->delete(1);
+        $this->dummyResource->delete(1);
 
         $this->assertLastRequestIs(
             [
-              'method' => 'DELETE',
-              'endpoint' => 'dummyresource/1.json'
+                'method'   => 'DELETE',
+                'endpoint' => 'dummyresource/1.json'
             ]
         );
+    }
+
+    /**
+     * @expectedException Zendesk\API\Exceptions\ApiResponseException
+     * @expectedExceptionMessage Zendesk may be experiencing internal issues or undergoing scheduled maintenance.
+     */
+    public function testHandlesServerException()
+    {
+        $this->mockApiResponses(
+            new Response(500, [], '')
+        );
+
+        $this->dummyResource->create(['foo' => 'bar']);
+    }
+
+    /**
+     * @expectedException Zendesk\API\Exceptions\ApiResponseException
+     * @expectedExceptionMessage Unprocessable Entity
+     */
+    public function testHandlesApiException()
+    {
+        $this->mockApiResponses(
+            new Response(422, [], '')
+        );
+
+        $this->dummyResource->create(['foo' => 'bar']);
     }
 }

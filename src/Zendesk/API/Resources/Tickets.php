@@ -86,11 +86,6 @@ class Tickets extends ResourceAbstract
             ['queryParams' => $queryParams]
         );
 
-        if ((!is_object($response))
-            || ($this->client->getDebug()->lastResponseCode != 200)
-        ) {
-            throw new ResponseException(__METHOD__);
-        }
         $this->client->setSideload(null);
 
         return $response;
@@ -170,9 +165,7 @@ class Tickets extends ResourceAbstract
             $this->client->getSideload($params)
         );
         $response = Http::sendWithOptions($this->client, $endPoint);
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
+
         $this->client->setSideload(null);
 
         return $response;
@@ -323,16 +316,6 @@ class Tickets extends ResourceAbstract
             $options
         );
 
-        $lastResponseCode = $this->client->getDebug()->lastResponseCode;
-        // Seems to be a bug in the service, it may respond with 422 even when it succeeds
-        if ($lastResponseCode != 200) {
-            $notice = ' (note: there\'s currently a bug in the service so this call may have succeeded;' .
-                'call tickets->find to see if it still exists.)';
-            throw new ResponseException(
-                __METHOD__,
-                ($lastResponseCode == 422 ? $notice : '')
-            );
-        }
         $this->client->setSideload(null);
 
         return $response;
@@ -468,10 +451,6 @@ class Tickets extends ResourceAbstract
                 'postFields' => ['text' => $params['text']]
             ]
         );
-
-        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
-            throw new ResponseException(__METHOD__);
-        }
 
         $this->client->setSideload(null);
 
