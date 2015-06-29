@@ -47,6 +47,11 @@ abstract class ResourceAbstract
     {
         $this->client = $client;
 
+        if (! isset($this->resourceName)) {
+            $this->resourceName = $this->getResourceNameFromClass();
+        }
+
+
         $this->setUpRoutes();
     }
 
