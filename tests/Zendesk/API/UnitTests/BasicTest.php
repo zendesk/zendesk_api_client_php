@@ -92,6 +92,12 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
         $this->assertRequestIs($options, count($this->mockedTransactionsContainer) - 1);
     }
 
+    /**
+     * This checks the response with the given index
+     *
+     * @param     $options
+     * @param int $index
+     */
     public function assertRequestIs($options, $index = 0)
     {
         $transaction = $this->mockedTransactionsContainer[$index];
@@ -99,11 +105,11 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
         $response = $transaction['response'];
 
         $options = array_merge([
-          'statusCode' => 200,
-          'headers' => [
-            'Accept'       => 'application/json',
-            'Content-Type' => 'application/json'
-          ]
+            'statusCode' => 200,
+            'headers'    => [
+                'Accept'       => 'application/json',
+                'Content-Type' => 'application/json'
+            ]
         ], $options);
 
         $this->assertEquals($options['statusCode'], $response->getStatusCode());

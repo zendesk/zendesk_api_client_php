@@ -10,7 +10,7 @@ use GuzzleHttp\Psr7\Response;
 class TicketFormsTest extends BasicTest
 {
     /**
-     * @expectedException Zendesk\API\Exceptions\ResponseException
+     * @expectedException Zendesk\API\Exceptions\ApiResponseException
      */
     public function testDeleteThrowsException()
     {

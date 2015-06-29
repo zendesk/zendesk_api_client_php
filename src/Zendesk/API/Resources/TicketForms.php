@@ -74,10 +74,6 @@ class TicketForms extends ResourceAbstract
             ['postFields' => ['ticket_form_ids' => $ticketFormIds], 'method' => 'PUT']
         );
 
-        if ($this->client->getDebug()->lastResponseCode != 200) {
-            throw new ResponseException(__METHOD__);
-        }
-
         $this->client->setSideload(null);
 
         return $response;

@@ -2,8 +2,9 @@
 
 namespace Zendesk\API;
 
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
-use Zendesk\API\Exceptions\ResponseException;
+use Zendesk\API\Exceptions\ApiResponseException;
 
 /**
  * HTTP functions via curl
@@ -74,7 +75,7 @@ class Http
 
         $headers = [
             'Accept'       => 'application/json',
-            'Content-Type' => $options['contentType']
+            'Content-Type' => $options['contentType'],
         ];
 
         $request = new Request(
@@ -98,16 +99,14 @@ class Http
         try {
             $response = $client->guzzle->send($request);
 
-            $responseCode = $response->getStatusCode();
-
             $client->setDebug(
                 $response->getHeaders(),
-                $responseCode,
+                $response->getStatusCode(),
                 10,
                 null
             );
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
-            throw new ResponseException($endPoint, null, null, $e);
+        } catch (RequestException $e) {
+            throw new ApiResponseException($e);
         }
 
         return json_decode($response->getBody()->getContents());
