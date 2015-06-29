@@ -9,7 +9,6 @@ use Zendesk\API\Exceptions\MissingParametersException;
 
 /**
  * Abstract class for all endpoints
- *
  * @package Zendesk\API
  */
 abstract class ResourceAbstract
@@ -58,18 +57,15 @@ abstract class ResourceAbstract
      *    Where ticket would have a comments as a valid sub resource.
      *    The array would look like:
      *      ['comments' => '\Zendesk\API\Resources\TicketComments']
-     *
      * @return array
      */
     public static function getValidSubResource()
     {
-        return [ ];
+        return [];
     }
 
     /**
-     *
      * Return the resource name using the name of the class (used for endpoints)
-     *
      * @return string
      */
     private function getResourceNameFromClass()
@@ -95,11 +91,11 @@ abstract class ResourceAbstract
         }
 
         $this->setRoutes([
-          'findAll' => "{$this->resourceName}.json",
-          'find'    => "{$this->resourceName}/{id}.json",
-          'create'  => "{$this->resourceName}.json",
-          'update'  => "{$this->resourceName}/{id}.json",
-          'delete'  => "{$this->resourceName}/{id}.json"
+            'findAll' => "{$this->resourceName}.json",
+            'find'    => "{$this->resourceName}/{id}.json",
+            'create'  => "{$this->resourceName}.json",
+            'update'  => "{$this->resourceName}/{id}.json",
+            'delete'  => "{$this->resourceName}/{id}.json"
         ]);
     }
 
@@ -119,7 +115,6 @@ abstract class ResourceAbstract
 
     /**
      * Saves an id for future methods in the chain
-     *
      * @return int
      */
     public function getLastId()
@@ -204,7 +199,6 @@ abstract class ResourceAbstract
 
     /**
      * Return all routes for this resource
-     *
      * @return array
      */
     public function getRoutes()
@@ -246,7 +240,6 @@ abstract class ResourceAbstract
      * @param array $params
      *
      * @throws \Exception
-     *
      * @return mixed
      */
     public function findAll(array $params = array())
@@ -257,8 +250,8 @@ abstract class ResourceAbstract
 
         $response = Http::sendWithOptions(
             $this->client,
-            $this->getRoute('findAll', $params),
-            [ 'queryParams' => $queryParams ]
+            $this->getRoute(__FUNCTION__, $params),
+            ['queryParams' => $queryParams]
         );
 
         $this->client->setSideload(null);
@@ -275,7 +268,6 @@ abstract class ResourceAbstract
      * @return mixed
      * @throws MissingParametersException
      * @throws \Exception
-     *
      */
     public function find($id = null, array $queryParams = array())
     {
@@ -284,13 +276,13 @@ abstract class ResourceAbstract
         }
 
         if (empty($id)) {
-            throw new MissingParametersException(__METHOD__, array( 'id' ));
+            throw new MissingParametersException(__METHOD__, array('id'));
         }
 
         $response = Http::sendWithOptions(
             $this->client,
-            $this->getRoute(__FUNCTION__, array( 'id' => $id )),
-            [ 'queryParams' => $queryParams ]
+            $this->getRoute(__FUNCTION__, array('id' => $id)),
+            ['queryParams' => $queryParams]
         );
         $this->client->setSideload(null);
 
@@ -319,7 +311,6 @@ abstract class ResourceAbstract
      * @param array $params
      *
      * @throws \Exception
-     *
      * @return mixed
      */
     public function create(array $params)
@@ -347,22 +338,21 @@ abstract class ResourceAbstract
      *
      * @throws MissingParametersException
      * @throws \Exception
-     *
      * @return mixed
      */
-    public function update($id = null, array $updateResourceFields = [ ])
+    public function update($id = null, array $updateResourceFields = [])
     {
         $class = get_class($this);
         if (empty($id)) {
             $id = $this->getChainedParameter($class);
         }
 
-        $postFields = array( $class::OBJ_NAME => $updateResourceFields );
+        $postFields = array($class::OBJ_NAME => $updateResourceFields);
 
         $response = Http::sendWithOptions(
             $this->client,
-            $this->getRoute(__FUNCTION__, array( 'id' => $id )),
-            [ 'postFields' => $postFields, 'method' => 'PUT' ]
+            $this->getRoute(__FUNCTION__, array('id' => $id)),
+            ['postFields' => $postFields, 'method' => 'PUT']
         );
 
         $this->client->setSideload(null);
@@ -379,7 +369,6 @@ abstract class ResourceAbstract
      * @return bool
      * @throws MissingParametersException
      * @throws \Exception
-     *
      */
     public function delete($id = null)
     {
@@ -391,14 +380,14 @@ abstract class ResourceAbstract
         }
 
         if (empty($id)) {
-            throw new MissingParametersException(__METHOD__, array( 'id' ));
+            throw new MissingParametersException(__METHOD__, array('id'));
         }
 
-        $route    = $this->getRoute('find', array( 'id' => $id ));
+        $route    = $this->getRoute('find', array('id' => $id));
         $response = Http::sendWithOptions(
             $this->client,
             $route,
-            [ 'method' => 'DELETE' ]
+            ['method' => 'DELETE']
         );
 
         $this->client->setSideload(null);

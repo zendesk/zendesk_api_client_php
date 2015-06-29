@@ -115,6 +115,7 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
      */
     public function assertRequestIs($options, $index = 0)
     {
+        $this->assertArrayHasKey($index, $this->mockedTransactionsContainer, 'Should have made an API call.');
         $transaction = $this->mockedTransactionsContainer[$index];
         $request     = $transaction['request'];
         $response    = $transaction['response'];
