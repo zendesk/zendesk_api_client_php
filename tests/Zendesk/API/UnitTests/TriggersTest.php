@@ -15,7 +15,7 @@ class TriggersTest extends BasicTest
             new Response(200, [], '')
         ]);
 
-        $$triggers = $triggers = $$this->client->triggers()->findActive();
+        $triggers = $$this->client->triggers()->findActive();
 
         $this->assertLastRequestIs(
             [
