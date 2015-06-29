@@ -31,8 +31,8 @@ class UsersTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'POST',
-            'endpoint' => 'users.json',
+            'method'     => 'POST',
+            'endpoint'   => 'users.json',
             'postFields' => ['user' => $testUser],
             ]
         );
@@ -52,7 +52,7 @@ class UsersTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'DELETE',
+            'method'   => 'DELETE',
             'endpoint' => 'users/12345.json',
             ]
         );
@@ -63,7 +63,7 @@ class UsersTest extends BasicTest
         $response = json_encode(
             [
             'users' => [
-              [ 'id' => 12345 ]
+              ['id' => 12345]
             ]
             ]
         );
@@ -76,7 +76,7 @@ class UsersTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
+            'method'   => 'GET',
             'endpoint' => 'users.json',
             ]
         );
@@ -94,14 +94,14 @@ class UsersTest extends BasicTest
     public function testFind()
     {
         $this->mockAPIResponses([
-          new Response(200, [], json_encode(['user' => ['id' => 12345 ]]))
+          new Response(200, [], json_encode(['user' => ['id' => 12345]]))
         ]);
 
         $user = $this->client->users(12345)->find();
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
+            'method'   => 'GET',
             'endpoint' => 'users/12345.json',
             ]
         );
@@ -129,9 +129,9 @@ class UsersTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
-            'endpoint' => 'users/show_many.json',
-            'queryParams' => ['ids' => implode(",", [$findIds[0], $findIds[1]])] ,
+            'method'      => 'GET',
+            'endpoint'    => 'users/show_many.json',
+            'queryParams' => ['ids' => implode(",", [$findIds[0], $findIds[1]])],
             ]
         );
         $this->assertEquals(is_object($users), true, 'Should return an object');
@@ -142,11 +142,11 @@ class UsersTest extends BasicTest
 
     public function testShowManyUsingIds()
     {
-        $findIds  = [ 12345, 80085 ];
+        $findIds  = [12345, 80085];
         $response = [
           'users' => [
-            [ 'id' => $findIds[0] ],
-            [ 'id' => $findIds[1] ],
+            ['id' => $findIds[0]],
+            ['id' => $findIds[1]],
           ]
         ];
 
@@ -167,11 +167,11 @@ class UsersTest extends BasicTest
 
     public function testShowManyUsingExternalIds()
     {
-        $findIds  = [ 12345, 80085 ];
+        $findIds  = [12345, 80085];
         $response = [
           'users' => [
-            [ 'id' => $findIds[0] ],
-            [ 'id' => $findIds[1] ],
+            ['id' => $findIds[0]],
+            ['id' => $findIds[1]],
           ]
         ];
 
@@ -179,12 +179,12 @@ class UsersTest extends BasicTest
           new Response(200, [], json_encode($response))
         ]);
 
-        $users = $this->client->users()->showMany([ 'external_ids' => $findIds ]);
+        $users = $this->client->users()->showMany(['external_ids' => $findIds]);
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
-            'endpoint' => 'users/show_many.json',
+            'method'      => 'GET',
+            'endpoint'    => 'users/show_many.json',
             'queryParams' => ['external_ids' => implode(',', $findIds)]
             ]
         );
@@ -208,7 +208,7 @@ class UsersTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
+            'method'   => 'GET',
             'endpoint' => 'users/12345/related.json',
             ]
         );
@@ -230,15 +230,15 @@ class UsersTest extends BasicTest
         $postFields = ['id' => 12345];
 
         $this->mockAPIResponses([
-          new Response(200, [], json_encode(['user' => [ 'id' => 12345 ]]))
+          new Response(200, [], json_encode(['user' => ['id' => 12345]]))
         ]);
 
         $this->client->users('me')->merge($postFields);
 
         $this->assertLastRequestIs(
             [
-            'method' => 'PUT',
-            'endpoint' => 'users/me/merge.json',
+            'method'     => 'PUT',
+            'endpoint'   => 'users/me/merge.json',
             'postFields' => [Users::OBJ_NAME => $postFields],
             ]
         );
@@ -267,8 +267,8 @@ class UsersTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'POST',
-            'endpoint' => 'users/create_many.json',
+            'method'     => 'POST',
+            'endpoint'   => 'users/create_many.json',
             'postFields' => [Users::OBJ_NAME_PLURAL => $postFields],
             ]
         );
@@ -290,8 +290,8 @@ class UsersTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'PUT',
-            'endpoint' => 'users/12345.json',
+            'method'     => 'PUT',
+            'endpoint'   => 'users/12345.json',
             'postFields' => [Users::OBJ_NAME => $postFields],
             ]
         );
@@ -299,7 +299,7 @@ class UsersTest extends BasicTest
 
     public function testUpdateMany()
     {
-        $updateIds     = [ 12345, 80085 ];
+        $updateIds     = [12345, 80085];
         $requestParams = [
           'ids'   => implode(',', $updateIds),
           'phone' => '1234567890'
@@ -313,10 +313,10 @@ class UsersTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'PUT',
-            'endpoint' => 'users/update_many.json',
+            'method'      => 'PUT',
+            'endpoint'    => 'users/update_many.json',
             'queryParams' => ['ids' => $requestParams['ids']],
-            'postFields' => [Users::OBJ_NAME => ['phone' => $requestParams['phone']]]
+            'postFields'  => [Users::OBJ_NAME => ['phone' => $requestParams['phone']]]
             ]
         );
 
@@ -347,8 +347,8 @@ class UsersTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'PUT',
-            'endpoint' => 'users/update_many.json',
+            'method'     => 'PUT',
+            'endpoint'   => 'users/update_many.json',
             'postFields' => [Users::OBJ_NAME_PLURAL => $requestParams]
             ]
         );
@@ -370,12 +370,12 @@ class UsersTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'PUT',
-            'endpoint' => 'users/12345.json',
+            'method'     => 'PUT',
+            'endpoint'   => 'users/12345.json',
             'postFields' => [Users::OBJ_NAME => ['id' => $userId, 'suspended' => true]],
             ]
         );
-        
+
         $this->assertEquals(is_object($user), true, 'Should return an object');
         $this->assertEquals(is_object($user->user), true, 'Should return an object called "user"');
         $this->assertGreaterThan(0, $user->user->id, 'Should return a numeric id for request');
@@ -386,15 +386,15 @@ class UsersTest extends BasicTest
         $queryParams = ['query' => 'Roger'];
 
         $this->mockAPIResponses([
-          new Response(200, [], json_encode(['users' =>[['id' => 12345]]]))
+          new Response(200, [], json_encode(['users' => [['id' => 12345]]]))
         ]);
 
         $users = $this->client->users()->search($queryParams);
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
-            'endpoint' => 'users/search.json',
+            'method'      => 'GET',
+            'endpoint'    => 'users/search.json',
             'queryParams' => $queryParams,
             ]
         );
@@ -416,15 +416,15 @@ class UsersTest extends BasicTest
         $queryParams = ['name' => 'joh'];
 
         $this->mockAPIResponses([
-          new Response(200, [], json_encode(['users' =>[['id' => 12345]]]))
+          new Response(200, [], json_encode(['users' => [['id' => 12345]]]))
         ]);
 
         $users = $this->client->users()->autocomplete($queryParams);
 
         $this->assertLastRequestIs(
             [
-            'method' => 'POST',
-            'endpoint' => 'users/autocomplete.json',
+            'method'      => 'POST',
+            'endpoint'    => 'users/autocomplete.json',
             'queryParams' => $queryParams,
             ]
         );
@@ -441,8 +441,8 @@ class UsersTest extends BasicTest
     public function testUpdateProfileImage()
     {
         $this->markTestSkipped('Need to allow file uploads with Guzzle.');
-        $this->mockApiCall('GET', '/users/12345.json?', array( 'id' => 12345 ));
-        $this->mockApiCall('PUT', '/users/12345.json', array( 'user' => array( 'id' => 12345 ) ));
+        $this->mockApiCall('GET', '/users/12345.json?', array('id' => 12345));
+        $this->mockApiCall('PUT', '/users/12345.json', array('user' => array('id' => 12345)));
 
         $user = $this->client->users(12345)->updateProfileImage(array(
           'file' => getcwd() . '/tests/assets/UK.png'
@@ -466,7 +466,7 @@ class UsersTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
+            'method'   => 'GET',
             'endpoint' => 'users/me.json',
             ]
         );
@@ -488,8 +488,8 @@ class UsersTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'POST',
-            'endpoint' => 'users/12345/password.json',
+            'method'     => 'POST',
+            'endpoint'   => 'users/12345/password.json',
             'postFields' => [Users::OBJ_NAME => $postFields],
             ]
         );
@@ -498,9 +498,9 @@ class UsersTest extends BasicTest
     public function testChangePassword()
     {
         $postFields = [
-            'previous_password' => '12346',
-            'password'          => '12345'
-          ];
+          'previous_password' => '12346',
+          'password'          => '12345'
+        ];
 
         $this->mockAPIResponses([
           new Response(200, [], '')
@@ -510,8 +510,8 @@ class UsersTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method' => 'PUT',
-            'endpoint' => 'users/421450109/password.json',
+            'method'     => 'PUT',
+            'endpoint'   => 'users/421450109/password.json',
             'postFields' => $postFields,
             ]
         );
