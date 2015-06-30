@@ -36,8 +36,27 @@ class ResourceTest extends BasicTest
         $this->dummyResource->find(1);
 
         $this->assertLastRequestIs([
-            'method'   => 'GET',
-            'endpoint' => 'dummy_resource/1.json',
+            'method'      => 'GET',
+            'endpoint'    => 'dummyresource/1.json',
+            'queryParams' => []
+        ]);
+    }
+
+    public function testCanSetIteratorParams()
+    {
+        $this->mockAPIResponses([
+            new Response(200, [], json_encode(['dummy' => true]))
+        ]);
+
+        $iterators = ['per_page' => 1, 'page' => 2, 'sort_order' => 'desc', 'sort_by' => 'date'];
+
+        $this->dummyResource->findAll($iterators);
+
+
+        $this->assertLastRequestIs([
+            'method'      => 'GET',
+            'endpoint'    => 'dummyresource.json',
+            'queryParams' => $iterators
         ]);
     }
 
@@ -92,6 +111,23 @@ class ResourceTest extends BasicTest
                 'endpoint' => 'dummy_resource/1.json'
             ]
         );
+    }
+
+    public function testSideLoad()
+    {
+        $this->mockAPIResponses([
+            new Response(200, [], json_encode(['dummy' => true]))
+        ]);
+
+        $sideloads = ['foo', 'bar', 'hello', 'world'];
+        $this->dummyResource->sideload($sideloads);
+        $this->dummyResource->findAll();
+
+        $this->assertLastRequestIs([
+            'method'      => 'GET',
+            'endpoint'    => 'dummyresource.json',
+            'queryParams' => ['include' => implode(',', $sideloads)]
+        ]);
     }
 
     /**
