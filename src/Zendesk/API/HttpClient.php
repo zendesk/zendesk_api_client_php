@@ -8,6 +8,7 @@ namespace Zendesk\API;
  */
 
 use Zendesk\API\Exceptions\AuthException;
+use Zendesk\API\Resources\Automations;
 use Zendesk\API\Resources\Macros;
 use Zendesk\API\Resources\Tags;
 use Zendesk\API\Resources\Tickets;
@@ -98,6 +99,10 @@ class HttpClient
      */
     protected $macros;
     /**
+     * @var Automations
+     */
+    protected $automations;
+    /**
      * @var Debug
      */
     protected $debug;
@@ -143,11 +148,12 @@ class HttpClient
     public static function getValidRelations()
     {
         return [
-            'tickets' => Tickets::class,
-            'users'   => Users::class,
-            'views'   => Views::class,
-            'tags'    => Tags::class,
-            'macros'  => Macros::class,
+            'tickets'     => Tickets::class,
+            'users'       => Users::class,
+            'views'       => Views::class,
+            'tags'        => Tags::class,
+            'macros'      => Macros::class,
+            'automations' => Automations::class,
         ];
     }
 
@@ -212,7 +218,6 @@ class HttpClient
 
     /**
      * Returns the authentication strategy set
-     *
      * @return string
      */
     public function getAuthStrategy()
