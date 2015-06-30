@@ -2,13 +2,14 @@
 
 namespace Zendesk\API\Resources;
 
+use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Http;
 use Zendesk\API\HttpClient;
 use Zendesk\API\UtilityTraits\ChainedParametersTrait;
-use Zendesk\API\Exceptions\MissingParametersException;
 
 /**
  * Abstract class for all endpoints
+ *
  * @package Zendesk\API
  */
 abstract class ResourceAbstract
@@ -32,7 +33,7 @@ abstract class ResourceAbstract
     /**
      * @var array
      */
-    protected $routes;
+    protected $routes = [];
 
     /**
      * @var array
@@ -57,6 +58,7 @@ abstract class ResourceAbstract
      *    Where ticket would have a comments as a valid sub resource.
      *    The array would look like:
      *      ['comments' => '\Zendesk\API\Resources\TicketComments']
+     *
      * @return array
      */
     public static function getValidSubResource()
@@ -66,12 +68,13 @@ abstract class ResourceAbstract
 
     /**
      * Return the resource name using the name of the class (used for endpoints)
+     *
      * @return string
      */
     private function getResourceNameFromClass()
     {
         $namespacedClassName = get_class($this);
-        $resourceName        = join('', array_slice(explode('\\', $namespacedClassName), - 1));
+        $resourceName = join('', array_slice(explode('\\', $namespacedClassName), -1));
 
         return strtolower($resourceName);
     }
@@ -86,7 +89,7 @@ abstract class ResourceAbstract
 
     protected function setUpRoutes()
     {
-        if (! isset($this->resourceName)) {
+        if (!isset($this->resourceName)) {
             $this->resourceName = $this->getResourceNameFromClass();
         }
 
@@ -115,6 +118,7 @@ abstract class ResourceAbstract
 
     /**
      * Saves an id for future methods in the chain
+     *
      * @return int
      */
     public function getLastId()
@@ -132,8 +136,8 @@ abstract class ResourceAbstract
      */
     public function hasKeys(array $params, array $mandatory)
     {
-        for ($i = 0; $i < count($mandatory); $i ++) {
-            if (! array_key_exists($mandatory[$i], $params)) {
+        for ($i = 0; $i < count($mandatory); $i++) {
+            if (!array_key_exists($mandatory[$i], $params)) {
                 return false;
             }
         }
@@ -151,7 +155,7 @@ abstract class ResourceAbstract
      */
     public function hasAnyKey(array $params, array $mandatory)
     {
-        for ($i = 0; $i < count($mandatory); $i ++) {
+        for ($i = 0; $i < count($mandatory); $i++) {
             if (array_key_exists($mandatory[$i], $params)) {
                 return true;
             }
@@ -167,7 +171,7 @@ abstract class ResourceAbstract
      *
      * @return $this
      */
-    public function sideload(array $fields = array())
+    public function sideload(array $fields = [])
     {
         $this->client->setSideload($fields);
 
@@ -199,6 +203,7 @@ abstract class ResourceAbstract
 
     /**
      * Return all routes for this resource
+     *
      * @return array
      */
     public function getRoutes()
@@ -216,9 +221,9 @@ abstract class ResourceAbstract
      * @return mixed
      * @throws \Exception
      */
-    public function getRoute($name, array $params = array())
+    public function getRoute($name, array $params = [])
     {
-        if (! isset($this->routes[$name])) {
+        if (!isset($this->routes[$name])) {
             throw new \Exception('Route not found.');
         }
 
@@ -242,7 +247,7 @@ abstract class ResourceAbstract
      * @throws \Exception
      * @return mixed
      */
-    public function findAll(array $params = array())
+    public function findAll(array $params = [])
     {
         $sideloads = $this->client->getSideload($params);
 
@@ -269,19 +274,19 @@ abstract class ResourceAbstract
      * @throws MissingParametersException
      * @throws \Exception
      */
-    public function find($id = null, array $queryParams = array())
+    public function find($id = null, array $queryParams = [])
     {
         if (empty($id)) {
             $id = $this->getChainedParameter(get_class($this));
         }
 
         if (empty($id)) {
-            throw new MissingParametersException(__METHOD__, array('id'));
+            throw new MissingParametersException(__METHOD__, ['id']);
         }
 
         $response = Http::sendWithOptions(
             $this->client,
-            $this->getRoute(__FUNCTION__, array('id' => $id)),
+            $this->getRoute(__FUNCTION__, ['id' => $id]),
             ['queryParams' => $queryParams]
         );
         $this->client->setSideload(null);
@@ -315,12 +320,12 @@ abstract class ResourceAbstract
      */
     public function create(array $params)
     {
-        $class    = get_class($this);
+        $class = get_class($this);
         $response = Http::sendWithOptions(
             $this->client,
             $this->getRoute('create'),
             [
-                'postFields' => array($class::OBJ_NAME => $params),
+                'postFields' => [$class::OBJ_NAME => $params],
                 'method'     => 'POST'
             ]
         );
@@ -347,11 +352,11 @@ abstract class ResourceAbstract
             $id = $this->getChainedParameter($class);
         }
 
-        $postFields = array($class::OBJ_NAME => $updateResourceFields);
+        $postFields = [$class::OBJ_NAME => $updateResourceFields];
 
         $response = Http::sendWithOptions(
             $this->client,
-            $this->getRoute(__FUNCTION__, array('id' => $id)),
+            $this->getRoute(__FUNCTION__, ['id' => $id]),
             ['postFields' => $postFields, 'method' => 'PUT']
         );
 
@@ -380,10 +385,10 @@ abstract class ResourceAbstract
         }
 
         if (empty($id)) {
-            throw new MissingParametersException(__METHOD__, array('id'));
+            throw new MissingParametersException(__METHOD__, ['id']);
         }
 
-        $route    = $this->getRoute('find', array('id' => $id));
+        $route = $this->getRoute('find', ['id' => $id]);
         $response = Http::sendWithOptions(
             $this->client,
             $route,
