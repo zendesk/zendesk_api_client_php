@@ -9,6 +9,7 @@ namespace Zendesk\API;
 
 use Zendesk\API\Exceptions\AuthException;
 use Zendesk\API\Resources\Automations;
+use Zendesk\API\Resources\Groups;
 use Zendesk\API\Resources\Macros;
 use Zendesk\API\Resources\Tags;
 use Zendesk\API\Resources\Tickets;
@@ -19,12 +20,13 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
 /**
  * Client class, base level access
+ *
  * @package Zendesk\API
- * @method Debug debug()
- * @method Tickets ticket()
- * @method Tickets tickets()
- * @method Views views()
- * @method Users users()
+ *          @method Debug debug()
+ *          @method Tickets ticket()
+ *          @method Tickets tickets()
+ *          @method Views views()
+ *          @method Users users()
  */
 class HttpClient
 {
@@ -159,6 +161,7 @@ class HttpClient
             'views'       => Views::class,
             'tags'        => Tags::class,
             'macros'      => Macros::class,
+            'groups'      => Groups::class,
             'automations' => Automations::class,
             'triggers' => Triggers::class,
         ];
@@ -167,7 +170,7 @@ class HttpClient
     /**
      * Configure the authorization method
      *
-     * @param $strategy
+     * @param       $strategy
      * @param array $options
      *
      * @throws AuthException
@@ -177,8 +180,8 @@ class HttpClient
         $validAuthStrategies = [self::AUTH_BASIC, self::AUTH_OAUTH];
         if (! in_array($strategy, $validAuthStrategies)) {
             throw new AuthException('Invalid auth strategy set, please use `'
-                                    . implode('` or `', $validAuthStrategies)
-                                    . '`');
+                . implode('` or `', $validAuthStrategies)
+                . '`');
         }
 
         $this->authStrategy = $strategy;
@@ -198,6 +201,7 @@ class HttpClient
 
     /**
      * Returns the supplied subdomain
+     *
      * @return string
      */
     public function getSubdomain()
@@ -207,6 +211,7 @@ class HttpClient
 
     /**
      * Returns the generated api URL
+     *
      * @return string
      */
     public function getApiUrl()
@@ -216,6 +221,7 @@ class HttpClient
 
     /**
      * Returns a text value indicating the type of authorization configured
+     *
      * @return string
      */
     public function getAuthOptions()
@@ -225,6 +231,7 @@ class HttpClient
 
     /**
      * Returns the authentication strategy set
+     *
      * @return string
      */
     public function getAuthStrategy()
@@ -235,10 +242,10 @@ class HttpClient
     /**
      * Set debug information as an object
      *
-     * @param mixed $lastRequestHeaders
-     * @param mixed $lastResponseCode
+     * @param mixed  $lastRequestHeaders
+     * @param mixed  $lastResponseCode
      * @param string $lastResponseHeaders
-     * @param mixed $lastResponseError
+     * @param mixed  $lastResponseError
      */
     public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError)
     {
@@ -250,6 +257,7 @@ class HttpClient
 
     /**
      * Returns debug information in an object
+     *
      * @return Debug
      */
     public function getDebug()
