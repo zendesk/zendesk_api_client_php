@@ -164,8 +164,8 @@ class HttpClient
             'macros'      => Macros::class,
             'groups'      => Groups::class,
             'automations' => Automations::class,
-'triggers' => Triggers::class,
-'targets'     => Targets::class,
+        'triggers' => Triggers::class,
+        'targets'     => Targets::class,
         ];
     }
 
