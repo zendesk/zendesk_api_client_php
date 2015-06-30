@@ -61,6 +61,7 @@ class Tickets extends ResourceAbstract
             'forms'    => TicketForms::class,
             'tags'     => Tags::class,
             'audits'   => TicketAudits::class,
+            'metrics'  => TicketMetrics::class,
         ];
     }
 
