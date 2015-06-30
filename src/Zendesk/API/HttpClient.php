@@ -12,6 +12,7 @@ use Zendesk\API\Resources\Automations;
 use Zendesk\API\Resources\Macros;
 use Zendesk\API\Resources\Tags;
 use Zendesk\API\Resources\Tickets;
+use Zendesk\API\Resources\Triggers;
 use Zendesk\API\Resources\Users;
 use Zendesk\API\Resources\Views;
 use Zendesk\API\UtilityTraits\InstantiatorTrait;
@@ -98,10 +99,15 @@ class HttpClient
      * @var Macros
      */
     protected $macros;
+
     /**
      * @var Automations
      */
     protected $automations;
+    /**
+     * @var Triggers
+     */
+    protected $triggers;
     /**
      * @var Debug
      */
@@ -154,6 +160,7 @@ class HttpClient
             'tags'        => Tags::class,
             'macros'      => Macros::class,
             'automations' => Automations::class,
+            'triggers' => Triggers::class,
         ];
     }
 
