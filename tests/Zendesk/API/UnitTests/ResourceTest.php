@@ -23,7 +23,7 @@ class ResourceTest extends BasicTest
 
         $this->assertLastRequestIs([
             'method'   => 'GET',
-            'endpoint' => 'dummyresource.json',
+            'endpoint' => 'dummy_resource.json',
         ]);
     }
 
@@ -37,7 +37,7 @@ class ResourceTest extends BasicTest
 
         $this->assertLastRequestIs([
             'method'   => 'GET',
-            'endpoint' => 'dummyresource/1.json',
+            'endpoint' => 'dummy_resource/1.json',
         ]);
     }
 
@@ -54,7 +54,7 @@ class ResourceTest extends BasicTest
         $this->assertLastRequestIs(
             [
                 'method'     => 'POST',
-                'endpoint'   => 'dummyresource.json',
+                'endpoint'   => 'dummy_resource.json',
                 'postFields' => ['dummy' => $postFields]
             ]
         );
@@ -72,7 +72,7 @@ class ResourceTest extends BasicTest
         $this->assertLastRequestIs(
             [
                 'method'     => 'PUT',
-                'endpoint'   => 'dummyresource/1.json',
+                'endpoint'   => 'dummy_resource/1.json',
                 'postFields' => ['dummy' => $postFields],
             ]
         );
@@ -89,7 +89,7 @@ class ResourceTest extends BasicTest
         $this->assertLastRequestIs(
             [
                 'method'   => 'DELETE',
-                'endpoint' => 'dummyresource/1.json'
+                'endpoint' => 'dummy_resource/1.json'
             ]
         );
     }
