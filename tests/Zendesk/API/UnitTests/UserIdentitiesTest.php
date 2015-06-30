@@ -72,7 +72,7 @@ class UserIdentitiesTest extends BasicTest
 
         $postFields = [
             'type'  => 'email',
-            'value' => 'devaris.brown@zendesk.com'
+            'value' => 'thecustomer@domain.com'
         ];
 
         $this->client->users($userId)->identities()->createAsEndUser($postFields);

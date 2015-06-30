@@ -126,9 +126,18 @@ class UserIdentities extends ResourceAbstract
     }
 
     /**
-     * This API method allows you to set an identity to primary.
+     * This makes a `PUT` request to the endpoint defined by the $callingMethod parameter.
+     *
+     * @param string $callingMethod
+     * @param array $params
+     *
+     * @return array
+     * @throws MissingParametersException
+     * @throws \Exception
+     * @throws \Zendesk\API\Exceptions\ApiResponseException
+     * @throws \Zendesk\API\Exceptions\AuthException
      */
-    public function makePrimary(array $params = [])
+    private function makePutRequest($callingMethod, $params = [])
     {
         $this->addUserIdToRouteParams($params);
 
@@ -144,7 +153,7 @@ class UserIdentities extends ResourceAbstract
 
         $response = Http::sendWithOptions(
             $this->client,
-            $this->getRoute(__FUNCTION__, array('id' => $id)),
+            $this->getRoute($callingMethod, array('id' => $id)),
             ['method' => 'PUT']
         );
 
@@ -152,29 +161,19 @@ class UserIdentities extends ResourceAbstract
     }
 
     /**
+     * This API method allows you to set an identity to primary.
+     */
+    public function makePrimary(array $params = [])
+    {
+        return $this->makePutRequest(__FUNCTION__, $params);
+    }
+
+    /**
      * This API method only allows you to set an identity as verified. This is allowed only for agents.
      */
     public function verify(array $params = [])
     {
-        $this->addUserIdToRouteParams($params);
-
-        if (isset($params['id'])) {
-            $id = $params['id'];
-        } else {
-            $id = $this->getChainedParameter(self::class);
-        }
-
-        if (empty($id)) {
-            throw new MissingParametersException(__METHOD__, ['id']);
-        }
-
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__, array('id' => $id)),
-            ['method' => 'PUT']
-        );
-
-        return $response;
+        return $this->makePutRequest(__FUNCTION__, $params);
     }
 
     /**
@@ -183,24 +182,6 @@ class UserIdentities extends ResourceAbstract
      */
     public function requestVerification(array $params = [])
     {
-        $this->addUserIdToRouteParams($params);
-
-        if (isset($params['id'])) {
-            $id = $params['id'];
-        } else {
-            $id = $this->getChainedParameter(self::class);
-        }
-
-        if (empty($id)) {
-            throw new MissingParametersException(__METHOD__, ['id']);
-        }
-
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__, array('id' => $id)),
-            ['method' => 'PUT']
-        );
-
-        return $response;
+        return $this->makePutRequest(__FUNCTION__, $params);
     }
 }
