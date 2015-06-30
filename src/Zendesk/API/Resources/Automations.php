@@ -2,10 +2,9 @@
 
 namespace Zendesk\API\Resources;
 
-use Zendesk\API\Http;
-
 /**
  * The Automations class exposes methods seen at http://developer.zendesk.com/documentation/rest_api/automations.html
+ *
  * @package Zendesk\API
  */
 class Automations extends ResourceAbstract
@@ -30,20 +29,8 @@ class Automations extends ResourceAbstract
      * @throws \Exception
      * @return mixed
      */
-    public function findActive(array $params = array())
+    public function findActive(array $params = [])
     {
-        $sideloads = $this->client->getSideload($params);
-
-        $queryParams = Http::prepareQueryParams($sideloads, $params);
-
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__, $params),
-            ['queryParams' => $queryParams]
-        );
-
-        $this->client->setSideload(null);
-
-        return $response;
+        return $this->client->get($this->getRoute(__FUNCTION__), $params);
     }
 }

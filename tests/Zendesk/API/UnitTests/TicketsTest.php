@@ -14,25 +14,23 @@ class TicketsTest extends BasicTest
 
     public function setUp()
     {
-        $this->testTicket = array(
+        $this->testTicket = [
             'subject'  => 'The quick brown fox jumps over the lazy dog',
-            'comment'  => array(
-                'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod'
-                          . ' tempor incididunt ut labore et dolore magna aliqua.'
-            ),
+            'comment'  => [
+                'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            ],
             'priority' => 'normal',
             'id'       => '12345'
-        );
+        ];
 
-        $this->testTicket2 = array(
+        $this->testTicket2 = [
             'subject'  => 'The second ticket',
-            'comment'  => array(
-                'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod'
-                          . ' tempor incididunt ut labore et dolore magna aliqua.'
-            ),
+            'comment'  => [
+                'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+            ],
             'priority' => 'normal',
             'id'       => '4321'
-        );
+        ];
 
         parent::setUp();
     }
@@ -43,7 +41,7 @@ class TicketsTest extends BasicTest
             new Response(200, [], '')
         ]);
 
-        $this->client->tickets()->sideload(array('users', 'groups'))->findAll();
+        $this->client->tickets()->sideload(['users', 'groups'])->findAll();
 
         $this->assertLastRequestIs(
             [
@@ -60,7 +58,7 @@ class TicketsTest extends BasicTest
             new Response(200, [], '')
         ]);
 
-        $this->client->tickets()->findAll(array('sideload' => array('users', 'groups')));
+        $this->client->tickets()->findAll(['sideload' => ['users', 'groups']]);
 
         $this->assertLastRequestIs(
             [
@@ -110,8 +108,7 @@ class TicketsTest extends BasicTest
             new Response(200, [], '')
         ]);
 
-        $testTicketIds = ['ids' => [$this->testTicket['id'], $this->testTicket2['id']]];
-        $this->client->tickets()->findMany($testTicketIds);
+        $this->client->tickets()->findMany([$this->testTicket['id'], $this->testTicket2['id']]);
 
         $this->assertLastRequestIs(
             [
@@ -122,13 +119,38 @@ class TicketsTest extends BasicTest
         );
     }
 
+    public function testFindMultipleWithSideload()
+    {
+        $this->mockAPIResponses([
+            new Response(200, [], '')
+        ]);
+
+        $this->client->tickets()->findMany(
+            [$this->testTicket['id'], $this->testTicket2['id']],
+            ['sideload' => ['users', 'groups'], 'per_page' => 20],
+            'ids'
+        );
+
+        $this->assertLastRequestIs(
+            [
+                'method'      => 'GET',
+                'endpoint'    => 'tickets/show_many.json',
+                'queryParams' => [
+                    'ids'      => implode(',', [$this->testTicket['id'], $this->testTicket2['id']]),
+                    'per_page' => 20,
+                    'include'  => 'users,groups'
+                ],
+            ]
+        );
+    }
+
     public function testDeleteMultiple()
     {
         $this->mockAPIResponses([
             new Response(200, [], '')
         ]);
 
-        $this->client->tickets()->deleteMany(array(123, 321));
+        $this->client->tickets()->deleteMany([123, 321]);
         $this->assertLastRequestIs(
             [
                 'method'      => 'DELETE',
@@ -145,38 +167,26 @@ class TicketsTest extends BasicTest
             new Response(200, [], json_encode(['ticket' => ['id' => '123']])),
         ]);
 
-        $attachmentData = [
-            'file' => getcwd() . '/tests/assets/UK.png',
-            'name' => 'UK test non-alpha chars.png'
-        ];
-
-        $this->client->tickets()->attach($attachmentData)->create($this->testTicket);
-
-        $this->assertRequestIs(
-            [
-                'method'      => 'POST',
-                'endpoint'    => 'uploads.json',
-                'queryParams' => ['filename' => rawurlencode($attachmentData['name'])],
-                'file'        => $attachmentData['file'],
-            ],
-            0
+        $this->mockApiCall(
+            'POST',
+            '/uploads.json?filename=UK%20test%20non-alpha%20chars.png',
+            ['upload' => ['token' => 'asdf']],
+            ['code' => 201]
         );
 
-        $postFields = [
-            'ticket' => [
-                'subject'  => $this->testTicket['subject'],
-                'comment'  => array_merge($this->testTicket['comment'], ['uploads' => ['asdf']]),
-                'priority' => $this->testTicket['priority'],
-                'id'       => $this->testTicket['id'],
+        $this->mockApiCall(
+            'POST',
+            'tickets.json',
+            ['ticket' => ['id' => '123']],
+            ['code' => 201]
+        );
 
-            ]
-        ];
-        array_merge([$this->testTicket, ['uploads' => ['asdf']]]);
-        $this->assertLastRequestIs([
-            'method'     => 'POST',
-            'endpoint'   => 'tickets.json',
-            'postFields' => $postFields,
-        ]);
+        $this->client->tickets()->attach([
+            'file' => getcwd() . '/tests/assets/UK.png',
+            'name' => 'UK test non-alpha chars.png'
+        ])->create($this->testTicket);
+
+        $this->httpMock->verify();
     }
 
     public function testExport()
@@ -185,7 +195,7 @@ class TicketsTest extends BasicTest
             new Response(200, [], '')
         ]);
 
-        $this->client->tickets()->export(array('start_time' => '1332034771'));
+        $this->client->tickets()->export(['start_time' => '1332034771']);
 
         $this->assertLastRequestIs(
             [
@@ -265,7 +275,7 @@ class TicketsTest extends BasicTest
             new Response(200, [], json_encode(['topic_id' => 1]))
         ]);
 
-        $collaborators = $this->client->tickets()->collaborators(array('id' => 12345));
+        $collaborators = $this->client->tickets()->collaborators(['id' => 12345]);
 
         $this->assertLastRequestIs(
             [
@@ -283,7 +293,7 @@ class TicketsTest extends BasicTest
             new Response(200, [], json_encode(['topic_id' => 1]))
         ]);
 
-        $incidents = $this->client->tickets()->incidents(array('id' => 12345));
+        $incidents = $this->client->tickets()->incidents(['id' => 12345]);
 
         $this->assertLastRequestIs(
             [
@@ -319,7 +329,7 @@ class TicketsTest extends BasicTest
             new Response(200, [], json_encode(['tickets' => []]))
         ]);
 
-        $this->client->tickets()->problemAutoComplete(array('text' => 'foo'));
+        $this->client->tickets()->problemAutoComplete(['text' => 'foo']);
 
         $this->assertLastRequestIs(
             [

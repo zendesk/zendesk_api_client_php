@@ -7,7 +7,6 @@ use Zendesk\API\Exceptions\RouteException;
 /**
  * Allows resources to call a bulk create endpoint.
  *
- * @package Zendesk\API\BulkTraits
  */
 trait BulkCreateTrait
 {
@@ -26,7 +25,7 @@ trait BulkCreateTrait
         try {
             $route = $this->getRoute(__FUNCTION__);
         } catch (RouteException $e) {
-            if (!isset($this->resourceName)) {
+            if (! isset($this->resourceName)) {
                 $this->resourceName = $this->getResourceNameFromClass();
             }
 
