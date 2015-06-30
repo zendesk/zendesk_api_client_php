@@ -6,6 +6,7 @@ use Zendesk\API\Exceptions\MissingParametersException;
 
 /**
  * The TicketAudits class exposes read only audit methods
+ *
  * @package Zendesk\API
  */
 class TicketAudits extends ResourceAbstract
@@ -22,8 +23,8 @@ class TicketAudits extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
-          'findAll' => 'tickets/{ticket_id}/audits.json',
-          'find'    => 'tickets/{ticket_id}/audits/{id}.json',
+            'findAll' => 'tickets/{ticket_id}/audits.json',
+            'find'    => 'tickets/{ticket_id}/audits/{id}.json',
         ]);
     }
 
@@ -35,12 +36,15 @@ class TicketAudits extends ResourceAbstract
      * @return mixed
      * @throws MissingParametersException
      */
-    public function findAll(array $params = array())
+    public function findAll(array $params = [])
     {
-        $params = $this->addChainedParametersToParams($params, ['ticket_id' => Tickets::class]);
-        if (! $this->hasKeys($params, array('ticket_id'))) {
-            throw new MissingParametersException(__METHOD__, array('ticket_id'));
+        $routeParams = $this->addChainedParametersToParams($params, ['ticket_id' => Tickets::class]);
+
+        if (!$this->hasKeys($routeParams, ['ticket_id'])) {
+            throw new MissingParametersException(__METHOD__, ['ticket_id']);
         }
+
+        $this->setAdditionalRouteParams($routeParams);
 
         return parent::findAll($params);
     }
@@ -55,7 +59,7 @@ class TicketAudits extends ResourceAbstract
      *
      * @return mixed
      */
-    public function find($id = null, array $params = array())
+    public function find($id = null, array $params = [])
     {
         if (empty($id)) {
             $id = $this->getChainedParameter(get_class($this));
@@ -64,12 +68,12 @@ class TicketAudits extends ResourceAbstract
         $params = $this->addChainedParametersToParams(
             $params,
             [
-            'ticket_id' => Tickets::class,
+                'ticket_id' => Tickets::class,
             ]
         );
 
-        if (! $this->hasKeys($params, array('ticket_id'))) {
-            throw new MissingParametersException(__METHOD__, array('ticket_id'));
+        if (!$this->hasKeys($params, ['ticket_id'])) {
+            throw new MissingParametersException(__METHOD__, ['ticket_id']);
         }
 
         $this->setAdditionalRouteParams(['ticket_id' => $params['ticket_id']]);

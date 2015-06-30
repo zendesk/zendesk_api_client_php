@@ -3,7 +3,7 @@
 namespace Zendesk\API\Resources;
 
 use Zendesk\API\Exceptions\MissingParametersException;
-use Zendesk\API\Http;
+use Zendesk\API\Exceptions\RouteException;
 use Zendesk\API\HttpClient;
 use Zendesk\API\UtilityTraits\ChainedParametersTrait;
 
@@ -223,8 +223,8 @@ abstract class ResourceAbstract
      */
     public function getRoute($name, array $params = [])
     {
-        if (! isset($this->routes[$name])) {
-            throw new \Exception('Route not found.');
+        if (!isset($this->routes[$name])) {
+            throw new RouteException('Route not found.');
         }
 
         $route = $this->routes[$name];
@@ -249,19 +249,12 @@ abstract class ResourceAbstract
      */
     public function findAll(array $params = [])
     {
-        $sideloads = $this->client->getSideload($params);
+        $route = $this->getRoute(__FUNCTION__, $params);
 
-        $queryParams = Http::prepareQueryParams($sideloads, $params);
-
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__, $params),
-            ['queryParams' => $queryParams]
+        return $this->client->get(
+            $route,
+            $params
         );
-
-        $this->client->setSideload(null);
-
-        return $response;
     }
 
     /**
@@ -284,14 +277,10 @@ abstract class ResourceAbstract
             throw new MissingParametersException(__METHOD__, ['id']);
         }
 
-        $response = Http::sendWithOptions(
-            $this->client,
+        return $this->client->get(
             $this->getRoute(__FUNCTION__, ['id' => $id]),
-            ['queryParams' => $queryParams]
+            $queryParams
         );
-        $this->client->setSideload(null);
-
-        return $response;
     }
 
     /**
@@ -320,19 +309,12 @@ abstract class ResourceAbstract
      */
     public function create(array $params)
     {
-        $class    = get_class($this);
-        $response = Http::sendWithOptions(
-            $this->client,
+        $class = get_class($this);
+
+        return $this->client->post(
             $this->getRoute('create'),
-            [
-                'postFields' => [$class::OBJ_NAME => $params],
-                'method'     => 'POST'
-            ]
+            [$class::OBJ_NAME => $params]
         );
-
-        $this->client->setSideload(null);
-
-        return $response;
     }
 
 
@@ -352,17 +334,10 @@ abstract class ResourceAbstract
             $id = $this->getChainedParameter($class);
         }
 
-        $postFields = [$class::OBJ_NAME => $updateResourceFields];
-
-        $response = Http::sendWithOptions(
-            $this->client,
+        return $this->client->put(
             $this->getRoute(__FUNCTION__, ['id' => $id]),
-            ['postFields' => $postFields, 'method' => 'PUT']
+            [$class::OBJ_NAME => $updateResourceFields]
         );
-
-        $this->client->setSideload(null);
-
-        return $response;
     }
 
 
@@ -388,15 +363,6 @@ abstract class ResourceAbstract
             throw new MissingParametersException(__METHOD__, ['id']);
         }
 
-        $route    = $this->getRoute('find', ['id' => $id]);
-        $response = Http::sendWithOptions(
-            $this->client,
-            $route,
-            ['method' => 'DELETE']
-        );
-
-        $this->client->setSideload(null);
-
-        return $response;
+        return $this->client->delete($this->getRoute('find', ['id' => $id]));
     }
 }

@@ -4,10 +4,10 @@ namespace Zendesk\API\Resources;
 
 use Zendesk\API\Exceptions\CustomException;
 use Zendesk\API\Exceptions\MissingParametersException;
-use Zendesk\API\Http;
 
 /**
  * The TicketComments class exposes comment methods for tickets
+ *
  * @package Zendesk\API
  */
 class TicketComments extends ResourceAbstract
@@ -20,8 +20,8 @@ class TicketComments extends ResourceAbstract
     {
         $this->setRoutes(
             [
-            'findAll'     => 'tickets/{ticket_id}/comments.json',
-            'makePrivate' => 'tickets/{ticket_id}/comments/{id}/make_private.json'
+                'findAll'     => 'tickets/{ticket_id}/comments.json',
+                'makePrivate' => 'tickets/{ticket_id}/comments/{id}/make_private.json'
             ]
         );
     }
@@ -36,12 +36,12 @@ class TicketComments extends ResourceAbstract
      *
      * @return mixed
      */
-    public function findAll(array $queryParams = array())
+    public function findAll(array $queryParams = [])
     {
-        $queryParams = $this->addChainedParametersToParams($queryParams, [ 'ticket_id' => Tickets::class ]);
+        $queryParams = $this->addChainedParametersToParams($queryParams, ['ticket_id' => Tickets::class]);
 
-        if (! $this->hasKeys($queryParams, array( 'ticket_id' ))) {
-            throw new MissingParametersException(__METHOD__, array( 'ticket_id' ));
+        if (!$this->hasKeys($queryParams, ['ticket_id'])) {
+            throw new MissingParametersException(__METHOD__, ['ticket_id']);
         }
 
         return parent::findAll($queryParams);
@@ -57,26 +57,18 @@ class TicketComments extends ResourceAbstract
      *
      * @return mixed
      */
-    public function makePrivate(array $params = array())
+    public function makePrivate(array $params = [])
     {
         $params = $this->addChainedParametersToParams(
             $params,
-            [ 'id' => get_class($this), 'ticket_id' => Tickets::class ]
+            ['id' => get_class($this), 'ticket_id' => Tickets::class]
         );
 
-        if (! $this->hasKeys($params, array( 'id', 'ticket_id' ))) {
-            throw new MissingParametersException(__METHOD__, array( 'id', 'ticket_id' ));
+        if (!$this->hasKeys($params, ['id', 'ticket_id'])) {
+            throw new MissingParametersException(__METHOD__, ['id', 'ticket_id']);
         }
 
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__, $params),
-            [ 'method' => 'PUT' ]
-        );
-
-        $this->client->setSideload(null);
-
-        return $response;
+        return $this->client->put($this->getRoute(__FUNCTION__, $params), $params);
     }
 
     /*
@@ -90,8 +82,9 @@ class TicketComments extends ResourceAbstract
      * @return mixed|void
      * @throws CustomException
      */
-    public function find($id = null, array $queryQueryParams = array())
+    public function find($id = null, array $queryQueryParams = [])
     {
-        throw new CustomException('Method ' . __METHOD__ . ' does not exist. Try $client->ticket(ticket_id)->comments()->findAll() instead.');
+        throw new CustomException('Method ' . __METHOD__
+            . ' does not exist. Try $client->ticket(ticket_id)->comments()->findAll() instead.');
     }
 }

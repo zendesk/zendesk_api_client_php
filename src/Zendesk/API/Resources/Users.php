@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\Resources;
 
+use Zendesk\API\BulkTraits\BulkCreateTrait;
 use Zendesk\API\Exceptions\CustomException;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
@@ -19,6 +20,8 @@ class Users extends ResourceAbstract
 
     const OBJ_NAME = 'user';
     const OBJ_NAME_PLURAL = 'users';
+
+    use BulkCreateTrait;
 
     /**
      * @var UserIdentities
@@ -204,28 +207,6 @@ class Users extends ResourceAbstract
     }
 
     /**
-     * Create multiple new users
-     *
-     * @param array $params
-     *
-     * @throws ResponseException
-     * @throws \Exception
-     * @return mixed
-     */
-    public function createMany(array $params)
-    {
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__),
-            ['postFields' => [self::OBJ_NAME_PLURAL => $params], 'method' => 'POST']
-        );
-
-        $this->client->setSideload(null);
-
-        return $response;
-    }
-
-    /**
      * Update multiple users
      *
      * @param array $params
@@ -313,15 +294,7 @@ class Users extends ResourceAbstract
         $queryParams = isset($params['query']) ? ['query' => $params['query']] : [];
         $extraParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
 
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__),
-            ['queryParams' => array_merge($extraParams, $queryParams)]
-        );
-
-        $this->client->setSideload(null);
-
-        return $response;
+        return $this->client->get($this->getRoute(__FUNCTION__), array_merge($extraParams, $queryParams));
     }
 
     /**
@@ -431,15 +404,7 @@ class Users extends ResourceAbstract
         $id = $params['id'];
         unset($params['id']);
 
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__, ['id' => $id]),
-            ['postFields' => [self::OBJ_NAME => $params], 'method' => 'POST']
-        );
-
-        $this->client->setSideload(null);
-
-        return $response;
+        return $this->client->post($this->getRoute(__FUNCTION__, ['id' => $id]), [self::OBJ_NAME => $params]);
     }
 
     /**
@@ -461,14 +426,7 @@ class Users extends ResourceAbstract
         $id = $params['id'];
         unset($params['id']);
 
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__, ['id' => $id]),
-            ['postFields' => $params, 'method' => 'PUT']
-        );
+        return $this->client->put($this->getRoute(__FUNCTION__, ['id' => $id]), $params);
 
-        $this->client->setSideload(null);
-
-        return $response;
     }
 }

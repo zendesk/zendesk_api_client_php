@@ -144,10 +144,10 @@ class HttpClient
         }
 
         $this->subdomain = $subdomain;
-        $this->username  = $username;
-        $this->hostname  = $hostname;
-        $this->scheme    = $scheme;
-        $this->port      = $port;
+        $this->username = $username;
+        $this->hostname = $hostname;
+        $this->scheme = $scheme;
+        $this->port = $port;
 
         if (empty($subdomain)) {
             $this->apiUrl = "$scheme://$hostname:$port/api/{$this->apiVer}/";
@@ -186,7 +186,7 @@ class HttpClient
     public function setAuth($strategy, array $options)
     {
         $validAuthStrategies = [self::AUTH_BASIC, self::AUTH_OAUTH];
-        if (! in_array($strategy, $validAuthStrategies)) {
+        if (!in_array($strategy, $validAuthStrategies)) {
             throw new AuthException('Invalid auth strategy set, please use `'
                                     . implode('` or `', $validAuthStrategies)
                                     . '`');
@@ -195,11 +195,11 @@ class HttpClient
         $this->authStrategy = $strategy;
 
         if ($strategy == self::AUTH_BASIC) {
-            if (! array_key_exists('username', $options) || ! array_key_exists('token', $options)) {
+            if (!array_key_exists('username', $options) || !array_key_exists('token', $options)) {
                 throw new AuthException('Please supply `username` and `token` for basic auth.');
             }
         } elseif ($strategy == self::AUTH_OAUTH) {
-            if (! array_key_exists('token', $options)) {
+            if (!array_key_exists('token', $options)) {
                 throw new AuthException('Please supply `token` for oauth.');
             }
         }
@@ -253,10 +253,10 @@ class HttpClient
      */
     public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError)
     {
-        $this->debug->lastRequestHeaders  = $lastRequestHeaders;
-        $this->debug->lastResponseCode    = $lastResponseCode;
+        $this->debug->lastRequestHeaders = $lastRequestHeaders;
+        $this->debug->lastResponseCode = $lastResponseCode;
         $this->debug->lastResponseHeaders = $lastResponseHeaders;
-        $this->debug->lastResponseError   = $lastResponseError;
+        $this->debug->lastResponseError = $lastResponseError;
     }
 
     /**
@@ -364,5 +364,64 @@ class HttpClient
     public function anonymousSearch(array $params)
     {
         return $this->search->anonymousSearch($params);
+    }
+
+    public function get($endpoint, $queryParams = [])
+    {
+        $sideloads = $this->getSideload($queryParams);
+
+        $queryParams = $queryParams + Http::prepareQueryParams($sideloads, $queryParams);
+
+        $response = Http::sendWithOptions(
+            $this,
+            $endpoint,
+            ['queryParams' => $queryParams]
+        );
+
+        $this->setSideload(null);
+
+        return $response;
+    }
+
+    public function post($endpoint, $postData = [])
+    {
+        $response = Http::sendWithOptions(
+            $this,
+            $endpoint,
+            [
+                'postFields' => $postData,
+                'method'     => 'POST'
+            ]
+        );
+
+        $this->setSideload(null);
+
+        return $response;
+    }
+
+    public function put($endpoint, $putData = [])
+    {
+        $response = Http::sendWithOptions(
+            $this,
+            $endpoint,
+            ['postFields' => $putData, 'method' => 'PUT']
+        );
+
+        $this->setSideload(null);
+
+        return $response;
+    }
+
+    public function delete($endpoint)
+    {
+        $response = Http::sendWithOptions(
+            $this,
+            $endpoint,
+            ['method' => 'DELETE']
+        );
+
+        $this->setSideload(null);
+
+        return $response;
     }
 }
