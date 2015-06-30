@@ -370,7 +370,11 @@ class HttpClient
     {
         $sideloads = $this->getSideload($queryParams);
 
-        $queryParams = $queryParams + Http::prepareQueryParams($sideloads, $queryParams);
+        // TODO: filter allowed query params
+        if (is_array($sideloads)) {
+            $queryParams['include'] = implode(',', $sideloads);
+            unset($queryParams['sideload']);
+        }
 
         $response = Http::sendWithOptions(
             $this,

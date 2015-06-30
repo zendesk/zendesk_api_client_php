@@ -2,7 +2,6 @@
 
 namespace Zendesk\API\Resources;
 
-use Zendesk\API\Http;
 use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
 class Groups extends ResourceAbstract
@@ -41,7 +40,7 @@ class Groups extends ResourceAbstract
         if (empty($lastChained) || $name !== 'findAll') {
             return parent::getRoute($name, $params);
         } else {
-            $id = reset($lastChained);
+            $id       = reset($lastChained);
             $resource = $chainedResourceNames[0]::OBJ_NAME_PLURAL;
 
             if ('users' === $resource) {
@@ -59,12 +58,6 @@ class Groups extends ResourceAbstract
      */
     public function assignable()
     {
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__)
-        );
-        $this->client->setSideload(null);
-
-        return $response;
+        return $this->client->get($this->getRoute(__FUNCTION__));
     }
 }

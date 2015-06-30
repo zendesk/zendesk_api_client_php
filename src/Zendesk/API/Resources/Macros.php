@@ -3,7 +3,6 @@
 namespace Zendesk\API\Resources;
 
 use Zendesk\API\Exceptions\MissingParametersException;
-use Zendesk\API\Http;
 
 /**
  * The Macros class exposes methods seen at http://developer.zendesk.com/documentation/rest_api/macros.html
@@ -38,10 +37,6 @@ class Macros extends ResourceAbstract
     public function findAllActive(array $params = [])
     {
         return $this->client->get($this->getRoute(__FUNCTION__), $params);
-
-        $this->client->setSideload(null);
-
-        return $response;
     }
 
     /**
@@ -64,13 +59,9 @@ class Macros extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, ['id']);
         }
 
-        $response = Http::sendWithOptions(
-            $this->client,
+        return $this->client->get(
             $this->getRoute(__FUNCTION__, ['id' => $id])
         );
-        $this->client->setSideload(null);
-
-        return $response;
     }
 
     /**
@@ -98,6 +89,8 @@ class Macros extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, ['id', 'ticketId']);
         }
 
-        return $this->client->get($this->getRoute(__FUNCTION__, ['id' => $id, 'ticketId' => $ticketId]));
+        return $this->client->get(
+            $this->getRoute(__FUNCTION__, ['id' => $id, 'ticketId' => $ticketId])
+        );
     }
 }
