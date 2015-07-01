@@ -33,14 +33,15 @@ class Users extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
-            'related'        => 'users/{id}/related.json',
-            'merge'          => 'users/me/merge.json',
-            'search'         => 'users/search.json',
-            'autocomplete'   => 'users/autocomplete.json',
-            'setPassword'    => 'users/{id}/password.json',
-            'changePassword' => 'users/{id}/password.json',
-            'updateMany'     => 'users/update_many.json',
-            'createMany'     => 'users/create_many.json',
+            'related'            => 'users/{id}/related.json',
+            'merge'              => 'users/me/merge.json',
+            'search'             => 'users/search.json',
+            'autocomplete'       => 'users/autocomplete.json',
+            'setPassword'        => 'users/{id}/password.json',
+            'changePassword'     => 'users/{id}/password.json',
+            'updateMany'         => 'users/update_many.json',
+            'createMany'         => 'users/create_many.json',
+            'updateProfileImage' => 'users/{id}.json',
         ]);
     }
 
