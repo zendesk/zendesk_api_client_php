@@ -9,7 +9,6 @@ use Zendesk\API\UtilityTraits\ChainedParametersTrait;
 
 /**
  * Abstract class for all endpoints
- *
  * @package Zendesk\API
  */
 abstract class ResourceAbstract
@@ -63,7 +62,6 @@ abstract class ResourceAbstract
      *    Where ticket would have a comments as a valid sub resource.
      *    The array would look like:
      *      ['comments' => '\Zendesk\API\Resources\TicketComments']
-     *
      * @return array
      */
     public static function getValidSubResource()
@@ -73,13 +71,12 @@ abstract class ResourceAbstract
 
     /**
      * Return the resource name using the name of the class (used for endpoints)
-     *
      * @return string
      */
     private function getResourceNameFromClass()
     {
         $namespacedClassName = get_class($this);
-        $resourceName = join('', array_slice(explode('\\', $namespacedClassName), -1));
+        $resourceName        = join('', array_slice(explode('\\', $namespacedClassName), -1));
 
         return strtolower($resourceName);
     }
@@ -94,7 +91,7 @@ abstract class ResourceAbstract
 
     protected function setUpRoutes()
     {
-        if (!isset($this->resourceName)) {
+        if (! isset($this->resourceName)) {
             $this->resourceName = $this->getResourceNameFromClass();
         }
 
@@ -123,7 +120,6 @@ abstract class ResourceAbstract
 
     /**
      * Saves an id for future methods in the chain
-     *
      * @return int
      */
     public function getLastId()
@@ -142,7 +138,7 @@ abstract class ResourceAbstract
     public function hasKeys(array $params, array $mandatory)
     {
         for ($i = 0; $i < count($mandatory); $i++) {
-            if (!array_key_exists($mandatory[$i], $params)) {
+            if (! array_key_exists($mandatory[$i], $params)) {
                 return false;
             }
         }
@@ -208,7 +204,6 @@ abstract class ResourceAbstract
 
     /**
      * Return all routes for this resource
-     *
      * @return array
      */
     public function getRoutes()
@@ -228,7 +223,7 @@ abstract class ResourceAbstract
      */
     public function getRoute($name, array $params = [])
     {
-        if (!isset($this->routes[$name])) {
+        if (! isset($this->routes[$name])) {
             throw new \Exception('Route not found.');
         }
 
@@ -325,7 +320,7 @@ abstract class ResourceAbstract
      */
     public function create(array $params)
     {
-        $class = get_class($this);
+        $class    = get_class($this);
         $response = Http::sendWithOptions(
             $this->client,
             $this->getRoute('create'),
@@ -393,7 +388,7 @@ abstract class ResourceAbstract
             throw new MissingParametersException(__METHOD__, ['id']);
         }
 
-        $route = $this->getRoute('find', ['id' => $id]);
+        $route    = $this->getRoute('find', ['id' => $id]);
         $response = Http::sendWithOptions(
             $this->client,
             $route,
