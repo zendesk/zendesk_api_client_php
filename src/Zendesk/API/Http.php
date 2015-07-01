@@ -3,6 +3,7 @@
 namespace Zendesk\API;
 
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\LazyOpenStream;
 use GuzzleHttp\Psr7\Request;
 use Zendesk\API\Exceptions\ApiResponseException;
 use Zendesk\API\Exceptions\AuthException;
@@ -79,6 +80,7 @@ class Http
             'Content-Type' => $options['contentType'],
         ];
 
+
         $request = new Request(
             $options['method'],
             $client->getApiUrl() . $endPoint,
@@ -87,6 +89,11 @@ class Http
 
         if (! empty($options['postFields'])) {
             $request = $request->withBody(\GuzzleHttp\Psr7\stream_for(json_encode($options['postFields'])));
+        } elseif (! empty($options['file'])) {
+            if (is_file($options['file'])) {
+                $fileStream = new LazyOpenStream($options['file'], 'r');
+                $request    = $request->withBody($fileStream);
+            }
         }
 
         if (! empty($options['queryParams'])) {
@@ -119,6 +126,11 @@ class Http
             );
         } catch (RequestException $e) {
             throw new ApiResponseException($e);
+        }
+
+        if (isset($file)) {
+            fclose($file);
+
         }
 
         return json_decode($response->getBody()->getContents());
