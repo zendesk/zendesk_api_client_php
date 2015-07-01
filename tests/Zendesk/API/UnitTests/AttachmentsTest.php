@@ -16,24 +16,51 @@ class AttachmentsTest extends BasicTest
     public function testUploadAttachment()
     {
         $this->mockAPIResponses([
-          new Response(201, [], '')
+            new Response(201, [], '')
         ]);
 
         $attachmentData = [
-          'file' => getcwd() . '/tests/assets/UK.png',
-          'type' => 'image/png',
-          'name' => 'UK test non-alpha chars.png'
+            'file' => getcwd() . '/tests/assets/UK.png',
+            'type' => 'image/png',
+            'name' => 'UK test non-alpha chars.png'
         ];
 
         $this->client->attachments()->upload($attachmentData);
 
         $this->assertLastRequestIs(
             [
-            'method'      => 'POST',
-            'endpoint'    => 'uploads.json',
-            'statusCode'  => 201,
-            'queryParams' => ['filename' => rawurlencode($attachmentData['name'])],
-            'file'        => $attachmentData['file'],
+                'method'      => 'POST',
+                'endpoint'    => 'uploads.json',
+                'statusCode'  => 201,
+                'queryParams' => ['filename' => rawurlencode($attachmentData['name'])],
+                'file'        => $attachmentData['file'],
+            ]
+        );
+    }
+
+    /**
+     * Test upload of file
+     */
+    public function testUploadAttachmentWithNoName()
+    {
+        $this->mockAPIResponses([
+            new Response(201, [], '')
+        ]);
+
+        $attachmentData = [
+            'file' => getcwd() . '/tests/assets/UK.png',
+            'type' => 'image/png',
+        ];
+
+        $this->client->attachments()->upload($attachmentData);
+
+        $this->assertLastRequestIs(
+            [
+                'method'      => 'POST',
+                'endpoint'    => 'uploads.json',
+                'statusCode'  => 201,
+                'queryParams' => ['filename' => 'UK.png'], // Taken from file path
+                'file'        => $attachmentData['file'],
             ]
         );
     }
@@ -44,7 +71,7 @@ class AttachmentsTest extends BasicTest
     public function testDeleteAttachment()
     {
         $this->mockAPIResponses([
-          new Response(200, [], '')
+            new Response(200, [], '')
         ]);
 
         $token = 'validToken';
@@ -53,8 +80,8 @@ class AttachmentsTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-            'method'   => 'DELETE',
-            'endpoint' => "uploads/{$token}.json",
+                'method'   => 'DELETE',
+                'endpoint' => "uploads/{$token}.json",
             ]
         );
     }
