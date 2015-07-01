@@ -13,6 +13,7 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
 /**
  * The Users class exposes user management methods
  * Note: you must authenticate as a user!
+ *
  * @package Zendesk\API
  */
 class Users extends ResourceAbstract
@@ -56,8 +57,9 @@ class Users extends ResourceAbstract
     public static function getValidRelations()
     {
         return [
-            'identities' => UserIdentities::class,
-            'groups'     => Groups::class,
+            'identities'    => UserIdentities::class,
+            'groups'        => Groups::class,
+            'organizations' => Organizations::class,
         ];
     }
 
