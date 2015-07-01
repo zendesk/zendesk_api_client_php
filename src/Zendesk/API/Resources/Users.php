@@ -25,16 +25,6 @@ class Users extends ResourceAbstract
      */
     protected $identities;
 
-   /**
-     * {@inheritdoc}
-     */
-    public static function getValidRelations()
-    {
-        return [
-            'groups' => Groups::class,
-        ];
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -43,15 +33,15 @@ class Users extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
-          'related'            => 'users/{id}/related.json',
-          'merge'              => 'users/me/merge.json',
-          'search'             => 'users/search.json',
-          'autocomplete'       => 'users/autocomplete.json',
-          'setPassword'        => 'users/{id}/password.json',
-          'changePassword'     => 'users/{id}/password.json',
-          'updateMany'         => 'users/update_many.json',
-          'createMany'         => 'users/create_many.json',
-          'updateProfileImage' => 'users/{id}.json',
+            'related'            => 'users/{id}/related.json',
+            'merge'              => 'users/me/merge.json',
+            'search'             => 'users/search.json',
+            'autocomplete'       => 'users/autocomplete.json',
+            'setPassword'        => 'users/{id}/password.json',
+            'changePassword'     => 'users/{id}/password.json',
+            'updateMany'         => 'users/update_many.json',
+            'createMany'         => 'users/create_many.json',
+            'updateProfileImage' => 'users/{id}.json',
         ]);
     }
 
@@ -198,7 +188,7 @@ class Users extends ResourceAbstract
     {
         $myId    = $this->getChainedParameter(get_class($this));
         $mergeMe = ! isset($myId) || is_null($myId);
-        $hasKeys = $mergeMe ? array('email', 'password') : array('id');
+        $hasKeys = $mergeMe ? ['email', 'password'] : ['id'];
         if (! $this->hasKeys($params, $hasKeys)) {
             throw new MissingParametersException(__METHOD__, $hasKeys);
         }
@@ -249,7 +239,7 @@ class Users extends ResourceAbstract
     public function updateMany(array $params)
     {
         if (! $this->hasKeys($params, ['ids'])) {
-            throw new MissingParametersException(__METHOD__, array('ids'));
+            throw new MissingParametersException(__METHOD__, ['ids']);
         }
         $ids = $params['ids'];
         unset($params['ids']);

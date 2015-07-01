@@ -325,8 +325,8 @@ abstract class ResourceAbstract
             $this->client,
             $this->getRoute('create'),
             [
-            'postFields' => [$class::OBJ_NAME => $params],
-            'method'     => 'POST'
+                'postFields' => [$class::OBJ_NAME => $params],
+                'method'     => 'POST'
             ]
         );
 
