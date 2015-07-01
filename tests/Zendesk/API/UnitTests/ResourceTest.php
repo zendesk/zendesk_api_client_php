@@ -130,6 +130,104 @@ class ResourceTest extends BasicTest
         ]);
     }
 
+    public function testCreateMany()
+    {
+        $this->mockAPIResponses([
+            new Response(200, [], '')
+        ]);
+
+        $postFields = [['foo' => 'test body'], ['foo2' => 'test body 2'], ['foo3' => 'test body3']];
+
+        $this->dummyResource->createMany($postFields);
+
+        $this->assertLastRequestIs(
+            [
+                'method'     => 'POST',
+                'endpoint'   => 'dummyresource/create_many.json',
+                'postFields' => [DummyResource::OBJ_NAME_PLURAL => $postFields]
+            ]
+        );
+    }
+
+    public function testFindMany()
+    {
+        $this->mockAPIResponses([
+            new Response(200, [], json_encode(['dummy' => true]))
+        ]);
+
+        $ids = [1, 2, 3, 4, 5];
+        $this->dummyResource->findMany($ids);
+
+        $this->assertLastRequestIs([
+            'method'      => 'GET',
+            'endpoint'    => 'dummyresource/show_many.json',
+            'queryParams' => ['ids' => implode(',', $ids)]
+        ]);
+    }
+
+    public function testUpdateManySameData()
+    {
+        $this->mockAPIResponses([
+            new Response(200, [], '')
+        ]);
+
+        $ids        = [1, 2, 3, 4, 5];
+        $postFields = ['foo' => 'test body'];
+
+        $this->dummyResource->updateMany(array_merge(['ids' => $ids], $postFields));
+
+        $this->assertLastRequestIs(
+            [
+                'method'      => 'PUT',
+                'endpoint'    => 'dummyresource/update_many.json',
+                'queryParams' => ['ids' => implode(',', $ids)],
+                'postFields'  => [DummyResource::OBJ_NAME => $postFields],
+            ]
+        );
+    }
+
+    public function testUpdateManyDifferentData()
+    {
+        $this->mockAPIResponses([
+            new Response(200, [], '')
+        ]);
+
+        $postFields = [
+            ['id' => 1, 'foo' => 'bar', 'hello' => 'world'],
+            ['id' => 2, 'foo' => 'bar', 'hello' => 'world'],
+            ['id' => 3, 'foo' => 'bar', 'hello' => 'world'],
+            ['id' => 4, 'foo' => 'bar', 'hello' => 'world']
+        ];
+
+        $this->dummyResource->updateMany($postFields);
+
+        $this->assertLastRequestIs(
+            [
+                'method'     => 'PUT',
+                'endpoint'   => 'dummyresource/update_many.json',
+                'postFields' => [DummyResource::OBJ_NAME_PLURAL => $postFields],
+            ]
+        );
+    }
+
+    public function testDeleteMany()
+    {
+        $this->mockAPIResponses([
+            new Response(200, [], '')
+        ]);
+
+        $ids = [1, 2, 3, 4, 5];
+        $this->dummyResource->deleteMany($ids);
+
+        $this->assertLastRequestIs(
+            [
+                'method'      => 'DELETE',
+                'endpoint'    => 'dummyresource/destroy_many.json',
+                'queryParams' => ['ids' => implode(',', $ids)]
+            ]
+        );
+    }
+
     /**
      * @expectedException Zendesk\API\Exceptions\ApiResponseException
      * @expectedExceptionMessage Zendesk may be experiencing internal issues or undergoing scheduled maintenance.
