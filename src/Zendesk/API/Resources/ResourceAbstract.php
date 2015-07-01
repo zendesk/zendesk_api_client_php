@@ -78,7 +78,11 @@ abstract class ResourceAbstract
         $namespacedClassName = get_class($this);
         $resourceName        = join('', array_slice(explode('\\', $namespacedClassName), -1));
 
-        return strtolower($resourceName);
+        // This converts the resource name from camel case to underscore case.
+        // e.g. MyClass => my_class
+        $underscored = strtolower(preg_replace('/(?<!^)([A-Z])/', '_$1', $resourceName));
+
+        return strtolower($underscored);
     }
 
     /**
