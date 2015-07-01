@@ -33,28 +33,6 @@ class UserIdentities extends ResourceAbstract
     }
 
     /**
-     * Get the userId passed as a parameter or as a chained parameter
-     *
-     * @param array $params
-     *
-     * @throws MissingParametersException
-     */
-    private function addUserIdToRouteParams(array $params)
-    {
-        if (isset($params['userId'])) {
-            $userId = $params['userId'];
-        } else {
-            $userId = $this->getChainedParameter(Users::class);
-        }
-
-        if (empty($userId)) {
-            throw new MissingParametersException(__METHOD__, ['userId']);
-        }
-
-        $this->setAdditionalRouteParams(['userId' => $userId]);
-    }
-
-    /**
      * {@inheritdoc}
      */
     public function findAll(array $params = [])
@@ -115,7 +93,7 @@ class UserIdentities extends ResourceAbstract
             $this->client,
             $this->getRoute(__FUNCTION__),
             [
-                'postFields' => array($this::OBJ_NAME => $params),
+                'postFields' => [$this::OBJ_NAME => $params],
                 'method'     => 'POST'
             ]
         );
@@ -123,6 +101,53 @@ class UserIdentities extends ResourceAbstract
         $this->client->setSideload(null);
 
         return $response;
+    }
+
+    /**
+     * This API method allows you to set an identity to primary.
+     */
+    public function makePrimary(array $params = [])
+    {
+        return $this->makePutRequest(__FUNCTION__, $params);
+    }
+
+    /**
+     * This API method only allows you to set an identity as verified. This is allowed only for agents.
+     */
+    public function verify(array $params = [])
+    {
+        return $this->makePutRequest(__FUNCTION__, $params);
+    }
+
+    /**
+     * This sends a verification email to the user, asking him to click a link in order to
+     * verify ownership of the email address
+     */
+    public function requestVerification(array $params = [])
+    {
+        return $this->makePutRequest(__FUNCTION__, $params);
+    }
+
+    /**
+     * Get the userId passed as a parameter or as a chained parameter
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     */
+    private function addUserIdToRouteParams(array $params)
+    {
+        if (isset($params['userId'])) {
+            $userId = $params['userId'];
+        } else {
+            $userId = $this->getChainedParameter(Users::class);
+        }
+
+        if (empty($userId)) {
+            throw new MissingParametersException(__METHOD__, ['userId']);
+        }
+
+        $this->setAdditionalRouteParams(['userId' => $userId]);
     }
 
     /**
@@ -153,35 +178,10 @@ class UserIdentities extends ResourceAbstract
 
         $response = Http::sendWithOptions(
             $this->client,
-            $this->getRoute($callingMethod, array('id' => $id)),
+            $this->getRoute($callingMethod, ['id' => $id]),
             ['method' => 'PUT']
         );
 
         return $response;
-    }
-
-    /**
-     * This API method allows you to set an identity to primary.
-     */
-    public function makePrimary(array $params = [])
-    {
-        return $this->makePutRequest(__FUNCTION__, $params);
-    }
-
-    /**
-     * This API method only allows you to set an identity as verified. This is allowed only for agents.
-     */
-    public function verify(array $params = [])
-    {
-        return $this->makePutRequest(__FUNCTION__, $params);
-    }
-
-    /**
-     * This sends a verification email to the user, asking him to click a link in order to
-     * verify ownership of the email address
-     */
-    public function requestVerification(array $params = [])
-    {
-        return $this->makePutRequest(__FUNCTION__, $params);
     }
 }
