@@ -167,26 +167,38 @@ class TicketsTest extends BasicTest
             new Response(200, [], json_encode(['ticket' => ['id' => '123']])),
         ]);
 
-        $this->mockApiCall(
-            'POST',
-            '/uploads.json?filename=UK%20test%20non-alpha%20chars.png',
-            ['upload' => ['token' => 'asdf']],
-            ['code' => 201]
-        );
-
-        $this->mockApiCall(
-            'POST',
-            'tickets.json',
-            ['ticket' => ['id' => '123']],
-            ['code' => 201]
-        );
-
-        $this->client->tickets()->attach([
+        $attachmentData = [
             'file' => getcwd() . '/tests/assets/UK.png',
             'name' => 'UK test non-alpha chars.png'
-        ])->create($this->testTicket);
+        ];
 
-        $this->httpMock->verify();
+        $this->client->tickets()->attach($attachmentData)->create($this->testTicket);
+
+        $this->assertRequestIs(
+            [
+                'method'      => 'POST',
+                'endpoint'    => 'uploads.json',
+                'queryParams' => ['filename' => rawurlencode($attachmentData['name'])],
+                'file'        => $attachmentData['file'],
+            ],
+            0
+        );
+
+        $postFields = [
+            'ticket' => [
+                'subject'  => $this->testTicket['subject'],
+                'comment'  => array_merge($this->testTicket['comment'], ['uploads' => ['asdf']]),
+                'priority' => $this->testTicket['priority'],
+                'id'       => $this->testTicket['id'],
+
+            ]
+        ];
+        array_merge([$this->testTicket, ['uploads' => ['asdf']]]);
+        $this->assertLastRequestIs([
+            'method'     => 'POST',
+            'endpoint'   => 'tickets.json',
+            'postFields' => $postFields,
+        ]);
     }
 
     public function testExport()

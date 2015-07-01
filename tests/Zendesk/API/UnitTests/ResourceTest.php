@@ -37,7 +37,7 @@ class ResourceTest extends BasicTest
 
         $this->assertLastRequestIs([
             'method'      => 'GET',
-            'endpoint'    => 'dummyresource/1.json',
+            'endpoint'    => 'dummy_resource/1.json',
             'queryParams' => []
         ]);
     }
@@ -55,7 +55,7 @@ class ResourceTest extends BasicTest
 
         $this->assertLastRequestIs([
             'method'      => 'GET',
-            'endpoint'    => 'dummyresource.json',
+            'endpoint'    => 'dummy_resource.json',
             'queryParams' => $iterators
         ]);
     }
@@ -125,7 +125,7 @@ class ResourceTest extends BasicTest
 
         $this->assertLastRequestIs([
             'method'      => 'GET',
-            'endpoint'    => 'dummyresource.json',
+            'endpoint'    => 'dummy_resource.json',
             'queryParams' => ['include' => implode(',', $sideloads)]
         ]);
     }
@@ -143,7 +143,7 @@ class ResourceTest extends BasicTest
         $this->assertLastRequestIs(
             [
                 'method'     => 'POST',
-                'endpoint'   => 'dummyresource/create_many.json',
+                'endpoint'   => 'dummy_resource/create_many.json',
                 'postFields' => [DummyResource::OBJ_NAME_PLURAL => $postFields]
             ]
         );
@@ -160,7 +160,7 @@ class ResourceTest extends BasicTest
 
         $this->assertLastRequestIs([
             'method'      => 'GET',
-            'endpoint'    => 'dummyresource/show_many.json',
+            'endpoint'    => 'dummy_resource/show_many.json',
             'queryParams' => ['ids' => implode(',', $ids)]
         ]);
     }
@@ -179,7 +179,7 @@ class ResourceTest extends BasicTest
         $this->assertLastRequestIs(
             [
                 'method'      => 'PUT',
-                'endpoint'    => 'dummyresource/update_many.json',
+                'endpoint'    => 'dummy_resource/update_many.json',
                 'queryParams' => ['ids' => implode(',', $ids)],
                 'postFields'  => [DummyResource::OBJ_NAME => $postFields],
             ]
@@ -204,7 +204,7 @@ class ResourceTest extends BasicTest
         $this->assertLastRequestIs(
             [
                 'method'     => 'PUT',
-                'endpoint'   => 'dummyresource/update_many.json',
+                'endpoint'   => 'dummy_resource/update_many.json',
                 'postFields' => [DummyResource::OBJ_NAME_PLURAL => $postFields],
             ]
         );
@@ -222,7 +222,7 @@ class ResourceTest extends BasicTest
         $this->assertLastRequestIs(
             [
                 'method'      => 'DELETE',
-                'endpoint'    => 'dummyresource/destroy_many.json',
+                'endpoint'    => 'dummy_resource/destroy_many.json',
                 'queryParams' => ['ids' => implode(',', $ids)]
             ]
         );
