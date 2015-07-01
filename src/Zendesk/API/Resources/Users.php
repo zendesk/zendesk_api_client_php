@@ -11,7 +11,6 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
 /**
  * The Users class exposes user management methods
  * Note: you must authenticate as a user!
- *
  * @package Zendesk\API
  */
 class Users extends ResourceAbstract
@@ -22,14 +21,9 @@ class Users extends ResourceAbstract
     const OBJ_NAME_PLURAL = 'users';
 
     /**
-     * {@inheritdoc}
+     * @var UserIdentities
      */
-    public static function getValidRelations()
-    {
-        return [
-            'groups' => Groups::class,
-        ];
-    }
+    protected $identities;
 
     /**
      * {@inheritdoc}
@@ -51,13 +45,23 @@ class Users extends ResourceAbstract
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public static function getValidRelations()
+    {
+        return [
+            'identities' => UserIdentities::class,
+            'groups'     => Groups::class,
+        ];
+    }
+
+    /**
      * List all users
      *
      * @param array $params
      *
      * @throws ResponseException
      * @throws \Exception
-     *
      * @return mixed
      */
     public function findAll(array $params = [])
@@ -81,12 +85,11 @@ class Users extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     *
      * @return mixed
      */
     public function findMany(array $params = [])
     {
-        $params = $this->addChainedParametersToParams($params, ['ids' => get_class($this)]);
+        $params         = $this->addChainedParametersToParams($params, ['ids' => get_class($this)]);
         $this->endpoint = 'users/show_many.json';
 
         $queryParams = ['ids' => implode(",", $params['ids'])];
@@ -108,21 +111,20 @@ class Users extends ResourceAbstract
      *
      * @throws ResponseException
      * @throws \Exception
-     *
      * @return mixed
      */
     public function showMany(array $params = [])
     {
         if (isset($params['ids']) && isset($params['external_ids'])) {
             throw new \Exception('Only one parameter of ids or external_ids is allowed');
-        } elseif (!isset($params['ids']) && !isset($params['external_ids'])) {
+        } elseif (! isset($params['ids']) && ! isset($params['external_ids'])) {
             throw new \Exception('Missing parameters ids or external_ids');
         } elseif (isset($params['ids']) && is_array($params['ids'])) {
             $this->endpoint = 'users/show_many.json';
-            $queryParams = ['ids' => implode(',', $params['ids'])];
+            $queryParams    = ['ids' => implode(',', $params['ids'])];
         } elseif (isset($params['external_ids']) && is_array($params['external_ids'])) {
             $this->endpoint = 'users/show_many.json';
-            $queryParams = ['external_ids' => implode(',', $params['external_ids'])];
+            $queryParams    = ['external_ids' => implode(',', $params['external_ids'])];
         } else {
             throw new \Exception('Parameters ids or external_ids must be arrays');
         }
@@ -149,19 +151,18 @@ class Users extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     *
      * @return mixed
      */
     public function related(array $params = [])
     {
         $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
 
-        if (!$this->hasKeys($params, ['id'])) {
+        if (! $this->hasKeys($params, ['id'])) {
             throw new MissingParametersException(__METHOD__, ['id']);
         }
 
         $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
-        $response = Http::sendWithOptions(
+        $response    = Http::sendWithOptions(
             $this->client,
             $this->getRoute(__FUNCTION__, ['id' => $params['id']]),
             ['queryParams' => $queryParams]
@@ -180,15 +181,14 @@ class Users extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     *
      * @return mixed
      */
     public function merge(array $params = [])
     {
-        $myId = $this->getChainedParameter(get_class($this));
-        $mergeMe = !isset($myId) || is_null($myId);
+        $myId    = $this->getChainedParameter(get_class($this));
+        $mergeMe = ! isset($myId) || is_null($myId);
         $hasKeys = $mergeMe ? ['email', 'password'] : ['id'];
-        if (!$this->hasKeys($params, $hasKeys)) {
+        if (! $this->hasKeys($params, $hasKeys)) {
             throw new MissingParametersException(__METHOD__, $hasKeys);
         }
 
@@ -209,7 +209,6 @@ class Users extends ResourceAbstract
      *
      * @throws ResponseException
      * @throws \Exception
-     *
      * @return mixed
      */
     public function createMany(array $params)
@@ -233,13 +232,12 @@ class Users extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     *
      * @return mixed
      */
 
     public function updateMany(array $params)
     {
-        if (!$this->hasKeys($params, ['ids'])) {
+        if (! $this->hasKeys($params, ['ids'])) {
             throw new MissingParametersException(__METHOD__, ['ids']);
         }
         $ids = $params['ids'];
@@ -263,7 +261,6 @@ class Users extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     *
      * @return mixed
      */
 
@@ -288,13 +285,12 @@ class Users extends ResourceAbstract
      *
      * @throws MissingParametersException
      * @throws ResponseException
-     *
      * @return mixed
      */
     public function suspend(array $params = [])
     {
         $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
-        if (!$this->hasKeys($params, ['id'])) {
+        if (! $this->hasKeys($params, ['id'])) {
             throw new MissingParametersException(__METHOD__, ['id']);
         }
         $params['suspended'] = true;
@@ -309,7 +305,6 @@ class Users extends ResourceAbstract
      *
      * @throws ResponseException
      * @throws \Exception
-     *
      * @return mixed
      */
     public function search(array $params)
@@ -335,7 +330,6 @@ class Users extends ResourceAbstract
      *
      * @throws ResponseException
      * @throws \Exception
-     *
      * @return mixed
      */
     public function autocomplete(array $params)
@@ -360,7 +354,6 @@ class Users extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     *
      * @return mixed
      */
     public function updateProfileImage(array $params)
@@ -370,10 +363,10 @@ class Users extends ResourceAbstract
             $params['id'] = $this->lastId;
             $this->lastId = null;
         }
-        if (!$this->hasKeys($params, ['id', 'file'])) {
+        if (! $this->hasKeys($params, ['id', 'file'])) {
             throw new MissingParametersException(__METHOD__, ['id', 'file']);
         }
-        if (!file_exists($params['file'])) {
+        if (! file_exists($params['file'])) {
             throw new CustomException('File ' . $params['file'] . ' could not be found in ' . __METHOD__);
         }
         $id = $params['id'];
@@ -409,7 +402,6 @@ class Users extends ResourceAbstract
      *
      * @throws MissingParametersException
      * @throws ResponseException
-     *
      * @return mixed
      */
     public function me(array $params = [])
@@ -427,13 +419,12 @@ class Users extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     *
      * @return mixed
      */
     public function setPassword(array $params)
     {
         $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
-        if (!$this->hasKeys($params, ['id', 'password'])) {
+        if (! $this->hasKeys($params, ['id', 'password'])) {
             throw new MissingParametersException(__METHOD__, ['id', 'password']);
         }
         $id = $params['id'];
@@ -458,13 +449,12 @@ class Users extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     *
      * @return mixed
      */
     public function changePassword(array $params)
     {
         $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
-        if (!$this->hasKeys($params, ['id', 'previous_password', 'password'])) {
+        if (! $this->hasKeys($params, ['id', 'previous_password', 'password'])) {
             throw new MissingParametersException(__METHOD__, ['id', 'previous_password', 'password']);
         }
         $id = $params['id'];
