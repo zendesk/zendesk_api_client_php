@@ -11,7 +11,7 @@ use Zendesk\API\Exceptions\RouteException;
 trait BulkCreateTrait
 {
     /**
-     * Create multiple new respirces
+     * Create multiple new resources
      *
      * @param array $params
      *

@@ -9,6 +9,7 @@ use Zendesk\API\UtilityTraits\ChainedParametersTrait;
 
 /**
  * Abstract class for all endpoints
+ *
  * @package Zendesk\API
  */
 abstract class ResourceAbstract
@@ -62,6 +63,7 @@ abstract class ResourceAbstract
      *    Where ticket would have a comments as a valid sub resource.
      *    The array would look like:
      *      ['comments' => '\Zendesk\API\Resources\TicketComments']
+     *
      * @return array
      */
     public static function getValidSubResource()
@@ -71,6 +73,7 @@ abstract class ResourceAbstract
 
     /**
      * Return the resource name using the name of the class (used for endpoints)
+     *
      * @return string
      */
     private function getResourceNameFromClass()
@@ -120,6 +123,7 @@ abstract class ResourceAbstract
 
     /**
      * Saves an id for future methods in the chain
+     *
      * @return int
      */
     public function getLastId()
@@ -204,6 +208,7 @@ abstract class ResourceAbstract
 
     /**
      * Return all routes for this resource
+     *
      * @return array
      */
     public function getRoutes()
@@ -223,7 +228,7 @@ abstract class ResourceAbstract
      */
     public function getRoute($name, array $params = [])
     {
-        if (!isset($this->routes[$name])) {
+        if (! isset($this->routes[$name])) {
             throw new RouteException('Route not found.');
         }
 
