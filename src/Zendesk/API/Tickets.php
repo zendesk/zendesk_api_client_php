@@ -186,6 +186,28 @@ class Tickets extends ClientAbstract
     }
 
     /**
+     * Create many tickets
+     *
+     * @param array $params
+     *
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function createMany(array $params)
+    {
+        $endPoint = Http::prepare('tickets/create_many.json');
+        $response = Http::send($this->client, $endPoint, array(self::OBJ_NAME_PLURAL => $params), 'POST');
+        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
+            throw new ResponseException(__METHOD__);
+        }
+        $this->client->setSideload(null);
+
+        return $response;
+    }
+
+    /**
      * Create a ticket from a tweet
      *
      * @param array $params
