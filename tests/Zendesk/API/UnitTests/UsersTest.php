@@ -301,7 +301,7 @@ class UsersTest extends BasicTest
     {
         $updateIds     = [12345, 80085];
         $requestParams = [
-            'ids'   => $updateIds,
+            'ids'   => implode(',', $updateIds),
             'phone' => '1234567890'
         ];
 
@@ -315,7 +315,7 @@ class UsersTest extends BasicTest
             [
                 'method'      => 'PUT',
                 'endpoint'    => 'users/update_many.json',
-                'queryParams' => ['ids' => implode(',', $requestParams['ids'])],
+                'queryParams' => ['ids' => $requestParams['ids']],
                 'postFields'  => [Users::OBJ_NAME => ['phone' => $requestParams['phone']]]
             ]
         );
@@ -440,20 +440,25 @@ class UsersTest extends BasicTest
 
     public function testUpdateProfileImage()
     {
-        $this->markTestSkipped('Need to allow file uploads with Guzzle.');
-        $this->mockApiCall('GET', '/users/12345.json?', ['id' => 12345]);
-        $this->mockApiCall('PUT', '/users/12345.json', ['user' => ['id' => 12345]]);
-
-        $user = $this->client->users(12345)->updateProfileImage([
-            'file' => getcwd() . '/tests/assets/UK.png'
+        $this->mockAPIResponses([
+            new Response(200, [], '')
         ]);
 
-        $contentType = $this->http->requests->first()->getHeader("Content-Type")->toArray()[0];
-        $this->assertEquals($contentType, "application/binary");
+        $id = 915987427;
 
-        $this->assertEquals(is_object($user), true, 'Should return an object');
-        $this->assertEquals(is_object($user->user), true, 'Should return an object called "user"');
-        $this->assertGreaterThan(0, $user->user->id, 'Should return a numeric id for request');
+        $params = [
+            'file' => getcwd() . '/tests/assets/UK.png'
+        ];
+
+        $this->client->users($id)->updateProfileImageFromFile($params);
+
+        $this->assertLastRequestIs(
+            [
+                'method'   => 'PUT',
+                'endpoint' => "users/{$id}.json",
+                'multipart'
+            ]
+        );
     }
 
     public function testAuthenticatedUser()

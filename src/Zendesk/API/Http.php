@@ -87,7 +87,12 @@ class Http
             $headers
         );
 
-        if (! empty($options['postFields'])) {
+        $requestOptions = [];
+
+        if (! empty($options['multipart'])) {
+            $request                     = $request->withoutHeader('Content-Type');
+            $requestOptions['multipart'] = $options['multipart'];
+        } elseif (! empty($options['postFields'])) {
             $request = $request->withBody(\GuzzleHttp\Psr7\stream_for(json_encode($options['postFields'])));
         } elseif (! empty($options['file'])) {
             if (is_file($options['file'])) {
@@ -106,14 +111,20 @@ class Http
 
         try {
             if ($client->getAuthStrategy() === HttpClient::AUTH_BASIC) {
-                $authOptions = $client->getAuthOptions();
-                $options     = ['auth' => [$authOptions['username'] . '/token', $authOptions['token'], 'basic']];
-                $response    = $client->guzzle->send($request, $options);
+                $authOptions    = $client->getAuthOptions();
+                $requestOptions = array_merge($requestOptions, [
+                    'auth' => [
+                        $authOptions['username'] . '/token',
+                        $authOptions['token'],
+                        'basic'
+                    ]
+                ]);
+                $response       = $client->guzzle->send($request, $requestOptions);
             } elseif ($client->getAuthStrategy() === HttpClient::AUTH_OAUTH) {
                 $authOptions = $client->getAuthOptions();
                 $oAuthToken  = $authOptions['token'];
                 $request     = $request->withAddedHeader('Authorization', ' Bearer ' . $oAuthToken);
-                $response    = $client->guzzle->send($request);
+                $response    = $client->guzzle->send($request, $requestOptions);
             } else {
                 throw new AuthException('Please set authentication to send requests.');
             }
