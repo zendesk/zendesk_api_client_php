@@ -2,6 +2,9 @@
 
 namespace Zendesk\API\Resources;
 
+use Zendesk\API\BulkTraits\BulkDeleteTrait;
+use Zendesk\API\BulkTraits\BulkFindTrait;
+use Zendesk\API\BulkTraits\BulkUpdateTrait;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Http;
@@ -15,6 +18,11 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
 class Tickets extends ResourceAbstract
 {
     use InstantiatorTrait;
+    use BulkFindTrait;
+    use BulkUpdateTrait {
+        BulkUpdateTrait::updateMany as bulkUpdate;
+    }
+    use BulkDeleteTrait;
 
     const OBJ_NAME = 'ticket';
     const OBJ_NAME_PLURAL = 'tickets';
@@ -114,33 +122,6 @@ class Tickets extends ResourceAbstract
     }
 
     /**
-     * Find a specific ticket by id or series of ids
-     *
-     * @param array $params
-     *
-     * @throws MissingParametersException
-     * @throws ResponseException
-     * @throws \Exception
-     * @return mixed
-     */
-    public function findMany(array $params = [])
-    {
-
-        $queryParams        = Http::prepareQueryParams($this->client->getSideload($params), $params);
-        $queryParams['ids'] = implode(",", $params['ids']);
-
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute('findMany'),
-            ['queryParams' => $queryParams]
-        );
-
-        $this->client->setSideload(null);
-
-        return $response;
-    }
-
-    /**
      * Find a specific twitter generated ticket by id
      *
      * @param array $params
@@ -148,6 +129,7 @@ class Tickets extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
+     *
      * @return mixed
      */
     public function findTwicket(array $params = [])
@@ -162,7 +144,7 @@ class Tickets extends ResourceAbstract
             $endPointBase . (is_array($params['comment_ids']) ? '?' . implode(',', $params['comment_ids']) : ''),
             $this->client->getSideload($params)
         );
-        $response = Http::sendWithOptions($this->client, $endPoint);
+        $response     = Http::sendWithOptions($this->client, $endPoint);
 
         $this->client->setSideload(null);
 
@@ -200,7 +182,7 @@ class Tickets extends ResourceAbstract
      */
     public function createFromTweet(array $params)
     {
-        if (( ! $params['twitter_status_message_id']) || ( ! $params['monitored_twitter_handle_id'])) {
+        if ((! $params['twitter_status_message_id']) || (! $params['monitored_twitter_handle_id'])) {
             throw new MissingParametersException(
                 __METHOD__,
                 ['twitter_status_message_id', 'monitored_twitter_handle_id']
@@ -209,7 +191,7 @@ class Tickets extends ResourceAbstract
         $endPoint         = Http::prepare('channels/twitter/tickets.json');
         $response         = Http::sendWithOptions($this->client, $endPoint, [self::OBJ_NAME => $params], 'POST');
         $lastResponseCode = $this->client->getDebug()->lastResponseCode;
-        if (( ! is_object($response)) || ($lastResponseCode != 201)) {
+        if ((! is_object($response)) || ($lastResponseCode != 201)) {
             throw new ResponseException(
                 __METHOD__,
                 ($lastResponseCode == 422 ? ' (hint: you can\'t create two tickets from the same tweet)' : '')
@@ -257,26 +239,7 @@ class Tickets extends ResourceAbstract
             $this->lastAttachments        = [];
         }
 
-        $resourceUpdateName = self::OBJ_NAME_PLURAL;
-        $queryParams        = [];
-        if (isset($params['ids']) && is_array($params['ids'])) {
-            $queryParams['ids'] = implode(",", $params['ids']);
-            unset($params['ids']);
-
-            $resourceUpdateName = self::OBJ_NAME;
-        }
-
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute('updateMany'),
-            [
-            'method'      => 'PUT',
-            'queryParams' => $queryParams,
-            'postFields'  => [$resourceUpdateName => $params]
-            ]
-        );
-
-        return $response;
+        return $this->bulkUpdate($params);
     }
 
     /**
@@ -333,27 +296,6 @@ class Tickets extends ResourceAbstract
         }
 
         return $this->sendGetRequest(__FUNCTION__, $params);
-    }
-
-    /**
-     * Update a ticket or series of tickets
-     *
-     * @param array $ids
-     *
-     * @return mixed
-     */
-    public function deleteMany(array $ids)
-    {
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute('deleteMany'),
-            [
-            'method'      => 'DELETE',
-            'queryParams' => ['ids' => implode(',', $ids)]
-            ]
-        );
-
-        return $response;
     }
 
     /**
@@ -488,7 +430,7 @@ class Tickets extends ResourceAbstract
 
         $upload = $this->client->attachments()->upload($params);
 
-        if (( ! is_object($upload->upload)) || ( ! $upload->upload->token)) {
+        if ((! is_object($upload->upload)) || (! $upload->upload->token)) {
             throw new ResponseException(__METHOD__);
         }
         $this->lastAttachments[] = $upload->upload->token;

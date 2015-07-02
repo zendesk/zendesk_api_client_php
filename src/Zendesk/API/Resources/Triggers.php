@@ -1,8 +1,6 @@
 <?php
 namespace Zendesk\API\Resources;
 
-use Zendesk\API\Http;
-
 /**
  * The Triggers class exposes field management methods for triggers
  */
@@ -20,18 +18,6 @@ class Triggers extends ResourceAbstract
 
     public function findActive($params = [])
     {
-        $sideloads = $this->client->getSideload($params);
-
-        $queryParams = Http::prepareQueryParams($sideloads, $params);
-
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__, $params),
-            ['queryParams' => $queryParams]
-        );
-
-        $this->client->setSideload(null);
-
-        return $response;
+        return $this->client->get($this->getRoute(__FUNCTION__), $params);
     }
 }

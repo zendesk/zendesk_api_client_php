@@ -58,7 +58,7 @@ class MacrosTest extends BasicTest
      */
     public function testApplyToTicket()
     {
-        $id       = 1;
+        $id = 1;
         $ticketId = 3;
 
         $this->mockAPIResponses([
@@ -69,8 +69,9 @@ class MacrosTest extends BasicTest
 
         $this->assertLastRequestIs(
             [
-                'method'   => 'GET',
-                'endpoint' => "tickets/{$ticketId}/macros/{$id}/apply.json",
+                'method'      => 'GET',
+                'endpoint'    => "tickets/{$ticketId}/macros/{$id}/apply.json",
+                'queryParams' => []
             ]
         );
     }

@@ -18,8 +18,8 @@ class TicketForms extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
-          'clone'   => 'ticket_forms/{id}/clone.json',
-          'reorder' => 'ticket_forms/reorder.json'
+            'clone'   => 'ticket_forms/{id}/clone.json',
+            'reorder' => 'ticket_forms/reorder.json'
         ]);
     }
 
@@ -44,15 +44,7 @@ class TicketForms extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, ['id']);
         }
 
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute('clone', ['id' => $id]),
-            ['method' => 'POST']
-        );
-
-        $this->client->setSideload(null);
-
-        return $response;
+        return $this->client->post($this->getRoute('clone', ['id' => $id]));
     }
 
     /**
