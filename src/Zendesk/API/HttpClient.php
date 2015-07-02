@@ -198,8 +198,8 @@ class HttpClient
         $validAuthStrategies = [self::AUTH_BASIC, self::AUTH_OAUTH];
         if (! in_array($strategy, $validAuthStrategies)) {
             throw new AuthException('Invalid auth strategy set, please use `'
-                . implode('` or `', $validAuthStrategies)
-                . '`');
+                                    . implode('` or `', $validAuthStrategies)
+                                    . '`');
         }
 
         $this->authStrategy = $strategy;
