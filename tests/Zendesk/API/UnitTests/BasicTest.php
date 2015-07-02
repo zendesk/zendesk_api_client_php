@@ -166,7 +166,6 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
             $this->assertContains('multipart/form-data', $header);
         }
 
-
         if (isset($options['file'])) {
             $body = $request->getBody();
             $this->assertInstanceOf(LazyOpenStream::class, $body);
