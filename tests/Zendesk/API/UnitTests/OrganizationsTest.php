@@ -61,8 +61,9 @@ class OrganizationsTest extends BasicTest
         $this->client->organizations()->related(123);
 
         $this->assertLastRequestIs([
-            'method'   => 'GET',
-            'endpoint' => 'organizations/123/related.json'
+            'method'      => 'GET',
+            'endpoint'    => 'organizations/123/related.json',
+            'queryParams' => []
         ]);
     }
 
