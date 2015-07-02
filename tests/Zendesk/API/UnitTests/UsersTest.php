@@ -342,7 +342,6 @@ class UsersTest extends BasicTest
             new Response(200, [], json_encode(['job_status' => ['id' => 1]]))
         ]);
 
-
         $jobStatus = $this->client->users()->updateMany($requestParams);
 
         $this->assertLastRequestIs(
@@ -470,7 +469,7 @@ class UsersTest extends BasicTest
         $id = 915987427;
 
         $params = [
-            'url' => 'https://d16cvnquvjw7pr.cloudfront.net/www/img/p-brand/downloads/Logo/Zendesk_logo_RGB.png'
+            'url' => 'http://www.test.com/profile.png'
         ];
 
         $this->client->users($id)->updateProfileImageFromUrl($params);
