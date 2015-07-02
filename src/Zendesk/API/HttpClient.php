@@ -9,6 +9,7 @@ namespace Zendesk\API;
 
 use Zendesk\API\Exceptions\AuthException;
 use Zendesk\API\Resources\Attachments;
+use Zendesk\API\Resources\AuditLogs;
 use Zendesk\API\Resources\Automations;
 use Zendesk\API\Resources\Groups;
 use Zendesk\API\Resources\Macros;
@@ -116,6 +117,10 @@ class HttpClient
      */
     protected $userFields;
     /**
+     * @var AuditLogs
+     */
+    protected $auditLogs;
+    /**
      * @var Debug
      */
     protected $debug;
@@ -172,6 +177,7 @@ class HttpClient
             'triggers'    => Triggers::class,
             'targets'     => Targets::class,
             'userFields'  => UserFields::class,
+            'auditLogs'   => AuditLogs::class,
         ];
     }
 

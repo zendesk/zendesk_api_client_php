@@ -96,6 +96,9 @@ abstract class ResourceAbstract
         return $this->resourceName;
     }
 
+    /**
+     * Sets up the available routes for the resource.
+     */
     protected function setUpRoutes()
     {
         $this->setRoutes([
