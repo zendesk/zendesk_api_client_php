@@ -1,0 +1,45 @@
+<?php
+
+namespace Zendesk\API\BulkTraits;
+
+use Zendesk\API\Exceptions\RouteException;
+
+/**
+ * Allows resources to call a bulk show endpoint.
+ *
+ */
+trait BulkFindTrait
+{
+    /**
+     * Show multiple resources
+     *
+     * @param array  $ids         Array of IDs to fetch
+     * @param array  $extraParams Extra query parameters such as sideloads and iterators
+     * @param string $key         Could be `id` or `external_id`
+     *
+     * @return mixed
+     * @internal param array $params Key-value pair of values to pass to the query string
+     *
+     */
+    public function findMany(array $ids = [], $extraParams = [], $key = 'ids')
+    {
+        try {
+            $route = $this->getRoute(__FUNCTION__);
+        } catch (RouteException $e) {
+            if (! isset($this->resourceName)) {
+                $this->resourceName = $this->getResourceNameFromClass();
+            }
+
+            $route = $this->resourceName . '/show_many.json';
+            $this->setRoute('findMany', $route);
+        }
+
+        $queryParams = [];
+
+        if (count($ids) > 0) {
+            $queryParams[$key] = implode(',', $ids);
+        }
+
+        return $this->client->get($route, array_merge($queryParams, $extraParams));
+    }
+}

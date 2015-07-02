@@ -14,15 +14,16 @@ class TicketAuditsTest extends BasicTest
     public function testFindAllWithChainedParams()
     {
         $this->mockAPIResponses([
-          new Response(200, [], '')
+            new Response(200, [], '')
         ]);
 
-        $this->client->tickets($this->ticket_id)->audits()->findAll();
+        $this->client->tickets($this->ticket_id)->audits()->findAll(['per_page' => 1]);
 
         $this->assertLastRequestIs(
             [
-            'method'   => 'GET',
-            'endpoint' => 'tickets/12345/audits.json',
+                'method'      => 'GET',
+                'endpoint'    => 'tickets/12345/audits.json',
+                'queryParams' => ['per_page' => 1]
             ]
         );
     }
@@ -32,20 +33,20 @@ class TicketAuditsTest extends BasicTest
         $audit_id = 1;
 
         $response = [
-          'audit' => [
-            'id' => '1'
-          ]
+            'audit' => [
+                'id' => '1'
+            ]
         ];
         $this->mockAPIResponses([
-          new Response(200, [], json_encode($response))
+            new Response(200, [], json_encode($response))
         ]);
 
         $audits = $this->client->tickets($this->ticket_id)->audits($audit_id)->find();
 
         $this->assertLastRequestIs(
             [
-            'method'   => 'GET',
-            'endpoint' => 'tickets/12345/audits/1.json',
+                'method'   => 'GET',
+                'endpoint' => 'tickets/12345/audits/1.json',
             ]
         );
 

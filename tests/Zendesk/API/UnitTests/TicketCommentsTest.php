@@ -13,14 +13,14 @@ class TicketCommentsTest extends BasicTest
 
     public function setUp()
     {
-        $this->testTicket = array(
-            'id' => "12345",
-            'subject' => 'Ticket comment test',
-            'comment' => array(
+        $this->testTicket = [
+            'id'       => "12345",
+            'subject'  => 'Ticket comment test',
+            'comment'  => [
                 'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-            ),
+            ],
             'priority' => 'normal'
-        );
+        ];
         $this->ticket_id = $this->testTicket['id'];
 
         parent::setUp();
@@ -29,15 +29,15 @@ class TicketCommentsTest extends BasicTest
     public function testAll()
     {
         $this->mockAPIResponses([
-          new Response(200, [], json_encode(['comments' => [['id' => 1]]]))
+            new Response(200, [], json_encode(['comments' => [['id' => 1]]]))
         ]);
 
         $comments = $this->client->tickets($this->ticket_id)->comments()->findAll();
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
-            'endpoint' => 'tickets/12345/comments.json',
+                'method'   => 'GET',
+                'endpoint' => 'tickets/12345/comments.json',
             ]
         );
 
@@ -56,15 +56,15 @@ class TicketCommentsTest extends BasicTest
     public function testMakePrivate()
     {
         $this->mockAPIResponses([
-          new Response(200, [], '')
+            new Response(200, [], '')
         ]);
 
         $this->client->tickets(12345)->comments(1)->makePrivate();
 
         $this->assertLastRequestIs(
             [
-            'method' => 'PUT',
-            'endpoint' => 'tickets/12345/comments/1/make_private.json',
+                'method'   => 'PUT',
+                'endpoint' => 'tickets/12345/comments/1/make_private.json',
             ]
         );
     }

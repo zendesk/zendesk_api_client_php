@@ -365,4 +365,67 @@ class HttpClient
     {
         return $this->search->anonymousSearch($params);
     }
+
+    public function get($endpoint, $queryParams = [])
+    {
+        $sideloads = $this->getSideload($queryParams);
+
+        // TODO: filter allowed query params
+        if (is_array($sideloads)) {
+            $queryParams['include'] = implode(',', $sideloads);
+            unset($queryParams['sideload']);
+        }
+
+        $response = Http::sendWithOptions(
+            $this,
+            $endpoint,
+            ['queryParams' => $queryParams]
+        );
+
+        $this->setSideload(null);
+
+        return $response;
+    }
+
+    public function post($endpoint, $postData = [])
+    {
+        $response = Http::sendWithOptions(
+            $this,
+            $endpoint,
+            [
+                'postFields' => $postData,
+                'method'     => 'POST'
+            ]
+        );
+
+        $this->setSideload(null);
+
+        return $response;
+    }
+
+    public function put($endpoint, $putData = [])
+    {
+        $response = Http::sendWithOptions(
+            $this,
+            $endpoint,
+            ['postFields' => $putData, 'method' => 'PUT']
+        );
+
+        $this->setSideload(null);
+
+        return $response;
+    }
+
+    public function delete($endpoint)
+    {
+        $response = Http::sendWithOptions(
+            $this,
+            $endpoint,
+            ['method' => 'DELETE']
+        );
+
+        $this->setSideload(null);
+
+        return $response;
+    }
 }
