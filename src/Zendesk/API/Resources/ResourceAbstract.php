@@ -371,6 +371,6 @@ abstract class ResourceAbstract
             throw new MissingParametersException(__METHOD__, ['id']);
         }
 
-        return $this->client->delete($this->getRoute('find', ['id' => $id]));
+        return $this->client->delete($this->getRoute(__FUNCTION__, ['id' => $id]));
     }
 }
