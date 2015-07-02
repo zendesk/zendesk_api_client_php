@@ -301,7 +301,7 @@ class UsersTest extends BasicTest
     {
         $updateIds     = [12345, 80085];
         $requestParams = [
-            'ids'   => implode(',', $updateIds),
+            'ids'   => $updateIds,
             'phone' => '1234567890'
         ];
 
@@ -315,7 +315,7 @@ class UsersTest extends BasicTest
             [
                 'method'      => 'PUT',
                 'endpoint'    => 'users/update_many.json',
-                'queryParams' => ['ids' => $requestParams['ids']],
+                'queryParams' => ['ids' => implode(',', $requestParams['ids'])],
                 'postFields'  => [Users::OBJ_NAME => ['phone' => $requestParams['phone']]]
             ]
         );
@@ -438,7 +438,7 @@ class UsersTest extends BasicTest
         $this->assertGreaterThan(0, $users->users[0]->id, 'Should return a numeric id for user');
     }
 
-    public function testUpdateProfileImage()
+    public function testUpdateProfileImageFromFile()
     {
         $this->mockAPIResponses([
             new Response(200, [], '')
@@ -457,6 +457,29 @@ class UsersTest extends BasicTest
                 'method'   => 'PUT',
                 'endpoint' => "users/{$id}.json",
                 'multipart'
+            ]
+        );
+    }
+
+    public function testUpdateProfileImageFromUrl()
+    {
+        $this->mockAPIResponses([
+            new Response(200, [], '')
+        ]);
+
+        $id = 915987427;
+
+        $params = [
+            'url' => 'https://d16cvnquvjw7pr.cloudfront.net/www/img/p-brand/downloads/Logo/Zendesk_logo_RGB.png'
+        ];
+
+        $this->client->users($id)->updateProfileImageFromUrl($params);
+
+        $this->assertLastRequestIs(
+            [
+                'method'     => 'PUT',
+                'endpoint'   => "users/{$id}.json",
+                'postFields' => [Users::OBJ_NAME => ['remote_photo_url' => $params['url']]],
             ]
         );
     }

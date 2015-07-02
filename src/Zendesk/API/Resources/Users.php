@@ -217,7 +217,6 @@ class Users extends ResourceAbstract
      *
      * @throws MissingParametersException
      * @throws ResponseException
-     *
      * @return mixed
      */
     public function suspend(array $params = [])
@@ -329,8 +328,23 @@ class Users extends ResourceAbstract
      */
     public function updateProfileImageFromUrl(array $params)
     {
-        // TODO implement
-        return;
+        if (! isset($params['id']) || empty($params['id'])) {
+            $params = $this->addChainedParametersToParams($params, ['id' => self::class]);
+        }
+
+        if (! $this->hasKeys($params, ['id', 'url'])) {
+            throw new MissingParametersException(__METHOD__, ['id', 'url']);
+        }
+
+        $endpoint = $this->getRoute(__FUNCTION__, ['id' => $params['id']]);
+
+        $putData = [
+            self::OBJ_NAME => [
+                'remote_photo_url' => $params['url']
+            ]
+        ];
+
+        return $this->client->put($endpoint, $putData);
     }
 
     /**
