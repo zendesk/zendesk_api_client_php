@@ -2,6 +2,10 @@
 
 namespace Zendesk\API\Resources;
 
+use Zendesk\API\BulkTraits\BulkCreateTrait;
+use Zendesk\API\BulkTraits\BulkDeleteTrait;
+use Zendesk\API\BulkTraits\BulkFindTrait;
+use Zendesk\API\BulkTraits\BulkUpdateTrait;
 use Zendesk\API\Http;
 use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
@@ -11,6 +15,10 @@ class Organizations extends ResourceAbstract
     const OBJ_NAME_PLURAL = 'organizations';
 
     use InstantiatorTrait;
+    use BulkFindTrait;
+    use BulkCreateTrait;
+    use BulkUpdateTrait;
+    use BulkDeleteTrait;
 
     protected function setUpRoutes()
     {
@@ -75,15 +83,7 @@ class Organizations extends ResourceAbstract
         $queryParams         = Http::prepareQueryParams($sideloads, $params);
         $queryParams['name'] = $name;
 
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__),
-            ['queryParams' => $queryParams]
-        );
-
-        $this->client->setSideload(null);
-
-        return $response;
+        return $this->client->get($this->getRoute(__FUNCTION__), $queryParams);
     }
 
     /**
@@ -97,16 +97,19 @@ class Organizations extends ResourceAbstract
      */
     public function related($id)
     {
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__, ['id' => $id])
-        );
-
-        $this->client->setSideload(null);
-
-        return $response;
+        return $this->client->get($this->getRoute(__FUNCTION__, ['id' => $id]));
     }
 
+    /**
+     * Seach organizations by external ID
+     *
+     * @param       $external_id
+     * @param array $params
+     *
+     * @return array
+     * @throws \Zendesk\API\Exceptions\ApiResponseException
+     * @throws \Zendesk\API\Exceptions\AuthException
+     */
     public function search($external_id, array $params = [])
     {
         $sideloads = $this->client->getSideload($params);
@@ -114,17 +117,6 @@ class Organizations extends ResourceAbstract
         $queryParams                = Http::prepareQueryParams($sideloads, $params);
         $queryParams['external_id'] = $external_id;
 
-        $response = Http::sendWithOptions(
-            $this->client,
-            $this->getRoute(__FUNCTION__),
-            ['queryParams' => $queryParams]
-        );
-
-        $this->client->setSideload(null);
-
-        return $response;
+        return $this->client->get($this->getRoute(__FUNCTION__), $queryParams);
     }
-
-    // TODO createMany() , showMany(), updateMany(), deleteMany()
-
 }
