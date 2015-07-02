@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\Resources;
 
+use GuzzleHttp\Psr7\LazyOpenStream;
 use Zendesk\API\BulkTraits\BulkCreateTrait;
 use Zendesk\API\BulkTraits\BulkUpdateTrait;
 use Zendesk\API\Exceptions\CustomException;
@@ -38,15 +39,16 @@ class Users extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
-            'related'            => 'users/{id}/related.json',
-            'merge'              => 'users/me/merge.json',
-            'search'             => 'users/search.json',
-            'autocomplete'       => 'users/autocomplete.json',
-            'setPassword'        => 'users/{id}/password.json',
-            'changePassword'     => 'users/{id}/password.json',
-            'updateMany'         => 'users/update_many.json',
-            'createMany'         => 'users/create_many.json',
-            'updateProfileImage' => 'users/{id}.json',
+            'related'                    => 'users/{id}/related.json',
+            'merge'                      => 'users/me/merge.json',
+            'search'                     => 'users/search.json',
+            'autocomplete'               => 'users/autocomplete.json',
+            'setPassword'                => 'users/{id}/password.json',
+            'changePassword'             => 'users/{id}/password.json',
+            'updateMany'                 => 'users/update_many.json',
+            'createMany'                 => 'users/create_many.json',
+            'updateProfileImageFromFile' => 'users/{id}.json',
+            'updateProfileImageFromUrl'  => 'users/{id}.json',
         ]);
     }
 
@@ -279,43 +281,56 @@ class Users extends ResourceAbstract
      * @throws \Exception
      * @return mixed
      */
-    public function updateProfileImage(array $params)
+    public function updateProfileImageFromFile(array $params)
     {
-        // @TODO File upload with guzzle
-        if ($this->lastId != null) {
-            $params['id'] = $this->lastId;
-            $this->lastId = null;
-        }
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+
         if (! $this->hasKeys($params, ['id', 'file'])) {
             throw new MissingParametersException(__METHOD__, ['id', 'file']);
         }
+
         if (! file_exists($params['file'])) {
             throw new CustomException('File ' . $params['file'] . ' could not be found in ' . __METHOD__);
         }
+
         $id = $params['id'];
         unset($params['id']);
-        $endPoint = Http::prepare('users/' . $id . '.json');
-        if (function_exists('curl_file_create')) {
-            $response = Http::send(
-                $this->client,
-                $endPoint,
-                $params['file'],
-                'PUT',
-                (isset($params['type']) ? $params['type'] : 'application/binary')
-            );
-        } else {
-            $response = Http::send(
-                $this->client,
-                $endPoint,
-                ['user[photo][uploaded_data]' => '@' . $params['file']],
-                'PUT',
-                (isset($params['type']) ? $params['type'] : 'application/binary')
-            );
-        }
+
+        $response = Http::sendWithOptions(
+            $this->client,
+            $this->getRoute(__FUNCTION__, ['id' => $id]),
+            [
+                'method'    => 'PUT',
+                'multipart' => [
+                    [
+                        'name'     => 'user[photo][uploaded_data]',
+                        'contents' => new LazyOpenStream($params['file'], 'r'),
+                        'filename' => $params['file']
+                    ]
+                ],
+            ]
+        );
 
         $this->client->setSideload(null);
 
         return $response;
+    }
+
+    /**
+     * Update a user's profile image
+     *
+     * @param array $params
+     *
+     * @throws CustomException
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     * @return mixed
+     */
+    public function updateProfileImageFromUrl(array $params)
+    {
+        // TODO implement
+        return;
     }
 
     /**

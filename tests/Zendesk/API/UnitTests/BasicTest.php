@@ -7,6 +7,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\LazyOpenStream;
+use GuzzleHttp\Psr7\MultipartStream;
 use Zendesk\API\HttpClient;
 
 /**
@@ -156,6 +157,15 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
         if (isset($options['postFields'])) {
             $this->assertEquals(json_encode($options['postFields']), $request->getBody()->getContents());
         }
+
+        if (isset($options['multipart'])) {
+            $body = $request->getBody();
+            $this->assertInstanceOf(MultipartStream::class, $body);
+            $this->assertGreaterThan(0, $body->getSize());
+            $this->assertNotEmpty($header = $request->getHeader('Content-Type'));
+            $this->assertContains('multipart/form-data', $header);
+        }
+
 
         if (isset($options['file'])) {
             $body = $request->getBody();
