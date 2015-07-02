@@ -170,12 +170,12 @@ class HttpClient
     public static function getValidRelations()
     {
         return [
+<<<<<<< HEAD
             'attachments'             => Attachments::class,
             'auditLogs'               => AuditLogs::class,
             'automations'             => Automations::class,
             'dynamicContent'          => DynamicContent::class,
             'groups'                  => Groups::class,
-            'jobStatuses'    => JobStatuses::class,
             'macros'                  => Macros::class,
             'organizationFields'      => OrganizationFields::class,
             'organizationMemberships' => OrganizationMemberships::class,
@@ -188,6 +188,23 @@ class HttpClient
             'userFields'              => UserFields::class,
             'users'                   => Users::class,
             'views'                   => Views::class,
+=======
+            'tickets'        => Tickets::class,
+            'users'          => Users::class,
+            'views'          => Views::class,
+            'tags'           => Tags::class,
+            'macros'         => Macros::class,
+            'attachments'    => Attachments::class,
+            'groups'         => Groups::class,
+            'automations'    => Automations::class,
+            'triggers'       => Triggers::class,
+            'targets'        => Targets::class,
+            'userFields'     => UserFields::class,
+            'auditLogs'      => AuditLogs::class,
+            'dynamicContent' => DynamicContent::class,
+            'organizations'  => Organizations::class,
+            'jobStatuses'    => JobStatuses::class,
+>>>>>>> Add job statuses resource and test
         ];
     }
 
