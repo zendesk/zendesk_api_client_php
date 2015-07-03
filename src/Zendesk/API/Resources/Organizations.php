@@ -24,11 +24,13 @@ class Organizations extends ResourceAbstract
     {
         parent::setUpRoutes();
 
-        $this->setRoutes([
-            'autocomplete' => $this->resourceName . '/autocomplete.json',
-            'related'      => "{$this->resourceName}/{id}/related.json",
-            'search'       => $this->resourceName . '/search.json',
-        ]);
+        $this->setRoutes(
+            [
+                'autocomplete' => $this->resourceName . '/autocomplete.json',
+                'related'      => $this->resourceName . '/{id}/related.json',
+                'search'       => $this->resourceName . '/search.json',
+            ]
+        );
     }
 
     /**
