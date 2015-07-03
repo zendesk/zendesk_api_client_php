@@ -20,6 +20,16 @@ class Organizations extends ResourceAbstract
     use BulkUpdateTrait;
     use BulkDeleteTrait;
 
+    /**
+     * {@inheritdoc}
+     */
+    public static function getValidRelations()
+    {
+        return [
+            'subscriptions' => OrganizationSubscriptions::class,
+        ];
+    }
+
     protected function setUpRoutes()
     {
         parent::setUpRoutes();
