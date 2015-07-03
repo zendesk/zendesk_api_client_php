@@ -34,6 +34,16 @@ class Organizations extends ResourceAbstract
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public static function getValidRelations()
+    {
+        return [
+            'organizationMemberships' => OrganizationMemberships::class,
+        ];
+    }
+
+    /**
      * Returns a route and replaces tokenized parts of the string with
      * the passed params
      *
