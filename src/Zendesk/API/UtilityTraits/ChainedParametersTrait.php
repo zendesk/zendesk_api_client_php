@@ -26,7 +26,7 @@ trait ChainedParametersTrait
     /**
      * Returns the named chained parameter
      *
-     * @param $name
+     * @param      $name
      * @param null $default
      *
      * @return $this
@@ -70,9 +70,9 @@ trait ChainedParametersTrait
      * A helper method to add the chained parameters to the existing parameters.
      *
      * @param array $params The existing parameters
-     * @param array $map An array describing what parameter key corresponds to which classId
-     *     e.g. ['ticket_id' => 'Zendesk\API\Ticket']
-     *     normal usage would be ['id' => $this::class]
+     * @param array $map    An array describing what parameter key corresponds to which classId
+     *                      e.g. ['ticket_id' => 'Zendesk\API\Ticket']
+     *                      normal usage would be ['id' => $this::class]
      *
      * @return array
      */
