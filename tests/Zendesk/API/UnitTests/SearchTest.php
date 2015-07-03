@@ -24,7 +24,12 @@ class SearchTest extends BasicTest
             [
                 'method'      => 'GET',
                 'endpoint'    => 'search.json',
-                'queryParams' => ['sort_by' => 'updated_at', 'query' => rawurlencode($searchString)]
+                'queryParams' => [
+                    'sort_by' => 'updated_at',
+                    // replace colons, the colons are a special case in this endpoint so let's do the replacement
+                    // for this test only
+                    'query'   => str_replace('%3A', ':', rawurlencode($searchString))
+                ]
             ]
         );
     }
