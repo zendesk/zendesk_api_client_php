@@ -11,6 +11,7 @@ use Zendesk\API\Exceptions\AuthException;
 use Zendesk\API\Resources\Attachments;
 use Zendesk\API\Resources\AuditLogs;
 use Zendesk\API\Resources\Automations;
+use Zendesk\API\Resources\DynamicContent;
 use Zendesk\API\Resources\Groups;
 use Zendesk\API\Resources\Macros;
 use Zendesk\API\Resources\Tags;
@@ -166,18 +167,19 @@ class HttpClient
     public static function getValidRelations()
     {
         return [
-            'tickets'     => Tickets::class,
-            'users'       => Users::class,
-            'views'       => Views::class,
-            'tags'        => Tags::class,
-            'macros'      => Macros::class,
-            'attachments' => Attachments::class,
-            'groups'      => Groups::class,
-            'automations' => Automations::class,
-            'triggers'    => Triggers::class,
-            'targets'     => Targets::class,
-            'userFields'  => UserFields::class,
-            'auditLogs'   => AuditLogs::class,
+            'tickets'        => Tickets::class,
+            'users'          => Users::class,
+            'views'          => Views::class,
+            'tags'           => Tags::class,
+            'macros'         => Macros::class,
+            'attachments'    => Attachments::class,
+            'groups'         => Groups::class,
+            'automations'    => Automations::class,
+            'triggers'       => Triggers::class,
+            'targets'        => Targets::class,
+            'userFields'     => UserFields::class,
+            'auditLogs'      => AuditLogs::class,
+            'dynamicContent' => DynamicContent::class,
         ];
     }
 
@@ -252,10 +254,10 @@ class HttpClient
     /**
      * Set debug information as an object
      *
-     * @param mixed $lastRequestHeaders
-     * @param mixed $lastResponseCode
+     * @param mixed  $lastRequestHeaders
+     * @param mixed  $lastResponseCode
      * @param string $lastResponseHeaders
-     * @param mixed $lastResponseError
+     * @param mixed  $lastResponseError
      */
     public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError)
     {
