@@ -15,6 +15,7 @@ use Zendesk\API\Resources\DynamicContent;
 use Zendesk\API\Resources\Groups;
 use Zendesk\API\Resources\Macros;
 use Zendesk\API\Resources\OrganizationFields;
+use Zendesk\API\Resources\OrganizationMemberships;
 use Zendesk\API\Resources\Organizations;
 use Zendesk\API\Resources\Search;
 use Zendesk\API\Resources\Tags;
@@ -199,11 +200,9 @@ class HttpClient
     {
         $validAuthStrategies = [Auth::BASIC, Auth::OAUTH];
         if (! in_array($strategy, $validAuthStrategies)) {
-            throw new AuthException(
-                'Invalid auth strategy set, please use `'
-                . implode('` or `', $validAuthStrategies)
-                . '`'
-            );
+            throw new AuthException('Invalid auth strategy set, please use `'
+                                    . implode('` or `', $validAuthStrategies)
+                                    . '`');
         }
 
         $this->authStrategy = $strategy;
