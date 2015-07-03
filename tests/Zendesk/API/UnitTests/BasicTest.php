@@ -131,7 +131,8 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
                     'Accept'       => 'application/json',
                     'Content-Type' => 'application/json'
                 ]
-            ], $options
+            ],
+            $options
         );
 
         $this->assertEquals($options['statusCode'], $response->getStatusCode());
