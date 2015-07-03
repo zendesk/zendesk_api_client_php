@@ -342,7 +342,6 @@ class UsersTest extends BasicTest
             new Response(200, [], json_encode(['job_status' => ['id' => 1]]))
         ]);
 
-
         $jobStatus = $this->client->users()->updateMany($requestParams);
 
         $this->assertLastRequestIs(
@@ -438,22 +437,50 @@ class UsersTest extends BasicTest
         $this->assertGreaterThan(0, $users->users[0]->id, 'Should return a numeric id for user');
     }
 
-    public function testUpdateProfileImage()
+    public function testUpdateProfileImageFromFile()
     {
-        $this->markTestSkipped('Need to allow file uploads with Guzzle.');
-        $this->mockApiCall('GET', '/users/12345.json?', ['id' => 12345]);
-        $this->mockApiCall('PUT', '/users/12345.json', ['user' => ['id' => 12345]]);
-
-        $user = $this->client->users(12345)->updateProfileImage([
-            'file' => getcwd() . '/tests/assets/UK.png'
+        $this->mockAPIResponses([
+            new Response(200, [], '')
         ]);
 
-        $contentType = $this->http->requests->first()->getHeader("Content-Type")->toArray()[0];
-        $this->assertEquals($contentType, "application/binary");
+        $id = 915987427;
 
-        $this->assertEquals(is_object($user), true, 'Should return an object');
-        $this->assertEquals(is_object($user->user), true, 'Should return an object called "user"');
-        $this->assertGreaterThan(0, $user->user->id, 'Should return a numeric id for request');
+        $params = [
+            'file' => getcwd() . '/tests/assets/UK.png'
+        ];
+
+        $this->client->users($id)->updateProfileImageFromFile($params);
+
+        $this->assertLastRequestIs(
+            [
+                'method'   => 'PUT',
+                'endpoint' => "users/{$id}.json",
+                'multipart'
+            ]
+        );
+    }
+
+    public function testUpdateProfileImageFromUrl()
+    {
+        $this->mockAPIResponses([
+            new Response(200, [], '')
+        ]);
+
+        $id = 915987427;
+
+        $params = [
+            'url' => 'http://www.test.com/profile.png'
+        ];
+
+        $this->client->users($id)->updateProfileImageFromUrl($params);
+
+        $this->assertLastRequestIs(
+            [
+                'method'     => 'PUT',
+                'endpoint'   => "users/{$id}.json",
+                'postFields' => [Users::OBJ_NAME => ['remote_photo_url' => $params['url']]],
+            ]
+        );
     }
 
     public function testAuthenticatedUser()

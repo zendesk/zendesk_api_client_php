@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\LazyOpenStream;
 use GuzzleHttp\Psr7\Request;
 use Zendesk\API\Exceptions\ApiResponseException;
 use Zendesk\API\Exceptions\AuthException;
+use Zendesk\API\Utilities\Auth;
 
 /**
  * HTTP functions via curl
@@ -75,11 +76,11 @@ class Http
             $options
         );
 
-        $headers = [
+        $headers        = [
             'Accept'       => 'application/json',
             'Content-Type' => $options['contentType'],
         ];
-
+        $requestOptions = [];
 
         $request = new Request(
             $options['method'],
@@ -87,7 +88,12 @@ class Http
             $headers
         );
 
-        if (! empty($options['postFields'])) {
+        $requestOptions = [];
+
+        if (! empty($options['multipart'])) {
+            $request                     = $request->withoutHeader('Content-Type');
+            $requestOptions['multipart'] = $options['multipart'];
+        } elseif (! empty($options['postFields'])) {
             $request = $request->withBody(\GuzzleHttp\Psr7\stream_for(json_encode($options['postFields'])));
         } elseif (! empty($options['file'])) {
             if (is_file($options['file'])) {
@@ -105,18 +111,8 @@ class Http
         }
 
         try {
-            if ($client->getAuthStrategy() === HttpClient::AUTH_BASIC) {
-                $authOptions = $client->getAuthOptions();
-                $options     = ['auth' => [$authOptions['username'] . '/token', $authOptions['token'], 'basic']];
-                $response    = $client->guzzle->send($request, $options);
-            } elseif ($client->getAuthStrategy() === HttpClient::AUTH_OAUTH) {
-                $authOptions = $client->getAuthOptions();
-                $oAuthToken  = $authOptions['token'];
-                $request     = $request->withAddedHeader('Authorization', ' Bearer ' . $oAuthToken);
-                $response    = $client->guzzle->send($request);
-            } else {
-                throw new AuthException('Please set authentication to send requests.');
-            }
+            list ($request, $requestOptions) = Auth::prepareRequest($client, $request, $requestOptions);
+            $response = $client->guzzle->send($request, $requestOptions);
 
             $client->setDebug(
                 $response->getHeaders(),

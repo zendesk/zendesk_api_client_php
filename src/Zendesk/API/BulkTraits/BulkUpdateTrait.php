@@ -7,7 +7,6 @@ use Zendesk\API\Http;
 
 /**
  * Allows resources to call a bulk show endpoint.
- *
  */
 trait BulkUpdateTrait
 {
@@ -15,7 +14,7 @@ trait BulkUpdateTrait
     /**
      * Update group of resources
      *
-     * @param array  $params
+     * @param array $params
      * @param string $key Could be `id` or `external_id`
      *
      * @return mixed
@@ -36,7 +35,7 @@ trait BulkUpdateTrait
         $resourceUpdateName = self::OBJ_NAME_PLURAL;
         $queryParams        = [];
         if (isset($params[$key]) && is_array($params[$key])) {
-            $queryParams[$key] = implode(",", $params[$key]);
+            $queryParams[$key] = implode(',', $params[$key]);
             unset($params[$key]);
 
             $resourceUpdateName = self::OBJ_NAME;
