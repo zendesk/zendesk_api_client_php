@@ -4,35 +4,11 @@ namespace Zendesk\API\UnitTests;
 
 class JobStatusesTest extends BasicTest
 {
-    /**
-     * @expectedException Zendesk\API\Exceptions\RouteException
-     */
-    public function testNoFindAll()
+    public function testFindMethodOnly()
     {
-        $this->client->jobStatuses()->findAll([1]);
-    }
+        $routes = $this->client->jobStatuses()->getRoutes();
 
-    /**
-     * @expectedException Zendesk\API\Exceptions\RouteException
-     */
-    public function testNoCreate()
-    {
-        $this->client->jobStatuses()->create([1]);
-    }
-
-    /**
-     * @expectedException Zendesk\API\Exceptions\RouteException
-     */
-    public function testNoUpdate()
-    {
-        $this->client->jobStatuses()->update([1]);
-    }
-
-    /**
-     * @expectedException Zendesk\API\Exceptions\RouteException
-     */
-    public function testNoDelete()
-    {
-        $this->client->jobStatuses()->delete([1]);
+        $this->assertArrayHasKey('find', $routes);
+        $this->assertEquals(1, count($routes), 'Should contain only routes for find');
     }
 }
