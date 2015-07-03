@@ -88,7 +88,12 @@ class Http
             $headers
         );
 
-        if (! empty($options['postFields'])) {
+        $requestOptions = [];
+
+        if (! empty($options['multipart'])) {
+            $request                     = $request->withoutHeader('Content-Type');
+            $requestOptions['multipart'] = $options['multipart'];
+        } elseif (! empty($options['postFields'])) {
             $request = $request->withBody(\GuzzleHttp\Psr7\stream_for(json_encode($options['postFields'])));
         } elseif (! empty($options['file'])) {
             if (is_file($options['file'])) {
