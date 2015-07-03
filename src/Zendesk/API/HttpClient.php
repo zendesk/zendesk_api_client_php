@@ -14,6 +14,7 @@ use Zendesk\API\Resources\Automations;
 use Zendesk\API\Resources\DynamicContent;
 use Zendesk\API\Resources\Groups;
 use Zendesk\API\Resources\Macros;
+use Zendesk\API\Resources\Organizations;
 use Zendesk\API\Resources\Tags;
 use Zendesk\API\Resources\Targets;
 use Zendesk\API\Resources\Tickets;
@@ -180,6 +181,7 @@ class HttpClient
             'userFields'     => UserFields::class,
             'auditLogs'      => AuditLogs::class,
             'dynamicContent' => DynamicContent::class,
+            'organizations'  => Organizations::class,
         ];
     }
 
@@ -217,6 +219,7 @@ class HttpClient
 
     /**
      * Returns the supplied subdomain
+     *
      * @return string
      */
     public function getSubdomain()
@@ -226,6 +229,7 @@ class HttpClient
 
     /**
      * Returns the generated api URL
+     *
      * @return string
      */
     public function getApiUrl()
@@ -235,6 +239,7 @@ class HttpClient
 
     /**
      * Returns a text value indicating the type of authorization configured
+     *
      * @return string
      */
     public function getAuthOptions()
@@ -244,6 +249,7 @@ class HttpClient
 
     /**
      * Returns the authentication strategy set
+     *
      * @return string
      */
     public function getAuthStrategy()
@@ -269,6 +275,7 @@ class HttpClient
 
     /**
      * Returns debug information in an object
+     *
      * @return Debug
      */
     public function getDebug()
