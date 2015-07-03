@@ -168,20 +168,20 @@ class HttpClient
     public static function getValidRelations()
     {
         return [
-            'tickets'     => Tickets::class,
-            'users'       => Users::class,
-            'views'       => Views::class,
-            'tags'        => Tags::class,
-            'macros'      => Macros::class,
-            'attachments' => Attachments::class,
-            'groups'      => Groups::class,
-            'automations' => Automations::class,
-            'triggers'    => Triggers::class,
-            'targets'     => Targets::class,
-            'userFields'  => UserFields::class,
-            'auditLogs'   => AuditLogs::class,
-'dynamicContent' => DynamicContent::class,
-'organizations' => Organizations::class,
+            'tickets'        => Tickets::class,
+            'users'          => Users::class,
+            'views'          => Views::class,
+            'tags'           => Tags::class,
+            'macros'         => Macros::class,
+            'attachments'    => Attachments::class,
+            'groups'         => Groups::class,
+            'automations'    => Automations::class,
+            'triggers'       => Triggers::class,
+            'targets'        => Targets::class,
+            'userFields'     => UserFields::class,
+            'auditLogs'      => AuditLogs::class,
+            'dynamicContent' => DynamicContent::class,
+            'organizations'  => Organizations::class,
         ];
     }
 
