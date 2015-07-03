@@ -4,16 +4,13 @@ namespace Zendesk\API\UtilityTraits;
 
 /**
  * The chained parameters trait which has helper methods for getting the parameters passed through chaining.
- *
  * An example would be a call `$client->ticket(2)->comments(3)->author();` would create an Author object with
  * chained parameters (An Array):
  *  [
  *      'Zendesk\API\Tickets' => 2,
  *      'Zendesk\API\Comments' => 3
  *  ]
- *
  * @package Zendesk\API
- *
  */
 
 trait ChainedParametersTrait
@@ -43,7 +40,6 @@ trait ChainedParametersTrait
 
     /**
      * Returns chained parameters
-     *
      * @return $this
      */
     public function getChainedParameters()
@@ -57,7 +53,6 @@ trait ChainedParametersTrait
      * @param $params
      *
      * @return $this
-     *
      */
     public function setChainedParameters($params)
     {
@@ -90,7 +85,6 @@ trait ChainedParametersTrait
 
     /**
      * Returns the named chained parameter
-     *
      * @return array
      */
     public function getLatestChainedParameter()
