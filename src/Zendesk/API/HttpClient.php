@@ -11,8 +11,10 @@ use Zendesk\API\Exceptions\AuthException;
 use Zendesk\API\Resources\Attachments;
 use Zendesk\API\Resources\AuditLogs;
 use Zendesk\API\Resources\Automations;
+use Zendesk\API\Resources\DynamicContent;
 use Zendesk\API\Resources\Groups;
 use Zendesk\API\Resources\Macros;
+use Zendesk\API\Resources\Organizations;
 use Zendesk\API\Resources\Tags;
 use Zendesk\API\Resources\Targets;
 use Zendesk\API\Resources\Tickets;
@@ -164,18 +166,20 @@ class HttpClient
     public static function getValidRelations()
     {
         return [
-            'tickets'     => Tickets::class,
-            'users'       => Users::class,
-            'views'       => Views::class,
-            'tags'        => Tags::class,
-            'macros'      => Macros::class,
-            'attachments' => Attachments::class,
-            'groups'      => Groups::class,
-            'automations' => Automations::class,
-            'triggers'    => Triggers::class,
-            'targets'     => Targets::class,
-            'userFields'  => UserFields::class,
-            'auditLogs'   => AuditLogs::class,
+            'tickets'        => Tickets::class,
+            'users'          => Users::class,
+            'views'          => Views::class,
+            'tags'           => Tags::class,
+            'macros'         => Macros::class,
+            'attachments'    => Attachments::class,
+            'groups'         => Groups::class,
+            'automations'    => Automations::class,
+            'triggers'       => Triggers::class,
+            'targets'        => Targets::class,
+            'userFields'     => UserFields::class,
+            'auditLogs'      => AuditLogs::class,
+            'dynamicContent' => DynamicContent::class,
+            'organizations'  => Organizations::class,
         ];
     }
 
@@ -213,6 +217,7 @@ class HttpClient
 
     /**
      * Returns the supplied subdomain
+     *
      * @return string
      */
     public function getSubdomain()
@@ -222,6 +227,7 @@ class HttpClient
 
     /**
      * Returns the generated api URL
+     *
      * @return string
      */
     public function getApiUrl()
@@ -231,6 +237,7 @@ class HttpClient
 
     /**
      * Returns a text value indicating the type of authorization configured
+     *
      * @return string
      */
     public function getAuthOptions()
@@ -240,6 +247,7 @@ class HttpClient
 
     /**
      * Returns the authentication strategy set
+     *
      * @return string
      */
     public function getAuthStrategy()
@@ -250,10 +258,10 @@ class HttpClient
     /**
      * Set debug information as an object
      *
-     * @param mixed $lastRequestHeaders
-     * @param mixed $lastResponseCode
+     * @param mixed  $lastRequestHeaders
+     * @param mixed  $lastResponseCode
      * @param string $lastResponseHeaders
-     * @param mixed $lastResponseError
+     * @param mixed  $lastResponseError
      */
     public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError)
     {
@@ -265,6 +273,7 @@ class HttpClient
 
     /**
      * Returns debug information in an object
+     *
      * @return Debug
      */
     public function getDebug()
