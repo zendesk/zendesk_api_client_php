@@ -11,9 +11,11 @@ use Zendesk\API\Exceptions\AuthException;
 use Zendesk\API\Resources\Attachments;
 use Zendesk\API\Resources\AuditLogs;
 use Zendesk\API\Resources\Automations;
+use Zendesk\API\Resources\DynamicContent;
 use Zendesk\API\Resources\Groups;
 use Zendesk\API\Resources\Macros;
 use Zendesk\API\Resources\OrganizationFields;
+use Zendesk\API\Resources\Organizations;
 use Zendesk\API\Resources\Tags;
 use Zendesk\API\Resources\Targets;
 use Zendesk\API\Resources\Tickets;
@@ -21,6 +23,7 @@ use Zendesk\API\Resources\Triggers;
 use Zendesk\API\Resources\UserFields;
 use Zendesk\API\Resources\Users;
 use Zendesk\API\Resources\Views;
+use Zendesk\API\Utilities\Auth;
 use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
 /**
@@ -34,9 +37,6 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
 class HttpClient
 {
     use InstantiatorTrait;
-
-    const AUTH_OAUTH = 'oauth';
-    const AUTH_BASIC = 'basic';
 
     /**
      * @var string
@@ -180,6 +180,8 @@ class HttpClient
             'userFields'         => UserFields::class,
             'auditLogs'          => AuditLogs::class,
             'organizationFields' => OrganizationFields::class,
+            'dynamicContent' => DynamicContent::class,
+            'organizations'  => Organizations::class,
         ];
     }
 
@@ -193,7 +195,7 @@ class HttpClient
      */
     public function setAuth($strategy, array $options)
     {
-        $validAuthStrategies = [self::AUTH_BASIC, self::AUTH_OAUTH];
+        $validAuthStrategies = [Auth::BASIC, Auth::OAUTH];
         if (! in_array($strategy, $validAuthStrategies)) {
             throw new AuthException('Invalid auth strategy set, please use `'
                                     . implode('` or `', $validAuthStrategies)
@@ -202,11 +204,11 @@ class HttpClient
 
         $this->authStrategy = $strategy;
 
-        if ($strategy == self::AUTH_BASIC) {
+        if ($strategy == Auth::BASIC) {
             if (! array_key_exists('username', $options) || ! array_key_exists('token', $options)) {
                 throw new AuthException('Please supply `username` and `token` for basic auth.');
             }
-        } elseif ($strategy == self::AUTH_OAUTH) {
+        } elseif ($strategy == Auth::OAUTH) {
             if (! array_key_exists('token', $options)) {
                 throw new AuthException('Please supply `token` for oauth.');
             }
@@ -217,6 +219,7 @@ class HttpClient
 
     /**
      * Returns the supplied subdomain
+     *
      * @return string
      */
     public function getSubdomain()
@@ -226,6 +229,7 @@ class HttpClient
 
     /**
      * Returns the generated api URL
+     *
      * @return string
      */
     public function getApiUrl()
@@ -235,6 +239,7 @@ class HttpClient
 
     /**
      * Returns a text value indicating the type of authorization configured
+     *
      * @return string
      */
     public function getAuthOptions()
@@ -244,6 +249,7 @@ class HttpClient
 
     /**
      * Returns the authentication strategy set
+     *
      * @return string
      */
     public function getAuthStrategy()
@@ -269,6 +275,7 @@ class HttpClient
 
     /**
      * Returns debug information in an object
+     *
      * @return Debug
      */
     public function getDebug()
