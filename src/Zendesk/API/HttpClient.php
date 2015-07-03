@@ -22,6 +22,7 @@ use Zendesk\API\Resources\Triggers;
 use Zendesk\API\Resources\UserFields;
 use Zendesk\API\Resources\Users;
 use Zendesk\API\Resources\Views;
+use Zendesk\API\Utilities\Auth;
 use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
 /**
@@ -35,9 +36,6 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
 class HttpClient
 {
     use InstantiatorTrait;
-
-    const AUTH_OAUTH = 'oauth';
-    const AUTH_BASIC = 'basic';
 
     /**
      * @var string
@@ -195,7 +193,7 @@ class HttpClient
      */
     public function setAuth($strategy, array $options)
     {
-        $validAuthStrategies = [self::AUTH_BASIC, self::AUTH_OAUTH];
+        $validAuthStrategies = [Auth::BASIC, Auth::OAUTH];
         if (! in_array($strategy, $validAuthStrategies)) {
             throw new AuthException('Invalid auth strategy set, please use `'
                                     . implode('` or `', $validAuthStrategies)
@@ -204,11 +202,11 @@ class HttpClient
 
         $this->authStrategy = $strategy;
 
-        if ($strategy == self::AUTH_BASIC) {
+        if ($strategy == Auth::BASIC) {
             if (! array_key_exists('username', $options) || ! array_key_exists('token', $options)) {
                 throw new AuthException('Please supply `username` and `token` for basic auth.');
             }
-        } elseif ($strategy == self::AUTH_OAUTH) {
+        } elseif ($strategy == Auth::OAUTH) {
             if (! array_key_exists('token', $options)) {
                 throw new AuthException('Please supply `token` for oauth.');
             }
