@@ -180,6 +180,14 @@ class HttpClient
     }
 
     /**
+     * @return Auth
+     */
+    public function getAuth()
+    {
+        return $this->auth;
+    }
+
+    /**
      * Configure the authorization method
      *
      * @param       $strategy
@@ -189,28 +197,7 @@ class HttpClient
      */
     public function setAuth($strategy, array $options)
     {
-        $validAuthStrategies = [Auth::BASIC, Auth::OAUTH];
-        if (! in_array($strategy, $validAuthStrategies)) {
-            throw new AuthException(
-                'Invalid auth strategy set, please use `'
-                . implode('` or `', $validAuthStrategies)
-                . '`'
-            );
-        }
-
-        $this->authStrategy = $strategy;
-
-        if ($strategy == Auth::BASIC) {
-            if (! array_key_exists('username', $options) || ! array_key_exists('token', $options)) {
-                throw new AuthException('Please supply `username` and `token` for basic auth.');
-            }
-        } elseif ($strategy == Auth::OAUTH) {
-            if (! array_key_exists('token', $options)) {
-                throw new AuthException('Please supply `token` for oauth.');
-            }
-        }
-
-        $this->authOptions = $options;
+        $this->auth = new Auth($strategy, $options);
     }
 
     /**

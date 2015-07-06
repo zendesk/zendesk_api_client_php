@@ -110,7 +110,7 @@ class Http
         }
 
         try {
-            list ($request, $requestOptions) = Auth::prepareRequest($client, $request, $requestOptions);
+            list ($request, $requestOptions) = $client->getAuth()->prepareRequest($request, $requestOptions);
             $response = $client->guzzle->send($request, $requestOptions);
         } catch (RequestException $e) {
             throw new ApiResponseException($e);
