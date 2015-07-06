@@ -13,6 +13,7 @@ use Zendesk\API\Resources\AuditLogs;
 use Zendesk\API\Resources\Automations;
 use Zendesk\API\Resources\DynamicContent;
 use Zendesk\API\Resources\Groups;
+use Zendesk\API\Resources\JobStatuses;
 use Zendesk\API\Resources\Macros;
 use Zendesk\API\Resources\OrganizationFields;
 use Zendesk\API\Resources\OrganizationMemberships;
@@ -174,6 +175,7 @@ class HttpClient
             'automations'             => Automations::class,
             'dynamicContent'          => DynamicContent::class,
             'groups'                  => Groups::class,
+            'jobStatuses'    => JobStatuses::class,
             'macros'                  => Macros::class,
             'organizationFields'      => OrganizationFields::class,
             'organizationMemberships' => OrganizationMemberships::class,
@@ -201,9 +203,11 @@ class HttpClient
     {
         $validAuthStrategies = [Auth::BASIC, Auth::OAUTH];
         if (! in_array($strategy, $validAuthStrategies)) {
-            throw new AuthException('Invalid auth strategy set, please use `'
-                                    . implode('` or `', $validAuthStrategies)
-                                    . '`');
+            throw new AuthException(
+                'Invalid auth strategy set, please use `'
+                . implode('` or `', $validAuthStrategies)
+                . '`'
+            );
         }
 
         $this->authStrategy = $strategy;
