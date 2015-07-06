@@ -149,6 +149,11 @@ class HttpClient
         $this->debug = new Debug();
     }
 
+    /**
+     * {@inheritdoc}
+     *
+     * @return array
+     */
     public static function getValidSubResources()
     {
         return [
@@ -365,6 +370,15 @@ class HttpClient
         return $response;
     }
 
+    /**
+     * This is a helper method to do a post request.
+     *
+     * @param       $endpoint
+     * @param array $postData
+     *
+     * @return array
+     * @throws Exceptions\ApiResponseException
+     */
     public function post($endpoint, $postData = [])
     {
         $response = Http::send(
@@ -381,6 +395,15 @@ class HttpClient
         return $response;
     }
 
+    /**
+     * This is a helper method to do a put request.
+     *
+     * @param       $endpoint
+     * @param array $putData
+     *
+     * @return array
+     * @throws Exceptions\ApiResponseException
+     */
     public function put($endpoint, $putData = [])
     {
         $response = Http::send(
@@ -394,6 +417,14 @@ class HttpClient
         return $response;
     }
 
+    /**
+     * This is a helper method to do a delete request.
+     *
+     * @param $endpoint
+     *
+     * @return array
+     * @throws Exceptions\ApiResponseException
+     */
     public function delete($endpoint)
     {
         $response = Http::send(
