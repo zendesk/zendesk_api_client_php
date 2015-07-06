@@ -34,14 +34,29 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
  * Client class, base level access
  * @method Debug debug()
  * @method Tickets ticket()
- * @method Tickets tickets()
  * @method Views views()
  * @method Users users()
+ * @method Tags tags()
+ * @method Macros macros()
+ * @method Attachments attachemnts()
+ * @method Groups groups()
+ * @method Automations automations()
+ * @method Triggers triggers()
+ * @method Targets targets()
+ * @method UserFields userFields()
+ * @method AuditLogs auditLogs()
+ * @method OrganizationFields organizationFields()
+ * @method DynamicContent dynamicContent()
+ * @method Organizations organizations()
  */
 class HttpClient
 {
     use InstantiatorTrait;
 
+    /**
+     * @var Auth
+     */
+    protected $auth;
     /**
      * @var string
      */
@@ -91,40 +106,6 @@ class HttpClient
      */
     protected $sideload;
 
-    // Properties
-    /**
-     * @var Tickets
-     */
-    protected $tickets;
-    /**
-     * @var Users
-     */
-    protected $users;
-    /**
-     * @var Views
-     */
-    protected $views;
-    /**
-     * @var Macros
-     */
-    protected $macros;
-
-    /**
-     * @var Automations
-     */
-    protected $automations;
-    /**
-     * @var Triggers
-     */
-    protected $triggers;
-    /**
-     * @var UserFields
-     */
-    protected $userFields;
-    /**
-     * @var AuditLogs
-     */
-    protected $auditLogs;
     /**
      * @var Debug
      */
@@ -168,7 +149,7 @@ class HttpClient
         $this->debug = new Debug();
     }
 
-    public static function getValidRelations()
+    public static function getValidSubResources()
     {
         return [
             'attachments'               => Attachments::class,
@@ -275,9 +256,15 @@ class HttpClient
      * @param string $lastResponseHeaders
      * @param mixed  $lastResponseError
      */
-    public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError)
-    {
+    public function setDebug(
+        $lastRequestHeaders,
+        $lastRequestBody,
+        $lastResponseCode,
+        $lastResponseHeaders,
+        $lastResponseError
+    ) {
         $this->debug->lastRequestHeaders  = $lastRequestHeaders;
+        $this->debug->lastRequestBody     = $lastRequestBody;
         $this->debug->lastResponseCode    = $lastResponseCode;
         $this->debug->lastResponseHeaders = $lastResponseHeaders;
         $this->debug->lastResponseError   = $lastResponseError;
@@ -367,7 +354,7 @@ class HttpClient
             unset($queryParams['sideload']);
         }
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this,
             $endpoint,
             ['queryParams' => $queryParams]
@@ -380,7 +367,7 @@ class HttpClient
 
     public function post($endpoint, $postData = [])
     {
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this,
             $endpoint,
             [
@@ -396,7 +383,7 @@ class HttpClient
 
     public function put($endpoint, $putData = [])
     {
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this,
             $endpoint,
             ['postFields' => $putData, 'method' => 'PUT']
@@ -409,7 +396,7 @@ class HttpClient
 
     public function delete($endpoint)
     {
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this,
             $endpoint,
             ['method' => 'DELETE']

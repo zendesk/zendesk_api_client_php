@@ -36,7 +36,7 @@ class AuditLogs extends ResourceAbstract
 
         $queryParams = array_merge($queryParams, $extraParams);
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__, $params),
             ['queryParams' => $queryParams]

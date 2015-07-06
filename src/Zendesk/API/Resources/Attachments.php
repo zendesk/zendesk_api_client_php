@@ -55,7 +55,7 @@ class Attachments extends ResourceAbstract
             $queryParams['token'] = $params['token'];
         }
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__),
             [
@@ -83,7 +83,7 @@ class Attachments extends ResourceAbstract
      */
     public function deleteUpload($token)
     {
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__, ['token' => $token]),
             ['method' => 'DELETE']
