@@ -20,6 +20,17 @@ class Organizations extends ResourceAbstract
     use BulkUpdateTrait;
     use BulkDeleteTrait;
 
+    /**
+     * {@inheritdoc}
+     */
+    public static function getValidRelations()
+    {
+        return [
+            'organizationMemberships' => OrganizationMemberships::class,
+            'subscriptions'           => OrganizationSubscriptions::class,
+        ];
+    }
+
     protected function setUpRoutes()
     {
         parent::setUpRoutes();
@@ -31,16 +42,6 @@ class Organizations extends ResourceAbstract
                 'search'       => $this->resourceName . '/search.json',
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getValidRelations()
-    {
-        return [
-            'organizationMemberships' => OrganizationMemberships::class,
-        ];
     }
 
     /**

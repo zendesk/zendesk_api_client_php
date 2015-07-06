@@ -59,10 +59,11 @@ class Users extends ResourceAbstract
     public static function getValidRelations()
     {
         return [
-            'identities'              => UserIdentities::class,
-            'groups'                  => Groups::class,
-            'organizations'           => Organizations::class,
-            'organizationMemberships' => OrganizationMemberships::class,
+            'identities'                => UserIdentities::class,
+            'groups'                    => Groups::class,
+            'organizations'             => Organizations::class,
+            'organizationMemberships'   => OrganizationMemberships::class,
+            'organizationSubscriptions' => OrganizationSubscriptions::class,
         ];
     }
 
