@@ -31,6 +31,16 @@ class Auth
     protected $authOptions;
 
     /**
+     * Returns an array containing the valid auth strategies
+     *
+     * @return array
+     */
+    protected static function getValidAuthStrategies()
+    {
+        return [self::BASIC, self::OAUTH];
+    }
+
+    /**
      * Auth constructor.
      *
      * @param       $strategy
@@ -41,20 +51,19 @@ class Auth
      */
     public function __construct($strategy, array $options)
     {
-        $validAuthStrategies = [Auth::BASIC, Auth::OAUTH];
-        if (! in_array($strategy, $validAuthStrategies)) {
+        if (! in_array($strategy, self::getValidAuthStrategies())) {
             throw new AuthException('Invalid auth strategy set, please use `'
-                                    . implode('` or `', $validAuthStrategies)
+                                    . implode('` or `', self::getValidAuthStrategies())
                                     . '`');
         }
 
         $this->authStrategy = $strategy;
 
-        if ($strategy == Auth::BASIC) {
+        if ($strategy == self::BASIC) {
             if (! array_key_exists('username', $options) || ! array_key_exists('token', $options)) {
                 throw new AuthException('Please supply `username` and `token` for basic auth.');
             }
-        } elseif ($strategy == Auth::OAUTH) {
+        } elseif ($strategy == self::OAUTH) {
             if (! array_key_exists('token', $options)) {
                 throw new AuthException('Please supply `token` for oauth.');
             }
@@ -80,7 +89,7 @@ class Auth
                     'basic'
                 ]
             ]);
-        } elseif ($this->authStrategy === Auth::OAUTH) {
+        } elseif ($this->authStrategy === self::OAUTH) {
             $oAuthToken = $this->authOptions['token'];
             $request    = $request->withAddedHeader('Authorization', ' Bearer ' . $oAuthToken);
         } else {
