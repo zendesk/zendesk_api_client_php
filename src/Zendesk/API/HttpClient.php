@@ -143,6 +143,7 @@ class HttpClient
     public static function getValidSubResources()
     {
         return [
+            'activities'                => Activities::class,
             'attachments'               => Attachments::class,
             'auditLogs'                 => AuditLogs::class,
             'automations'               => Automations::class,
