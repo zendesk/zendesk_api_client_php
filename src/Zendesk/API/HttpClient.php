@@ -15,6 +15,7 @@ use Zendesk\API\Resources\DynamicContent;
 use Zendesk\API\Resources\Groups;
 use Zendesk\API\Resources\Macros;
 use Zendesk\API\Resources\OrganizationFields;
+use Zendesk\API\Resources\OrganizationMemberships;
 use Zendesk\API\Resources\Organizations;
 use Zendesk\API\Resources\Search;
 use Zendesk\API\Resources\Tags;
@@ -168,22 +169,23 @@ class HttpClient
     public static function getValidRelations()
     {
         return [
-            'attachments'        => Attachments::class,
-            'auditLogs'          => AuditLogs::class,
-            'automations'        => Automations::class,
-            'dynamicContent'     => DynamicContent::class,
-            'groups'             => Groups::class,
-            'macros'             => Macros::class,
-            'organizationFields' => OrganizationFields::class,
-            'organizations'      => Organizations::class,
-            'search'             => Search::class,
-            'tags'               => Tags::class,
-            'targets'            => Targets::class,
-            'tickets'            => Tickets::class,
-            'triggers'           => Triggers::class,
-            'userFields'         => UserFields::class,
-            'users'              => Users::class,
-            'views'              => Views::class,
+            'attachments'             => Attachments::class,
+            'auditLogs'               => AuditLogs::class,
+            'automations'             => Automations::class,
+            'dynamicContent'          => DynamicContent::class,
+            'groups'                  => Groups::class,
+            'macros'                  => Macros::class,
+            'organizationFields'      => OrganizationFields::class,
+            'organizationMemberships' => OrganizationMemberships::class,
+            'organizations'           => Organizations::class,
+            'search'                  => Search::class,
+            'tags'                    => Tags::class,
+            'targets'                 => Targets::class,
+            'tickets'                 => Tickets::class,
+            'triggers'                => Triggers::class,
+            'userFields'              => UserFields::class,
+            'users'                   => Users::class,
+            'views'                   => Views::class,
         ];
     }
 
@@ -199,11 +201,9 @@ class HttpClient
     {
         $validAuthStrategies = [Auth::BASIC, Auth::OAUTH];
         if (! in_array($strategy, $validAuthStrategies)) {
-            throw new AuthException(
-                'Invalid auth strategy set, please use `'
-                . implode('` or `', $validAuthStrategies)
-                . '`'
-            );
+            throw new AuthException('Invalid auth strategy set, please use `'
+                                    . implode('` or `', $validAuthStrategies)
+                                    . '`');
         }
 
         $this->authStrategy = $strategy;
