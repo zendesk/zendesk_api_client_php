@@ -60,14 +60,6 @@ class HttpClient
     /**
      * @var string
      */
-    protected $authStrategy;
-    /**
-     * @var Array
-     */
-    protected $authOptions;
-    /**
-     * @var string
-     */
     protected $subdomain;
     /**
      * @var string
@@ -85,14 +77,6 @@ class HttpClient
      * @var integer
      */
     protected $port;
-    /**
-     * @var string
-     */
-    protected $token;
-    /**
-     * @var string
-     */
-    protected $oAuthToken;
     /**
      * @var string
      */
