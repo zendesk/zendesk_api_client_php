@@ -33,7 +33,7 @@ class UserFields extends ResourceAbstract
     {
         $postFields = ['user_field_ids' => $params];
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__),
             ['postFields' => $postFields, 'method' => 'PUT']

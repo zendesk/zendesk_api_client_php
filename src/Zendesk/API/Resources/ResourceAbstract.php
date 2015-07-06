@@ -66,7 +66,7 @@ abstract class ResourceAbstract
      *
      * @return array
      */
-    public static function getValidSubResource()
+    public static function getValidSubResources()
     {
         return [];
     }

@@ -41,7 +41,7 @@ trait BulkUpdateTrait
             $resourceUpdateName = self::OBJ_NAME;
         }
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $route,
             [

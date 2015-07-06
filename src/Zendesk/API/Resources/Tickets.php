@@ -12,8 +12,12 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
 /**
  * The Tickets class exposes key methods for reading and updating ticket data
- * @package Zendesk\API
  * @method TicketComments comments()
+ * @method TicketForms forms()
+ * @method Tags tags()
+ * @method TicketAudits audits()
+ * @method Attachments attachments()
+ * @method TicketMetrics metrics()
  */
 class Tickets extends ResourceAbstract
 {
@@ -28,31 +32,6 @@ class Tickets extends ResourceAbstract
     const OBJ_NAME_PLURAL = 'tickets';
 
     /**
-     * @var TicketComments
-     */
-    protected $comments;
-
-    /**
-     * @var TicketMetrics
-     */
-    protected $metrics;
-    /**
-     * @var TicketImport
-     */
-    protected $import;
-    /**
-     * @var SatisfactionRatings
-     */
-    protected $satisfactionRatings;
-    /**
-     * @var Tags
-     */
-    protected $tags;
-    /*
-     * Helpers:
-     */
-
-    /**
      * @var array
      */
     protected $lastAttachments = [];
@@ -60,15 +39,15 @@ class Tickets extends ResourceAbstract
     /**
      * {@inheritdoc}
      */
-    public static function getValidRelations()
+    public static function getValidSubResources()
     {
         return [
-          'comments'    => TicketComments::class,
-          'forms'       => TicketForms::class,
-          'tags'        => Tags::class,
-          'audits'      => TicketAudits::class,
-          'attachments' => Attachments::class,
-          'metrics'  => TicketMetrics::class,
+            'comments'    => TicketComments::class,
+            'forms'       => TicketForms::class,
+            'tags'        => Tags::class,
+            'audits'      => TicketAudits::class,
+            'attachments' => Attachments::class,
+            'metrics'     => TicketMetrics::class,
         ];
     }
 
@@ -88,7 +67,7 @@ class Tickets extends ResourceAbstract
             $this->client->getSideload($params),
             $params
         );
-        $response    = Http::sendWithOptions(
+        $response    = Http::send(
             $this->client,
             $this->getRoute($route, $params),
             ['queryParams' => $queryParams]
@@ -107,17 +86,17 @@ class Tickets extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
-          'findMany'            => 'tickets/show_many.json',
-          'updateMany'          => 'tickets/update_many.json',
-          'markAsSpam'          => 'tickets/{id}/mark_as_spam.json',
-          'markManyAsSpam'      => 'tickets/mark_many_as_spam.json',
-          'related'             => 'tickets/{id}/related.json',
-          'deleteMany'          => 'tickets/destroy_many.json',
-          'collaborators'       => 'tickets/{id}/collaborators.json',
-          'incidents'           => 'tickets/{id}/incidents.json',
-          'problems'            => 'problems.json',
-          'export'              => 'exports/tickets.json',
-          'problemAutoComplete' => 'problems/autocomplete.json'
+            'findMany'            => 'tickets/show_many.json',
+            'updateMany'          => 'tickets/update_many.json',
+            'markAsSpam'          => 'tickets/{id}/mark_as_spam.json',
+            'markManyAsSpam'      => 'tickets/mark_many_as_spam.json',
+            'related'             => 'tickets/{id}/related.json',
+            'deleteMany'          => 'tickets/destroy_many.json',
+            'collaborators'       => 'tickets/{id}/collaborators.json',
+            'incidents'           => 'tickets/{id}/incidents.json',
+            'problems'            => 'problems.json',
+            'export'              => 'exports/tickets.json',
+            'problemAutoComplete' => 'problems/autocomplete.json'
         ]);
     }
 
@@ -144,7 +123,7 @@ class Tickets extends ResourceAbstract
             $endPointBase . (is_array($params['comment_ids']) ? '?' . implode(',', $params['comment_ids']) : ''),
             $this->client->getSideload($params)
         );
-        $response     = Http::sendWithOptions($this->client, $endPoint);
+        $response     = Http::send($this->client, $endPoint);
 
         $this->client->setSideload(null);
 
@@ -189,7 +168,7 @@ class Tickets extends ResourceAbstract
             );
         }
         $endPoint         = Http::prepare('channels/twitter/tickets.json');
-        $response         = Http::sendWithOptions($this->client, $endPoint, [self::OBJ_NAME => $params], 'POST');
+        $response         = Http::send($this->client, $endPoint, [self::OBJ_NAME => $params], 'POST');
         $lastResponseCode = $this->client->getDebug()->lastResponseCode;
         if ((! is_object($response)) || ($lastResponseCode != 201)) {
             throw new ResponseException(
@@ -266,7 +245,7 @@ class Tickets extends ResourceAbstract
             $route  = $this->getRoute('markAsSpam', $params);
         }
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $route,
             $options
@@ -340,7 +319,6 @@ class Tickets extends ResourceAbstract
         return $this->sendGetRequest(__FUNCTION__, $params);
     }
 
-
     /**
      * List all problem tickets
      *
@@ -372,12 +350,12 @@ class Tickets extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, ['text']);
         }
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $this->getRoute('problemAutoComplete'),
             [
-            'method'     => 'POST',
-            'postFields' => ['text' => $params['text']]
+                'method'     => 'POST',
+                'postFields' => ['text' => $params['text']]
             ]
         );
 
@@ -404,7 +382,7 @@ class Tickets extends ResourceAbstract
 
         $queryParams = ["start_time" => $params["start_time"]];
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $this->getRoute('export'),
             ["queryParams" => $queryParams]

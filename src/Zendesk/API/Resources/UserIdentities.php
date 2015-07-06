@@ -89,7 +89,7 @@ class UserIdentities extends ResourceAbstract
     {
         $this->addUserIdToRouteParams($params);
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__),
             [
@@ -176,7 +176,7 @@ class UserIdentities extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, ['id']);
         }
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $this->getRoute($callingMethod, ['id' => $id]),
             ['method' => 'PUT']
