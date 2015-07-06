@@ -26,7 +26,8 @@ class Organizations extends ResourceAbstract
     public static function getValidRelations()
     {
         return [
-            'subscriptions' => OrganizationSubscriptions::class,
+            'organizationMemberships' => OrganizationMemberships::class,
+            'subscriptions'           => OrganizationSubscriptions::class,
         ];
     }
 
@@ -41,16 +42,6 @@ class Organizations extends ResourceAbstract
                 'search'       => $this->resourceName . '/search.json',
             ]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getValidRelations()
-    {
-        return [
-            'organizationMemberships' => OrganizationMemberships::class,
-        ];
     }
 
     /**
