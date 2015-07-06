@@ -85,12 +85,19 @@ trait ChainedParametersTrait
 
     /**
      * Returns the named chained parameter
+     *
+     * @param array $excludes Pass an array of classnames to exclude from query
+     *
      * @return array
      */
-    public function getLatestChainedParameter()
+    public function getLatestChainedParameter($excludes = [])
     {
         $chainedParameters = $this->getChainedParameters();
 
-        return array_slice($chainedParameters, -1);
+        foreach ($excludes as $excludeClass) {
+            unset($chainedParameters[$excludeClass]);
+        }
+
+        return array_slice($chainedParameters, -1, 1);
     }
 }
