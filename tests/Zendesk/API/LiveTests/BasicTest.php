@@ -49,16 +49,19 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function __construct()
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
-        $this->subdomain  = getenv('SUBDOMAIN');
-        $this->username   = getenv('USERNAME');
-        $this->password   = getenv('PASSWORD');
-        $this->token      = getenv('TOKEN');
-        $this->oAuthToken = getenv('OAUTH_TOKEN');
-        $this->scheme     = getenv('SCHEME');
-        $this->hostname   = getenv('HOSTNAME');
-        $this->port       = getenv('PORT');
+        $this->subdomain    = getenv('SUBDOMAIN');
+        $this->username     = getenv('USERNAME');
+        $this->password     = getenv('PASSWORD');
+        $this->token        = getenv('TOKEN');
+        $this->oAuthToken   = getenv('OAUTH_TOKEN');
+        $this->scheme       = getenv('SCHEME');
+        $this->hostname     = getenv('HOSTNAME');
+        $this->port         = getenv('PORT');
+        $this->authStrategy = getenv('AUTH_STRATEGY');
+
+        parent::__construct($name, $data, $dataName);
     }
 
     /**
@@ -68,5 +71,14 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         $this->client = new HttpClient($this->subdomain, $this->username, $this->scheme, $this->hostname, $this->port);
+
+        $authOptions['username'] = $this->username;
+        if ($this->authStrategy === 'basic') {
+            $authOptions['token'] = $this->token;
+        } else {
+            $authOptions['token'] = $this->oAuthToken;
+        }
+
+        $this->client->setAuth($this->authStrategy, $authOptions);
     }
 }

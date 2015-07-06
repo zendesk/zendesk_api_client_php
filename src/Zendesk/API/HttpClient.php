@@ -16,6 +16,7 @@ use Zendesk\API\Resources\Groups;
 use Zendesk\API\Resources\Macros;
 use Zendesk\API\Resources\OrganizationFields;
 use Zendesk\API\Resources\Organizations;
+use Zendesk\API\Resources\Search;
 use Zendesk\API\Resources\Tags;
 use Zendesk\API\Resources\Targets;
 use Zendesk\API\Resources\Tickets;
@@ -167,21 +168,22 @@ class HttpClient
     public static function getValidRelations()
     {
         return [
+            'attachments'        => Attachments::class,
+            'auditLogs'          => AuditLogs::class,
+            'automations'        => Automations::class,
+            'dynamicContent'     => DynamicContent::class,
+            'groups'             => Groups::class,
+            'macros'             => Macros::class,
+            'organizationFields' => OrganizationFields::class,
+            'organizations'      => Organizations::class,
+            'search'             => Search::class,
+            'tags'               => Tags::class,
+            'targets'            => Targets::class,
             'tickets'            => Tickets::class,
+            'triggers'           => Triggers::class,
+            'userFields'         => UserFields::class,
             'users'              => Users::class,
             'views'              => Views::class,
-            'tags'               => Tags::class,
-            'macros'             => Macros::class,
-            'attachments'        => Attachments::class,
-            'groups'             => Groups::class,
-            'automations'        => Automations::class,
-            'triggers'           => Triggers::class,
-            'targets'            => Targets::class,
-            'userFields'         => UserFields::class,
-            'auditLogs'          => AuditLogs::class,
-            'organizationFields' => OrganizationFields::class,
-            'dynamicContent' => DynamicContent::class,
-            'organizations'  => Organizations::class,
         ];
     }
 
@@ -197,9 +199,11 @@ class HttpClient
     {
         $validAuthStrategies = [Auth::BASIC, Auth::OAUTH];
         if (! in_array($strategy, $validAuthStrategies)) {
-            throw new AuthException('Invalid auth strategy set, please use `'
-                                    . implode('` or `', $validAuthStrategies)
-                                    . '`');
+            throw new AuthException(
+                'Invalid auth strategy set, please use `'
+                . implode('` or `', $validAuthStrategies)
+                . '`'
+            );
         }
 
         $this->authStrategy = $strategy;
@@ -345,40 +349,6 @@ class HttpClient
     public function activity($id)
     {
         return $this->activityStream()->setLastId($id);
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return JobStatuses
-     */
-    public function jobStatus($id)
-    {
-        return $this->jobStatuses()->setLastId($id);
-    }
-
-    /**
-     * @param array $params
-     *
-     * @throws MissingParametersException
-     * @throws ResponseException
-     * @return mixed
-     */
-    public function search(array $params)
-    {
-        return $this->search->performSearch($params);
-    }
-
-    /**
-     * @param array $params
-     *
-     * @throws MissingParametersException
-     * @throws ResponseException
-     * @return mixed
-     */
-    public function anonymousSearch(array $params)
-    {
-        return $this->search->anonymousSearch($params);
     }
 
     public function get($endpoint, $queryParams = [])

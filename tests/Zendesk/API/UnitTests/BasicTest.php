@@ -55,7 +55,7 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
     /**
      * {@inheritdoc}
      */
-    public function __construct()
+    public function __construct($name = null, array $data = [], $dataName = '')
     {
         $this->subdomain  = getenv('SUBDOMAIN');
         $this->username   = getenv('USERNAME');
@@ -64,6 +64,8 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
         $this->scheme     = getenv('SCHEME');
         $this->hostname   = getenv('HOSTNAME');
         $this->port       = getenv('PORT');
+
+        parent::__construct($name, $data, $dataName);
     }
 
     /**
@@ -122,13 +124,16 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
         $request     = $transaction['request'];
         $response    = $transaction['response'];
 
-        $options = array_merge([
-            'statusCode' => 200,
-            'headers'    => [
-                'Accept'       => 'application/json',
-                'Content-Type' => 'application/json'
-            ]
-        ], $options);
+        $options = array_merge(
+            [
+                'statusCode' => 200,
+                'headers'    => [
+                    'Accept'       => 'application/json',
+                    'Content-Type' => 'application/json'
+                ]
+            ],
+            $options
+        );
 
         $this->assertEquals($options['statusCode'], $response->getStatusCode());
 
