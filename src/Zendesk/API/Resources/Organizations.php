@@ -9,6 +9,9 @@ use Zendesk\API\BulkTraits\BulkUpdateTrait;
 use Zendesk\API\Http;
 use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
+/**
+ * Class Organizations
+ */
 class Organizations extends ResourceAbstract
 {
     const OBJ_NAME = 'organization';
@@ -23,7 +26,7 @@ class Organizations extends ResourceAbstract
     /**
      * {@inheritdoc}
      */
-    public static function getValidRelations()
+    public static function getValidSubResources()
     {
         return [
             'organizationMemberships' => OrganizationMemberships::class,
