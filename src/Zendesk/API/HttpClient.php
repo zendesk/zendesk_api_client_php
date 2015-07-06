@@ -10,6 +10,7 @@ namespace Zendesk\API;
 use Zendesk\API\Exceptions\AuthException;
 use Zendesk\API\Resources\Activities;
 use Zendesk\API\Resources\AppInstallations;
+use Zendesk\API\Resources\Apps;
 use Zendesk\API\Resources\Attachments;
 use Zendesk\API\Resources\AuditLogs;
 use Zendesk\API\Resources\Autocomplete;
@@ -78,9 +79,12 @@ use Zendesk\API\Utilities\Auth;
  * @method TwitterHandles twitterHandles()
  * @method Triggers triggers()
  * @method UserFields userFields()
- * @method Users users()
- * @method Views views()
- *
+ * @method AuditLogs auditLogs()
+ * @method OrganizationFields organizationFields()
+ * @method DynamicContent dynamicContent()
+ * @method Organizations organizations()
+ * @method Activities activities()
+ * @method Apps apps()
  */
 class HttpClient
 {
@@ -174,6 +178,7 @@ class HttpClient
     public static function getValidSubResources()
     {
         return [
+            'apps'                      => Apps::class,
             'activities'                => Activities::class,
             'appInstallations'          => AppInstallations::class,
             'attachments'               => Attachments::class,
