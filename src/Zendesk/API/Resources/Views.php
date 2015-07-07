@@ -95,8 +95,6 @@ class Views extends ResourceAbstract
             ['method' => 'DELETE']
         );
 
-        $this->client->setSideload(null);
-
         return $response;
     }
 
@@ -254,8 +252,6 @@ class Views extends ResourceAbstract
                 'method'      => 'POST'
             ]
         );
-
-        $this->client->setSideload(null);
 
         return $response;
     }

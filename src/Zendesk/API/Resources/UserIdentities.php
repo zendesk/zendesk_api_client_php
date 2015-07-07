@@ -98,8 +98,6 @@ class UserIdentities extends ResourceAbstract
             ]
         );
 
-        $this->client->setSideload(null);
-
         return $response;
     }
 
@@ -154,7 +152,7 @@ class UserIdentities extends ResourceAbstract
      * This makes a `PUT` request to the endpoint defined by the $callingMethod parameter.
      *
      * @param string $callingMethod
-     * @param array $params
+     * @param array  $params
      *
      * @return array
      * @throws MissingParametersException

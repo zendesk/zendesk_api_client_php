@@ -42,8 +42,6 @@ class AuditLogs extends ResourceAbstract
             ['queryParams' => $queryParams]
         );
 
-        $this->client->setSideload(null);
-
         return $response;
     }
 
