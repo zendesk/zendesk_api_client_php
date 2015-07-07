@@ -4,7 +4,7 @@ namespace Zendesk\API\Resources;
 
 use Zendesk\API\Exceptions\RouteException;
 use Zendesk\API\HttpClient;
-use Zendesk\API\UtilityTraits\ChainedParametersTrait;
+use Zendesk\API\Traits\Utility\ChainedParametersTrait;
 
 /**
  * Abstract class for all endpoints
@@ -49,7 +49,6 @@ abstract class ResourceAbstract
         if (! isset($this->resourceName)) {
             $this->resourceName = $this->getResourceNameFromClass();
         }
-
 
         $this->setUpRoutes();
     }

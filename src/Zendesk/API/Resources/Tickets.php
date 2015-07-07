@@ -5,12 +5,11 @@ namespace Zendesk\API\Resources;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Http;
-use Zendesk\API\Traits\Resource\Create;
 use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\DeleteMany;
 use Zendesk\API\Traits\Resource\FindMany;
 use Zendesk\API\Traits\Resource\UpdateMany;
-use Zendesk\API\UtilityTraits\InstantiatorTrait;
+use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
  * The Tickets class exposes key methods for reading and updating ticket data

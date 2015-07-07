@@ -5,7 +5,7 @@ namespace Zendesk\API\Resources;
 use Zendesk\API\Http;
 use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\DefaultsMany;
-use Zendesk\API\UtilityTraits\InstantiatorTrait;
+use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
  * Class Organizations

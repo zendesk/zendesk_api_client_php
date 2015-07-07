@@ -29,7 +29,7 @@ use Zendesk\API\Resources\UserFields;
 use Zendesk\API\Resources\Users;
 use Zendesk\API\Resources\Views;
 use Zendesk\API\Utilities\Auth;
-use Zendesk\API\UtilityTraits\InstantiatorTrait;
+use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
  * Client class, base level access
