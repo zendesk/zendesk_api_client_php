@@ -49,8 +49,8 @@ class Http
      * Use the send method to call every endpoint except for oauth/tokens
      *
      * @param HttpClient $client
-     * @param string $endPoint E.g. "/tickets.json"
-     * @param array $options
+     * @param string     $endPoint E.g. "/tickets.json"
+     * @param array      $options
      *                             Available options are listed below:
      *                             array $queryParams Array of unencoded key-value pairs, e.g. ["ids" => "1,2,3,4"]
      *                             array $postFields Array of unencoded key-value pairs, e.g. ["filename" => "blah.png"]
@@ -61,7 +61,7 @@ class Http
      * @throws ApiResponseException
      * @throws AuthException
      */
-    public static function sendWithOptions(
+    public static function send(
         HttpClient $client,
         $endPoint,
         $options = []
@@ -76,11 +76,10 @@ class Http
             $options
         );
 
-        $headers        = [
+        $headers = [
             'Accept'       => 'application/json',
             'Content-Type' => $options['contentType'],
         ];
-        $requestOptions = [];
 
         $request = new Request(
             $options['method'],
@@ -111,22 +110,24 @@ class Http
         }
 
         try {
-            list ($request, $requestOptions) = Auth::prepareRequest($client, $request, $requestOptions);
+            list ($request, $requestOptions) = $client->getAuth()->prepareRequest($request, $requestOptions);
             $response = $client->guzzle->send($request, $requestOptions);
-
-            $client->setDebug(
-                $response->getHeaders(),
-                $response->getStatusCode(),
-                10,
-                null
-            );
         } catch (RequestException $e) {
             throw new ApiResponseException($e);
+        } finally {
+            $client->setDebug(
+                $request->getHeaders(),
+                $request->getBody()->getContents(),
+                isset($response) ? $response->getStatusCode() : null,
+                isset($response) ? $response->getHeaders() : null,
+                isset($e) ? $e : null
+            );
+
+            $request->getBody()->rewind();
         }
 
         if (isset($file)) {
             fclose($file);
-
         }
 
         return json_decode($response->getBody()->getContents());
@@ -136,9 +137,9 @@ class Http
      * Specific case for OAuth. Run /oauth.php via your browser to get an access token
      *
      * @param HttpClient $client
-     * @param string $code
-     * @param string $oAuthId
-     * @param string $oAuthSecret
+     * @param string     $code
+     * @param string     $oAuthId
+     * @param string     $oAuthSecret
      *
      * @throws \Exception
      * @return mixed
