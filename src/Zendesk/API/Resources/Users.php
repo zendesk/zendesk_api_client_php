@@ -15,7 +15,7 @@ use Zendesk\API\Traits\Resource\FindAll;
 use Zendesk\API\Traits\Resource\FindMany;
 use Zendesk\API\Traits\Resource\Update;
 use Zendesk\API\Traits\Resource\UpdateMany;
-use Zendesk\API\UtilityTraits\InstantiatorTrait;
+use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
  * The Users class exposes user management methods

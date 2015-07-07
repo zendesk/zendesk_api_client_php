@@ -3,7 +3,7 @@
 namespace Zendesk\API\Resources;
 
 use Zendesk\API\Traits\Resource\Defaults;
-use Zendesk\API\UtilityTraits\InstantiatorTrait;
+use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 class Groups extends ResourceAbstract
 {

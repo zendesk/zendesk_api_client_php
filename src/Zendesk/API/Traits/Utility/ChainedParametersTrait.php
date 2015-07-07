@@ -1,6 +1,6 @@
 <?php
 
-namespace Zendesk\API\UtilityTraits;
+namespace Zendesk\API\Traits\Utility;
 
 /**
  * The chained parameters trait which has helper methods for getting the parameters passed through chaining.

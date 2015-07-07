@@ -1,6 +1,6 @@
 <?php
 
-namespace Zendesk\API\UtilityTraits;
+namespace Zendesk\API\Traits\Utility;
 
 use Zendesk\API\HttpClient;
 use Zendesk\API\Resources\ResourceAbstract;
