@@ -18,7 +18,6 @@ trait FindMany
      * @param string $key         Could be `id` or `external_id`
      *
      * @return mixed
-     * @internal param array $params Key-value pair of values to pass to the query string
      *
      */
     public function findMany(array $ids = [], $extraParams = [], $key = 'ids')
