@@ -6,7 +6,7 @@ use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Traits\Resource\CreateMany;
 use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\DeleteMany;
-use Zendesk\API\UtilityTraits\InstantiatorTrait;
+use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 class OrganizationMemberships extends ResourceAbstract
 {

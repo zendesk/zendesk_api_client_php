@@ -2,7 +2,7 @@
 
 namespace Zendesk\API\Resources;
 
-use Zendesk\API\UtilityTraits\InstantiatorTrait;
+use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
  * Class DynamicContent
