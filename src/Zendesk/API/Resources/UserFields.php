@@ -3,12 +3,15 @@
 namespace Zendesk\API\Resources;
 
 use Zendesk\API\Http;
+use Zendesk\API\Traits\Resource\Defaults;
 
 /**
  * The UserFields class exposes fields on the user profile page
  */
 class UserFields extends ResourceAbstract
 {
+    use Defaults;
+
     const OBJ_NAME = 'user_field';
     const OBJ_NAME_PLURAL = 'user_fields';
 
@@ -17,8 +20,6 @@ class UserFields extends ResourceAbstract
      */
     protected function setUpRoutes()
     {
-        parent::setUpRoutes();
-
         $this->setRoute('reorder', "{$this->resourceName}/reorder.json");
     }
 

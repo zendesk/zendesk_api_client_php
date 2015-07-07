@@ -2,6 +2,9 @@
 
 namespace Zendesk\API\Resources;
 
+use Zendesk\API\Traits\Resource\Find;
+use Zendesk\API\Traits\Resource\FindAll;
+
 /**
  * The TicketMetrics class exposes metrics methods for tickets
  *
@@ -9,6 +12,8 @@ namespace Zendesk\API\Resources;
  */
 class TicketMetrics extends ResourceAbstract
 {
+    use FindAll;
+    use Find;
 
     const OBJ_NAME = 'ticket_metric';
     const OBJ_NAME_PLURAL = 'ticket_metrics';
@@ -26,7 +31,7 @@ class TicketMetrics extends ResourceAbstract
         if ('find' === $name || 'findAll' === $name) {
             $lastChained = $this->getChainedParameter('Zendesk\API\Resources\Tickets');
 
-            if (!empty($lastChained)) {
+            if (! empty($lastChained)) {
                 return "tickets/$lastChained/metrics.json";
             }
         }
