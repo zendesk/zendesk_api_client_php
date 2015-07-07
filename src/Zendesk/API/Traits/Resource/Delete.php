@@ -16,7 +16,7 @@ trait Delete
      * @throws MissingParametersException
      * @throws \Exception
      */
-    public function delete($id = null)
+    public function delete($id = null, $routeKey = __FUNCTION__)
     {
         if (empty($id)) {
             $chainedParameters = $this->getChainedParameters();
@@ -30,7 +30,7 @@ trait Delete
         }
 
         try {
-            $route = $this->getRoute(__FUNCTION__, ['id' => $id]);
+            $route = $this->getRoute($routeKey, ['id' => $id]);
         } catch (RouteException $e) {
             if (! isset($this->resourceName)) {
                 $this->resourceName = $this->getResourceNameFromClass();
