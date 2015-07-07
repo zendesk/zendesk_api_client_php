@@ -3,6 +3,8 @@
 namespace Zendesk\API\Resources;
 
 use Zendesk\API\Http;
+use Zendesk\API\Traits\Resource\Find;
+use Zendesk\API\Traits\Resource\FindAll;
 
 /**
  * The AuditLogs class is as per http://developer.zendesk.com/documentation/rest_api/audit_logs.html
@@ -11,6 +13,12 @@ class AuditLogs extends ResourceAbstract
 {
     const OBJ_NAME = 'audit_log';
     const OBJ_NAME_PLURAL = 'audit_logs';
+
+    use FindAll {
+        findAll as traitFindAll;
+    }
+
+    use Find;
 
     /**
      * {@inheritdoc}
@@ -36,13 +44,7 @@ class AuditLogs extends ResourceAbstract
 
         $queryParams = array_merge($queryParams, $extraParams);
 
-        $response = Http::send(
-            $this->client,
-            $this->getRoute(__FUNCTION__, $params),
-            ['queryParams' => $queryParams]
-        );
-
-        return $response;
+        return $this->traitFindAll($queryParams);
     }
 
     /**
