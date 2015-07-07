@@ -56,7 +56,7 @@ class Users extends ResourceAbstract
     /**
      * {@inheritdoc}
      */
-    public static function getValidRelations()
+    public static function getValidSubResources()
     {
         return [
             'identities'                => UserIdentities::class,
@@ -109,7 +109,7 @@ class Users extends ResourceAbstract
         $extraParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
         $queryParams = array_merge($queryParams, $extraParams);
 
-        $response = Http::sendWithOptions($this->client, $this->endpoint, ['queryParams' => $queryParams]);
+        $response = Http::send($this->client, $this->endpoint, ['queryParams' => $queryParams]);
 
         $this->client->setSideload(null);
 
@@ -144,7 +144,7 @@ class Users extends ResourceAbstract
         $extraParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
         $queryParams = array_merge($queryParams, $extraParams);
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $this->endpoint,
             ['queryParams' => $queryParams]
@@ -174,7 +174,7 @@ class Users extends ResourceAbstract
         }
 
         $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
-        $response    = Http::sendWithOptions(
+        $response    = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__, ['id' => $params['id']]),
             ['queryParams' => $queryParams]
@@ -204,7 +204,7 @@ class Users extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, $hasKeys);
         }
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__),
             ['postFields' => [self::OBJ_NAME => $params], 'method' => 'PUT']
@@ -262,7 +262,7 @@ class Users extends ResourceAbstract
      */
     public function autocomplete(array $params)
     {
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__),
             ['method' => 'POST', 'queryParams' => $params]
@@ -299,7 +299,7 @@ class Users extends ResourceAbstract
         $id = $params['id'];
         unset($params['id']);
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__, ['id' => $id]),
             [

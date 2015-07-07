@@ -34,22 +34,29 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
  * Client class, base level access
  * @method Debug debug()
  * @method Tickets ticket()
- * @method Tickets tickets()
  * @method Views views()
  * @method Users users()
+ * @method Tags tags()
+ * @method Macros macros()
+ * @method Attachments attachemnts()
+ * @method Groups groups()
+ * @method Automations automations()
+ * @method Triggers triggers()
+ * @method Targets targets()
+ * @method UserFields userFields()
+ * @method AuditLogs auditLogs()
+ * @method OrganizationFields organizationFields()
+ * @method DynamicContent dynamicContent()
+ * @method Organizations organizations()
  */
 class HttpClient
 {
     use InstantiatorTrait;
 
     /**
-     * @var string
+     * @var Auth
      */
-    protected $authStrategy;
-    /**
-     * @var Array
-     */
-    protected $authOptions;
+    protected $auth;
     /**
      * @var string
      */
@@ -73,14 +80,6 @@ class HttpClient
     /**
      * @var string
      */
-    protected $token;
-    /**
-     * @var string
-     */
-    protected $oAuthToken;
-    /**
-     * @var string
-     */
     protected $apiUrl;
     /**
      * @var string
@@ -91,40 +90,6 @@ class HttpClient
      */
     protected $sideload;
 
-    // Properties
-    /**
-     * @var Tickets
-     */
-    protected $tickets;
-    /**
-     * @var Users
-     */
-    protected $users;
-    /**
-     * @var Views
-     */
-    protected $views;
-    /**
-     * @var Macros
-     */
-    protected $macros;
-
-    /**
-     * @var Automations
-     */
-    protected $automations;
-    /**
-     * @var Triggers
-     */
-    protected $triggers;
-    /**
-     * @var UserFields
-     */
-    protected $userFields;
-    /**
-     * @var AuditLogs
-     */
-    protected $auditLogs;
     /**
      * @var Debug
      */
@@ -168,7 +133,12 @@ class HttpClient
         $this->debug = new Debug();
     }
 
-    public static function getValidRelations()
+    /**
+     * {@inheritdoc}
+     *
+     * @return array
+     */
+    public static function getValidSubResources()
     {
         return [
             'attachments'               => Attachments::class,
@@ -194,6 +164,14 @@ class HttpClient
     }
 
     /**
+     * @return Auth
+     */
+    public function getAuth()
+    {
+        return $this->auth;
+    }
+
+    /**
      * Configure the authorization method
      *
      * @param       $strategy
@@ -203,28 +181,7 @@ class HttpClient
      */
     public function setAuth($strategy, array $options)
     {
-        $validAuthStrategies = [Auth::BASIC, Auth::OAUTH];
-        if (! in_array($strategy, $validAuthStrategies)) {
-            throw new AuthException(
-                'Invalid auth strategy set, please use `'
-                . implode('` or `', $validAuthStrategies)
-                . '`'
-            );
-        }
-
-        $this->authStrategy = $strategy;
-
-        if ($strategy == Auth::BASIC) {
-            if (! array_key_exists('username', $options) || ! array_key_exists('token', $options)) {
-                throw new AuthException('Please supply `username` and `token` for basic auth.');
-            }
-        } elseif ($strategy == Auth::OAUTH) {
-            if (! array_key_exists('token', $options)) {
-                throw new AuthException('Please supply `token` for oauth.');
-            }
-        }
-
-        $this->authOptions = $options;
+        $this->auth = new Auth($strategy, $options);
     }
 
     /**
@@ -275,9 +232,15 @@ class HttpClient
      * @param string $lastResponseHeaders
      * @param mixed  $lastResponseError
      */
-    public function setDebug($lastRequestHeaders, $lastResponseCode, $lastResponseHeaders, $lastResponseError)
-    {
+    public function setDebug(
+        $lastRequestHeaders,
+        $lastRequestBody,
+        $lastResponseCode,
+        $lastResponseHeaders,
+        $lastResponseError
+    ) {
         $this->debug->lastRequestHeaders  = $lastRequestHeaders;
+        $this->debug->lastRequestBody     = $lastRequestBody;
         $this->debug->lastResponseCode    = $lastResponseCode;
         $this->debug->lastResponseHeaders = $lastResponseHeaders;
         $this->debug->lastResponseError   = $lastResponseError;
@@ -367,7 +330,7 @@ class HttpClient
             unset($queryParams['sideload']);
         }
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this,
             $endpoint,
             ['queryParams' => $queryParams]
@@ -378,9 +341,18 @@ class HttpClient
         return $response;
     }
 
+    /**
+     * This is a helper method to do a post request.
+     *
+     * @param       $endpoint
+     * @param array $postData
+     *
+     * @return array
+     * @throws Exceptions\ApiResponseException
+     */
     public function post($endpoint, $postData = [])
     {
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this,
             $endpoint,
             [
@@ -394,9 +366,18 @@ class HttpClient
         return $response;
     }
 
+    /**
+     * This is a helper method to do a put request.
+     *
+     * @param       $endpoint
+     * @param array $putData
+     *
+     * @return array
+     * @throws Exceptions\ApiResponseException
+     */
     public function put($endpoint, $putData = [])
     {
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this,
             $endpoint,
             ['postFields' => $putData, 'method' => 'PUT']
@@ -407,9 +388,17 @@ class HttpClient
         return $response;
     }
 
+    /**
+     * This is a helper method to do a delete request.
+     *
+     * @param $endpoint
+     *
+     * @return array
+     * @throws Exceptions\ApiResponseException
+     */
     public function delete($endpoint)
     {
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this,
             $endpoint,
             ['method' => 'DELETE']

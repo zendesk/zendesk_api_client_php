@@ -25,10 +25,10 @@ trait InstantiatorTrait
      */
     public function __call($name, $arguments)
     {
-        if ((array_key_exists($name, $validRelations = $this::getValidRelations()))) {
-            $className = $validRelations[$name];
-            $client = ($this instanceof HttpClient) ? $this : $this->client;
-            $class  = new $className($client);
+        if ((array_key_exists($name, $validSubResources = $this::getValidSubResources()))) {
+            $className = $validSubResources[$name];
+            $client    = ($this instanceof HttpClient) ? $this : $this->client;
+            $class     = new $className($client);
         } else {
             throw new \Exception("No method called $name available in " . __CLASS__);
         }

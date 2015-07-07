@@ -89,7 +89,7 @@ class Views extends ResourceAbstract
 
         $endPoint = 'views/' . $id . '.json';
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $endPoint,
             ['method' => 'DELETE']
@@ -245,7 +245,7 @@ class Views extends ResourceAbstract
             $params
         );
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__),
             [
@@ -277,7 +277,7 @@ class Views extends ResourceAbstract
             $params
         );
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__),
             [

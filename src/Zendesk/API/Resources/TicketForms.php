@@ -58,7 +58,7 @@ class TicketForms extends ResourceAbstract
      */
     public function reorder(array $ticketFormIds)
     {
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__),
             ['postFields' => ['ticket_form_ids' => $ticketFormIds], 'method' => 'PUT']

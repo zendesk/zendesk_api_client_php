@@ -20,7 +20,10 @@ class AuthTest extends BasicTest
         $currentRequest        = new Request('GET', 'http://www.endpoint.com/test.json');
         $currentRequestOptions = ['existing' => 'option'];
 
-        list ($request, $requestOptions) = Auth::prepareRequest($this->client, $currentRequest, $currentRequestOptions);
+        list ($request, $requestOptions) = $this->client->getAuth()->prepareRequest(
+            $currentRequest,
+            $currentRequestOptions
+        );
 
         $this->assertInstanceOf(Request::class, $request, 'Should have returned a request');
 
@@ -41,7 +44,10 @@ class AuthTest extends BasicTest
         $currentRequest        = new Request('GET', 'http://www.endpoint.com/test.json');
         $currentRequestOptions = ['existing' => 'option'];
 
-        list ($request, $requestOptions) = Auth::prepareRequest($this->client, $currentRequest, $currentRequestOptions);
+        list ($request, $requestOptions) = $this->client->getAuth()->prepareRequest(
+            $currentRequest,
+            $currentRequestOptions
+        );
 
         $this->assertEquals($currentRequestOptions, $requestOptions);
         $this->assertNotEmpty($authHeader = $request->getHeader('Authorization'));

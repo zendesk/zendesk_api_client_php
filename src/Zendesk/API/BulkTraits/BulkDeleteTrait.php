@@ -33,7 +33,7 @@ trait BulkDeleteTrait
             $this->setRoute('', $route);
         }
 
-        $response = Http::sendWithOptions(
+        $response = Http::send(
             $this->client,
             $route,
             [

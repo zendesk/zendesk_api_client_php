@@ -21,26 +21,81 @@ class Auth
      */
     const BASIC = 'basic';
 
-    public static function prepareRequest(HttpClient $client, RequestInterface $request, array $requestOptions = [])
+    /**
+     * @var string
+     */
+    protected $authStrategy;
+    /**
+     * @var Array
+     */
+    protected $authOptions;
+
+    /**
+     * Returns an array containing the valid auth strategies
+     *
+     * @return array
+     */
+    protected static function getValidAuthStrategies()
     {
-        if ($client->getAuthStrategy() === self::BASIC) {
-            $authOptions    = $client->getAuthOptions();
+        return [self::BASIC, self::OAUTH];
+    }
+
+    /**
+     * Auth constructor.
+     *
+     * @param       $strategy
+     * @param array $options
+     *
+     * @throws AuthException
+     *
+     */
+    public function __construct($strategy, array $options)
+    {
+        if (! in_array($strategy, self::getValidAuthStrategies())) {
+            throw new AuthException('Invalid auth strategy set, please use `'
+                                    . implode('` or `', self::getValidAuthStrategies())
+                                    . '`');
+        }
+
+        $this->authStrategy = $strategy;
+
+        if ($strategy == self::BASIC) {
+            if (! array_key_exists('username', $options) || ! array_key_exists('token', $options)) {
+                throw new AuthException('Please supply `username` and `token` for basic auth.');
+            }
+        } elseif ($strategy == self::OAUTH) {
+            if (! array_key_exists('token', $options)) {
+                throw new AuthException('Please supply `token` for oauth.');
+            }
+        }
+
+        $this->authOptions = $options;
+    }
+
+    /**
+     * @param RequestInterface $request
+     * @param array            $requestOptions
+     *
+     * @return array
+     * @throws AuthException
+     */
+    public function prepareRequest(RequestInterface $request, array $requestOptions = [])
+    {
+        if ($this->authStrategy === self::BASIC) {
             $requestOptions = array_merge($requestOptions, [
                 'auth' => [
-                    $authOptions['username'] . '/token',
-                    $authOptions['token'],
+                    $this->authOptions['username'] . '/token',
+                    $this->authOptions['token'],
                     'basic'
                 ]
             ]);
-        } elseif ($client->getAuthStrategy() === Auth::OAUTH) {
-            $authOptions = $client->getAuthOptions();
-            $oAuthToken  = $authOptions['token'];
-            $request     = $request->withAddedHeader('Authorization', ' Bearer ' . $oAuthToken);
+        } elseif ($this->authStrategy === self::OAUTH) {
+            $oAuthToken = $this->authOptions['token'];
+            $request    = $request->withAddedHeader('Authorization', ' Bearer ' . $oAuthToken);
         } else {
             throw new AuthException('Please set authentication to send requests.');
         }
 
         return [$request, $requestOptions];
-
     }
 }
