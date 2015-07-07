@@ -5,6 +5,7 @@ namespace Zendesk\API\Resources;
 use Zendesk\API\BulkTraits\BulkCreateTrait;
 use Zendesk\API\BulkTraits\BulkDeleteTrait;
 use Zendesk\API\Exceptions\MissingParametersException;
+use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
 class OrganizationMemberships extends ResourceAbstract
@@ -16,6 +17,7 @@ class OrganizationMemberships extends ResourceAbstract
     const OBJ_NAME_PLURAL = 'organization_memberships';
 
     use InstantiatorTrait;
+    use Defaults;
 
     protected function setUpRoutes()
     {

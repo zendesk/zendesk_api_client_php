@@ -7,6 +7,7 @@ use Zendesk\API\BulkTraits\BulkDeleteTrait;
 use Zendesk\API\BulkTraits\BulkFindTrait;
 use Zendesk\API\BulkTraits\BulkUpdateTrait;
 use Zendesk\API\Http;
+use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
 /**
@@ -22,6 +23,7 @@ class Organizations extends ResourceAbstract
     use BulkCreateTrait;
     use BulkUpdateTrait;
     use BulkDeleteTrait;
+    use Defaults;
 
     /**
      * {@inheritdoc}

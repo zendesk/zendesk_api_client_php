@@ -3,6 +3,7 @@
 namespace Zendesk\API\Resources;
 
 use Zendesk\API\Exceptions\MissingParametersException;
+use Zendesk\API\Traits\Resource\Defaults;
 
 /**
  * The Macros class exposes methods seen at http://developer.zendesk.com/documentation/rest_api/macros.html
@@ -11,6 +12,8 @@ class Macros extends ResourceAbstract
 {
     const OBJ_NAME = 'macro';
     const OBJ_NAME_PLURAL = 'macros';
+
+    use Defaults;
 
     /**
      * Declares routes to be used by this resource.
