@@ -17,7 +17,7 @@ trait Find
      * @throws MissingParametersException
      * @throws \Exception
      */
-    public function find($id = null, array $queryParams = [])
+    public function find($id = null, array $queryParams = [], $routeKey = __FUNCTION__)
     {
         if (empty($id)) {
             $id = $this->getChainedParameter(get_class($this));
@@ -28,7 +28,7 @@ trait Find
         }
 
         try {
-            $route = $this->getRoute(__FUNCTION__, ['id' => $id]);
+            $route = $this->getRoute($routeKey, ['id' => $id]);
         } catch (RouteException $e) {
             if (! isset($this->resourceName)) {
                 $this->resourceName = $this->getResourceNameFromClass();
@@ -37,7 +37,6 @@ trait Find
             $this->setRoute(__FUNCTION__, $this->resourceName . '/{id}.json');
             $route = $this->resourceName . '/' . $id . '.json';
         }
-
 
         return $this->client->get(
             $route,

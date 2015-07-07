@@ -16,7 +16,7 @@ trait Update
      * @throws \Exception
      * @return mixed
      */
-    public function update($id = null, array $updateResourceFields = [])
+    public function update($id = null, array $updateResourceFields = [], $routeKey = __FUNCTION__)
     {
         $class = get_class($this);
         if (empty($id)) {
@@ -24,7 +24,7 @@ trait Update
         }
 
         try {
-            $route = $this->getRoute(__FUNCTION__, ['id' => $id]);
+            $route = $this->getRoute($routeKey, ['id' => $id]);
         } catch (RouteException $e) {
             if (! isset($this->resourceName)) {
                 $this->resourceName = $this->getResourceNameFromClass();
@@ -33,7 +33,6 @@ trait Update
             $this->setRoute(__FUNCTION__, $this->resourceName . '/{id}.json');
             $route = $this->resourceName . '/' . $id . '.json';
         }
-
 
         return $this->client->put(
             $route,

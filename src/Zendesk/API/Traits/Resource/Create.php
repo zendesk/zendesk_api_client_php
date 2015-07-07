@@ -14,10 +14,10 @@ trait Create
      * @throws \Exception
      * @return mixed
      */
-    public function create(array $params)
+    public function create(array $params, $routeKey = __FUNCTION__)
     {
         try {
-            $route = $this->getRoute(__FUNCTION__);
+            $route = $this->getRoute($routeKey, $params);
         } catch (RouteException $e) {
             if (! isset($this->resourceName)) {
                 $this->resourceName = $this->getResourceNameFromClass();
