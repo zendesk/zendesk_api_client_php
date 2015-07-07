@@ -5,6 +5,8 @@ namespace Zendesk\API\Resources;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Http;
+use Zendesk\API\Traits\Resource\Create;
+use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\DeleteMany;
 use Zendesk\API\Traits\Resource\FindMany;
 use Zendesk\API\Traits\Resource\UpdateMany;
@@ -27,6 +29,10 @@ class Tickets extends ResourceAbstract
         UpdateMany::updateMany as bulkUpdate;
     }
     use DeleteMany;
+
+    use Defaults {
+        create as traitCreate;
+    }
 
     const OBJ_NAME = 'ticket';
     const OBJ_NAME_PLURAL = 'tickets';
@@ -142,7 +148,7 @@ class Tickets extends ResourceAbstract
             $this->lastAttachments        = [];
         }
 
-        return parent::create($params);
+        return $this->traitCreate($params);
     }
 
     /**
