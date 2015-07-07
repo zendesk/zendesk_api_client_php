@@ -22,12 +22,4 @@ class DynamicContent extends ResourceAbstract
             'items' => DynamicContentItems::class,
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUpRoutes()
-    {
-        // Empty routes, this class serves as a possible entry point to dynamic content items
-    }
 }

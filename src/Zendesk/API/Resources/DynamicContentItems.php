@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\Resources;
 
+use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
 /**
@@ -12,7 +13,7 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
 class DynamicContentItems extends ResourceAbstract
 {
     use InstantiatorTrait;
-
+    use Defaults;
     /**
      *
      */

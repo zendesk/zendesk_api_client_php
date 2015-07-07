@@ -4,11 +4,20 @@ namespace Zendesk\API\Resources;
 
 use Zendesk\API\BulkTraits\BulkCreateTrait;
 use Zendesk\API\BulkTraits\BulkUpdateTrait;
+use Zendesk\API\Traits\Resource\Create;
+use Zendesk\API\Traits\Resource\Delete;
+use Zendesk\API\Traits\Resource\Find;
+use Zendesk\API\Traits\Resource\FindAll;
 
 class DynamicContentItemVariants extends ResourceAbstract
 {
     use BulkCreateTrait;
     use BulkUpdateTrait;
+
+    use FindAll;
+    use Find;
+    use Create;
+    use Delete;
 
     const OBJ_NAME = 'item';
     const OBJ_NAME_PLURAL = 'items';
