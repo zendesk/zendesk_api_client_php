@@ -1,19 +1,18 @@
 <?php
 namespace Zendesk\API\UnitTests;
 
-use Zendesk\API\BulkTraits\BulkCreateTrait;
-use Zendesk\API\BulkTraits\BulkDeleteTrait;
-use Zendesk\API\BulkTraits\BulkFindTrait;
-use Zendesk\API\BulkTraits\BulkUpdateTrait;
 use Zendesk\API\Resources\ResourceAbstract;
+use Zendesk\API\Traits\Resource\Defaults;
+use Zendesk\API\Traits\Resource\DefaultsMany;
 
+/**
+ * Class DummyResource
+ */
 class DummyResource extends ResourceAbstract
 {
     const OBJ_NAME = 'dummy';
     const OBJ_NAME_PLURAL = 'dummies';
 
-    use BulkFindTrait;
-    use BulkUpdateTrait;
-    use BulkDeleteTrait;
-    use BulkCreateTrait;
+    use Defaults;
+    use DefaultsMany;
 }
