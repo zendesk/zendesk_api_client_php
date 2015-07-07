@@ -2,7 +2,6 @@
 
 namespace Zendesk\API\Resources;
 
-use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\RouteException;
 use Zendesk\API\HttpClient;
 use Zendesk\API\UtilityTraits\ChainedParametersTrait;
@@ -101,13 +100,6 @@ abstract class ResourceAbstract
      */
     protected function setUpRoutes()
     {
-        $this->setRoutes([
-            'findAll' => "{$this->resourceName}.json",
-            'find'    => "{$this->resourceName}/{id}.json",
-            'create'  => "{$this->resourceName}.json",
-            'update'  => "{$this->resourceName}/{id}.json",
-            'delete'  => "{$this->resourceName}/{id}.json"
-        ]);
     }
 
     /**
@@ -248,50 +240,6 @@ abstract class ResourceAbstract
     }
 
     /**
-     * List all of this resource
-     *
-     * @param array $params
-     *
-     * @throws \Exception
-     * @return mixed
-     */
-    public function findAll(array $params = [])
-    {
-        $route = $this->getRoute(__FUNCTION__, $params);
-
-        return $this->client->get(
-            $route,
-            $params
-        );
-    }
-
-    /**
-     * Find a specific ticket by id or series of ids
-     *
-     * @param       $id
-     * @param array $queryParams
-     *
-     * @return mixed
-     * @throws MissingParametersException
-     * @throws \Exception
-     */
-    public function find($id = null, array $queryParams = [])
-    {
-        if (empty($id)) {
-            $id = $this->getChainedParameter(get_class($this));
-        }
-
-        if (empty($id)) {
-            throw new MissingParametersException(__METHOD__, ['id']);
-        }
-
-        return $this->client->get(
-            $this->getRoute(__FUNCTION__, ['id' => $id]),
-            $queryParams
-        );
-    }
-
-    /**
      * @param array $additionalRouteParams
      */
     public function setAdditionalRouteParams($additionalRouteParams)
@@ -305,72 +253,5 @@ abstract class ResourceAbstract
     public function getAdditionalRouteParams()
     {
         return $this->additionalRouteParams;
-    }
-
-    /**
-     * Create a new resource
-     *
-     * @param array $params
-     *
-     * @throws \Exception
-     * @return mixed
-     */
-    public function create(array $params)
-    {
-        $class = get_class($this);
-
-        return $this->client->post(
-            $this->getRoute('create'),
-            [$class::OBJ_NAME => $params]
-        );
-    }
-
-
-    /**
-     * Update a resource
-     *
-     * @param array $updateResourceFields
-     *
-     * @throws MissingParametersException
-     * @throws \Exception
-     * @return mixed
-     */
-    public function update($id = null, array $updateResourceFields = [])
-    {
-        $class = get_class($this);
-        if (empty($id)) {
-            $id = $this->getChainedParameter($class);
-        }
-
-        return $this->client->put(
-            $this->getRoute(__FUNCTION__, ['id' => $id]),
-            [$class::OBJ_NAME => $updateResourceFields]
-        );
-    }
-
-
-    /**
-     * Delete a resource
-     *
-     * @param null $id
-     *
-     * @return bool
-     * @throws MissingParametersException
-     * @throws \Exception
-     */
-    public function delete($id = null)
-    {
-        if (empty($id)) {
-            $chainedParameters = $this->getChainedParameters();
-            if (array_key_exists(get_class($this), $chainedParameters)) {
-                $id = $chainedParameters[get_class($this)];
-            }
-        }
-
-        if (empty($id)) {
-            throw new MissingParametersException(__METHOD__, ['id']);
-        }
-
-        return $this->client->delete($this->getRoute(__FUNCTION__, ['id' => $id]));
     }
 }
