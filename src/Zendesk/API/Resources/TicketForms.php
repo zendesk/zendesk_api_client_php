@@ -64,8 +64,6 @@ class TicketForms extends ResourceAbstract
             ['postFields' => ['ticket_form_ids' => $ticketFormIds], 'method' => 'PUT']
         );
 
-        $this->client->setSideload(null);
-
         return $response;
     }
 }

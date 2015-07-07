@@ -73,8 +73,6 @@ class Tickets extends ResourceAbstract
             ['queryParams' => $queryParams]
         );
 
-        $this->client->setSideload(null);
-
         return $response;
     }
 
@@ -125,8 +123,6 @@ class Tickets extends ResourceAbstract
         );
         $response     = Http::send($this->client, $endPoint);
 
-        $this->client->setSideload(null);
-
         return $response;
     }
 
@@ -176,7 +172,6 @@ class Tickets extends ResourceAbstract
                 ($lastResponseCode == 422 ? ' (hint: you can\'t create two tickets from the same tweet)' : '')
             );
         }
-        $this->client->setSideload(null);
 
         return $response;
     }
@@ -250,8 +245,6 @@ class Tickets extends ResourceAbstract
             $route,
             $options
         );
-
-        $this->client->setSideload(null);
 
         return $response;
     }
@@ -359,8 +352,6 @@ class Tickets extends ResourceAbstract
             ]
         );
 
-        $this->client->setSideload(null);
-
         return $response;
     }
 
@@ -387,8 +378,6 @@ class Tickets extends ResourceAbstract
             $this->getRoute('export'),
             ["queryParams" => $queryParams]
         );
-
-        $this->client->setSideload(null);
 
         return $response;
     }
