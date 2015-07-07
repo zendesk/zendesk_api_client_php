@@ -2,12 +2,12 @@
 
 namespace Zendesk\API\Resources;
 
-use Zendesk\API\BulkTraits\BulkDeleteTrait;
-use Zendesk\API\BulkTraits\BulkFindTrait;
-use Zendesk\API\BulkTraits\BulkUpdateTrait;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Http;
+use Zendesk\API\Traits\Resource\DeleteMany;
+use Zendesk\API\Traits\Resource\FindMany;
+use Zendesk\API\Traits\Resource\UpdateMany;
 use Zendesk\API\UtilityTraits\InstantiatorTrait;
 
 /**
@@ -22,11 +22,11 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
 class Tickets extends ResourceAbstract
 {
     use InstantiatorTrait;
-    use BulkFindTrait;
-    use BulkUpdateTrait {
-        BulkUpdateTrait::updateMany as bulkUpdate;
+    use FindMany;
+    use UpdateMany {
+        UpdateMany::updateMany as bulkUpdate;
     }
-    use BulkDeleteTrait;
+    use DeleteMany;
 
     const OBJ_NAME = 'ticket';
     const OBJ_NAME_PLURAL = 'tickets';

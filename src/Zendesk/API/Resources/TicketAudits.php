@@ -3,6 +3,7 @@
 namespace Zendesk\API\Resources;
 
 use Zendesk\API\Exceptions\MissingParametersException;
+use Zendesk\API\Traits\Resource\Defaults;
 
 /**
  * The TicketAudits class exposes read only audit methods
@@ -11,6 +12,10 @@ use Zendesk\API\Exceptions\MissingParametersException;
  */
 class TicketAudits extends ResourceAbstract
 {
+    use Defaults {
+        findAll as traitFindAll;
+        find as traitFind;
+    }
 
     const OBJ_NAME = 'audit';
     const OBJ_NAME_PLURAL = 'audits';
@@ -40,13 +45,13 @@ class TicketAudits extends ResourceAbstract
     {
         $routeParams = $this->addChainedParametersToParams($params, ['ticket_id' => Tickets::class]);
 
-        if (!$this->hasKeys($routeParams, ['ticket_id'])) {
+        if (! $this->hasKeys($routeParams, ['ticket_id'])) {
             throw new MissingParametersException(__METHOD__, ['ticket_id']);
         }
 
         $this->setAdditionalRouteParams($routeParams);
 
-        return parent::findAll($params);
+        return $this->traitFindAll($params);
     }
 
     /**
@@ -72,12 +77,12 @@ class TicketAudits extends ResourceAbstract
             ]
         );
 
-        if (!$this->hasKeys($params, ['ticket_id'])) {
+        if (! $this->hasKeys($params, ['ticket_id'])) {
             throw new MissingParametersException(__METHOD__, ['ticket_id']);
         }
 
         $this->setAdditionalRouteParams(['ticket_id' => $params['ticket_id']]);
 
-        return parent::find($id);
+        return $this->traitFind($id);
     }
 }

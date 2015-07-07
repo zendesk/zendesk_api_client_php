@@ -3,6 +3,7 @@
 namespace Zendesk\API\Resources;
 
 use Zendesk\API\Exceptions\CustomException;
+use Zendesk\API\Traits\Resource\Defaults;
 
 /**
  * The Tags class exposes methods as detailed on http://developer.zendesk.com/documentation/rest_api/tags.html
@@ -11,28 +12,29 @@ use Zendesk\API\Exceptions\CustomException;
  */
 class Tags extends ResourceAbstract
 {
+    use Defaults;
 
     const OBJ_NAME = 'tags';
     const OBJ_NAME_PLURAL = 'tags';
 
-  /**
-   * Returns a route and replaces tokenized parts of the string with
-   * the passed params
-   *
-   * @param       $name
-   * @param array $params
-   *
-   * @return mixed Any of the following formats based on the parent chain
-   *              tickets/{id}/tags.json
-   *              topics/{id}/tags.json
-   *              organizations/{id}/tags.json
-   *              users/{id}/tags.json
-   *
-   * @throws \Exception
-   */
-    public function getRoute($name, array $params = array())
+    /**
+     * Returns a route and replaces tokenized parts of the string with
+     * the passed params
+     *
+     * @param       $name
+     * @param array $params
+     *
+     * @return mixed Any of the following formats based on the parent chain
+     *              tickets/{id}/tags.json
+     *              topics/{id}/tags.json
+     *              organizations/{id}/tags.json
+     *              users/{id}/tags.json
+     *
+     * @throws \Exception
+     */
+    public function getRoute($name, array $params = [])
     {
-        $allowedRoutes = array('update', 'find', 'create', 'delete');
+        $allowedRoutes = ['update', 'find', 'create', 'delete'];
 
         if (! in_array($name, $allowedRoutes)) {
             return parent::getRoute($name, $params);
