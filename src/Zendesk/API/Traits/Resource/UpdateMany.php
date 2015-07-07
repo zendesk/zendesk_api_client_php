@@ -1,6 +1,6 @@
 <?php
 
-namespace Zendesk\API\BulkTraits;
+namespace Zendesk\API\Traits\Resource;
 
 use Zendesk\API\Exceptions\RouteException;
 use Zendesk\API\Http;
@@ -8,13 +8,13 @@ use Zendesk\API\Http;
 /**
  * Allows resources to call a bulk show endpoint.
  */
-trait BulkUpdateTrait
+trait UpdateMany
 {
 
     /**
      * Update group of resources
      *
-     * @param array $params
+     * @param array  $params
      * @param string $key Could be `id` or `external_id`
      *
      * @return mixed

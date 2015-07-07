@@ -1,6 +1,6 @@
 <?php
 
-namespace Zendesk\API\BulkTraits;
+namespace Zendesk\API\Traits\Resource;
 
 use Zendesk\API\Exceptions\RouteException;
 use Zendesk\API\Http;
@@ -9,7 +9,7 @@ use Zendesk\API\Http;
  * Allows resources to call a bulk destrpu endpoint.
  *
  */
-trait BulkDeleteTrait
+trait DeleteMany
 {
     /**
      * Show multiple resources
