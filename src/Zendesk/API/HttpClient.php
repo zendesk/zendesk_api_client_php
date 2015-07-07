@@ -8,6 +8,7 @@ namespace Zendesk\API;
  */
 
 use Zendesk\API\Exceptions\AuthException;
+use Zendesk\API\Resources\Activities;
 use Zendesk\API\Resources\Attachments;
 use Zendesk\API\Resources\AuditLogs;
 use Zendesk\API\Resources\Automations;
@@ -48,6 +49,7 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
  * @method OrganizationFields organizationFields()
  * @method DynamicContent dynamicContent()
  * @method Organizations organizations()
+ * @method Activities activities()
  */
 class HttpClient
 {
@@ -141,6 +143,7 @@ class HttpClient
     public static function getValidSubResources()
     {
         return [
+            'activities'                => Activities::class,
             'attachments'               => Attachments::class,
             'auditLogs'                 => AuditLogs::class,
             'automations'               => Automations::class,
@@ -284,40 +287,6 @@ class HttpClient
         } else {
             return $this->sideload;
         }
-    }
-
-    /*
-     * These ones don't follow the usual construct
-     */
-
-    /**
-     * @param int $id
-     *
-     * @return $this
-     */
-    public function category($id)
-    {
-        return $this->categories->setLastId($id);
-    }
-
-    /**
-     * @param int|null $id
-     *
-     * @return ActivityStream
-     */
-    public function activities($id = null)
-    {
-        return ($id != null ? $this->activityStream()->setLastId($id) : $this->activityStream());
-    }
-
-    /**
-     * @param int $id
-     *
-     * @return ActivityStream
-     */
-    public function activity($id)
-    {
-        return $this->activityStream()->setLastId($id);
     }
 
     public function get($endpoint, $queryParams = [])
