@@ -85,19 +85,4 @@ class AttachmentsTest extends BasicTest
             ]
         );
     }
-
-    /**
-     * Test routes for find and delete are present
-     */
-    public function testRoutes()
-    {
-        $attachment = $this->client->attachments();
-
-        // Test route for find
-        $id = 1;
-        $this->assertEquals("attachments/{$id}.json", $attachment->getRoute('find', ['id' => $id]));
-
-        // Test route for delete
-        $this->assertEquals("attachments/{$id}.json", $attachment->getRoute('delete', ['id' => $id]));
-    }
 }
