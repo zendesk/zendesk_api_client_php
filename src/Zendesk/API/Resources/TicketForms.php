@@ -5,9 +5,12 @@ namespace Zendesk\API\Resources;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Http;
+use Zendesk\API\Traits\Resource\Defaults;
 
 class TicketForms extends ResourceAbstract
 {
+    use Defaults;
+
     const OBJ_NAME = 'ticket_forms';
     const OBJ_NAME_PLURAL = 'ticket_forms';
 
