@@ -9,15 +9,16 @@ trait FindAll
     /**
      * List all of this resource
      *
-     * @param array $params
+     * @param array  $params
      *
-     * @throws \Exception
+     * @param string $routeKey
+     *
      * @return mixed
      */
-    public function findAll(array $params = [])
+    public function findAll(array $params = [], $routeKey = __FUNCTION__)
     {
         try {
-            $route = $this->getRoute(__FUNCTION__, $params);
+            $route = $this->getRoute($routeKey, $params);
         } catch (RouteException $e) {
             if (! isset($this->resourceName)) {
                 $this->resourceName = $this->getResourceNameFromClass();

@@ -5,6 +5,11 @@ namespace Zendesk\API\Resources;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Http;
+use Zendesk\API\Traits\Resource\Create;
+use Zendesk\API\Traits\Resource\Find;
+use Zendesk\API\Traits\Resource\FindAll;
+use Zendesk\API\Traits\Resource\Delete;
+use Zendesk\API\Traits\Resource\Update;
 
 /**
  * The Views class exposes view management methods
@@ -13,6 +18,17 @@ use Zendesk\API\Http;
  */
 class Views extends ResourceAbstract
 {
+    use FindAll {
+        findAll as traitFindall;
+    }
+
+    use Find {
+        find as traitFind;
+    }
+
+    use Create;
+    use Update;
+    use Delete;
 
     const OBJ_NAME = 'view';
     const OBJ_NAME_PLURAL = 'views';
@@ -22,36 +38,38 @@ class Views extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
-            'findAll'      => 'views{modifier}.json',
-            'export'       => 'views/{id}/export.json',
-            'preview'      => 'views/preview.json',
-            'previewCount' => 'views/preview/count.json',
-            'execute'      => 'views/{id}/execute.json',
-            'tickets'      => 'views/{id}/tickets.json',
+            'findAllActive'  => 'views/active.json',
+            'findAllCompact' => 'views/compact.json',
+            'export'         => 'views/{id}/export.json',
+            'preview'        => 'views/preview.json',
+            'previewCount'   => 'views/preview/count.json',
+            'execute'        => 'views/{id}/execute.json',
+            'tickets'        => 'views/{id}/tickets.json',
         ]);
     }
 
     /**
-     * List all views
+     * List all active views
      *
      * @param array $params
      *
-     * @throws ResponseException
-     * @throws \Exception
+     * @return mixed
+     */
+    public function findAllActive(array $params = [])
+    {
+        return $this->traitFindall($params, __FUNCTION__);
+    }
+
+    /**
+     * List all active views
+     *
+     * @param array $params
      *
      * @return mixed
      */
-    public function findAll(array $params = [])
+    public function findAllCompact(array $params = [])
     {
-        if (isset($params['active'])) {
-            $params['modifier'] = '/active';
-        } elseif (isset($params['compact'])) {
-            $params['modifier'] = '/compact';
-        } else {
-            $params['modifier'] = '';
-        }
-
-        return parent::findAll($params);
+        return $this->traitFindall($params, __FUNCTION__);
     }
 
     /**
@@ -69,33 +87,7 @@ class Views extends ResourceAbstract
             $queryParams
         );
 
-        return parent::find($id, $queryParams);
-    }
-
-    /**
-     * Execute a specific view
-     *
-     * @param null $id
-     *
-     * @return mixed
-     * @throws MissingParametersException
-     *
-     */
-    public function delete($id = null)
-    {
-        if ((empty($id)) && ! ($this->getChainedParameter('id', false))) {
-            throw new MissingParametersException(__METHOD__, ['id']);
-        }
-
-        $endPoint = 'views/' . $id . '.json';
-
-        $response = Http::send(
-            $this->client,
-            $endPoint,
-            ['method' => 'DELETE']
-        );
-
-        return $response;
+        return $this->traitFind($id, $queryParams);
     }
 
     /**
@@ -194,7 +186,7 @@ class Views extends ResourceAbstract
             $params
         );
 
-        return $this->client->get($this->getRoute(__FUNCTION__, $routeParams), $queryParams);
+        return $this->client->get($this->getRoute(__FUNCTION__, $routeParams), array_merge($extraParams, $queryParams));
     }
 
     /**
@@ -238,22 +230,7 @@ class Views extends ResourceAbstract
      */
     public function preview(array $params)
     {
-        $extraParams = Http::prepareQueryParams(
-            $this->client->getSideload($params),
-            $params
-        );
-
-        $response = Http::send(
-            $this->client,
-            $this->getRoute(__FUNCTION__),
-            [
-                'postFields'  => ['view' => $params],
-                'queryParams' => $extraParams,
-                'method'      => 'POST'
-            ]
-        );
-
-        return $response;
+        return $this->client->post($this->getRoute(__FUNCTION__), [Views::OBJ_NAME => $params]);
     }
 
     /**
@@ -268,21 +245,6 @@ class Views extends ResourceAbstract
      */
     public function previewCount(array $params)
     {
-        $extraParams = Http::prepareQueryParams(
-            $this->client->getSideload($params),
-            $params
-        );
-
-        $response = Http::send(
-            $this->client,
-            $this->getRoute(__FUNCTION__),
-            [
-                'postFields'  => ['view' => $params],
-                'queryParams' => $extraParams,
-                'method'      => 'POST'
-            ]
-        );
-
-        return $response;
+        return $this->client->post($this->getRoute(__FUNCTION__), [Views::OBJ_NAME => $params]);
     }
 }
