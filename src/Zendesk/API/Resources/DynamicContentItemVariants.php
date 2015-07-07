@@ -2,17 +2,17 @@
 
 namespace Zendesk\API\Resources;
 
-use Zendesk\API\BulkTraits\BulkCreateTrait;
-use Zendesk\API\BulkTraits\BulkUpdateTrait;
 use Zendesk\API\Traits\Resource\Create;
+use Zendesk\API\Traits\Resource\CreateMany;
 use Zendesk\API\Traits\Resource\Delete;
 use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
+use Zendesk\API\Traits\Resource\UpdateMany;
 
 class DynamicContentItemVariants extends ResourceAbstract
 {
-    use BulkCreateTrait;
-    use BulkUpdateTrait;
+    use CreateMany;
+    use UpdateMany;
 
     use FindAll;
     use Find;

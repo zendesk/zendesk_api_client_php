@@ -1,6 +1,6 @@
 <?php
 
-namespace Zendesk\API\BulkTraits;
+namespace Zendesk\API\Traits\Resource;
 
 use Zendesk\API\Exceptions\RouteException;
 
@@ -8,7 +8,7 @@ use Zendesk\API\Exceptions\RouteException;
  * Allows resources to call a bulk show endpoint.
  *
  */
-trait BulkFindTrait
+trait FindMany
 {
     /**
      * Show multiple resources
