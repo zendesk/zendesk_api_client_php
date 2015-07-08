@@ -7,8 +7,6 @@ use Zendesk\API\Traits\Resource\FindAll;
 
 /**
  * The TicketMetrics class exposes metrics methods for tickets
- *
- * @package Zendesk\API\Resources
  */
 class TicketMetrics extends ResourceAbstract
 {
@@ -20,12 +18,18 @@ class TicketMetrics extends ResourceAbstract
 
     protected $resourceName = 'ticket_metrics';
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         $this->setRoute('findAll', "{$this->resourceName}.json");
         $this->setRoute('find', "{$this->resourceName}/{id}.json");
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getRoute($name, array $params = [])
     {
         if ('find' === $name || 'findAll' === $name) {

@@ -14,6 +14,6 @@ class Activities extends ResourceAbstract
     const OBJ_NAME = 'activity';
     const OBJ_NAME_PLURAL = 'activities';
 
-    use FindAll;
     use Find;
+    use FindAll;
 }

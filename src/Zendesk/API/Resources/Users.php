@@ -9,6 +9,7 @@ use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Http;
 use Zendesk\API\Traits\Resource\Create;
 use Zendesk\API\Traits\Resource\CreateMany;
+use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\Delete;
 use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
@@ -27,14 +28,9 @@ class Users extends ResourceAbstract
 {
     use InstantiatorTrait;
 
-    use FindAll {
+    use Defaults {
         findAll as traitFindall;
     }
-
-    use Find;
-    use Create;
-    use Update;
-    use Delete;
 
     use FindMany {
         findMany as traitFindMany;
