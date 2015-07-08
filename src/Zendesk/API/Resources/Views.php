@@ -5,10 +5,7 @@ namespace Zendesk\API\Resources;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Http;
-
 use Zendesk\API\Traits\Resource\Defaults;
-
-
 
 /**
  * The Views class exposes view management methods
