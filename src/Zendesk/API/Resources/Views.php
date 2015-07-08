@@ -12,19 +12,20 @@ use Zendesk\API\Traits\Resource\Defaults;
 
 /**
  * The Views class exposes view management methods
- *
- * @package Zendesk\API
  */
 class Views extends ResourceAbstract
 {
+    const OBJ_NAME = 'view';
+    const OBJ_NAME_PLURAL = 'views';
+
     use Defaults {
         findAll as traitFindall;
         find as traitFind;
     }
 
-    const OBJ_NAME = 'view';
-    const OBJ_NAME_PLURAL = 'views';
-
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         parent::setUpRoutes();

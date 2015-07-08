@@ -9,19 +9,25 @@ use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
 use Zendesk\API\Traits\Resource\UpdateMany;
 
+/**
+ * Class DynamicContentItemVariants
+ */
 class DynamicContentItemVariants extends ResourceAbstract
 {
-    use CreateMany;
-    use UpdateMany;
-
-    use Find;
-    use FindAll;
-    use Create;
-    use Delete;
-
     const OBJ_NAME = 'item';
     const OBJ_NAME_PLURAL = 'items';
 
+    use Create;
+    use Delete;
+    use Find;
+    use FindAll;
+
+    use CreateMany;
+    use UpdateMany;
+
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         $this->setRoutes(
@@ -36,6 +42,9 @@ class DynamicContentItemVariants extends ResourceAbstract
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getRoute($name, array $params = [])
     {
         $params = $this->addChainedParametersToParams($params, ['item_id' => DynamicContentItems::class]);

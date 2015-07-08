@@ -12,10 +12,10 @@ use Zendesk\API\Traits\Resource\Defaults;
  */
 class Tags extends ResourceAbstract
 {
-    use Defaults;
-
     const OBJ_NAME = 'tags';
     const OBJ_NAME_PLURAL = 'tags';
+
+    use Defaults;
 
     /**
      * Returns a route and replaces tokenized parts of the string with

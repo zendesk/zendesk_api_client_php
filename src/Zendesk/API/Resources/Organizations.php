@@ -19,11 +19,13 @@ class Organizations extends ResourceAbstract
     const OBJ_NAME_PLURAL = 'organizations';
 
     use InstantiatorTrait;
+
     use Defaults;
-    use FindMany;
+
     use CreateMany;
-    use UpdateMany;
     use DeleteMany;
+    use FindMany;
+    use UpdateMany;
 
     /**
      * {@inheritdoc}

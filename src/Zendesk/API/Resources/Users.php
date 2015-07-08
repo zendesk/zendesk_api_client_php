@@ -26,20 +26,20 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
  */
 class Users extends ResourceAbstract
 {
+    const OBJ_NAME = 'user';
+    const OBJ_NAME_PLURAL = 'users';
+
     use InstantiatorTrait;
 
     use Defaults {
         findAll as traitFindall;
     }
 
+    use CreateMany;
     use FindMany {
         findMany as traitFindMany;
     }
-    use CreateMany;
     use UpdateMany;
-
-    const OBJ_NAME = 'user';
-    const OBJ_NAME_PLURAL = 'users';
 
     /**
      * @var UserIdentities
