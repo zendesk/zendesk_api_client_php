@@ -8,12 +8,9 @@ use Zendesk\API\Traits\Resource\FindAll;
 
 /**
  * The TicketComments class exposes comment methods for tickets
- *
- * @package Zendesk\API
  */
 class TicketComments extends ResourceAbstract
 {
-
     const OBJ_NAME = 'comment';
     const OBJ_NAME_PLURAL = 'comments';
 
@@ -21,6 +18,9 @@ class TicketComments extends ResourceAbstract
         findAll as traitFindAll;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         $this->setRoutes(

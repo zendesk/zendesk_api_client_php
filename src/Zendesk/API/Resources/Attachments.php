@@ -14,9 +14,12 @@ use Zendesk\API\Traits\Resource\Delete;
  */
 class Attachments extends ResourceAbstract
 {
-    use Find;
     use Delete;
+    use Find;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         $this->setRoutes([

@@ -10,14 +10,19 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 class OrganizationMemberships extends ResourceAbstract
 {
-    use CreateMany;
-    use DeleteMany;
-    use InstantiatorTrait;
-    use Defaults;
-
     const OBJ_NAME = 'organization_membership';
     const OBJ_NAME_PLURAL = 'organization_memberships';
 
+    use InstantiatorTrait;
+
+    use Defaults;
+
+    use CreateMany;
+    use DeleteMany;
+
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         parent::setUpRoutes();

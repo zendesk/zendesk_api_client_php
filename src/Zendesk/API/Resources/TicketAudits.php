@@ -12,13 +12,13 @@ use Zendesk\API\Traits\Resource\Defaults;
  */
 class TicketAudits extends ResourceAbstract
 {
+    const OBJ_NAME = 'audit';
+    const OBJ_NAME_PLURAL = 'audits';
+
     use Defaults {
         findAll as traitFindAll;
         find as traitFind;
     }
-
-    const OBJ_NAME = 'audit';
-    const OBJ_NAME_PLURAL = 'audits';
 
     /**
      * Declares routes to be used by this resource.

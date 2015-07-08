@@ -8,10 +8,12 @@ use Zendesk\API\Traits\Resource\Defaults;
 
 /**
  * The UserIdentities class exposes fields on the user profile page
- * @package Zendesk\API
  */
 class UserIdentities extends ResourceAbstract
 {
+    const OBJ_NAME = 'identity';
+    const OBJ_NAME_PLURAL = 'identities';
+
     use Defaults {
         findAll as traitFindAll;
         find as traitFind;
@@ -20,11 +22,11 @@ class UserIdentities extends ResourceAbstract
         delete as traitDelete;
     }
 
-    const OBJ_NAME = 'identity';
-    const OBJ_NAME_PLURAL = 'identities';
-
     protected $resourceName = 'identities';
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         $this->setRoutes([

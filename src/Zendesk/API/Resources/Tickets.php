@@ -27,6 +27,7 @@ class Tickets extends ResourceAbstract
     use Defaults {
         create as traitCreate;
     }
+
     use FindMany;
     use UpdateMany {
         UpdateMany::updateMany as bulkUpdate;

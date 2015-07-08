@@ -16,6 +16,11 @@ class Automations extends ResourceAbstract
     const OBJ_NAME = 'automation';
     const OBJ_NAME_PLURAL = 'automations';
 
+    use Defaults;
+
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         $this->setRoute('findActive', "{$this->resourceName}/active.json");
