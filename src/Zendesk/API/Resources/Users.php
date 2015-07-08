@@ -111,8 +111,6 @@ class Users extends ResourceAbstract
 
         $response = Http::send($this->client, $this->endpoint, ['queryParams' => $queryParams]);
 
-        $this->client->setSideload(null);
-
         return $response;
     }
 
@@ -150,8 +148,6 @@ class Users extends ResourceAbstract
             ['queryParams' => $queryParams]
         );
 
-        $this->client->setSideload(null);
-
         return $response;
     }
 
@@ -180,8 +176,6 @@ class Users extends ResourceAbstract
             ['queryParams' => $queryParams]
         );
 
-        $this->client->setSideload(null);
-
         return $response;
     }
 
@@ -209,7 +203,6 @@ class Users extends ResourceAbstract
             $this->getRoute(__FUNCTION__),
             ['postFields' => [self::OBJ_NAME => $params], 'method' => 'PUT']
         );
-        $this->client->setSideload(null);
 
         return $response;
     }
@@ -268,8 +261,6 @@ class Users extends ResourceAbstract
             ['method' => 'POST', 'queryParams' => $params]
         );
 
-        $this->client->setSideload(null);
-
         return $response;
     }
 
@@ -313,8 +304,6 @@ class Users extends ResourceAbstract
                 ],
             ]
         );
-
-        $this->client->setSideload(null);
 
         return $response;
     }

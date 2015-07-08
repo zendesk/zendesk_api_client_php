@@ -130,6 +130,8 @@ class Http
             fclose($file);
         }
 
+        $client->setSideload(null);
+
         return json_decode($response->getBody()->getContents());
     }
 
