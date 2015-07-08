@@ -5,12 +5,10 @@ namespace Zendesk\API\Resources;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Http;
-use Zendesk\API\Traits\Resource\Create;
+
 use Zendesk\API\Traits\Resource\Defaults;
-use Zendesk\API\Traits\Resource\Find;
-use Zendesk\API\Traits\Resource\FindAll;
-use Zendesk\API\Traits\Resource\Delete;
-use Zendesk\API\Traits\Resource\Update;
+
+
 
 /**
  * The Views class exposes view management methods
@@ -51,7 +49,7 @@ class Views extends ResourceAbstract
      */
     public function findAllActive(array $params = [])
     {
-        return $this->traitFindall($params, __FUNCTION__);
+        return $this->traitFindAll($params, __FUNCTION__);
     }
 
     /**
@@ -63,7 +61,7 @@ class Views extends ResourceAbstract
      */
     public function findAllCompact(array $params = [])
     {
-        return $this->traitFindall($params, __FUNCTION__);
+        return $this->traitFindAll($params, __FUNCTION__);
     }
 
     /**
