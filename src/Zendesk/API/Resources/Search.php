@@ -9,6 +9,9 @@ use Zendesk\API\Exceptions\MissingParametersException;
  */
 class Search extends ResourceAbstract
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         $this->setRoutes(

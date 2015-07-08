@@ -8,16 +8,27 @@ use Zendesk\API\Traits\Resource\Defaults;
  */
 class Triggers extends ResourceAbstract
 {
-    use Defaults;
-
     const OBJ_NAME = 'trigger';
     const OBJ_NAME_PLURAL = 'triggers';
 
+    use Defaults;
+
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         $this->setRoute('findActive', "{$this->resourceName}/active.json");
     }
 
+    /**
+     * Finds all active triggers
+     *
+     * @param array $params
+     *
+     * @return array
+     * @throws \Zendesk\API\Exceptions\RouteException
+     */
     public function findActive($params = [])
     {
         return $this->client->get($this->getRoute(__FUNCTION__), $params);
