@@ -23,6 +23,7 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
 class Tickets extends ResourceAbstract
 {
     use InstantiatorTrait;
+
     use FindMany;
     use UpdateMany {
         UpdateMany::updateMany as bulkUpdate;

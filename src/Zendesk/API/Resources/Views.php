@@ -6,6 +6,7 @@ use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Http;
 use Zendesk\API\Traits\Resource\Create;
+use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
 use Zendesk\API\Traits\Resource\Delete;
@@ -18,17 +19,10 @@ use Zendesk\API\Traits\Resource\Update;
  */
 class Views extends ResourceAbstract
 {
-    use FindAll {
+    use Defaults {
         findAll as traitFindall;
-    }
-
-    use Find {
         find as traitFind;
     }
-
-    use Create;
-    use Update;
-    use Delete;
 
     const OBJ_NAME = 'view';
     const OBJ_NAME_PLURAL = 'views';

@@ -5,8 +5,8 @@ namespace Zendesk\API\Resources;
 use Zendesk\API\Exceptions\CustomException;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Http;
-use Zendesk\API\Traits\Resource\Delete;
 use Zendesk\API\Traits\Resource\Find;
+use Zendesk\API\Traits\Resource\Delete;
 
 /**
  * The Attachments class exposes methods for uploading and retrieving attachments
