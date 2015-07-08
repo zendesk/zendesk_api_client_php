@@ -7,14 +7,9 @@ use Zendesk\API\Exceptions\CustomException;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Http;
-use Zendesk\API\Traits\Resource\Create;
 use Zendesk\API\Traits\Resource\CreateMany;
 use Zendesk\API\Traits\Resource\Defaults;
-use Zendesk\API\Traits\Resource\Delete;
-use Zendesk\API\Traits\Resource\Find;
-use Zendesk\API\Traits\Resource\FindAll;
 use Zendesk\API\Traits\Resource\FindMany;
-use Zendesk\API\Traits\Resource\Update;
 use Zendesk\API\Traits\Resource\UpdateMany;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
