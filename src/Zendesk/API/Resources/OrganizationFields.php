@@ -44,8 +44,6 @@ class OrganizationFields extends ResourceAbstract
         $endpoint = $this->getRoute(__FUNCTION__);
         $response = $this->client->put($endpoint, $putData);
 
-        $this->client->setSideload(null);
-
         return $response;
     }
 }

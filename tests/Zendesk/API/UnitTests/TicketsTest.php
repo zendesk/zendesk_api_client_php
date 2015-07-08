@@ -17,7 +17,8 @@ class TicketsTest extends BasicTest
         $this->testTicket = [
             'subject'  => 'The quick brown fox jumps over the lazy dog',
             'comment'  => [
-                'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+                'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor'
+                          . ' incididunt ut labore et dolore magna aliqua.'
             ],
             'priority' => 'normal',
             'id'       => '12345'
@@ -26,7 +27,8 @@ class TicketsTest extends BasicTest
         $this->testTicket2 = [
             'subject'  => 'The second ticket',
             'comment'  => [
-                'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+                'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor'
+                          . ' incididunt ut labore et dolore magna aliqua.'
             ],
             'priority' => 'normal',
             'id'       => '4321'
@@ -50,6 +52,8 @@ class TicketsTest extends BasicTest
                 'queryParams' => ['include' => 'users,groups'],
             ]
         );
+
+        $this->assertNull($this->client->getSideload());
     }
 
     public function testAllSideLoadedParameter()

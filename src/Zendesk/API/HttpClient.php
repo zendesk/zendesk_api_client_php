@@ -208,26 +208,6 @@ class HttpClient
     }
 
     /**
-     * Returns a text value indicating the type of authorization configured
-     *
-     * @return string
-     */
-    public function getAuthOptions()
-    {
-        return $this->authOptions;
-    }
-
-    /**
-     * Returns the authentication strategy set
-     *
-     * @return string
-     */
-    public function getAuthStrategy()
-    {
-        return $this->authStrategy;
-    }
-
-    /**
      * Set debug information as an object
      *
      * @param mixed  $lastRequestHeaders
@@ -305,8 +285,6 @@ class HttpClient
             ['queryParams' => $queryParams]
         );
 
-        $this->setSideload(null);
-
         return $response;
     }
 
@@ -330,8 +308,6 @@ class HttpClient
             ]
         );
 
-        $this->setSideload(null);
-
         return $response;
     }
 
@@ -352,8 +328,6 @@ class HttpClient
             ['postFields' => $putData, 'method' => 'PUT']
         );
 
-        $this->setSideload(null);
-
         return $response;
     }
 
@@ -372,8 +346,6 @@ class HttpClient
             $endpoint,
             ['method' => 'DELETE']
         );
-
-        $this->setSideload(null);
 
         return $response;
     }

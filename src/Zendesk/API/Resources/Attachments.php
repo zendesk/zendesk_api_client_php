@@ -66,8 +66,6 @@ class Attachments extends ResourceAbstract
             ]
         );
 
-        $this->client->setSideload(null);
-
         return $response;
     }
 
@@ -88,8 +86,6 @@ class Attachments extends ResourceAbstract
             $this->getRoute(__FUNCTION__, ['token' => $token]),
             ['method' => 'DELETE']
         );
-
-        $this->client->setSideload(null);
 
         return $response;
     }

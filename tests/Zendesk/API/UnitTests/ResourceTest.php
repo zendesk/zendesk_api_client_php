@@ -52,7 +52,6 @@ class ResourceTest extends BasicTest
 
         $this->dummyResource->findAll($iterators);
 
-
         $this->assertLastRequestIs([
             'method'      => 'GET',
             'endpoint'    => 'dummy_resource.json',

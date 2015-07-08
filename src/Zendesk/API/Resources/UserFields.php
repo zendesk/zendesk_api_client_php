@@ -39,8 +39,6 @@ class UserFields extends ResourceAbstract
             ['postFields' => $postFields, 'method' => 'PUT']
         );
 
-        $this->client->setSideload(null);
-
         return $response;
     }
 }
