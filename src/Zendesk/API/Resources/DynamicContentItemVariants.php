@@ -14,8 +14,8 @@ class DynamicContentItemVariants extends ResourceAbstract
     use CreateMany;
     use UpdateMany;
 
-    use FindAll;
     use Find;
+    use FindAll;
     use Create;
     use Delete;
 
