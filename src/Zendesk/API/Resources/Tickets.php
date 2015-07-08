@@ -24,15 +24,14 @@ class Tickets extends ResourceAbstract
 {
     use InstantiatorTrait;
 
+    use Defaults {
+        create as traitCreate;
+    }
     use FindMany;
     use UpdateMany {
         UpdateMany::updateMany as bulkUpdate;
     }
     use DeleteMany;
-
-    use Defaults {
-        create as traitCreate;
-    }
 
     const OBJ_NAME = 'ticket';
     const OBJ_NAME_PLURAL = 'tickets';
