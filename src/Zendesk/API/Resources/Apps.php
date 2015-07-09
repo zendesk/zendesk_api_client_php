@@ -28,17 +28,13 @@ class Apps extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
-            'upload'               => "{$this->resourceName}/uploads.json",
-            'jobStatus'            => "{$this->resourceName}/job_statuses/{id}.json",
-            'create'               => "{$this->resourceName}.json",
-            'update'               => "{$this->resourceName}/{id}.json",
-            'findAllOwned'         => "{$this->resourceName}/owned.json",
-            'findAllInstallations' => "{$this->resourceName}/installations.json",
-            'findInstallation'     => "{$this->resourceName}/installations/{id}.json",
-            'install'              => "{$this->resourceName}/installations.json",
-            'updateInstallation'   => "{$this->resourceName}/installations/{id}.json",
-            'deleteInstallation'   => "{$this->resourceName}/installations/{id}.json",
-            'notify'               => "{$this->resourceName}/notify.json",
+            'upload'       => "{$this->resourceName}/uploads.json",
+            'jobStatus'    => "{$this->resourceName}/job_statuses/{id}.json",
+            'create'       => "{$this->resourceName}.json",
+            'update'       => "{$this->resourceName}/{id}.json",
+            'findAllOwned' => "{$this->resourceName}/owned.json",
+            'install'      => "{$this->resourceName}/installations.json",
+            'notify'       => "{$this->resourceName}/notify.json",
         ]);
     }
 
@@ -187,76 +183,5 @@ class Apps extends ResourceAbstract
     public function install(array $params)
     {
         return $this->client->post($this->getRoute(__FUNCTION__), $params);
-    }
-
-    /**
-     * Lists all App installations on the account.
-     *
-     * @param array $params
-     *
-     * @return mixed
-     */
-    public function findAllInstallations(array $params = [])
-    {
-        return $this->client->get($this->getRoute(__FUNCTION__), $params);
-    }
-
-    /**
-     * Retrieve information about an App installation, including the settings for that App installation.
-     *
-     * @param       $id
-     * @param array $queryParams
-     *
-     * @return mixed
-     * @throws \Zendesk\API\Exceptions\RouteException
-     *
-     */
-    public function findInstallation($id, array $queryParams = [])
-    {
-        return $this->find($id, $queryParams, __FUNCTION__);
-    }
-
-    /**
-     * Retrieve information about an App installation, including the settings for that App installation.
-     *
-     * @param int|null $id
-     * @param array    $params
-     *
-     * @return mixed
-     * @throws MissingParametersException
-     * @throws \Zendesk\API\Exceptions\RouteException
-     */
-    public function updateInstallation($id = null, array $params = [])
-    {
-        if (empty($id)) {
-            if (isset($params['id'])) {
-                $id = $params['id'];
-            } else {
-                $id = $this->getChainedParameter(self::class, null);
-            }
-        }
-
-        if (empty($id)) {
-            throw new MissingParametersException(__METHOD__, ['id']);
-        }
-
-        return $this->client->put(
-            $this->getRoute(__FUNCTION__, ['id' => $id]),
-            $params
-        );
-    }
-
-    /**
-     * Removed an installed App. Use the installation id from the installation list response to make this request.
-     *
-     * @param int|null $id
-     *
-     * @return mixed
-     * @throws MissingParametersException
-     * @throws \Zendesk\API\Exceptions\RouteException
-     */
-    public function deleteInstallation($id = null)
-    {
-        $this->delete($id, __FUNCTION__);
     }
 }
