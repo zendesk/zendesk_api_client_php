@@ -10,6 +10,9 @@ use GuzzleHttp\Psr7\Response;
 class AppsTests extends BasicTest
 {
 
+    /**
+     * Test uploading of App
+     */
     public function testUploadApp()
     {
         $this->mockAPIResponses([
@@ -30,7 +33,7 @@ class AppsTests extends BasicTest
     }
 
     /**
-     *
+     * Test creating of app from upload
      */
     public function testCreateApp()
     {
@@ -78,7 +81,7 @@ class AppsTests extends BasicTest
     }
 
     /**
-     *
+     * Test updating of app
      */
     public function testUpdateApp()
     {
@@ -106,28 +109,7 @@ class AppsTests extends BasicTest
     }
 
     /**
-     *
-     */
-    public function testFindApp()
-    {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $resourceId = 82827;
-
-        $this->client->apps($resourceId)->find();
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => "apps/{$resourceId}.json",
-            ]
-        );
-    }
-
-    /**
-     *
+     * Test finding all of the user's owned apps.
      */
     public function testFindAllOwned()
     {
@@ -146,28 +128,7 @@ class AppsTests extends BasicTest
     }
 
     /**
-     *
-     */
-    public function testDeleteApps()
-    {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $resourceId = 82827;
-
-        $this->client->apps($resourceId)->delete();
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'DELETE',
-                'endpoint' => "apps/{$resourceId}.json",
-            ]
-        );
-    }
-
-    /**
-     *
+     * Test endpoint to notify app users
      */
     public function testNotify()
     {
@@ -194,7 +155,7 @@ class AppsTests extends BasicTest
     }
 
     /**
-     *
+     * Test finding all installations
      */
     public function testFindAllInstallations()
     {
@@ -213,7 +174,7 @@ class AppsTests extends BasicTest
     }
 
     /**
-     *
+     * Test install an app
      */
     public function testInstall()
     {
@@ -243,7 +204,7 @@ class AppsTests extends BasicTest
     }
 
     /**
-     *
+     * Testing finding all installations
      */
     public function testFindInstallations()
     {
@@ -264,7 +225,7 @@ class AppsTests extends BasicTest
     }
 
     /**
-     *
+     * Test update of installations
      */
     public function testUpdateInstallations()
     {
@@ -292,7 +253,7 @@ class AppsTests extends BasicTest
     }
 
     /**
-     *
+     * Test delete an app installation
      */
     public function testDeleteInstallations()
     {
