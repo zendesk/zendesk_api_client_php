@@ -155,25 +155,6 @@ class AppsTests extends BasicTest
     }
 
     /**
-     * Test finding all installations
-     */
-    public function testFindAllInstallations()
-    {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->apps()->findAllInstallations();
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'apps/installations.json',
-            ]
-        );
-    }
-
-    /**
      * Test install an app
      */
     public function testInstall()
@@ -199,76 +180,6 @@ class AppsTests extends BasicTest
                 'method'     => 'POST',
                 'endpoint'   => 'apps/installations.json',
                 'postFields' => $postFields,
-            ]
-        );
-    }
-
-    /**
-     * Testing finding all installations
-     */
-    public function testFindInstallations()
-    {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $resourceId = 2828;
-
-        $this->client->apps()->findInstallation($resourceId);
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => "apps/installations/{$resourceId}.json",
-            ]
-        );
-    }
-
-    /**
-     * Test update of installations
-     */
-    public function testUpdateInstallations()
-    {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $resourceId = 2828;
-        $putFields  = [
-            'settings' =>
-                [
-                    'name'      => 'Helpful App - Updated',
-                    'api_token' => '659323ngt4ut9an',
-                ],
-        ];
-
-        $this->client->apps()->updateInstallation($resourceId, $putFields);
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'PUT',
-                'endpoint' => "apps/installations/{$resourceId}.json",
-            ]
-        );
-    }
-
-    /**
-     * Test delete an app installation
-     */
-    public function testDeleteInstallations()
-    {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $resourceId = 2828;
-
-        $this->client->apps($resourceId)->deleteInstallation();
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'DELETE',
-                'endpoint' => "apps/installations/{$resourceId}.json",
             ]
         );
     }
