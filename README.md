@@ -87,6 +87,43 @@ The test suite is run via phpunit. Note that these are all live tests that must 
 $tickets = $this->client->tickets()->sideload(array('users', 'groups'))->findAll();
 ```
 
+### Traits
+
+#### Declaration
+
+* Traits are added after class constants and arranged alphabetically when declared. 
+* Group traits accordingly by adding a new line after each group.
+* Groups are ordered as follows:
+1. Instantiator 
+2. Single resource
+3. Bulk traits
+
+#### Resource Traits
+
+When adding a resource, use traits to define available API calls. Resource traits are namespaced under `Zendesk\API\Traits\Resource`.
+
+**Single Resource**
+* Create
+* Delete
+* Find
+* FindAll
+* Update
+* Defaults - this adds **Find**, **FindAll**, **Create**, **Update**, and **Delete**
+
+**Bulk traits**
+* CreateMany
+* DeleteMany
+* FindMany
+* UpdateMany
+
+#### Utility Traits
+
+Use `Zendesk\API\Traits\Utility\InstantiatorTrait` when you want a resource to be chainable to other resources. See `Zendesk/API/Resources/Tickets.php`.
+
+```php
+$this->client->tickets()->comments()->findAll();
+```
+
 ## Note on Patches/Pull Requests
 1. Fork the project.
 2. Make your feature addition or bug fix.
