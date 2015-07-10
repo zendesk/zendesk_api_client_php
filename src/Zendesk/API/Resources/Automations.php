@@ -11,8 +11,6 @@ use Zendesk\API\Traits\Resource\Defaults;
  */
 class Automations extends ResourceAbstract
 {
-    use Defaults;
-
     const OBJ_NAME = 'automation';
     const OBJ_NAME_PLURAL = 'automations';
 

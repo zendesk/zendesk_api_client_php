@@ -27,7 +27,7 @@ class Users extends ResourceAbstract
     use InstantiatorTrait;
 
     use Defaults {
-        findAll as traitFindall;
+        findAll as traitFindAll;
     }
 
     use CreateMany;
@@ -95,7 +95,7 @@ class Users extends ResourceAbstract
             $this->endpoint = 'users.json';
         }
 
-        return $this->traitFindall();
+        return $this->traitFindAll();
     }
 
     /**
