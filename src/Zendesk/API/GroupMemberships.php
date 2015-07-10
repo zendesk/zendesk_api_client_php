@@ -117,6 +117,27 @@ class GroupMemberships extends ClientAbstract
     }
 
     /**
+     * Create multiple new group memberships
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function createMany(array $params) {
+        $endPoint = Http::prepare('group_memberships/create_many.json');
+        $response = Http::send($this->client, $endPoint, array (self::OBJ_NAME_PLURAL => $params), 'POST');
+        if ((!is_object($response)) || ($this->client->getDebug()->lastResponseCode != 200)) {
+            throw new ResponseException(__METHOD__);
+        }
+        $this->client->setSideload(null);
+        return $response;
+    }
+
+    /**
      * Delete a group membership
      *
      * @param array $params
