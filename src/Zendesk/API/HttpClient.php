@@ -15,6 +15,7 @@ use Zendesk\API\Resources\Automations;
 use Zendesk\API\Resources\DynamicContent;
 use Zendesk\API\Resources\Groups;
 use Zendesk\API\Resources\JobStatuses;
+use Zendesk\API\Resources\Locales;
 use Zendesk\API\Resources\Macros;
 use Zendesk\API\Resources\OrganizationFields;
 use Zendesk\API\Resources\OrganizationMemberships;
@@ -38,6 +39,7 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
  * @method Views views()
  * @method Users users()
  * @method Tags tags()
+ * @method Locales locales()
  * @method Macros macros()
  * @method Attachments attachemnts()
  * @method Groups groups()
@@ -150,6 +152,7 @@ class HttpClient
             'dynamicContent'            => DynamicContent::class,
             'groups'                    => Groups::class,
             'jobStatuses'               => JobStatuses::class,
+            'locales'                   => Locales::class,
             'macros'                    => Macros::class,
             'organizationFields'        => OrganizationFields::class,
             'organizationMemberships'   => OrganizationMemberships::class,
