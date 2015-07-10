@@ -1,6 +1,6 @@
 <?php
 
-namespace Zendesk\API\BulkTraits;
+namespace Zendesk\API\Traits\Resource;
 
 use Zendesk\API\Exceptions\RouteException;
 
@@ -8,7 +8,7 @@ use Zendesk\API\Exceptions\RouteException;
  * Allows resources to call a bulk show endpoint.
  *
  */
-trait BulkFindTrait
+trait FindMany
 {
     /**
      * Show multiple resources
@@ -18,7 +18,6 @@ trait BulkFindTrait
      * @param string $key         Could be `id` or `external_id`
      *
      * @return mixed
-     * @internal param array $params Key-value pair of values to pass to the query string
      *
      */
     public function findMany(array $ids = [], $extraParams = [], $key = 'ids')

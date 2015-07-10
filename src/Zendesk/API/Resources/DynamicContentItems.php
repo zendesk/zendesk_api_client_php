@@ -2,7 +2,8 @@
 
 namespace Zendesk\API\Resources;
 
-use Zendesk\API\UtilityTraits\InstantiatorTrait;
+use Zendesk\API\Traits\Resource\Defaults;
+use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
  * Class DynamicContentItems
@@ -11,16 +12,12 @@ use Zendesk\API\UtilityTraits\InstantiatorTrait;
  */
 class DynamicContentItems extends ResourceAbstract
 {
+    const OBJ_NAME = 'item';
+    const OBJ_NAME_PLURAL = 'items';
+
     use InstantiatorTrait;
 
-    /**
-     *
-     */
-    const OBJ_NAME = 'item';
-    /**
-     *
-     */
-    const OBJ_NAME_PLURAL = 'items';
+    use Defaults;
 
     /**
      * @var string

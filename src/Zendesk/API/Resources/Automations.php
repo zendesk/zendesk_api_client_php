@@ -2,6 +2,8 @@
 
 namespace Zendesk\API\Resources;
 
+use Zendesk\API\Traits\Resource\Defaults;
+
 /**
  * The Automations class exposes methods seen at http://developer.zendesk.com/documentation/rest_api/automations.html
  *
@@ -9,15 +11,16 @@ namespace Zendesk\API\Resources;
  */
 class Automations extends ResourceAbstract
 {
-
     const OBJ_NAME = 'automation';
     const OBJ_NAME_PLURAL = 'automations';
 
+    use Defaults;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
-        parent::setUpRoutes();
-
         $this->setRoute('findActive', "{$this->resourceName}/active.json");
     }
 

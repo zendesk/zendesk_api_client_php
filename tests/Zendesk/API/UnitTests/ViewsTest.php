@@ -10,20 +10,26 @@ use Zendesk\API\Resources\Views;
  */
 class ViewsTest extends BasicTest
 {
+    /**
+     * @var int
+     */
     protected $id = 12345;
 
+    /**
+     * Test getting all active views
+     */
     public function testActive()
     {
         $this->mockAPIResponses([
-          new Response(200, [], json_encode(['views' => [['id' => $this->id]]]))
+            new Response(200, [], json_encode(['views' => [['id' => $this->id]]]))
         ]);
 
-        $views = $this->client->views()->findAll(['active' => true]);
+        $views = $this->client->views()->findAllActive();
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
-            'endpoint' => 'views/active.json',
+                'method'   => 'GET',
+                'endpoint' => 'views/active.json',
             ]
         );
 
@@ -35,18 +41,21 @@ class ViewsTest extends BasicTest
         $this->assertGreaterThan(0, $views->views[0]->id, 'Should return a numeric id for views[0]');
     }
 
+    /**
+     * Test getting compact list of views
+     */
     public function testCompact()
     {
         $this->mockAPIResponses([
-          new Response(200, [], json_encode(['views' => [['id' => $this->id]]]))
+            new Response(200, [], json_encode(['views' => [['id' => $this->id]]]))
         ]);
 
-        $views = $this->client->views()->findAll(['compact' => true]);
+        $views = $this->client->views()->findAllCompact();
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
-            'endpoint' => 'views/compact.json',
+                'method'   => 'GET',
+                'endpoint' => 'views/compact.json',
             ]
         );
         $this->assertEquals(is_object($views), true, 'Should return an object');
@@ -58,20 +67,25 @@ class ViewsTest extends BasicTest
         $this->assertGreaterThan(0, $views->views[0]->id, 'Should return a numeric id for views[0]');
     }
 
+    /**
+     * Test execution of views
+     *
+     * @throws \Zendesk\API\Exceptions\MissingParametersException
+     */
     public function testExecute()
     {
         $queryParams = ['per_page' => 1];
         $this->mockAPIResponses([
-          new Response(200, [], json_encode(['view' => ['id' => $this->id]]))
+            new Response(200, [], json_encode(['view' => ['id' => $this->id]]))
         ]);
 
         $view = $this->client->views($this->id)->execute($queryParams);
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
-            'endpoint' => 'views/' . $this->id . '/execute.json',
-            'queryParams' => $queryParams,
+                'method'      => 'GET',
+                'endpoint'    => 'views/' . $this->id . '/execute.json',
+                'queryParams' => $queryParams,
             ]
         );
 
@@ -80,18 +94,23 @@ class ViewsTest extends BasicTest
         $this->assertGreaterThan(0, $view->view->id, 'Should return a numeric id for view');
     }
 
+    /**
+     * Test getting of view counts
+     *
+     * @throws \Zendesk\API\Exceptions\MissingParametersException
+     */
     public function testCount()
     {
         $this->mockAPIResponses([
-          new Response(200, [], json_encode(['view_count' => ['view_id' => $this->id]]))
+            new Response(200, [], json_encode(['view_count' => ['view_id' => $this->id]]))
         ]);
 
         $counts = $this->client->views($this->id)->count();
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
-            'endpoint' => 'views/' . $this->id . '/count.json',
+                'method'   => 'GET',
+                'endpoint' => 'views/' . $this->id . '/count.json',
             ]
         );
 
@@ -100,20 +119,25 @@ class ViewsTest extends BasicTest
         $this->assertGreaterThan(0, $counts->view_count->view_id, 'Should return a numeric view_id for view_count');
     }
 
+    /**
+     * Test counting many views
+     *
+     * @throws \Zendesk\API\Exceptions\MissingParametersException
+     */
     public function testCountMany()
     {
         $queryIds = [$this->id, 80085];
         $this->mockAPIResponses([
-          new Response(200, [], json_encode(['view_counts' => [['view_id' => $this->id]]]))
+            new Response(200, [], json_encode(['view_counts' => [['view_id' => $this->id]]]))
         ]);
 
         $counts = $this->client->views($queryIds)->count();
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
-            'endpoint' => 'views/count_many.json',
-            'queryParams' => ['ids' => implode(',', $queryIds)]
+                'method'      => 'GET',
+                'endpoint'    => 'views/count_many.json',
+                'queryParams' => ['ids' => implode(',', $queryIds)]
             ]
         );
 
@@ -129,18 +153,21 @@ class ViewsTest extends BasicTest
         );
     }
 
+    /**
+     * @throws \Zendesk\API\Exceptions\MissingParametersException
+     */
     public function testExport()
     {
         $this->mockAPIResponses([
-          new Response(200, [], json_encode(['export' => ['view_id' => $this->id]]))
+            new Response(200, [], json_encode(['export' => ['view_id' => $this->id]]))
         ]);
 
         $export = $this->client->views($this->id)->export();
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
-            'endpoint' => 'views/' . $this->id . '/export.json',
+                'method'   => 'GET',
+                'endpoint' => 'views/' . $this->id . '/export.json',
             ]
         );
 
@@ -148,48 +175,17 @@ class ViewsTest extends BasicTest
         $this->assertGreaterThan(0, $export->export->view_id, 'Should return a numeric view_id for export');
     }
 
+    /**
+     * Test previewing of views
+     */
     public function testPreview()
     {
         $postFields = [
-          'all'    => [
-            [
-              'operator' => 'is',
-              'value'    => 'open',
-              'field'    => 'status'
-            ]
-          ],
-          'output' => [
-            'columns' => [ 'subject' ]
-          ]
-        ];
-
-        $this->mockAPIResponses([
-          new Response(200, [], json_encode(['rows' => [], 'columns' => []]))
-        ]);
-
-        $preview = $this->client->views()->preview($postFields);
-
-        $this->assertLastRequestIs(
-            [
-            'method' => 'POST',
-            'endpoint' => 'views/preview.json',
-            'postFields' => [Views::OBJ_NAME => $postFields]
-            ]
-        );
-
-        $this->assertEquals(is_object($preview), true, 'Should return an object');
-        $this->assertEquals(is_array($preview->rows), true, 'Should return an array of objects called "rows"');
-        $this->assertEquals(is_array($preview->columns), true, 'Should return an array of objects called "columns"');
-    }
-
-    public function testPreviewCount()
-    {
-        $postFields = [
-            'all' => [
+            'all'    => [
                 [
                     'operator' => 'is',
-                    'value' => 'open',
-                    'field' => 'status'
+                    'value'    => 'open',
+                    'field'    => 'status'
                 ]
             ],
             'output' => [
@@ -198,16 +194,53 @@ class ViewsTest extends BasicTest
         ];
 
         $this->mockAPIResponses([
-          new Response(200, [], json_encode(['view_count' => (new \stdClass())]))
+            new Response(200, [], json_encode(['rows' => [], 'columns' => []]))
+        ]);
+
+        $preview = $this->client->views()->preview($postFields);
+
+        $this->assertLastRequestIs(
+            [
+                'method'     => 'POST',
+                'endpoint'   => 'views/preview.json',
+                'postFields' => [Views::OBJ_NAME => $postFields]
+            ]
+        );
+
+        $this->assertEquals(is_object($preview), true, 'Should return an object');
+        $this->assertEquals(is_array($preview->rows), true, 'Should return an array of objects called "rows"');
+        $this->assertEquals(is_array($preview->columns), true, 'Should return an array of objects called "columns"');
+    }
+
+    /**
+     * Test getting the count of a view preview
+     */
+    public function testPreviewCount()
+    {
+        $postFields = [
+            'all'    => [
+                [
+                    'operator' => 'is',
+                    'value'    => 'open',
+                    'field'    => 'status'
+                ]
+            ],
+            'output' => [
+                'columns' => ['subject']
+            ]
+        ];
+
+        $this->mockAPIResponses([
+            new Response(200, [], json_encode(['view_count' => (new \stdClass())]))
         ]);
 
         $preview = $this->client->views()->previewCount($postFields);
 
         $this->assertLastRequestIs(
             [
-            'method' => 'POST',
-            'endpoint' => 'views/preview/count.json',
-            'postFields' => [Views::OBJ_NAME => $postFields],
+                'method'     => 'POST',
+                'endpoint'   => 'views/preview/count.json',
+                'postFields' => [Views::OBJ_NAME => $postFields],
             ]
         );
 
@@ -215,18 +248,21 @@ class ViewsTest extends BasicTest
         $this->assertEquals(is_object($preview->view_count), true, 'Should return an object called "view_count"');
     }
 
+    /**
+     * @throws \Zendesk\API\Exceptions\MissingParametersException
+     */
     public function testGetTickets()
     {
         $this->mockAPIResponses([
-          new Response(200, [], json_encode(['tickets' => ['id' => $this->id]]))
+            new Response(200, [], json_encode(['tickets' => ['id' => $this->id]]))
         ]);
 
         $preview = $this->client->views($this->id)->tickets();
 
         $this->assertLastRequestIs(
             [
-            'method' => 'GET',
-            'endpoint' => "views/{$this->id}/tickets.json",
+                'method'   => 'GET',
+                'endpoint' => "views/{$this->id}/tickets.json",
             ]
         );
 

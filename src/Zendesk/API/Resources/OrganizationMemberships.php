@@ -2,21 +2,27 @@
 
 namespace Zendesk\API\Resources;
 
-use Zendesk\API\BulkTraits\BulkCreateTrait;
-use Zendesk\API\BulkTraits\BulkDeleteTrait;
 use Zendesk\API\Exceptions\MissingParametersException;
-use Zendesk\API\UtilityTraits\InstantiatorTrait;
+use Zendesk\API\Traits\Resource\CreateMany;
+use Zendesk\API\Traits\Resource\Defaults;
+use Zendesk\API\Traits\Resource\DeleteMany;
+use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 class OrganizationMemberships extends ResourceAbstract
 {
-    use BulkCreateTrait;
-    use BulkDeleteTrait;
-
     const OBJ_NAME = 'organization_membership';
     const OBJ_NAME_PLURAL = 'organization_memberships';
 
     use InstantiatorTrait;
 
+    use Defaults;
+
+    use CreateMany;
+    use DeleteMany;
+
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         parent::setUpRoutes();

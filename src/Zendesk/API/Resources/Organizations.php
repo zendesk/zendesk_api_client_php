@@ -2,12 +2,13 @@
 
 namespace Zendesk\API\Resources;
 
-use Zendesk\API\BulkTraits\BulkCreateTrait;
-use Zendesk\API\BulkTraits\BulkDeleteTrait;
-use Zendesk\API\BulkTraits\BulkFindTrait;
-use Zendesk\API\BulkTraits\BulkUpdateTrait;
 use Zendesk\API\Http;
-use Zendesk\API\UtilityTraits\InstantiatorTrait;
+use Zendesk\API\Traits\Resource\CreateMany;
+use Zendesk\API\Traits\Resource\Defaults;
+use Zendesk\API\Traits\Resource\DeleteMany;
+use Zendesk\API\Traits\Resource\FindMany;
+use Zendesk\API\Traits\Resource\UpdateMany;
+use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
  * Class Organizations
@@ -18,10 +19,13 @@ class Organizations extends ResourceAbstract
     const OBJ_NAME_PLURAL = 'organizations';
 
     use InstantiatorTrait;
-    use BulkFindTrait;
-    use BulkCreateTrait;
-    use BulkUpdateTrait;
-    use BulkDeleteTrait;
+
+    use Defaults;
+
+    use CreateMany;
+    use DeleteMany;
+    use FindMany;
+    use UpdateMany;
 
     /**
      * {@inheritdoc}

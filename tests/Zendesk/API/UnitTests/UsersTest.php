@@ -111,7 +111,7 @@ class UsersTest extends BasicTest
         $this->assertGreaterThan(0, $user->user->id, 'Should return a numeric id for user');
     }
 
-    public function testFindMultiple()
+    public function testFindManyUsingIds()
     {
         $findIds  = [12345, 80085];
         $response = [
@@ -125,36 +125,7 @@ class UsersTest extends BasicTest
             new Response(200, [], json_encode($response))
         ]);
 
-        $users = $this->client->users($findIds)->findMany();
-
-        $this->assertLastRequestIs(
-            [
-                'method'      => 'GET',
-                'endpoint'    => 'users/show_many.json',
-                'queryParams' => ['ids' => implode(",", [$findIds[0], $findIds[1]])],
-            ]
-        );
-        $this->assertEquals(is_object($users), true, 'Should return an object');
-        $this->assertEquals(is_array($users->users), true, 'Should return an array called "users"');
-        $this->assertEquals($users->users[0]->id, $findIds[0]);
-        $this->assertEquals($users->users[1]->id, $findIds[1]);
-    }
-
-    public function testShowManyUsingIds()
-    {
-        $findIds  = [12345, 80085];
-        $response = [
-            'users' => [
-                ['id' => $findIds[0]],
-                ['id' => $findIds[1]],
-            ]
-        ];
-
-        $this->mockAPIResponses([
-            new Response(200, [], json_encode($response))
-        ]);
-
-        $users = $this->client->users()->showMany(['ids' => $findIds]);
+        $users = $this->client->users()->findMany(['ids' => $findIds]);
 
         $this->assertEquals(is_object($users), true, 'Should return an object');
         $this->assertEquals(is_array($users->users), true, 'Should return an array called "users"');
@@ -165,7 +136,7 @@ class UsersTest extends BasicTest
         );
     }
 
-    public function testShowManyUsingExternalIds()
+    public function testFindManyUsingExternalIds()
     {
         $findIds  = [12345, 80085];
         $response = [
@@ -179,7 +150,7 @@ class UsersTest extends BasicTest
             new Response(200, [], json_encode($response))
         ]);
 
-        $users = $this->client->users()->showMany(['external_ids' => $findIds]);
+        $users = $this->client->users()->findMany(['external_ids' => $findIds]);
 
         $this->assertLastRequestIs(
             [

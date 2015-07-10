@@ -4,8 +4,14 @@ namespace Zendesk\API\Resources;
 
 use Zendesk\API\Exceptions\MissingParametersException;
 
+/**
+ * Class Search
+ */
 class Search extends ResourceAbstract
 {
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         $this->setRoutes(
@@ -25,6 +31,7 @@ class Search extends ResourceAbstract
      * @param null  $query
      * @param array $queryParams
      *
+     * @return array
      * @throws MissingParametersException
      * @throws \Zendesk\API\Exceptions\RouteException
      */
@@ -39,6 +46,17 @@ class Search extends ResourceAbstract
         return $this->client->get($this->getRoute(__FUNCTION__), $queryParams);
     }
 
+    /**
+     * This resource behaves the same as /api/v2/search, but lets anonymous users search public forums in the Web
+     * portal. The endpoint searches only articles, not tickets, and returns only articles that
+     * the requesting user is allowed to see.
+     *
+     * @param       $query
+     * @param array $queryParams
+     *
+     * @return array
+     * @throws \Zendesk\API\Exceptions\RouteException
+     */
     public function anonymous($query, $queryParams = [])
     {
         $queryParams['query'] = $query;

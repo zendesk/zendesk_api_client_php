@@ -2,7 +2,7 @@
 
 namespace Zendesk\API\Resources;
 
-use Zendesk\API\UtilityTraits\InstantiatorTrait;
+use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
  * Class DynamicContent
@@ -21,13 +21,5 @@ class DynamicContent extends ResourceAbstract
         return [
             'items' => DynamicContentItems::class,
         ];
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    protected function setUpRoutes()
-    {
-        // Empty routes, this class serves as a possible entry point to dynamic content items
     }
 }
