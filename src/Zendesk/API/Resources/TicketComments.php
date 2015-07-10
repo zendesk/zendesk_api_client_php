@@ -4,18 +4,23 @@ namespace Zendesk\API\Resources;
 
 use Zendesk\API\Exceptions\CustomException;
 use Zendesk\API\Exceptions\MissingParametersException;
+use Zendesk\API\Traits\Resource\FindAll;
 
 /**
  * The TicketComments class exposes comment methods for tickets
- *
- * @package Zendesk\API
  */
 class TicketComments extends ResourceAbstract
 {
-
     const OBJ_NAME = 'comment';
     const OBJ_NAME_PLURAL = 'comments';
 
+    use FindAll {
+        findAll as traitFindAll;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         $this->setRoutes(
@@ -40,11 +45,11 @@ class TicketComments extends ResourceAbstract
     {
         $queryParams = $this->addChainedParametersToParams($queryParams, ['ticket_id' => Tickets::class]);
 
-        if (!$this->hasKeys($queryParams, ['ticket_id'])) {
+        if (! $this->hasKeys($queryParams, ['ticket_id'])) {
             throw new MissingParametersException(__METHOD__, ['ticket_id']);
         }
 
-        return parent::findAll($queryParams);
+        return $this->traitFindAll($queryParams);
     }
 
     /**
@@ -64,7 +69,7 @@ class TicketComments extends ResourceAbstract
             ['id' => get_class($this), 'ticket_id' => Tickets::class]
         );
 
-        if (!$this->hasKeys($params, ['id', 'ticket_id'])) {
+        if (! $this->hasKeys($params, ['id', 'ticket_id'])) {
             throw new MissingParametersException(__METHOD__, ['id', 'ticket_id']);
         }
 
@@ -85,6 +90,6 @@ class TicketComments extends ResourceAbstract
     public function find($id = null, array $queryQueryParams = [])
     {
         throw new CustomException('Method ' . __METHOD__
-            . ' does not exist. Try $client->ticket(ticket_id)->comments()->findAll() instead.');
+                                  . ' does not exist. Try $client->ticket(ticket_id)->comments()->findAll() instead.');
     }
 }

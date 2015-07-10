@@ -2,8 +2,12 @@
 
 namespace Zendesk\API\Resources;
 
-use Zendesk\API\UtilityTraits\InstantiatorTrait;
+use Zendesk\API\Traits\Resource\Defaults;
+use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
+/**
+ * Class Groups
+ */
 class Groups extends ResourceAbstract
 {
     const OBJ_NAME = 'group';
@@ -11,6 +15,11 @@ class Groups extends ResourceAbstract
 
     use InstantiatorTrait;
 
+    use Defaults;
+
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         parent::setUpRoutes();

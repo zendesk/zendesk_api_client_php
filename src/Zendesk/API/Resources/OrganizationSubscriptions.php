@@ -2,8 +2,12 @@
 
 namespace Zendesk\API\Resources;
 
+use Zendesk\API\Traits\Resource\Defaults;
+
 class OrganizationSubscriptions extends ResourceAbstract
 {
+    use Defaults;
+
     /**
      * Returns a route and replaces tokenized parts of the string with
      * the passed params

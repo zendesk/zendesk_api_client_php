@@ -5,14 +5,23 @@ namespace Zendesk\API\Resources;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Http;
+use Zendesk\API\Traits\Resource\Defaults;
 
+/**
+ * Class TicketForms
+ */
 class TicketForms extends ResourceAbstract
 {
+    use Defaults;
+
     const OBJ_NAME = 'ticket_forms';
     const OBJ_NAME_PLURAL = 'ticket_forms';
 
     protected $resourceName = 'ticket_forms';
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         parent::setUpRoutes();
@@ -30,7 +39,7 @@ class TicketForms extends ResourceAbstract
      *
      * @throws MissingParametersException
      * @throws ResponseException
-     * @throws Zendesk\API\Exceptions\MissingParametersException
+     * @throws MissingParametersException
      * @return mixed
      */
     public function cloneForm($id = null)

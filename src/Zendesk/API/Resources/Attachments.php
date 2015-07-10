@@ -5,6 +5,8 @@ namespace Zendesk\API\Resources;
 use Zendesk\API\Exceptions\CustomException;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Http;
+use Zendesk\API\Traits\Resource\Find;
+use Zendesk\API\Traits\Resource\Delete;
 
 /**
  * The Attachments class exposes methods for uploading and retrieving attachments
@@ -12,13 +14,17 @@ use Zendesk\API\Http;
  */
 class Attachments extends ResourceAbstract
 {
+    use Delete;
+    use Find;
+
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         $this->setRoutes([
             'upload'       => "uploads.json",
             'deleteUpload' => "uploads/{token}.json",
-            'delete'       => "{$this->resourceName}/{id}.json",
-            'find'         => "{$this->resourceName}/{id}.json",
         ]);
     }
 

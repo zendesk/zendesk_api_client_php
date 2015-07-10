@@ -4,19 +4,29 @@ namespace Zendesk\API\Resources;
 
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Http;
+use Zendesk\API\Traits\Resource\Defaults;
 
 /**
  * The UserIdentities class exposes fields on the user profile page
- * @package Zendesk\API
  */
 class UserIdentities extends ResourceAbstract
 {
-
     const OBJ_NAME = 'identity';
     const OBJ_NAME_PLURAL = 'identities';
 
+    use Defaults {
+        findAll as traitFindAll;
+        find as traitFind;
+        create as traitCreate;
+        update as traitUpdate;
+        delete as traitDelete;
+    }
+
     protected $resourceName = 'identities';
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         $this->setRoutes([
@@ -39,7 +49,7 @@ class UserIdentities extends ResourceAbstract
     {
         $this->addUserIdToRouteParams($params);
 
-        return parent::findAll($params);
+        return $this->traitFindAll($params);
     }
 
     /**
@@ -49,7 +59,7 @@ class UserIdentities extends ResourceAbstract
     {
         $this->addUserIdToRouteParams($queryParams);
 
-        return parent::find($id, $queryParams);
+        return $this->traitFind($id, $queryParams);
     }
 
     /**
@@ -59,7 +69,7 @@ class UserIdentities extends ResourceAbstract
     {
         $this->addUserIdToRouteParams($params);
 
-        return parent::create($params);
+        return $this->traitCreate($params);
     }
 
     /**
@@ -69,7 +79,7 @@ class UserIdentities extends ResourceAbstract
     {
         $this->addUserIdToRouteParams($updateResourceFields);
 
-        return parent::update($id, $updateResourceFields);
+        return $this->traitUpdate($id, $updateResourceFields);
     }
 
     /**
@@ -79,7 +89,7 @@ class UserIdentities extends ResourceAbstract
     {
         $this->addUserIdToRouteParams([]);
 
-        return parent::delete($id);
+        return $this->traitDelete($id);
     }
 
     /**
