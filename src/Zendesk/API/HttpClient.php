@@ -14,6 +14,7 @@ use Zendesk\API\Resources\Attachments;
 use Zendesk\API\Resources\AuditLogs;
 use Zendesk\API\Resources\Autocomplete;
 use Zendesk\API\Resources\Automations;
+use Zendesk\API\Resources\Brands;
 use Zendesk\API\Resources\CustomRoles;
 use Zendesk\API\Resources\DynamicContent;
 use Zendesk\API\Resources\GroupMemberships;
@@ -166,6 +167,7 @@ class HttpClient
             'auditLogs'                 => AuditLogs::class,
             'autocomplete'              => Autocomplete::class,
             'automations'               => Automations::class,
+            'brands'                    => Brands::class,
             'customRoles'               => CustomRoles::class,
             'dynamicContent'            => DynamicContent::class,
             'groupMemberships'          => GroupMemberships::class,

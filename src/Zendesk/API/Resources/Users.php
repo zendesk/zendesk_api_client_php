@@ -141,9 +141,8 @@ class Users extends ResourceAbstract
      * @throws \Exception
      * @return mixed
      */
-    public function related(
-        array $params = []
-    ) {
+    public function related(array $params = [])
+    {
         $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
 
         if (! $this->hasKeys($params, ['id'])) {
@@ -170,9 +169,8 @@ class Users extends ResourceAbstract
      * @throws \Exception
      * @return mixed
      */
-    public function merge(
-        array $params = []
-    ) {
+    public function merge(array $params = [])
+    {
         $myId    = $this->getChainedParameter(get_class($this));
         $mergeMe = ! isset($myId) || is_null($myId);
         $hasKeys = $mergeMe ? ['email', 'password'] : ['id'];
@@ -198,9 +196,8 @@ class Users extends ResourceAbstract
      * @throws ResponseException
      * @return mixed
      */
-    public function suspend(
-        array $params = []
-    ) {
+    public function suspend(array $params = [])
+    {
         $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
         if (! $this->hasKeys($params, ['id'])) {
             throw new MissingParametersException(__METHOD__, ['id']);
@@ -219,9 +216,8 @@ class Users extends ResourceAbstract
      * @throws \Exception
      * @return mixed
      */
-    public function search(
-        array $params
-    ) {
+    public function search(array $params)
+    {
         $queryParams = isset($params['query']) ? ['query' => $params['query']] : [];
         $extraParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
 
@@ -237,9 +233,8 @@ class Users extends ResourceAbstract
      * @throws \Exception
      * @return mixed
      */
-    public function autocomplete(
-        array $params
-    ) {
+    public function autocomplete(array $params)
+    {
         $response = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__),
@@ -260,9 +255,8 @@ class Users extends ResourceAbstract
      * @throws \Exception
      * @return mixed
      */
-    public function updateProfileImageFromFile(
-        array $params
-    ) {
+    public function updateProfileImageFromFile(array $params)
+    {
         $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
 
         if (! $this->hasKeys($params, ['id', 'file'])) {
@@ -305,9 +299,8 @@ class Users extends ResourceAbstract
      * @throws \Exception
      * @return mixed
      */
-    public function updateProfileImageFromUrl(
-        array $params
-    ) {
+    public function updateProfileImageFromUrl(array $params)
+    {
         if (! isset($params['id']) || empty($params['id'])) {
             $params = $this->addChainedParametersToParams($params, ['id' => self::class]);
         }
@@ -336,9 +329,8 @@ class Users extends ResourceAbstract
      * @throws ResponseException
      * @return mixed
      */
-    public function me(
-        array $params = []
-    ) {
+    public function me(array $params = [])
+    {
         $params['id'] = 'me';
 
         return $this->find($params['id']);
@@ -354,9 +346,8 @@ class Users extends ResourceAbstract
      * @throws \Exception
      * @return mixed
      */
-    public function setPassword(
-        array $params
-    ) {
+    public function setPassword(array $params)
+    {
         $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
         if (! $this->hasKeys($params, ['id', 'password'])) {
             throw new MissingParametersException(__METHOD__, ['id', 'password']);
@@ -377,9 +368,8 @@ class Users extends ResourceAbstract
      * @throws \Exception
      * @return mixed
      */
-    public function changePassword(
-        array $params
-    ) {
+    public function changePassword(array $params)
+    {
         $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
         if (! $this->hasKeys($params, ['id', 'previous_password', 'password'])) {
             throw new MissingParametersException(__METHOD__, ['id', 'previous_password', 'password']);
