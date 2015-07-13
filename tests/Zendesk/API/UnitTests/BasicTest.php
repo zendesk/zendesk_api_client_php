@@ -169,7 +169,7 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf(MultipartStream::class, $body);
             $this->assertGreaterThan(0, $body->getSize());
             $this->assertNotEmpty($header = $request->getHeader('Content-Type'));
-            $this->assertContains('multipart/form-data', $header);
+            $this->assertContains('multipart/form-data', $header[0]);
         }
 
         if (isset($options['file'])) {
