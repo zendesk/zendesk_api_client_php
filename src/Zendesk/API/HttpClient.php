@@ -16,6 +16,7 @@ use Zendesk\API\Resources\DynamicContent;
 use Zendesk\API\Resources\Groups;
 use Zendesk\API\Resources\JobStatuses;
 use Zendesk\API\Resources\Macros;
+use Zendesk\API\Resources\OAuthClients;
 use Zendesk\API\Resources\OrganizationFields;
 use Zendesk\API\Resources\OrganizationMemberships;
 use Zendesk\API\Resources\Organizations;
@@ -39,6 +40,7 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
  * @method Users users()
  * @method Tags tags()
  * @method Macros macros()
+ * @method OAuthClients oauthClients()
  * @method Attachments attachemnts()
  * @method Groups groups()
  * @method Automations automations()
@@ -151,6 +153,7 @@ class HttpClient
             'groups'                    => Groups::class,
             'jobStatuses'               => JobStatuses::class,
             'macros'                    => Macros::class,
+            'oauthClients'              => OAuthClients::class,
             'organizationFields'        => OrganizationFields::class,
             'organizationMemberships'   => OrganizationMemberships::class,
             'organizations'             => Organizations::class,
