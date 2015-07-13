@@ -14,6 +14,7 @@ use Zendesk\API\Resources\AuditLogs;
 use Zendesk\API\Resources\Automations;
 use Zendesk\API\Resources\CustomRoles;
 use Zendesk\API\Resources\DynamicContent;
+use Zendesk\API\Resources\GroupMemberships;
 use Zendesk\API\Resources\Groups;
 use Zendesk\API\Resources\JobStatuses;
 use Zendesk\API\Resources\Locales;
@@ -48,6 +49,7 @@ use Zendesk\API\Utilities\Auth;
  * @method Macros macros()
  * @method OAuthClients oauthClients()
  * @method Attachments attachemnts()
+ * @method GroupMemberships groupMemberships()
  * @method Groups groups()
  * @method Automations automations()
  * @method Triggers triggers()
@@ -159,6 +161,7 @@ class HttpClient
             'automations'               => Automations::class,
             'customRoles'               => CustomRoles::class,
             'dynamicContent'            => DynamicContent::class,
+            'groupMemberships'          => GroupMemberships::class,
             'groups'                    => Groups::class,
             'jobStatuses'               => JobStatuses::class,
             'locales'                   => Locales::class,
