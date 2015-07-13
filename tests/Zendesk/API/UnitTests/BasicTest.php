@@ -8,6 +8,7 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\LazyOpenStream;
 use GuzzleHttp\Psr7\MultipartStream;
+use GuzzleHttp\Psr7\Response;
 use Zendesk\API\HttpClient;
 
 /**
@@ -177,5 +178,32 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
             $this->assertGreaterThan(0, $body->getSize());
             $this->assertEquals($options['file'], $body->getMetadata('uri'));
         }
+    }
+
+    /**
+     * Test for the endpoint using the given method and endpoint
+     *
+     * @param $classMethod - An array containing [resource name, method name]
+     * @param $endpoint    - An array containing [request method, endpoint path]
+     */
+    protected function assertEndpointCalled($classMethod, $endpoint)
+    {
+        $this->mockAPIResponses([
+            new Response(200, [], '')
+        ]);
+
+        $queryParams = [
+            'start_time' => 1332034771,
+        ];
+
+        $this->client->$classMethod[0]()->$classMethod[1]($queryParams);
+
+        $this->assertLastRequestIs(
+            [
+                'method'      => $endpoint[0],
+                'endpoint'    => $endpoint[1],
+                'queryParams' => $queryParams,
+            ]
+        );
     }
 }
