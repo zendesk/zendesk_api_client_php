@@ -3,16 +3,16 @@
 namespace Zendesk\API\UnitTests;
 
 /**
- * Locals test class
+ * Locales test class
  */
-class LocalsTest extends BasicTest
+class LocalesTest extends BasicTest
 {
     /**
      * Test findAllPublic method
      */
     public function testFindAllPublic()
     {
-        $this->endpointTest('GET', 'findAllPublic', 'locales/public.json');
+        $this->endpointTest('GET', ['locales', 'findAllPublic'], 'locales/public.json');
     }
 
     /**
@@ -20,7 +20,7 @@ class LocalsTest extends BasicTest
      */
     public function testFindAllAgent()
     {
-        $this->endpointTest('GET', 'findAllAgent', 'locales/agent.json');
+        $this->endpointTest('GET', ['locales', 'findAllAgent'], 'locales/agent.json');
     }
 
     /**
@@ -28,7 +28,7 @@ class LocalsTest extends BasicTest
      */
     public function testFindCurrent()
     {
-        $this->endpointTest('GET', 'findCurrent', 'locales/current.json');
+        $this->endpointTest('GET', ['locales', 'findCurrent'], 'locales/current.json');
     }
 
     /**
@@ -36,6 +36,6 @@ class LocalsTest extends BasicTest
      */
     public function testFindBest()
     {
-        $this->endpointTest('GET', 'findBest', 'locales/detect_best_locale.json');
+        $this->endpointTest('GET', ['locales', 'findBest'], 'locales/detect_best_locale.json');
     }
 }
