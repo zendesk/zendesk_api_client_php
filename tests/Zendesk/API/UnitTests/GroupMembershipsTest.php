@@ -19,7 +19,7 @@ class GroupMembershipsTest extends BasicTest
         ]);
 
         // GET /api/v2/groups/{group_id}/memberships.json
-        $this->client->groups(123)->groupMemberships()->findAll();
+        $this->client->groups(123)->memberships()->findAll();
 
         $this->assertLastRequestIs([
             'method'   => 'GET',
@@ -56,7 +56,7 @@ class GroupMembershipsTest extends BasicTest
         $queryParams = ['per_page' => 20];
 
         // GET /api/v2/groups/{group_id}/memberships/assignable.json
-        $this->client->groups(123)->groupMemberships()->assignable($queryParams);
+        $this->client->groups(123)->memberships()->assignable($queryParams);
 
         $this->assertLastRequestIs([
             'method'      => 'GET',

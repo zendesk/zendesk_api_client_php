@@ -7,6 +7,8 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
  * Class Groups
+ *
+ * @method GroupMemberships memberships()
  */
 class Groups extends ResourceAbstract
 {
@@ -23,7 +25,7 @@ class Groups extends ResourceAbstract
     public static function getValidSubResources()
     {
         return [
-            'groupMemberships' => GroupMemberships::class,
+            'memberships' => GroupMemberships::class,
         ];
     }
 
