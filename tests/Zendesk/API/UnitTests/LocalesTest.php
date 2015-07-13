@@ -2,6 +2,8 @@
 
 namespace Zendesk\API\UnitTests;
 
+use GuzzleHttp\Psr7\Response;
+
 /**
  * Locals test class
  */
@@ -12,7 +14,7 @@ class LocalsTest extends BasicTest
      */
     public function testFindAllPublic()
     {
-        $this->endpointTest('GET', 'findAllPublic', 'locales/public.json');
+        $this->getEndpointTest('findAllPublic', 'locales/public.json');
     }
 
     /**
@@ -20,7 +22,7 @@ class LocalsTest extends BasicTest
      */
     public function testFindAllAgent()
     {
-        $this->endpointTest('GET', 'findAllAgent', 'locales/agent.json');
+        $this->getEndpointTest('findAllAgent', 'locales/agent.json');
     }
 
     /**
@@ -28,7 +30,7 @@ class LocalsTest extends BasicTest
      */
     public function testFindCurrent()
     {
-        $this->endpointTest('GET', 'findCurrent', 'locales/current.json');
+        $this->getEndpointTest('findCurrent', 'locales/current.json');
     }
 
     /**
@@ -36,6 +38,28 @@ class LocalsTest extends BasicTest
      */
     public function testFindBest()
     {
-        $this->endpointTest('GET', 'findBest', 'locales/detect_best_locale.json');
+        $this->getEndpointTest('findBest', 'locales/detect_best_locale.json');
+    }
+
+    /**
+     * Test for the get endpoint using the given method and endpoint
+     *
+     * @param $method
+     * @param $endpoint
+     */
+    private function getEndpointTest($method, $endpoint)
+    {
+        $this->mockAPIResponses([
+            new Response(200, [], '')
+        ]);
+
+        $this->client->locales()->$method();
+
+        $this->assertLastRequestIs(
+            [
+                'method'   => 'GET',
+                'endpoint' => $endpoint,
+            ]
+        );
     }
 }
