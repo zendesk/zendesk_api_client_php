@@ -12,7 +12,7 @@ class IncrementalExportsTest extends BasicTest
      */
     public function testTickets()
     {
-        $this->endpointTest('GET', 'tickets', 'incremental/tickets.json');
+        $this->endpointTest('GET', ['incrementalExports', 'tickets'], 'incremental/tickets.json');
     }
 
     /**
@@ -21,7 +21,7 @@ class IncrementalExportsTest extends BasicTest
      */
     public function testTicketEvents()
     {
-        $this->endpointTest('GET', 'ticketEvents', 'incremental/ticket_events.json');
+        $this->endpointTest('GET', ['incrementalExports', 'ticketEvents'], 'incremental/ticket_events.json');
     }
 
     /**
@@ -29,7 +29,7 @@ class IncrementalExportsTest extends BasicTest
      */
     public function testOrganizations()
     {
-        $this->endpointTest('GET', 'organizations', 'incremental/organizations.json');
+        $this->endpointTest('GET', ['incrementalExports', 'organizations'], 'incremental/organizations.json');
     }
 
     /**
@@ -37,6 +37,6 @@ class IncrementalExportsTest extends BasicTest
      */
     public function testUsers()
     {
-        $this->endpointTest('GET', 'users', 'incremental/users.json');
+        $this->endpointTest('GET', ['incrementalExports', 'users'], 'incremental/users.json');
     }
 }
