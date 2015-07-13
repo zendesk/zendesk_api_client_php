@@ -73,6 +73,7 @@ class Users extends ResourceAbstract
     public static function getValidSubResources()
     {
         return [
+            'groupMemberships'          => GroupMemberships::class,
             'groups'                    => Groups::class,
             'identities'                => UserIdentities::class,
             'organizations'             => Organizations::class,

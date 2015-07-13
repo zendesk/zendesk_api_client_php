@@ -20,6 +20,16 @@ class Groups extends ResourceAbstract
     /**
      * {@inheritdoc}
      */
+    public static function getValidSubResources()
+    {
+        return [
+            'groupMemberships' => GroupMemberships::class,
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         parent::setUpRoutes();

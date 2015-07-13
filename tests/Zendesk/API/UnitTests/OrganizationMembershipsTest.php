@@ -148,30 +148,28 @@ class OrganizationMembershipsTest extends BasicTest
 
     public function testCreateMany()
     {
-        {
-            $this->mockAPIResponses([
-                new Response(200, [], '')
-            ]);
+        $this->mockAPIResponses([
+            new Response(200, [], '')
+        ]);
 
-            $postFields = [
-                [
-                    'user_id'         => 72,
-                    'organization_id' => 88,
-                ],
-                [
-                    'user_id'         => 28,
-                    'organization_id' => 88,
-                ],
-            ];
+        $postFields = [
+            [
+                'user_id'         => 72,
+                'organization_id' => 88,
+            ],
+            [
+                'user_id'         => 28,
+                'organization_id' => 88,
+            ],
+        ];
 
-            $this->client->organizationMemberships()->createMany($postFields);
+        $this->client->organizationMemberships()->createMany($postFields);
 
-            $this->assertLastRequestIs([
-                'method'     => 'POST',
-                'endpoint'   => 'organization_memberships/create_many.json',
-                'postFields' => [OrganizationMemberships::OBJ_NAME_PLURAL => $postFields],
-            ]);
-            }
+        $this->assertLastRequestIs([
+            'method'     => 'POST',
+            'endpoint'   => 'organization_memberships/create_many.json',
+            'postFields' => [OrganizationMemberships::OBJ_NAME_PLURAL => $postFields],
+        ]);
     }
 
     public function testDelete()
