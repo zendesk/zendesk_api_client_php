@@ -184,7 +184,7 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
      * Test for the endpoint using the given method and endpoint
      *
      * @param $requestMethod
-     * @param $classMethod - An array containing [resourceName, methodName]
+     * @param $classMethod
      * @param $endpoint
      */
     protected function endpointTest($requestMethod, $classMethod, $endpoint)
@@ -197,7 +197,7 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
             'start_time' => 1332034771,
         ];
 
-        $this->client->$classMethod[0]()->$classMethod[1]($queryParams);
+        $this->client->incrementalExports()->$classMethod($queryParams);
 
         $this->assertLastRequestIs(
             [
