@@ -9,6 +9,7 @@ namespace Zendesk\API;
 
 use Zendesk\API\Exceptions\AuthException;
 use Zendesk\API\Resources\Activities;
+use Zendesk\API\Resources\AppInstallations;
 use Zendesk\API\Resources\Attachments;
 use Zendesk\API\Resources\AuditLogs;
 use Zendesk\API\Resources\Automations;
@@ -61,6 +62,7 @@ use Zendesk\API\Utilities\Auth;
  * @method DynamicContent dynamicContent()
  * @method Organizations organizations()
  * @method Activities activities()
+ * @method AppInstallations appInstallations()
  * @method CustomRoles customRoles()
  */
 class HttpClient
@@ -156,6 +158,7 @@ class HttpClient
     {
         return [
             'activities'                => Activities::class,
+            'appInstallations'          => AppInstallations::class,
             'attachments'               => Attachments::class,
             'auditLogs'                 => AuditLogs::class,
             'automations'               => Automations::class,
