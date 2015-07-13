@@ -2,6 +2,8 @@
 
 namespace Zendesk\API\UnitTests;
 
+use GuzzleHttp\Psr7\Response;
+
 /**
  * Class IncrementalExportsTest
  */
@@ -12,7 +14,7 @@ class IncrementalExportsTest extends BasicTest
      */
     public function testTickets()
     {
-        $this->endpointTest('GET', 'tickets', 'incremental/tickets.json');
+        $this->getEndpointTest('tickets', 'incremental/tickets.json');
     }
 
     /**
@@ -21,7 +23,7 @@ class IncrementalExportsTest extends BasicTest
      */
     public function testTicketEvents()
     {
-        $this->endpointTest('GET', 'ticketEvents', 'incremental/ticket_events.json');
+        $this->getEndpointTest('ticketEvents', 'incremental/ticket_events.json');
     }
 
     /**
@@ -29,7 +31,7 @@ class IncrementalExportsTest extends BasicTest
      */
     public function testOrganizations()
     {
-        $this->endpointTest('GET', 'organizations', 'incremental/organizations.json');
+        $this->getEndpointTest('organizations', 'incremental/organizations.json');
     }
 
     /**
@@ -37,6 +39,33 @@ class IncrementalExportsTest extends BasicTest
      */
     public function testUsers()
     {
-        $this->endpointTest('GET', 'users', 'incremental/users.json');
+        $this->getEndpointTest('users', 'incremental/users.json');
+    }
+
+    /**
+     * Test for the get endpoint using the given method and endpoint
+     *
+     * @param $method
+     * @param $endpoint
+     */
+    private function getEndpointTest($method, $endpoint)
+    {
+        $this->mockAPIResponses([
+            new Response(200, [], '')
+        ]);
+
+        $queryParams = [
+            'start_time' => 1332034771,
+        ];
+
+        $this->client->incrementalExports()->$method($queryParams);
+
+        $this->assertLastRequestIs(
+            [
+                'method'      => 'GET',
+                'endpoint'    => $endpoint,
+                'queryParams' => $queryParams,
+            ]
+        );
     }
 }
