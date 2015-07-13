@@ -20,6 +20,7 @@ use Zendesk\API\Resources\OrganizationFields;
 use Zendesk\API\Resources\OrganizationMemberships;
 use Zendesk\API\Resources\Organizations;
 use Zendesk\API\Resources\OrganizationSubscriptions;
+use Zendesk\API\Resources\Requests;
 use Zendesk\API\Resources\Search;
 use Zendesk\API\Resources\Tags;
 use Zendesk\API\Resources\Targets;
@@ -43,6 +44,7 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
  * @method Groups groups()
  * @method Automations automations()
  * @method Triggers triggers()
+ * @method Requests requests()
  * @method Targets targets()
  * @method UserFields userFields()
  * @method AuditLogs auditLogs()
@@ -155,6 +157,7 @@ class HttpClient
             'organizationMemberships'   => OrganizationMemberships::class,
             'organizations'             => Organizations::class,
             'organizationSubscriptions' => OrganizationSubscriptions::class,
+            'requests'                  => Requests::class,
             'search'                    => Search::class,
             'tags'                      => Tags::class,
             'targets'                   => Targets::class,
