@@ -21,6 +21,7 @@ use Zendesk\API\Resources\JobStatuses;
 use Zendesk\API\Resources\Locales;
 use Zendesk\API\Resources\Macros;
 use Zendesk\API\Resources\OAuthClients;
+use Zendesk\API\Resources\OauthTokens;
 use Zendesk\API\Resources\OrganizationFields;
 use Zendesk\API\Resources\OrganizationMemberships;
 use Zendesk\API\Resources\Organizations;
@@ -64,6 +65,7 @@ use Zendesk\API\Utilities\Auth;
  * @method Activities activities()
  * @method AppInstallations appInstallations()
  * @method CustomRoles customRoles()
+ * @method OauthTokens oauthTokens()
  */
 class HttpClient
 {
@@ -170,6 +172,7 @@ class HttpClient
             'locales'                   => Locales::class,
             'macros'                    => Macros::class,
             'oauthClients'              => OAuthClients::class,
+            'oauthTokens'               => OauthTokens::class,
             'organizationFields'        => OrganizationFields::class,
             'organizationMemberships'   => OrganizationMemberships::class,
             'organizations'             => Organizations::class,
