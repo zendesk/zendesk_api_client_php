@@ -183,27 +183,23 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
     /**
      * Test for the endpoint using the given method and endpoint
      *
-     * @param $classMethod - An array containing [resource name, method name]
-     * @param $endpoint    - An array containing [request method, endpoint path]
+     * @param        $userFunction
+     * @param        $endpoint - An array containing [request method, endpoint path]
+     * @param string $method
      */
-    protected function assertEndpointCalled($classMethod, $endpoint)
+    protected function assertEndpointCalled($userFunction, $endpoint, $method = 'GET', $additionalAsserts = [])
     {
         $this->mockAPIResponses([
             new Response(200, [], '')
         ]);
 
-        $queryParams = [
-            'start_time' => 1332034771,
-        ];
-
-        $this->client->$classMethod[0]()->$classMethod[1]($queryParams);
+        call_user_func($userFunction);
 
         $this->assertLastRequestIs(
-            [
-                'method'      => $endpoint[0],
-                'endpoint'    => $endpoint[1],
-                'queryParams' => $queryParams,
-            ]
+            array_merge($additionalAsserts, [
+                'method'   => $method,
+                'endpoint' => $endpoint,
+            ])
         );
     }
 }
