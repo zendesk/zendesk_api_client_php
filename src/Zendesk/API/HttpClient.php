@@ -12,6 +12,7 @@ use Zendesk\API\Resources\Activities;
 use Zendesk\API\Resources\Attachments;
 use Zendesk\API\Resources\AuditLogs;
 use Zendesk\API\Resources\Automations;
+use Zendesk\API\Resources\CustomRoles;
 use Zendesk\API\Resources\DynamicContent;
 use Zendesk\API\Resources\Groups;
 use Zendesk\API\Resources\JobStatuses;
@@ -32,8 +33,8 @@ use Zendesk\API\Resources\Triggers;
 use Zendesk\API\Resources\UserFields;
 use Zendesk\API\Resources\Users;
 use Zendesk\API\Resources\Views;
-use Zendesk\API\Utilities\Auth;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
+use Zendesk\API\Utilities\Auth;
 
 /**
  * Client class, base level access
@@ -58,6 +59,7 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
  * @method DynamicContent dynamicContent()
  * @method Organizations organizations()
  * @method Activities activities()
+ * @method CustomRoles customRoles()
  */
 class HttpClient
 {
@@ -155,6 +157,7 @@ class HttpClient
             'attachments'               => Attachments::class,
             'auditLogs'                 => AuditLogs::class,
             'automations'               => Automations::class,
+            'customRoles'               => CustomRoles::class,
             'dynamicContent'            => DynamicContent::class,
             'groups'                    => Groups::class,
             'jobStatuses'               => JobStatuses::class,
