@@ -17,6 +17,7 @@ use Zendesk\API\Resources\CustomRoles;
 use Zendesk\API\Resources\DynamicContent;
 use Zendesk\API\Resources\GroupMemberships;
 use Zendesk\API\Resources\Groups;
+use Zendesk\API\Resources\Incremental;
 use Zendesk\API\Resources\JobStatuses;
 use Zendesk\API\Resources\Locales;
 use Zendesk\API\Resources\Macros;
@@ -41,31 +42,30 @@ use Zendesk\API\Utilities\Auth;
 
 /**
  * Client class, base level access
+ *
+ * @method Activities activities()
+ * @method Attachments attachments()
+ * @method AuditLogs auditLogs()
+ * @method Automations automations()
  * @method Debug debug()
- * @method Tickets ticket()
- * @method TicketImports ticketImports()
- * @method Views views()
- * @method Users users()
- * @method Tags tags()
+ * @method DynamicContent dynamicContent()
+ * @method Groups groups()
+ * @method Incremental incremental()
  * @method Locales locales()
  * @method Macros macros()
  * @method OAuthClients oauthClients()
- * @method Attachments attachemnts()
- * @method GroupMemberships groupMemberships()
- * @method Groups groups()
- * @method Automations automations()
- * @method Triggers triggers()
- * @method Requests requests()
- * @method Targets targets()
- * @method UserFields userFields()
- * @method AuditLogs auditLogs()
  * @method OrganizationFields organizationFields()
- * @method DynamicContent dynamicContent()
  * @method Organizations organizations()
- * @method Activities activities()
- * @method AppInstallations appInstallations()
- * @method CustomRoles customRoles()
- * @method OAuthTokens oauthTokens()
+ * @method Requests requests()
+ * @method Tags tags()
+ * @method Targets targets()
+ * @method Tickets ticket()
+ * @method TicketImports ticketImports()
+ * @method Triggers triggers()
+ * @method UserFields userFields()
+ * @method Users users()
+ * @method Views views()
+ *
  */
 class HttpClient
 {
@@ -168,6 +168,7 @@ class HttpClient
             'dynamicContent'            => DynamicContent::class,
             'groupMemberships'          => GroupMemberships::class,
             'groups'                    => Groups::class,
+            'incremental'               => Incremental::class,
             'jobStatuses'               => JobStatuses::class,
             'locales'                   => Locales::class,
             'macros'                    => Macros::class,
