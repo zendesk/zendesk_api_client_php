@@ -2,8 +2,6 @@
 
 namespace Zendesk\API\UnitTests;
 
-use GuzzleHttp\Psr7\Response;
-
 /**
  * Class IncrementalExportsTest
  */
@@ -14,7 +12,13 @@ class IncrementalExportsTest extends BasicTest
      */
     public function testTickets()
     {
-        $this->getEndpointTest('tickets', 'incremental/tickets.json');
+        $queryParams = [
+            'start_time' => 1332034771,
+        ];
+
+        $this->assertEndpointCalled(function () use ($queryParams) {
+            $this->client->incremental()->tickets($queryParams);
+        }, 'incremental/tickets.json', 'GET', ['queryParams' => $queryParams]);
     }
 
     /**
@@ -23,7 +27,13 @@ class IncrementalExportsTest extends BasicTest
      */
     public function testTicketEvents()
     {
-        $this->getEndpointTest('ticketEvents', 'incremental/ticket_events.json');
+        $queryParams = [
+            'start_time' => 1332034771,
+        ];
+
+        $this->assertEndpointCalled(function () use ($queryParams) {
+            $this->client->incremental()->ticketEvents($queryParams);
+        }, 'incremental/ticket_events.json', 'GET', ['queryParams' => $queryParams]);
     }
 
     /**
@@ -31,7 +41,13 @@ class IncrementalExportsTest extends BasicTest
      */
     public function testOrganizations()
     {
-        $this->getEndpointTest('organizations', 'incremental/organizations.json');
+        $queryParams = [
+            'start_time' => 1332034771,
+        ];
+
+        $this->assertEndpointCalled(function () use ($queryParams) {
+            $this->client->incremental()->organizations($queryParams);
+        }, 'incremental/organizations.json', 'GET', ['queryParams' => $queryParams]);
     }
 
     /**
@@ -39,33 +55,12 @@ class IncrementalExportsTest extends BasicTest
      */
     public function testUsers()
     {
-        $this->getEndpointTest('users', 'incremental/users.json');
-    }
-
-    /**
-     * Test for the get endpoint using the given method and endpoint
-     *
-     * @param $method
-     * @param $endpoint
-     */
-    private function getEndpointTest($method, $endpoint)
-    {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
         $queryParams = [
             'start_time' => 1332034771,
         ];
 
-        $this->client->incrementalExports()->$method($queryParams);
-
-        $this->assertLastRequestIs(
-            [
-                'method'      => 'GET',
-                'endpoint'    => $endpoint,
-                'queryParams' => $queryParams,
-            ]
-        );
+        $this->assertEndpointCalled(function () use ($queryParams) {
+            $this->client->incremental()->users($queryParams);
+        }, 'incremental/users.json', 'GET', ['queryParams' => $queryParams]);
     }
 }

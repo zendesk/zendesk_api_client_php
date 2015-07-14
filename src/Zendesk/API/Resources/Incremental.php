@@ -6,13 +6,8 @@ namespace Zendesk\API\Resources;
  * Class IncrementalExports
  * https://developer.zendesk.com/rest_api/docs/core/incremental_export
  */
-class IncrementalExports extends ResourceAbstract
+class Incremental extends ResourceAbstract
 {
-    /**
-     * @var String
-     */
-    protected $resourceName = 'incremental';
-
     /**
      * {@inheritdoc}
      */
