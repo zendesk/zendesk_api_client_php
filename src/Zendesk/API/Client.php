@@ -219,6 +219,10 @@ class Client
      */
     protected $suspendedTickets;
     /**
+     * @var SuspendedTickets
+     */
+    protected $sessions;
+    /**
      * @var Tags
      */
     protected $tags;
@@ -298,6 +302,7 @@ class Client
         $this->search = new Search($this);
         $this->sharingAgreements = new SharingAgreements($this);
         $this->suspendedTickets = new SuspendedTickets($this);
+        $this->sessions = new Sessions($this);
         $this->tags = new Tags($this);
         $this->targets = new Targets($this);
         $this->triggers = new Triggers($this);
