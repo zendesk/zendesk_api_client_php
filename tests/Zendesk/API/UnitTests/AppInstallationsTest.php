@@ -2,7 +2,6 @@
 
 namespace Zendesk\API\UnitTests;
 
-use GuzzleHttp\Psr7\Response;
 use Zendesk\API\Resources\AppInstallations;
 
 class AppInstallationsTest extends BasicTest
@@ -12,34 +11,23 @@ class AppInstallationsTest extends BasicTest
      */
     public function testResourceNameIsCorrectRoute()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
+        $resourceId = 1;
 
-        $this->client->appInstallations()->find(1);
+        $this->assertEndpointCalled(function () use ($resourceId) {
+            $this->client->appInstallations()->find($resourceId);
+        }, "apps/installations/{$resourceId}.json");
 
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'apps/installations/1.json'
+        $postParams = [
+            'settings' => [
+                'name'      => 'Helpful App - Updated',
+                'api_token' => '659323ngt4ut9an'
             ]
-        );
+        ];
 
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
+        $this->assertEndpointCalled(function () use ($postParams) {
+            $this->client->appInstallations()->create($postParams);
+        }, 'apps/installations.json', 'POST', ['postFields' => [AppInstallations::OBJ_NAME => $postParams]]);
 
-        $postParams = ['settings' => ['name' => 'Helpful App - Updated', 'api_token' => '659323ngt4ut9an']];
-
-        $this->client->appInstallations()->create($postParams);
-
-        $this->assertLastRequestIs(
-            [
-                'method'     => 'POST',
-                'endpoint'   => 'apps/installations.json',
-                'postFields' => [AppInstallations::OBJ_NAME => $postParams]
-            ]
-        );
     }
 
     /**
@@ -47,18 +35,10 @@ class AppInstallationsTest extends BasicTest
      */
     public function testJobStatuses()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->appInstallations()->jobStatuses(1);
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'apps/installations/job_statuses/1.json'
-            ]
-        );
+        $resourceId = 1;
+        $this->assertEndpointCalled(function () use ($resourceId) {
+            $this->client->appInstallations()->jobStatuses($resourceId);
+        }, "apps/installations/job_statuses/{$resourceId}.json");
     }
 
     /**
@@ -66,18 +46,11 @@ class AppInstallationsTest extends BasicTest
      */
     public function testRequirements()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
+        $queryParams = ['per_page' => 50];
+        $resourceId  = 2727;
 
-        $this->client->appInstallations()->requirements(1, ['per_page' => 50]);
-
-        $this->assertLastRequestIs(
-            [
-                'method'      => 'GET',
-                'endpoint'    => 'apps/installations/1/requirements.json',
-                'queryParams' => ['per_page' => 50]
-            ]
-        );
+        $this->assertEndpointCalled(function () use ($resourceId, $queryParams) {
+            $this->client->appInstallations()->requirements($resourceId, $queryParams);
+        }, "apps/installations/{$resourceId}/requirements.json", 'GET', ['queryParams' => $queryParams]);
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Zendesk\API\UnitTests;
 
-use GuzzleHttp\Psr7\Response;
-
 /**
  * OAuthClients test class
  */
@@ -26,17 +24,8 @@ class OAuthClientsTest extends BasicTest
      */
     public function testFindAllMine()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->oauthClients()->findAllMine();
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'users/me/oauth/clients.json',
-            ]
-        );
+        $this->assertEndpointCalled(function () {
+            $this->client->oauthClients()->findAllMine();
+        }, 'users/me/oauth/clients.json');
     }
 }

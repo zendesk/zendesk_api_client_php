@@ -2,39 +2,29 @@
 
 namespace Zendesk\API\UnitTests;
 
-use GuzzleHttp\Psr7\Response;
-
+/**
+ * Class OAuthTokensTest
+ */
 class OAuthTokensTest extends BasicTest
 {
+    /**
+     * Test for revoke method
+     */
     public function testRevokeEndpoint()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->oauthTokens()->revoke(1);
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'DELETE',
-                'endpoint' => 'oauth/tokens/1.json'
-            ]
-        );
+        $resourceId = 183;
+        $this->assertEndpointCalled(function () use ($resourceId) {
+            $this->client->oauthTokens()->revoke($resourceId);
+        }, "oauth/tokens/{$resourceId}.json", 'DELETE');
     }
 
+    /**
+     * Test for current method
+     */
     public function testCurrentEndpoint()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->oauthTokens()->current();
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'oauth/tokens/current.json'
-            ]
-        );
+        $this->assertEndpointCalled(function () {
+            $this->client->oauthTokens()->current();
+        }, 'oauth/tokens/current.json');
     }
 }

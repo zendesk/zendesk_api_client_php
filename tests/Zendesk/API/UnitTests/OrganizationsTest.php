@@ -2,22 +2,20 @@
 
 namespace Zendesk\API\UnitTests;
 
-use GuzzleHttp\Psr7\Response;
-
+/**
+ * Class OrganizationsTest
+ */
 class OrganizationsTest extends BasicTest
 {
+    /**
+     * test for FindAll with chained user resource.
+     */
     public function testFindUserOrganizations()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->users(123)->organizations()->findAll();
-
-        $this->assertLastRequestIs([
-            'method'   => 'GET',
-            'endpoint' => 'users/123/organizations.json',
-        ]);
+        $userId = 232;
+        $this->assertEndpointCalled(function () use ($userId) {
+            $this->client->users($userId)->organizations()->findAll();
+        }, "users/{$userId}/organizations.json");
     }
 
     /**
@@ -25,60 +23,40 @@ class OrganizationsTest extends BasicTest
      */
     public function testFindAllOrganizations()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->organizations()->findAll();
-
-        $this->assertLastRequestIs([
-            'method'   => 'GET',
-            'endpoint' => 'organizations.json',
-        ]);
+        $this->assertEndpointCalled(function () {
+            $this->client->organizations()->findAll();
+        }, 'organizations.json');
     }
 
+    /**
+     * Test for autocomplete method
+     */
     public function testAutocomplete()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->organizations()->autocomplete('foo');
-
-        $this->assertLastRequestIs([
-            'method'      => 'GET',
-            'endpoint'    => 'organizations/autocomplete.json',
-            'queryParams' => ['name' => 'foo']
-        ]);
+        $this->assertEndpointCalled(function () {
+            $this->client->organizations()->autocomplete('foo');
+        }, 'organizations/autocomplete.json', 'GET', ['queryParams' => ['name' => 'foo']]);
     }
 
+    /**
+     * Test related method
+     */
     public function testRelated()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->organizations()->related(123);
-
-        $this->assertLastRequestIs([
-            'method'      => 'GET',
-            'endpoint'    => 'organizations/123/related.json',
-            'queryParams' => []
-        ]);
+        $resourceId = 123;
+        $this->assertEndpointCalled(function () use ($resourceId) {
+            $this->client->organizations()->related($resourceId);
+        }, "organizations/{$resourceId}/related.json");
     }
 
+    /**
+     * Test for search method
+     */
     public function testSearchByExternalId()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->organizations()->search(123);
-
-        $this->assertLastRequestIs([
-            'method'      => 'GET',
-            'endpoint'    => 'organizations/search.json',
-            'queryParams' => ['external_id' => 123]
-        ]);
+        $externalId = 123;
+        $this->assertEndpointCalled(function () use ($externalId) {
+            $this->client->organizations()->search($externalId);
+        }, 'organizations/search.json', 'GET', ['queryParams' => ['external_id' => 123]]);
     }
 }

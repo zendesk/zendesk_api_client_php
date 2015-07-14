@@ -7,6 +7,9 @@ namespace Zendesk\API\UnitTests;
  */
 class RequestsTest extends BasicTest
 {
+    /**
+     * test findAll method
+     */
     public function testFindAll()
     {
         $this->assertEndpointCalled(function () {
@@ -14,6 +17,9 @@ class RequestsTest extends BasicTest
         }, 'requests.json');
     }
 
+    /**
+     * Test findAllOpen method
+     */
     public function testFindAllOpen()
     {
         $this->assertEndpointCalled(function () {
@@ -21,6 +27,9 @@ class RequestsTest extends BasicTest
         }, 'requests/open.json');
     }
 
+    /**
+     * Test findAllSolved method
+     */
     public function testFindAllSolved()
     {
         $this->assertEndpointCalled(function () {
@@ -28,6 +37,9 @@ class RequestsTest extends BasicTest
         }, 'requests/solved.json');
     }
 
+    /**
+     * Test findAllCCd method
+     */
     public function testFindAllCCd()
     {
         $this->assertEndpointCalled(function () {
@@ -35,6 +47,9 @@ class RequestsTest extends BasicTest
         }, 'requests/ccd.json');
     }
 
+    /**
+     * Test findAll method with a chained user
+     */
     public function testFindAllChainedUser()
     {
         $userId = 8373;
@@ -44,6 +59,9 @@ class RequestsTest extends BasicTest
         }, "users/{$userId}/requests.json");
     }
 
+    /**
+     * Test findAll method with chained organization
+     */
     public function testFindAllChainedOrganization()
     {
         $organizationId = 8373;
@@ -53,6 +71,9 @@ class RequestsTest extends BasicTest
         }, "organizations/{$organizationId}/requests.json");
     }
 
+    /**
+     * Test search method
+     */
     public function testSearch()
     {
         $queryParams = [
@@ -63,14 +84,5 @@ class RequestsTest extends BasicTest
         $this->assertEndpointCalled(function () use ($queryParams) {
             $this->client->requests()->search($queryParams);
         }, 'requests/search.json', 'GET', ['queryParams' => $queryParams]);
-    }
-
-    public function testFind()
-    {
-        $resourceId = 3838;
-
-        $this->assertEndpointCalled(function () use ($resourceId) {
-            $this->client->requests()->find($resourceId);
-        }, "requests/{$resourceId}.json");
     }
 }
