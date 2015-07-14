@@ -37,133 +37,106 @@ class TicketsTest extends BasicTest
         parent::setUp();
     }
 
+    /**
+     * Tests if the client can call and build the tickets endpoint with the proper sideloads
+     */
     public function testAllSideLoadedMethod()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->tickets()->sideload(['users', 'groups'])->findAll();
-
-        $this->assertLastRequestIs(
-            [
-                'method'      => 'GET',
-                'endpoint'    => 'tickets.json',
-                'queryParams' => ['include' => 'users,groups'],
-            ]
-        );
+        $this->assertEndpointCalled(function () {
+            $this->client->tickets()->sideload(['users', 'groups'])->findAll();
+        }, 'tickets.json', 'GET', ['queryParams' => ['include' => 'users,groups']]);
 
         $this->assertNull($this->client->getSideload());
     }
 
+    /**
+     * Tests if the client can call and build the tickets endpoint with the proper sideloads
+     */
     public function testAllSideLoadedParameter()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->tickets()->findAll(['sideload' => ['users', 'groups']]);
-
-        $this->assertLastRequestIs(
-            [
-                'method'      => 'GET',
-                'endpoint'    => 'tickets.json',
-                'queryParams' => ['include' => 'users,groups'],
-            ]
-        );
+        $this->assertEndpointCalled(function () {
+            $this->client->tickets()->findAll(['sideload' => ['users', 'groups']]);
+        }, 'tickets.json', 'GET', ['queryParams' => ['include' => 'users,groups']]);
     }
 
+    /**
+     * Tests if the client can call and build the find ticket endpoint
+     */
     public function testFindSingle()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->tickets()->find($this->testTicket['id']);
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'tickets/' . $this->testTicket['id'] . '.json',
-            ]
-        );
-
+        $this->assertEndpointCalled(function () {
+            $this->client->tickets()->find($this->testTicket['id']);
+        }, 'tickets/' . $this->testTicket['id'] . '.json');
     }
 
+    /**
+     * Tests if the client can call and build the find ticket endpoint while chaining
+     */
     public function testFindSingleChainPattern()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->tickets($this->testTicket['id'])->find();
-
-        $this->assertLastRequestIs(
-            [
-                'method' => 'GET',
-                'tickets/' . $this->testTicket['id'] . '.json',
-            ]
-        );
+        $this->assertEndpointCalled(function () {
+            $this->client->tickets($this->testTicket['id'])->find();
+        }, 'tickets/' . $this->testTicket['id'] . '.json');
     }
 
+    /**
+     * Tests if the client can call and build the show many tickets endpoint with the correct IDs
+     */
     public function testFindMultiple()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->tickets()->findMany([$this->testTicket['id'], $this->testTicket2['id']]);
-
-        $this->assertLastRequestIs(
+        $this->assertEndpointCalled(
+            function () {
+                $this->client->tickets()->findMany([$this->testTicket['id'], $this->testTicket2['id']]);
+            },
+            'tickets/show_many.json',
+            'GET',
             [
-                'method'      => 'GET',
-                'endpoint'    => 'tickets/show_many.json',
-                'queryParams' => ['ids' => implode(',', [$this->testTicket['id'], $this->testTicket2['id']])],
+                'queryParams' => [
+                    'ids' => implode(',', [$this->testTicket['id'], $this->testTicket2['id']])
+                ]
             ]
         );
     }
 
+    /**
+     * Tests if the client can call and build the show many tickets endpoint with the proper sideloads and correct IDs
+     */
     public function testFindMultipleWithSideload()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->tickets()->findMany(
-            [$this->testTicket['id'], $this->testTicket2['id']],
-            ['sideload' => ['users', 'groups'], 'per_page' => 20],
-            'ids'
-        );
-
-        $this->assertLastRequestIs(
+        $this->assertEndpointCalled(
+            function () {
+                $this->client->tickets()->findMany(
+                    [$this->testTicket['id'], $this->testTicket2['id']],
+                    ['sideload' => ['users', 'groups'], 'per_page' => 20],
+                    'ids'
+                );
+            },
+            'tickets/show_many.json',
+            'GET',
             [
-                'method'      => 'GET',
-                'endpoint'    => 'tickets/show_many.json',
                 'queryParams' => [
                     'ids'      => implode(',', [$this->testTicket['id'], $this->testTicket2['id']]),
                     'per_page' => 20,
                     'include'  => 'users,groups'
-                ],
+                ]
             ]
         );
     }
 
+    /**
+     * Tests if the client can call and build the delete many tickets endpoint with the correct IDs
+     */
     public function testDeleteMultiple()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->tickets()->deleteMany([123, 321]);
-        $this->assertLastRequestIs(
-            [
-                'method'      => 'DELETE',
-                'endpoint'    => 'tickets/destroy_many.json',
-                'queryParams' => ['ids' => implode(',', [123, 321])],
-            ]
-        );
+        $this->assertEndpointCalled(function () {
+            $this->client->tickets()->deleteMany([123, 321]);
+        }, 'tickets/destroy_many.json', 'DELETE', ['queryParams' => ['ids' => implode(',', [123, 321])]]);
     }
 
+    /**
+     * Tests if the client can call and build the create ticket witch attachment endpoint and initiate the file upload
+     * headers and POST data
+     */
     public function testCreateWithAttachment()
     {
         $this->mockAPIResponses([
@@ -205,188 +178,120 @@ class TicketsTest extends BasicTest
         ]);
     }
 
+    /**
+     * Tests if the client can call and build the export tickets endpoint with the proper pagination query
+     */
     public function testExport()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->tickets()->export(['start_time' => '1332034771']);
-
-        $this->assertLastRequestIs(
-            [
-                'method'      => 'GET',
-                'endpoint'    => 'exports/tickets.json',
-                'queryParams' => ['start_time' => '1332034771'],
-            ]
-        );
+        $this->assertEndpointCalled(function () {
+            $this->client->tickets()->export(['start_time' => '1332034771']);
+        }, 'exports/tickets.json', 'GET', ['queryParams' => ['start_time' => '1332034771']]);
     }
 
+    /**
+     * Tests if the client can call and build the update many tickets endpoint with the correct IDS and POST fields
+     */
     public function testUpdateManyWithQueryParams()
     {
         $ticketIds = [$this->testTicket['id'], $this->testTicket2['id']];
 
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->tickets()->updateMany(
+        $this->assertEndpointCalled(
+            function () use ($ticketIds) {
+                $this->client->tickets()->updateMany(
+                    [
+                        'ids'    => $ticketIds,
+                        'status' => 'solved'
+                    ]
+                );
+            },
+            'tickets/update_many.json',
+            'PUT',
             [
-                'ids'    => $ticketIds,
-                'status' => 'solved'
-            ]
-        );
-
-        $this->assertLastRequestIs(
-            [
-                'method'      => 'PUT',
-                'endpoint'    => 'tickets/update_many.json',
                 'queryParams' => ['ids' => implode(',', $ticketIds)],
                 'postFields'  => ['ticket' => ['status' => 'solved']]
             ]
         );
     }
 
+    /**
+     * Tests if the client can call and build the update many tickets endpoint with the correct IDS and POST fields
+     */
     public function testUpdateMany()
     {
         $tickets = [$this->testTicket, $this->testTicket2];
 
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->tickets()->updateMany($tickets);
-
-        $this->assertLastRequestIs(
-            [
-                'method'     => 'PUT',
-                'endpoint'   => 'tickets/update_many.json',
-                'postFields' => ['tickets' => $tickets]
-            ]
-        );
+        $this->assertEndpointCalled(function () use ($tickets) {
+            $this->client->tickets()->updateMany($tickets);
+        }, 'tickets/update_many.json', 'PUT', ['postFields' => ['tickets' => $tickets]]);
     }
 
+    /**
+     * Tests if the client can call and build the related tickets endpoint with the correct ID
+     */
     public function testRelated()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], json_encode(['topic_id' => 1]))
-        ]);
-
-        $related = $this->client->tickets(12345)->related();
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'tickets/12345/related.json',
-            ]
-        );
-
-        // Test if the method returns readable data
-        $this->assertEquals(is_object($related), true, 'Should return an object');
+        $this->assertEndpointCalled(function () {
+            $this->client->tickets(12345)->related();
+        }, 'tickets/12345/related.json');
     }
 
+    /**
+     * Tests if the client can call and build the ticket collaborators endpoint with the correct ID
+     */
     public function testCollaborators()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], json_encode(['topic_id' => 1]))
-        ]);
-
-        $collaborators = $this->client->tickets()->collaborators(['id' => 12345]);
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'tickets/12345/collaborators.json',
-            ]
-        );
-
-        $this->assertEquals(is_object($collaborators), true, 'Should return an object');
+        $this->assertEndpointCalled(function () {
+            $this->client->tickets()->collaborators(['id' => 12345]);
+        }, 'tickets/12345/collaborators.json');
     }
 
+    /**
+     * Tests if the client can call and build the tickets incidents endpoint with the correct ID
+     */
     public function testIncidents()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], json_encode(['topic_id' => 1]))
-        ]);
-
-        $incidents = $this->client->tickets()->incidents(['id' => 12345]);
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'tickets/12345/incidents.json',
-            ]
-        );
-
-        $this->assertEquals(is_object($incidents), true, 'Should return an object');
+        $this->assertEndpointCalled(function () {
+            $this->client->tickets()->incidents(['id' => 12345]);
+        }, 'tickets/12345/incidents.json');
     }
 
+    /**
+     * Tests if the client can call and build the problem tickets endpoint
+     */
     public function testProblems()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], json_encode(['tickets' => []]))
-        ]);
-
-        $problems = $this->client->tickets()->problems();
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'problems.json',
-            ]
-        );
-
-        $this->assertEquals(is_object($problems), true, 'Should return an object');
+        $this->assertEndpointCalled(function () {
+            $this->client->tickets()->problems();
+        }, 'problems.json');
     }
 
+    /**
+     * Tests if the client can call and build the problem autocomplete endpoint
+     */
     public function testProblemAutoComplete()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], json_encode(['tickets' => []]))
-        ]);
-
-        $this->client->tickets()->problemAutoComplete(['text' => 'foo']);
-
-        $this->assertLastRequestIs(
-            [
-                'method'     => 'POST',
-                'endpoint'   => 'problems/autocomplete.json',
-                'postFields' => ['text' => 'foo'],
-            ]
-        );
-
+        $this->assertEndpointCalled(function () {
+            $this->client->tickets()->problemAutoComplete(['text' => 'foo']);
+        }, 'problems/autocomplete.json', 'POST', ['postFields' => ['text' => 'foo']]);
     }
 
+    /**
+     * Tests if the client can call and build the mark ticket as spam endpoint with the correct ID
+     */
     public function testMarkAsSpam()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->tickets(12345)->markAsSpam();
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'PUT',
-                'endpoint' => 'tickets/12345/mark_as_spam.json',
-            ]
-        );
+        $this->assertEndpointCalled(function () {
+            $this->client->tickets(12345)->markAsSpam();
+        }, 'tickets/12345/mark_as_spam.json', 'PUT');
     }
 
+    /**
+     * Tests if the client can call and build the mark many tickets as spam endpoint with the correct IDs
+     */
     public function testMarkManyAsSpam()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->tickets()->markAsSpam([12345, 54321]);
-
-        $this->assertLastRequestIs(
-            [
-                'method'      => 'PUT',
-                'endpoint'    => 'tickets/mark_many_as_spam.json',
-                'queryParams' => ['ids' => '12345,54321']
-            ]
-        );
+        $this->assertEndpointCalled(function () {
+            $this->client->tickets()->markAsSpam([12345, 54321]);
+        }, 'tickets/mark_many_as_spam.json', 'PUT', ['queryParams' => ['ids' => '12345,54321']]);
     }
 }
