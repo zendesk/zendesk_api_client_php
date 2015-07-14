@@ -2,37 +2,34 @@
 
 namespace Zendesk\API\UnitTests;
 
-use GuzzleHttp\Psr7\Response;
-
+/**
+ * Class DynamicContentItemVariantsTest
+ */
 class DynamicContentItemVariantsTest extends BasicTest
 {
+    /**
+     * Test item id is in route
+     */
     public function testItemIdIsAddedToRoute()
     {
-        // Test the chaining
-        $this->mockAPIResponses([new Response(200, [], '')]);
+        $itemId = 12345;
+        $this->assertEndpointCalled(function () use ($itemId) {
+            $this->client->dynamicContent()->items($itemId)->variants()->findAll();
+        }, "dynamic_content/items/{$itemId}/variants.json");
 
-        $this->client->dynamicContent()->items(12345)->variants()->findAll();
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'dynamic_content/items/12345/variants.json',
-            ]
-        );
     }
 
+    /**
+     * Test variant id is added to route.
+     *
+     * @throws \Zendesk\API\Exceptions\MissingParametersException
+     */
     public function testItemIdVariantIdIsAddedToRoute()
     {
-        // Test the chaining
-        $this->mockAPIResponses([new Response(200, [], '')]);
-
-        $this->client->dynamicContent()->items(12345)->variants()->find(2);
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'dynamic_content/items/12345/variants/2.json',
-            ]
-        );
+        $itemId    = 12345;
+        $variantId = 3332;
+        $this->assertEndpointCalled(function () use ($itemId, $variantId) {
+            $this->client->dynamicContent()->items($itemId)->variants()->find($variantId);
+        }, "dynamic_content/items/{$itemId}/variants/{$variantId}.json");
     }
 }

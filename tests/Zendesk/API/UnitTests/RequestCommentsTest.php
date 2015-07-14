@@ -7,6 +7,9 @@ namespace Zendesk\API\UnitTests;
  */
 class RequestCommentsTest extends BasicTest
 {
+    /**
+     * Test findAll method
+     */
     public function testFindAll()
     {
         $requestId = 3838;
@@ -16,6 +19,9 @@ class RequestCommentsTest extends BasicTest
         }, "requests/{$requestId}/comments.json");
     }
 
+    /**
+     * Test find method
+     */
     public function testFind()
     {
         $resourceId = 3838;

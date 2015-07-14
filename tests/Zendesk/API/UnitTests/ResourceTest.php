@@ -3,194 +3,169 @@ namespace Zendesk\API\UnitTests;
 
 use GuzzleHttp\Psr7\Response;
 
+/**
+ * Class ResourceTest
+ */
 class ResourceTest extends BasicTest
 {
     private $dummyResource;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         parent::setUp();
         $this->dummyResource = new DummyResource($this->client);
     }
 
+    /**
+     * Test findAll method
+     */
     public function testFindAll()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->dummyResource->findAll();
-
-        $this->assertLastRequestIs([
-            'method'   => 'GET',
-            'endpoint' => 'dummy_resource.json',
-        ]);
+        $this->assertEndpointCalled(function () {
+            $this->dummyResource->findAll();
+        }, 'dummy_resource.json');
     }
 
+    /**
+     * Test find method
+     */
     public function testFind()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], json_encode(['dummy' => true]))
-        ]);
-
-        $this->dummyResource->find(1);
-
-        $this->assertLastRequestIs([
-            'method'      => 'GET',
-            'endpoint'    => 'dummy_resource/1.json',
-            'queryParams' => []
-        ]);
+        $resourceId = 8282;
+        $this->assertEndpointCalled(function () use ($resourceId) {
+            $this->dummyResource->find($resourceId);
+        }, "dummy_resource/{$resourceId}.json");
     }
 
+    /**
+     * Test we can set the iterator parameters
+     */
     public function testCanSetIteratorParams()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], json_encode(['dummy' => true]))
-        ]);
-
         $iterators = ['per_page' => 1, 'page' => 2, 'sort_order' => 'desc', 'sort_by' => 'date'];
 
-        $this->dummyResource->findAll($iterators);
-
-        $this->assertLastRequestIs([
-            'method'      => 'GET',
-            'endpoint'    => 'dummy_resource.json',
-            'queryParams' => $iterators
-        ]);
+        $this->assertEndpointCalled(function () use ($iterators) {
+            $this->dummyResource->findAll($iterators);
+        }, 'dummy_resource.json', 'GET', ['queryParams' => $iterators]);
     }
 
+    /**
+     * Test create method
+     */
     public function testCreate()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
         $postFields = ['foo' => 'test body'];
 
-        $this->dummyResource->create($postFields);
-
-        $this->assertLastRequestIs(
-            [
-                'method'     => 'POST',
-                'endpoint'   => 'dummy_resource.json',
-                'postFields' => ['dummy' => $postFields]
-            ]
+        $this->assertEndpointCalled(
+            function () use ($postFields) {
+                $this->dummyResource->create($postFields);
+            },
+            'dummy_resource.json',
+            'POST',
+            ['postFields' => ['dummy' => $postFields]]
         );
     }
 
+    /**
+     * Test update method
+     */
     public function testUpdate()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
+        $resourceId = 39392;
         $postFields = ['foo' => 'test body'];
-        $this->dummyResource->update(1, $postFields);
-
-        $this->assertLastRequestIs(
-            [
-                'method'     => 'PUT',
-                'endpoint'   => 'dummy_resource/1.json',
-                'postFields' => ['dummy' => $postFields],
-            ]
+        $this->assertEndpointCalled(
+            function () use ($resourceId, $postFields) {
+                $this->dummyResource->update($resourceId, $postFields);
+            },
+            "dummy_resource/{$resourceId}.json",
+            'PUT',
+            ['postFields' => ['dummy' => $postFields]]
         );
     }
 
+    /**
+     * Test delete method
+     */
     public function testDelete()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
 
-        $this->dummyResource->delete(1);
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'DELETE',
-                'endpoint' => 'dummy_resource/1.json'
-            ]
-        );
+        $resourceId = 292;
+        $this->assertEndpointCalled(function () use ($resourceId) {
+            $this->dummyResource->delete($resourceId);
+        }, "dummy_resource/{$resourceId}.json", 'DELETE');
     }
 
+    /**
+     * Test setting of sideloads
+     */
     public function testSideLoad()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], json_encode(['dummy' => true]))
-        ]);
-
         $sideloads = ['foo', 'bar', 'hello', 'world'];
-        $this->dummyResource->sideload($sideloads);
-        $this->dummyResource->findAll();
 
-        $this->assertLastRequestIs([
-            'method'      => 'GET',
-            'endpoint'    => 'dummy_resource.json',
-            'queryParams' => ['include' => implode(',', $sideloads)]
-        ]);
+        $this->assertEndpointCalled(function () use ($sideloads) {
+            $this->dummyResource->sideload($sideloads);
+            $this->dummyResource->findAll();
+        }, 'dummy_resource.json', 'GET', ['queryParams' => ['include' => implode(',', $sideloads)]]);
     }
 
+    /**
+     * Test createMany method
+     */
     public function testCreateMany()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
         $postFields = [['foo' => 'test body'], ['foo2' => 'test body 2'], ['foo3' => 'test body3']];
 
-        $this->dummyResource->createMany($postFields);
-
-        $this->assertLastRequestIs(
-            [
-                'method'     => 'POST',
-                'endpoint'   => 'dummy_resource/create_many.json',
-                'postFields' => [DummyResource::OBJ_NAME_PLURAL => $postFields]
-            ]
+        $this->assertEndpointCalled(
+            function () use ($postFields) {
+                $this->dummyResource->createMany($postFields);
+            },
+            'dummy_resource/create_many.json',
+            'POST',
+            ['postFields' => [DummyResource::OBJ_NAME_PLURAL => $postFields]]
         );
     }
 
+    /**
+     * Test findMany method
+     */
     public function testFindMany()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], json_encode(['dummy' => true]))
-        ]);
-
         $ids = [1, 2, 3, 4, 5];
-        $this->dummyResource->findMany($ids);
-
-        $this->assertLastRequestIs([
-            'method'      => 'GET',
-            'endpoint'    => 'dummy_resource/show_many.json',
-            'queryParams' => ['ids' => implode(',', $ids)]
-        ]);
+        $this->assertEndpointCalled(function () use ($ids) {
+            $this->dummyResource->findMany($ids);
+        }, 'dummy_resource/show_many.json', 'GET', ['queryParams' => ['ids' => implode(',', $ids)]]);
     }
 
+    /**
+     * Test updateMany with the same data
+     */
     public function testUpdateManySameData()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
         $ids        = [1, 2, 3, 4, 5];
         $postFields = ['foo' => 'test body'];
 
-        $this->dummyResource->updateMany(array_merge(['ids' => $ids], $postFields));
-
-        $this->assertLastRequestIs(
+        $this->assertEndpointCalled(
+            function () use ($ids, $postFields) {
+                $this->dummyResource->updateMany(array_merge(['ids' => $ids], $postFields));
+            },
+            'dummy_resource/update_many.json',
+            'PUT',
             [
-                'method'      => 'PUT',
-                'endpoint'    => 'dummy_resource/update_many.json',
                 'queryParams' => ['ids' => implode(',', $ids)],
                 'postFields'  => [DummyResource::OBJ_NAME => $postFields],
             ]
         );
+
     }
 
+    /**
+     * Test updateMany with different data
+     */
     public function testUpdateManyDifferentData()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
         $postFields = [
             ['id' => 1, 'foo' => 'bar', 'hello' => 'world'],
             ['id' => 2, 'foo' => 'bar', 'hello' => 'world'],
@@ -198,36 +173,37 @@ class ResourceTest extends BasicTest
             ['id' => 4, 'foo' => 'bar', 'hello' => 'world']
         ];
 
-        $this->dummyResource->updateMany($postFields);
-
-        $this->assertLastRequestIs(
-            [
-                'method'     => 'PUT',
-                'endpoint'   => 'dummy_resource/update_many.json',
-                'postFields' => [DummyResource::OBJ_NAME_PLURAL => $postFields],
-            ]
+        $this->assertEndpointCalled(
+            function () use ($postFields) {
+                $this->dummyResource->updateMany($postFields);
+            },
+            'dummy_resource/update_many.json',
+            'PUT',
+            ['postFields' => [DummyResource::OBJ_NAME_PLURAL => $postFields]]
         );
+
     }
 
+    /**
+     * Test delete many
+     */
     public function testDeleteMany()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
         $ids = [1, 2, 3, 4, 5];
-        $this->dummyResource->deleteMany($ids);
 
-        $this->assertLastRequestIs(
-            [
-                'method'      => 'DELETE',
-                'endpoint'    => 'dummy_resource/destroy_many.json',
-                'queryParams' => ['ids' => implode(',', $ids)]
-            ]
+        $this->assertEndpointCalled(
+            function () use ($ids) {
+                $this->dummyResource->deleteMany($ids);
+            },
+            'dummy_resource/destroy_many.json',
+            'DELETE',
+            ['queryParams' => ['ids' => implode(',', $ids)]]
         );
     }
 
     /**
+     * Test we can handle server exceptions
+     *
      * @expectedException Zendesk\API\Exceptions\ApiResponseException
      * @expectedExceptionMessage Zendesk may be experiencing internal issues or undergoing scheduled maintenance.
      */
@@ -241,6 +217,8 @@ class ResourceTest extends BasicTest
     }
 
     /**
+     * Test we can handle api exceptions
+     *
      * @expectedException Zendesk\API\Exceptions\ApiResponseException
      * @expectedExceptionMessage Unprocessable Entity
      */

@@ -2,8 +2,6 @@
 
 namespace Zendesk\API\UnitTests;
 
-use GuzzleHttp\Psr7\Response;
-
 /**
  * Attachments test class
  */
@@ -15,23 +13,19 @@ class AttachmentsTest extends BasicTest
      */
     public function testUploadAttachment()
     {
-        $this->mockAPIResponses([
-            new Response(201, [], '')
-        ]);
-
         $attachmentData = [
             'file' => getcwd() . '/tests/assets/UK.png',
             'type' => 'image/png',
             'name' => 'UK test non-alpha chars.png'
         ];
 
-        $this->client->attachments()->upload($attachmentData);
-
-        $this->assertLastRequestIs(
+        $this->assertEndpointCalled(
+            function () use ($attachmentData) {
+                $this->client->attachments()->upload($attachmentData);
+            },
+            'uploads.json',
+            'POST',
             [
-                'method'      => 'POST',
-                'endpoint'    => 'uploads.json',
-                'statusCode'  => 201,
                 'queryParams' => ['filename' => rawurlencode($attachmentData['name'])],
                 'file'        => $attachmentData['file'],
             ]
@@ -43,22 +37,18 @@ class AttachmentsTest extends BasicTest
      */
     public function testUploadAttachmentWithNoName()
     {
-        $this->mockAPIResponses([
-            new Response(201, [], '')
-        ]);
-
         $attachmentData = [
             'file' => getcwd() . '/tests/assets/UK.png',
             'type' => 'image/png',
         ];
 
-        $this->client->attachments()->upload($attachmentData);
-
-        $this->assertLastRequestIs(
+        $this->assertEndpointCalled(
+            function () use ($attachmentData) {
+                $this->client->attachments()->upload($attachmentData);
+            },
+            'uploads.json',
+            'POST',
             [
-                'method'      => 'POST',
-                'endpoint'    => 'uploads.json',
-                'statusCode'  => 201,
                 'queryParams' => ['filename' => 'UK.png'], // Taken from file path
                 'file'        => $attachmentData['file'],
             ]
@@ -70,19 +60,10 @@ class AttachmentsTest extends BasicTest
      */
     public function testDeleteAttachment()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
         $token = 'validToken';
 
-        $this->client->attachments()->deleteUpload($token);
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'DELETE',
-                'endpoint' => "uploads/{$token}.json",
-            ]
-        );
+        $this->assertEndpointCalled(function () use ($token) {
+            $this->client->attachments()->deleteUpload($token);
+        }, "uploads/{$token}.json", 'DELETE');
     }
 }
