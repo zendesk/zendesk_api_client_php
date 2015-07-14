@@ -6,7 +6,7 @@ use Zendesk\API\Traits\Resource\Delete;
 use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
 
-class OauthTokens extends ResourceAbstract
+class OAuthTokens extends ResourceAbstract
 {
     const OBJ_NAME = 'token';
     const OBJ_NAME_PLURAL = 'tokens';
