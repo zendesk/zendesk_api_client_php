@@ -4,7 +4,7 @@ namespace Zendesk\API\UnitTests;
 
 use GuzzleHttp\Psr7\Response;
 
-class OauthTokensTest extends BasicTest
+class OAuthTokensTest extends BasicTest
 {
     public function testRevokeEndpoint()
     {
