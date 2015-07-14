@@ -6,7 +6,7 @@ use Zendesk\API\HttpClient;
 use Zendesk\API\Resources\ResourceAbstract;
 
 /**
- * The Instantiator trait which has the magic methods for instatiating Resources
+ * The Instantiator trait which has the magic methods for instantiating Resources
  * @package Zendesk\API
  *
  */
