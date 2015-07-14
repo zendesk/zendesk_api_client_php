@@ -12,6 +12,7 @@ use Zendesk\API\Resources\Activities;
 use Zendesk\API\Resources\AppInstallations;
 use Zendesk\API\Resources\Attachments;
 use Zendesk\API\Resources\AuditLogs;
+use Zendesk\API\Resources\Autocomplete;
 use Zendesk\API\Resources\Automations;
 use Zendesk\API\Resources\CustomRoles;
 use Zendesk\API\Resources\DynamicContent;
@@ -163,6 +164,7 @@ class HttpClient
             'appInstallations'          => AppInstallations::class,
             'attachments'               => Attachments::class,
             'auditLogs'                 => AuditLogs::class,
+            'autocomplete'              => Autocomplete::class,
             'automations'               => Automations::class,
             'customRoles'               => CustomRoles::class,
             'dynamicContent'            => DynamicContent::class,
