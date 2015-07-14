@@ -17,7 +17,7 @@ use Zendesk\API\Resources\CustomRoles;
 use Zendesk\API\Resources\DynamicContent;
 use Zendesk\API\Resources\GroupMemberships;
 use Zendesk\API\Resources\Groups;
-use Zendesk\API\Resources\IncrementalExports;
+use Zendesk\API\Resources\Incremental;
 use Zendesk\API\Resources\JobStatuses;
 use Zendesk\API\Resources\Locales;
 use Zendesk\API\Resources\Macros;
@@ -50,13 +50,17 @@ use Zendesk\API\Utilities\Auth;
  * @method Debug debug()
  * @method DynamicContent dynamicContent()
  * @method Groups groups()
- * @method IncrementalExports incrementalExports()
+ * @method Incremental incremental()
+ * @method Locales locales()
  * @method Macros macros()
+ * @method OAuthClients oauthClients()
  * @method OrganizationFields organizationFields()
  * @method Organizations organizations()
+ * @method Requests requests()
  * @method Tags tags()
  * @method Targets targets()
  * @method Tickets ticket()
+ * @method TicketImports ticketImports()
  * @method Triggers triggers()
  * @method UserFields userFields()
  * @method Users users()
@@ -164,7 +168,7 @@ class HttpClient
             'dynamicContent'            => DynamicContent::class,
             'groupMemberships'          => GroupMemberships::class,
             'groups'                    => Groups::class,
-            'incrementalExports'        => IncrementalExports::class,
+            'incremental'               => Incremental::class,
             'jobStatuses'               => JobStatuses::class,
             'locales'                   => Locales::class,
             'macros'                    => Macros::class,
