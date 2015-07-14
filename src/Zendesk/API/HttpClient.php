@@ -24,6 +24,7 @@ use Zendesk\API\Resources\Requests;
 use Zendesk\API\Resources\Search;
 use Zendesk\API\Resources\Tags;
 use Zendesk\API\Resources\Targets;
+use Zendesk\API\Resources\TicketImports;
 use Zendesk\API\Resources\Tickets;
 use Zendesk\API\Resources\Triggers;
 use Zendesk\API\Resources\UserFields;
@@ -36,6 +37,7 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
  * Client class, base level access
  * @method Debug debug()
  * @method Tickets ticket()
+ * @method TicketImports ticketImports()
  * @method Views views()
  * @method Users users()
  * @method Tags tags()
@@ -162,6 +164,7 @@ class HttpClient
             'tags'                      => Tags::class,
             'targets'                   => Targets::class,
             'tickets'                   => Tickets::class,
+            'ticketImports'             => TicketImports::class,
             'triggers'                  => Triggers::class,
             'userFields'                => UserFields::class,
             'users'                     => Users::class,
