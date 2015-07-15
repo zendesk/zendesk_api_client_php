@@ -2,12 +2,10 @@
 
 namespace Zendesk\API\Resources;
 
-use GuzzleHttp\Psr7\LazyOpenStream;
-use Zendesk\API\Exceptions\CustomException;
 use Zendesk\API\Exceptions\MissingParametersException;
-use Zendesk\API\Http;
 use Zendesk\API\Traits\Resource\Delete;
 use Zendesk\API\Traits\Resource\Find;
+use Zendesk\API\Traits\Resource\MultipartUpload;
 
 /**
  * The Apps class exposes app management methods
@@ -19,6 +17,7 @@ class Apps extends ResourceAbstract
 
     use Find;
     use Delete;
+    use MultipartUpload;
 
     /**
      * {@inheritdoc}
@@ -39,40 +38,19 @@ class Apps extends ResourceAbstract
     }
 
     /**
-     * Uploads an app - see http://developer.zendesk.com/documentation/rest_api/apps.html for workflow
-     *
-     * @param array $params
-     *
-     * @throws \Exception
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
-    public function upload(array $params)
+    public function getUploadName()
     {
-        if (! $this->hasKeys($params, ['file'])) {
-            throw new MissingParametersException(__METHOD__, ['file']);
-        }
+        return 'uploaded_data';
+    }
 
-        if (! file_exists($params['file'])) {
-            throw new CustomException('File ' . $params['file'] . ' could not be found in ' . __METHOD__);
-        }
-
-        $response = Http::send(
-            $this->client,
-            $this->getRoute(__FUNCTION__),
-            [
-                'method'    => 'POST',
-                'multipart' => [
-                    [
-                        'name'     => 'uploaded_data',
-                        'contents' => new LazyOpenStream($params['file'], 'r'),
-                        'filename' => $params['file']
-                    ]
-                ],
-            ]
-        );
-
-        return $response;
+    /**
+     * {$@inheritdoc}
+     */
+    public function getUploadRequestMethod()
+    {
+        return 'POST';
     }
 
     /**
