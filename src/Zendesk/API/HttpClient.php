@@ -33,6 +33,7 @@ use Zendesk\API\Resources\Requests;
 use Zendesk\API\Resources\SatisfactionRatings;
 use Zendesk\API\Resources\Search;
 use Zendesk\API\Resources\SharingAgreements;
+use Zendesk\API\Resources\SuspendedTickets;
 use Zendesk\API\Resources\Tags;
 use Zendesk\API\Resources\Targets;
 use Zendesk\API\Resources\TicketImports;
@@ -64,6 +65,7 @@ use Zendesk\API\Utilities\Auth;
  * @method Search search()
  * @method SatisfactionRatings satisfactionRatings()
  * @method SharingAgreements sharingAgreements()
+ * @method SuspendedTickets suspendedTickets()
  * @method Tags tags()
  * @method Targets targets()
  * @method Tickets ticket()
@@ -191,6 +193,7 @@ class HttpClient
             'satisfactionRatings'       => SatisfactionRatings::class,
             'sharingAgreements'         => SharingAgreements::class,
             'search'                    => Search::class,
+            'suspendedTickets'          => SuspendedTickets::class,
             'tags'                      => Tags::class,
             'targets'                   => Targets::class,
             'tickets'                   => Tickets::class,
