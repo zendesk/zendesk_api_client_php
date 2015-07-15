@@ -2,7 +2,6 @@
 
 namespace Zendesk\API\Resources;
 
-use GuzzleHttp\Psr7\LazyOpenStream;
 use Zendesk\API\Exceptions\CustomException;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
@@ -10,6 +9,7 @@ use Zendesk\API\Http;
 use Zendesk\API\Traits\Resource\CreateMany;
 use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\FindMany;
+use Zendesk\API\Traits\Resource\MultipartUpload;
 use Zendesk\API\Traits\Resource\UpdateMany;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
@@ -34,6 +34,7 @@ class Users extends ResourceAbstract
     use Defaults {
         findAll as traitFindAll;
     }
+    use MultipartUpload;
 
     use CreateMany;
     use FindMany {
@@ -245,6 +246,26 @@ class Users extends ResourceAbstract
     }
 
     /**
+     * {$@inheritdoc}
+     *
+     * @return String
+     */
+    public function getUploadName()
+    {
+        return 'user[photo][uploaded_data]';
+    }
+
+    /**
+     * {$@inheritdoc}
+     *
+     * @return String
+     */
+    public function getUploadRequestMethod()
+    {
+        return 'PUT';
+    }
+
+    /**
      * Update a user's profile image
      *
      * @param array $params
@@ -257,35 +278,9 @@ class Users extends ResourceAbstract
      */
     public function updateProfileImageFromFile(array $params)
     {
-        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+        $this->setAdditionalRouteParams(['id' => $this->getChainedParameter(self::class)]);
 
-        if (! $this->hasKeys($params, ['id', 'file'])) {
-            throw new MissingParametersException(__METHOD__, ['id', 'file']);
-        }
-
-        if (! file_exists($params['file'])) {
-            throw new CustomException('File ' . $params['file'] . ' could not be found in ' . __METHOD__);
-        }
-
-        $id = $params['id'];
-        unset($params['id']);
-
-        $response = Http::send(
-            $this->client,
-            $this->getRoute(__FUNCTION__, ['id' => $id]),
-            [
-                'method'    => 'PUT',
-                'multipart' => [
-                    [
-                        'name'     => 'user[photo][uploaded_data]',
-                        'contents' => new LazyOpenStream($params['file'], 'r'),
-                        'filename' => $params['file']
-                    ]
-                ],
-            ]
-        );
-
-        return $response;
+        return $this->upload($params, __FUNCTION__);
     }
 
     /**

@@ -2,11 +2,8 @@
 
 namespace Zendesk\API\Resources;
 
-use GuzzleHttp\Psr7\LazyOpenStream;
-use Zendesk\API\Exceptions\CustomException;
-use Zendesk\API\Exceptions\MissingParametersException;
-use Zendesk\API\Http;
 use Zendesk\API\Traits\Resource\Defaults;
+use Zendesk\API\Traits\Resource\MultipartUpload;
 
 /**
  * The Brands class exposes methods as detailed on
@@ -20,6 +17,7 @@ class Brands extends ResourceAbstract
     const OBJ_NAME_PLURAL = 'brands';
 
     use Defaults;
+    use MultipartUpload;
 
     /**
      * {@inheritdoc}
@@ -46,46 +44,32 @@ class Brands extends ResourceAbstract
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function getUploadName()
+    {
+        return 'brand[photo][uploaded_data]';
+    }
+
+    /**
+     * {$@inheritdoc}
+     */
+    public function getUploadRequestMethod()
+    {
+        return 'PUT';
+    }
+
+    /**
      * Update a brand's image
      *
      * @param array $params
      *
      * @return array
-     * @throws CustomException
-     * @throws MissingParametersException
-     * @throws \Zendesk\API\Exceptions\ApiResponseException
-     * @throws \Zendesk\API\Exceptions\RouteException
      */
     public function updateImage(array $params = [])
     {
-        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+        $this->setAdditionalRouteParams(['id' => $this->getChainedParameter(self::class)]);
 
-        if (! $this->hasKeys($params, ['id', 'file'])) {
-            throw new MissingParametersException(__METHOD__, ['id', 'file']);
-        }
-
-        if (! file_exists($params['file'])) {
-            throw new CustomException('File ' . $params['file'] . ' could not be found in ' . __METHOD__);
-        }
-
-        $id = $params['id'];
-        unset($params['id']);
-
-        $response = Http::send(
-            $this->client,
-            $this->getRoute(__FUNCTION__, ['id' => $id]),
-            [
-                'method'    => 'PUT',
-                'multipart' => [
-                    [
-                        'name'     => 'brand[photo][uploaded_data]',
-                        'contents' => new LazyOpenStream($params['file'], 'r'),
-                        'filename' => $params['file']
-                    ]
-                ],
-            ]
-        );
-
-        return $response;
+        return $this->upload($params, __FUNCTION__);
     }
 }
