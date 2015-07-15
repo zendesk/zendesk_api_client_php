@@ -36,6 +36,7 @@ use Zendesk\API\Resources\Targets;
 use Zendesk\API\Resources\TicketImports;
 use Zendesk\API\Resources\Tickets;
 use Zendesk\API\Resources\Triggers;
+use Zendesk\API\Resources\TwitterHandles;
 use Zendesk\API\Resources\UserFields;
 use Zendesk\API\Resources\Users;
 use Zendesk\API\Resources\Views;
@@ -63,6 +64,7 @@ use Zendesk\API\Utilities\Auth;
  * @method Targets targets()
  * @method Tickets ticket()
  * @method TicketImports ticketImports()
+ * @method TwitterHandles twitterHandles()
  * @method Triggers triggers()
  * @method UserFields userFields()
  * @method Users users()
@@ -189,6 +191,7 @@ class HttpClient
             'tickets'                   => Tickets::class,
             'ticketImports'             => TicketImports::class,
             'triggers'                  => Triggers::class,
+            'twitterHandles'            => TwitterHandles::class,
             'userFields'                => UserFields::class,
             'users'                     => Users::class,
             'views'                     => Views::class,
