@@ -30,6 +30,7 @@ use Zendesk\API\Resources\OrganizationMemberships;
 use Zendesk\API\Resources\Organizations;
 use Zendesk\API\Resources\OrganizationSubscriptions;
 use Zendesk\API\Resources\Requests;
+use Zendesk\API\Resources\SatisfactionRatings;
 use Zendesk\API\Resources\Search;
 use Zendesk\API\Resources\Tags;
 use Zendesk\API\Resources\Targets;
@@ -59,6 +60,8 @@ use Zendesk\API\Utilities\Auth;
  * @method OrganizationFields organizationFields()
  * @method Organizations organizations()
  * @method Requests requests()
+ * @method Search search()
+ * @method SatisfactionRatings satisfactionRatings()
  * @method Tags tags()
  * @method Targets targets()
  * @method Tickets ticket()
@@ -183,6 +186,7 @@ class HttpClient
             'organizations'             => Organizations::class,
             'organizationSubscriptions' => OrganizationSubscriptions::class,
             'requests'                  => Requests::class,
+            'satisfactionRatings'       => SatisfactionRatings::class,
             'search'                    => Search::class,
             'tags'                      => Tags::class,
             'targets'                   => Targets::class,
