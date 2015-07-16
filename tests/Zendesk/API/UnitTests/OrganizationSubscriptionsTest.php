@@ -2,10 +2,14 @@
 
 namespace Zendesk\API\UnitTests;
 
-use GuzzleHttp\Psr7\Response;
-
+/**
+ * Class OrganizationSubscriptionsTest
+ */
 class OrganizationSubscriptionsTest extends BasicTest
 {
+    /**
+     * Test that the resource name is set correctly
+     */
     public function testResourceNameIsCorrect()
     {
         $resourceName = $this->client->organizationSubscriptions()->getResourceName();
@@ -17,40 +21,26 @@ class OrganizationSubscriptionsTest extends BasicTest
         );
     }
 
+    /**
+     * Test find method with chained user resource
+     */
     public function testFindUserOrganizations()
     {
-        $this->mockAPIResponses(
-            [
-                new Response(200, [], '')
-            ]
-        );
-
-        $this->client->users(123)->organizationSubscriptions()->findAll();
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'users/123/organization_subscriptions.json',
-            ]
-        );
+        $userId = 82828;
+        $this->assertEndpointCalled(function () use ($userId) {
+            $this->client->users($userId)->organizationSubscriptions()->findAll();
+        }, "users/{$userId}/organization_subscriptions.json");
     }
 
+    /**
+     * Test find method with chained organization resource
+     */
     public function testFindOrganizationSubscriptions()
     {
-        $this->mockAPIResponses(
-            [
-                new Response(200, [], '')
-            ]
-        );
-
-        $this->client->organizations(123)->subscriptions()->findAll();
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'organizations/123/subscriptions.json',
-            ]
-        );
+        $organizationId = 9393;
+        $this->assertEndpointCalled(function () use ($organizationId) {
+            $this->client->organizations($organizationId)->subscriptions()->findAll();
+        }, "organizations/{$organizationId}/subscriptions.json");
     }
 
     /**
@@ -58,19 +48,8 @@ class OrganizationSubscriptionsTest extends BasicTest
      */
     public function testFindAllOrganizationSubscriptions()
     {
-        $this->mockAPIResponses(
-            [
-                new Response(200, [], '')
-            ]
-        );
-
-        $this->client->organizationSubscriptions()->findAll();
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'organization_subscriptions.json',
-            ]
-        );
+        $this->assertEndpointCalled(function () {
+            $this->client->organizationSubscriptions()->findAll();
+        }, 'organization_subscriptions.json');
     }
 }

@@ -2,36 +2,29 @@
 
 namespace Zendesk\API\UnitTests;
 
-use GuzzleHttp\Psr7\Response;
-
+/**
+ * Class GroupsTest
+ */
 class GroupsTest extends BasicTest
 {
+    /**
+     * Test the assignable method
+     */
     public function testAssignableEndpoint()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->groups()->assignable();
-
-        $this->assertLastRequestIs([
-            'method'   => 'GET',
-            'endpoint' => 'groups/assignable.json',
-        ]);
+        $this->assertEndpointCalled(function () {
+            $this->client->groups()->assignable();
+        }, 'groups/assignable.json');
     }
 
+    /**
+     * Test finding of user groups
+     */
     public function testFindUserGroups()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->users(123)->groups()->findAll();
-
-        $this->assertLastRequestIs([
-            'method'   => 'GET',
-            'endpoint' => 'users/123/groups.json',
-        ]);
+        $this->assertEndpointCalled(function () {
+            $this->client->users(123)->groups()->findAll();
+        }, 'users/123/groups.json');
     }
 
     /**
@@ -39,15 +32,8 @@ class GroupsTest extends BasicTest
      */
     public function testFindAllGroups()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->groups()->findAll();
-
-        $this->assertLastRequestIs([
-            'method'   => 'GET',
-            'endpoint' => 'groups.json',
-        ]);
+        $this->assertEndpointCalled(function () {
+            $this->client->groups()->findAll();
+        }, 'groups.json');
     }
 }

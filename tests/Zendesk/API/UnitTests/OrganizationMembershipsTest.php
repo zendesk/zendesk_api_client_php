@@ -2,107 +2,90 @@
 
 namespace Zendesk\API\UnitTests;
 
-use GuzzleHttp\Psr7\Response;
 use Zendesk\API\Resources\OrganizationMemberships;
 
+/**
+ * Class OrganizationMembershipsTest
+ */
 class OrganizationMembershipsTest extends BasicTest
 {
+    /**
+     * Test find method
+     */
     public function testFind()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
         $resourceId = 299283;
 
-        $this->client->organizationMemberships($resourceId)->find();
-
-        $this->assertLastRequestIs([
-            'method'   => 'GET',
-            'endpoint' => "organization_memberships/{$resourceId}.json",
-        ]);
+        $this->assertEndpointCalled(function () use ($resourceId) {
+            $this->client->organizationMemberships($resourceId)->find();
+        }, "organization_memberships/{$resourceId}.json");
     }
 
+    /**
+     * Test find method with chained user
+     */
     public function testFindUserOrganizationMemberships()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
         $resourceId = 299283;
         $userId     = 28261;
 
-        $this->client->users($userId)->organizationMemberships()->find($resourceId);
-
-        $this->assertLastRequestIs([
-            'method'   => 'GET',
-            'endpoint' => "users/{$userId}/organization_memberships/{$resourceId}.json",
-        ]);
+        $this->assertEndpointCalled(function () use ($resourceId, $userId) {
+            $this->client->users($userId)->organizationMemberships()->find($resourceId);
+        }, "users/{$userId}/organization_memberships/{$resourceId}.json");
     }
 
+    /**
+     * Test find with organization memberships is passed when instantiating the resource.
+     */
     public function testFindUserOrganizationMembershipsChained()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
         $resourceId = 299283;
         $userId     = 28261;
 
-        $this->client->users($userId)->organizationMemberships($resourceId)->find();
-
-        $this->assertLastRequestIs([
-            'method'   => 'GET',
-            'endpoint' => "users/{$userId}/organization_memberships/{$resourceId}.json",
-        ]);
+        $this->assertEndpointCalled(function () use ($userId, $resourceId) {
+            $this->client->users($userId)->organizationMemberships($resourceId)->find();
+        }, "users/{$userId}/organization_memberships/{$resourceId}.json");
     }
 
+    /**
+     * Test findAll method
+     */
     public function testFindAll()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->organizationMemberships()->findAll();
-
-        $this->assertLastRequestIs([
-            'method'   => 'GET',
-            'endpoint' => 'organization_memberships.json',
-        ]);
+        $this->assertEndpointCalled(function () {
+            $this->client->organizationMemberships()->findAll();
+        }, 'organization_memberships.json');
     }
 
+    /**
+     * Test findAll with user resource chained
+     */
     public function testFindAllUserOrganizationMemberships()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
         $userId = 123;
 
-        $this->client->users($userId)->organizationMemberships()->findAll();
+        $this->assertEndpointCalled(function () use ($userId) {
+            $this->client->users($userId)->organizationMemberships()->findAll();
+        }, "users/{$userId}/organization_memberships.json");
 
-        $this->assertLastRequestIs([
-            'method'   => 'GET',
-            'endpoint' => "users/{$userId}/organization_memberships.json",
-        ]);
     }
 
+    /**
+     * Test findAll with organizations chained
+     */
     public function testFindAllOrganizationMemberships()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->organizations(123)->organizationMemberships()->findAll();
-
-        $this->assertLastRequestIs([
-            'method'   => 'GET',
-            'endpoint' => 'organizations/123/organization_memberships.json',
-        ]);
+        $resourceId = 123;
+        $this->assertEndpointCalled(function () use ($resourceId) {
+            $this->client->organizations($resourceId)->organizationMemberships()->findAll();
+        }, "organizations/{$resourceId}/organization_memberships.json");
     }
 
+    /**
+     * Test create endpoint
+     */
     public function testCreateOrganizationMemberships()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
         $postFields = [
             'id'              => 461,
             'user_id'         => 72,
@@ -112,21 +95,23 @@ class OrganizationMembershipsTest extends BasicTest
             'updated_at'      => '2012-04-03T12:34:01Z'
         ];
 
-        $this->client->organizationMemberships()->create($postFields);
-
-        $this->assertLastRequestIs([
-            'method'     => 'POST',
-            'endpoint'   => 'organization_memberships.json',
-            'postFields' => [OrganizationMemberships::OBJ_NAME => $postFields],
-        ]);
+        $this->assertEndpointCalled(
+            function () use ($postFields) {
+                $this->client->organizationMemberships()->create($postFields);
+            },
+            'organization_memberships.json',
+            'POST',
+            [
+                'postFields' => [OrganizationMemberships::OBJ_NAME => $postFields],
+            ]
+        );
     }
 
+    /**
+     * Test create endpoint with user resource chained
+     */
     public function testCreateUserOrganizationMemberships()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
         $userId     = 282;
         $postFields = [
             'id'              => 461,
@@ -137,21 +122,24 @@ class OrganizationMembershipsTest extends BasicTest
             'updated_at'      => '2012-04-03T12:34:01Z'
         ];
 
-        $this->client->users($userId)->organizationMemberships()->create($postFields);
+        $this->assertEndpointCalled(
+            function () use ($userId, $postFields) {
+                $this->client->users($userId)->organizationMemberships()->create($postFields);
+            },
+            "users/{$userId}/organization_memberships.json",
+            'POST',
+            [
+                'postFields' => [OrganizationMemberships::OBJ_NAME => $postFields],
+            ]
+        );
 
-        $this->assertLastRequestIs([
-            'method'     => 'POST',
-            'endpoint'   => "users/{$userId}/organization_memberships.json",
-            'postFields' => [OrganizationMemberships::OBJ_NAME => $postFields],
-        ]);
     }
 
+    /**
+     * Test createMany method
+     */
     public function testCreateMany()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
         $postFields = [
             [
                 'user_id'         => 72,
@@ -163,113 +151,107 @@ class OrganizationMembershipsTest extends BasicTest
             ],
         ];
 
-        $this->client->organizationMemberships()->createMany($postFields);
+        $this->assertEndpointCalled(
+            function () use ($postFields) {
+                $this->client->organizationMemberships()->createMany($postFields);
+            },
+            'organization_memberships/create_many.json',
+            'POST',
+            [
+                'postFields' => [OrganizationMemberships::OBJ_NAME_PLURAL => $postFields],
+            ]
+        );
 
-        $this->assertLastRequestIs([
-            'method'     => 'POST',
-            'endpoint'   => 'organization_memberships/create_many.json',
-            'postFields' => [OrganizationMemberships::OBJ_NAME_PLURAL => $postFields],
-        ]);
     }
 
+    /**
+     * Test delete method
+     */
     public function testDelete()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
         $resourceId = 299283;
 
-        $this->client->organizationMemberships($resourceId)->delete();
-
-        $this->assertLastRequestIs([
-            'method'   => 'DELETE',
-            'endpoint' => "organization_memberships/{$resourceId}.json",
-        ]);
+        $this->assertEndpointCalled(function () use ($resourceId) {
+            $this->client->organizationMemberships($resourceId)->delete();
+        }, "organization_memberships/{$resourceId}.json", 'DELETE');
     }
 
+    /**
+     * Test delete method with chained user resource
+     */
     public function testDeleteUserOrganizationMemberships()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
         $resourceId = 299283;
         $userId     = 28261;
 
-        $this->client->users($userId)->organizationMemberships()->delete($resourceId);
-
-        $this->assertLastRequestIs([
-            'method'   => 'DELETE',
-            'endpoint' => "users/{$userId}/organization_memberships/{$resourceId}.json",
-        ]);
+        $this->assertEndpointCalled(function () use ($userId, $resourceId) {
+            $this->client->users($userId)->organizationMemberships()->delete($resourceId);
+        }, "users/{$userId}/organization_memberships/{$resourceId}.json", 'DELETE');
     }
 
+    /**
+     * Test delete with chained user resource and passing the membership id when instantiating.
+     */
     public function testDeleteUserOrganizationMembershipsChained()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
         $resourceId = 299283;
         $userId     = 28261;
 
-        $this->client->users($userId)->organizationMemberships($resourceId)->delete();
-
-        $this->assertLastRequestIs([
-            'method'   => 'DELETE',
-            'endpoint' => "users/{$userId}/organization_memberships/{$resourceId}.json",
-        ]);
+        $this->assertEndpointCalled(function () use ($resourceId, $userId) {
+            $this->client->users($userId)->organizationMemberships($resourceId)->delete();
+        }, "users/{$userId}/organization_memberships/{$resourceId}.json", 'DELETE');
     }
 
+    /**
+     * Test delete many method
+     */
     public function testDeleteMany()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
         $resourceIds = [299283, 2331];
 
-        $this->client->organizationMemberships()->deleteMany($resourceIds);
-
-        $this->assertLastRequestIs([
-            'method'      => 'DELETE',
-            'endpoint'    => "organization_memberships/destroy_many.json",
-            'queryParams' => ['ids' => implode(',', $resourceIds)],
-        ]);
+        $this->assertEndpointCalled(
+            function () use ($resourceIds) {
+                $this->client->organizationMemberships()->deleteMany($resourceIds);
+            },
+            "organization_memberships/destroy_many.json",
+            'DELETE',
+            [
+                'queryParams' => ['ids' => implode(',', $resourceIds)],
+            ]
+        );
     }
 
+    /**
+     * Test for make default method
+     */
     public function testMakeDefault()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
         $params = [
             'id'     => 1122,
             'userId' => 2341,
         ];
 
-        $this->client->organizationMemberships()->makeDefault($params);
-
-        $this->assertLastRequestIs([
-            'method'   => 'PUT',
-            'endpoint' => "users/{$params['userId']}/organization_memberships/{$params['id']}/make_default.json",
-        ]);
+        $this->assertEndpointCalled(
+            function () use ($params) {
+                $this->client->organizationMemberships()->makeDefault($params);
+            },
+            "users/{$params['userId']}/organization_memberships/{$params['id']}/make_default.json",
+            'PUT'
+        );
     }
 
+    /**
+     * Test for make default method using chaining
+     */
     public function testMakeDefaultChained()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
         $params = [
             'id'     => 1122,
             'userId' => 2341,
         ];
 
-        $this->client->users($params['userId'])->organizationMemberships($params['id'])->makeDefault();
-
-        $this->assertLastRequestIs([
-            'method'   => 'PUT',
-            'endpoint' => "users/{$params['userId']}/organization_memberships/{$params['id']}/make_default.json",
-        ]);
+        $this->assertEndpointCalled(function () use ($params) {
+            $this->client->users($params['userId'])->organizationMemberships($params['id'])->makeDefault();
+        }, "users/{$params['userId']}/organization_memberships/{$params['id']}/make_default.json", 'PUT');
     }
 }

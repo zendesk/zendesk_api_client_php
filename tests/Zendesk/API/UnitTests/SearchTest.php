@@ -4,26 +4,27 @@ namespace Zendesk\API\UnitTests;
 
 use GuzzleHttp\Psr7\Response;
 
+/**
+ * Class SearchTest
+ */
 class SearchTest extends BasicTest
 {
     /**
+     * Test seach using a querystring
+     *
      * @dataProvider basicQueryStrings
      */
     public function testSearchQueryString($searchString)
     {
-        $this->mockAPIResponses(
-            [
-                new Response(200, [], '')
-            ]
-        );
 
         $queryParams = ['sort_by' => 'updated_at'];
-        $this->client->search()->find($searchString, $queryParams);
-
-        $this->assertLastRequestIs(
+        $this->assertEndpointCalled(
+            function () use ($searchString, $queryParams) {
+                $this->client->search()->find($searchString, $queryParams);
+            },
+            'search.json',
+            'GET',
             [
-                'method'      => 'GET',
-                'endpoint'    => 'search.json',
                 'queryParams' => [
                     'sort_by' => 'updated_at',
                     // replace colons, the colons are a special case in this endpoint so let's do the replacement
@@ -34,6 +35,9 @@ class SearchTest extends BasicTest
         );
     }
 
+    /**
+     * @return array
+     */
     public function basicQueryStrings()
     {
         return [
