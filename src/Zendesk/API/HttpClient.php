@@ -197,7 +197,7 @@ class HttpClient
             'satisfactionRatings'       => SatisfactionRatings::class,
             'sharingAgreements'         => SharingAgreements::class,
             'search'                    => Search::class,
-						'supportAddresses'          => SupportAddresses::class,
+            'supportAddresses'          => SupportAddresses::class,
             'suspendedTickets'          => SuspendedTickets::class,
             'tags'                      => Tags::class,
             'targets'                   => Targets::class,
