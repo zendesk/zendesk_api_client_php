@@ -2,19 +2,19 @@
 
 namespace Zendesk\API\UnitTests;
 
-use GuzzleHttp\Psr7\Response;
-
 /**
- * Locals test class
+ * Locales test class
  */
-class LocalsTest extends BasicTest
+class LocalesTest extends BasicTest
 {
     /**
      * Test findAllPublic method
      */
     public function testFindAllPublic()
     {
-        $this->getEndpointTest('findAllPublic', 'locales/public.json');
+        $this->assertEndpointCalled(function () {
+            $this->client->locales()->findAllPublic();
+        }, 'locales/public.json');
     }
 
     /**
@@ -22,7 +22,9 @@ class LocalsTest extends BasicTest
      */
     public function testFindAllAgent()
     {
-        $this->getEndpointTest('findAllAgent', 'locales/agent.json');
+        $this->assertEndpointCalled(function () {
+            $this->client->locales()->findAllAgent();
+        }, 'locales/agent.json');
     }
 
     /**
@@ -30,7 +32,9 @@ class LocalsTest extends BasicTest
      */
     public function testFindCurrent()
     {
-        $this->getEndpointTest('findCurrent', 'locales/current.json');
+        $this->assertEndpointCalled(function () {
+            $this->client->locales()->findCurrent();
+        }, 'locales/current.json');
     }
 
     /**
@@ -38,28 +42,8 @@ class LocalsTest extends BasicTest
      */
     public function testFindBest()
     {
-        $this->getEndpointTest('findBest', 'locales/detect_best_locale.json');
-    }
-
-    /**
-     * Test for the get endpoint using the given method and endpoint
-     *
-     * @param $method
-     * @param $endpoint
-     */
-    private function getEndpointTest($method, $endpoint)
-    {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->locales()->$method();
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => $endpoint,
-            ]
-        );
+        $this->assertEndpointCalled(function () {
+            $this->client->locales()->findBest();
+        }, 'locales/detect_best_locale.json');
     }
 }

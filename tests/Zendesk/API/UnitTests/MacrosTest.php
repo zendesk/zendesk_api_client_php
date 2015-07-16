@@ -2,8 +2,6 @@
 
 namespace Zendesk\API\UnitTests;
 
-use GuzzleHttp\Psr7\Response;
-
 /**
  * Macros test class
  * Class MacrosTest
@@ -16,18 +14,9 @@ class MacrosTest extends BasicTest
      */
     public function testActive()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->macros()->findAllActive();
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'macros/active.json',
-            ]
-        );
+        $this->assertEndpointCalled(function () {
+            $this->client->macros()->findAllActive();
+        }, 'macros/active.json');
     }
 
     /**
@@ -38,18 +27,9 @@ class MacrosTest extends BasicTest
     {
         $id = 1;
 
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->macros()->apply($id);
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => "macros/{$id}/apply.json",
-            ]
-        );
+        $this->assertEndpointCalled(function () use ($id) {
+            $this->client->macros()->apply($id);
+        }, "macros/{$id}/apply.json");
     }
 
     /**
@@ -58,21 +38,11 @@ class MacrosTest extends BasicTest
      */
     public function testApplyToTicket()
     {
-        $id = 1;
+        $id       = 1;
         $ticketId = 3;
 
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->macros()->applyToTicket($id, $ticketId);
-
-        $this->assertLastRequestIs(
-            [
-                'method'      => 'GET',
-                'endpoint'    => "tickets/{$ticketId}/macros/{$id}/apply.json",
-                'queryParams' => []
-            ]
-        );
+        $this->assertEndpointCalled(function () use ($id, $ticketId) {
+            $this->client->macros()->applyToTicket($id, $ticketId);
+        }, "tickets/{$ticketId}/macros/{$id}/apply.json");
     }
 }

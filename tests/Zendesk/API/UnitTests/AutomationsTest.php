@@ -2,8 +2,6 @@
 
 namespace Zendesk\API\UnitTests;
 
-use GuzzleHttp\Psr7\Response;
-
 /**
  * Automations test class
  */
@@ -15,17 +13,8 @@ class AutomationsTest extends BasicTest
      */
     public function testActive()
     {
-        $this->mockAPIResponses([
-            new Response(200, [], '')
-        ]);
-
-        $this->client->automations()->findActive();
-
-        $this->assertLastRequestIs(
-            [
-                'method'   => 'GET',
-                'endpoint' => 'automations/active.json',
-            ]
-        );
+        $this->assertEndpointCalled(function () {
+            $this->client->automations()->findActive();
+        }, 'automations/active.json');
     }
 }

@@ -10,6 +10,9 @@ use Zendesk\API\Resources\TicketFields;
 class TicketFieldsTest extends BasicTest
 {
 
+    /**
+     * Test that the resource name was set correctly
+     */
     public function testResourceNameWasSetCorrectly()
     {
         $ticketFields = new TicketFields($this->client);

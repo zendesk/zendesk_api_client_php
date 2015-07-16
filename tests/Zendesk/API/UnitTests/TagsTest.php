@@ -14,8 +14,6 @@ class TagsTest extends BasicTest
      * topics/{id}/tags.json
      * organizations/{id}/tags.json
      * users/{id}/tags.json
-     *
-     * @todo add more as these classes are built
      */
     public function testGetRoute()
     {
