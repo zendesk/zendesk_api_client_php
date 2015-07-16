@@ -88,6 +88,9 @@ use Zendesk\API\Utilities\Auth;
  * @method TwitterHandles twitterHandles()
  * @method Triggers triggers()
  * @method UserFields userFields()
+ * @method Users users()
+ * @method Views views()
+ *
  */
 class HttpClient
 {
@@ -195,6 +198,7 @@ class HttpClient
             'apps'                      => Apps::class,
             'activities'                => Activities::class,
             'appInstallations'          => AppInstallations::class,
+            'appLocations'              => AppLocations::class,
             'attachments'               => Attachments::class,
             'auditLogs'                 => AuditLogs::class,
             'autocomplete'              => Autocomplete::class,
