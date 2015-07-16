@@ -32,6 +32,7 @@ use Zendesk\API\Resources\OrganizationSubscriptions;
 use Zendesk\API\Resources\Requests;
 use Zendesk\API\Resources\SatisfactionRatings;
 use Zendesk\API\Resources\Search;
+use Zendesk\API\Resources\Sessions;
 use Zendesk\API\Resources\SharingAgreements;
 use Zendesk\API\Resources\SlaPolicies;
 use Zendesk\API\Resources\SupportAddresses;
@@ -66,6 +67,7 @@ use Zendesk\API\Utilities\Auth;
  * @method Organizations organizations()
  * @method Requests requests()
  * @method Search search()
+ * @method Sessions sessions()
  * @method SatisfactionRatings satisfactionRatings()
  * @method SharingAgreements sharingAgreements()
  * @method SlaPolicies slaPolicies()
@@ -200,6 +202,7 @@ class HttpClient
             'sharingAgreements'         => SharingAgreements::class,
             'search'                    => Search::class,
             'slaPolicies'               => SlaPolicies::class,
+						'sessions'                  => Sessions::class,
             'supportAddresses'          => SupportAddresses::class,
             'suspendedTickets'          => SuspendedTickets::class,
             'tags'                      => Tags::class,
