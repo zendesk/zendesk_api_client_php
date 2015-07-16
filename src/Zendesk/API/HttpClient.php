@@ -59,6 +59,7 @@ use Zendesk\API\Utilities\Auth;
  * @method Attachments attachments()
  * @method AuditLogs auditLogs()
  * @method Automations automations()
+ * @method Bookmarks bookmarks()
  * @method Debug debug()
  * @method DynamicContent dynamicContent()
  * @method Groups groups()
@@ -188,6 +189,7 @@ class HttpClient
             'auditLogs'                 => AuditLogs::class,
             'autocomplete'              => Autocomplete::class,
             'automations'               => Automations::class,
+            'bookmarks'                 => Bookmarks::class,
             'brands'                    => Brands::class,
             'customRoles'               => CustomRoles::class,
             'dynamicContent'            => DynamicContent::class,
