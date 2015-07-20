@@ -68,6 +68,7 @@ use Zendesk\API\Utilities\Auth;
  * @method OAuthClients oauthClients()
  * @method OrganizationFields organizationFields()
  * @method Organizations organizations()
+ * @method PushNotificationDevices pushNotificationDevices()
  * @method Requests requests()
  * @method Search search()
  * @method Sessions sessions()
@@ -130,7 +131,7 @@ class HttpClient
      */
     protected $debug;
     /**
-     * @var \Guzzlehttp\Client
+     * @var \GuzzleHttp\Client
      */
     public $guzzle;
     /**
@@ -203,6 +204,7 @@ class HttpClient
             'organizationMemberships'   => OrganizationMemberships::class,
             'organizations'             => Organizations::class,
             'organizationSubscriptions' => OrganizationSubscriptions::class,
+            'pushNotificationDevices'   => PushNotificationDevices::class,
             'requests'                  => Requests::class,
             'satisfactionRatings'       => SatisfactionRatings::class,
             'sharingAgreements'         => SharingAgreements::class,
