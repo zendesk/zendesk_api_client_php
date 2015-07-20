@@ -11,6 +11,9 @@ class Categories extends ResourceAbstract
 
     use Defaults;
 
+    /**
+     * @var locale
+     */
     private $locale;
 
     /**
