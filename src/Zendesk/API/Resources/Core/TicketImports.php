@@ -11,12 +11,18 @@ use Zendesk\API\Traits\Resource\CreateMany;
  */
 class TicketImports extends ResourceAbstract
 {
-    const OBJ_NAME = 'ticket';
-    const OBJ_NAME_PLURAL = 'tickets';
-
     use Create;
 
     use CreateMany;
+
+    /**
+     * @var String
+     */
+    protected $objectName = 'ticket';
+    /**
+     * @var String
+     */
+    protected $objectNamePlural = 'tickets';
 
     /**
      * Sets up the available routes for the resource.

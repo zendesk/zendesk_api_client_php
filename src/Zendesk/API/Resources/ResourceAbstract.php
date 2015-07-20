@@ -20,6 +20,15 @@ abstract class ResourceAbstract
     protected $resourceName;
 
     /**
+     * @var String
+     */
+    protected $objectName;
+    /**
+     * @var String
+     */
+    protected $objectNamePlural;
+
+    /**
      * @var HttpClient
      */
     protected $client;
@@ -47,6 +56,14 @@ abstract class ResourceAbstract
 
         if (! isset($this->resourceName)) {
             $this->resourceName = $this->getResourceNameFromClass();
+        }
+
+        if (! isset($this->objectName)) {
+            $this->objectName = $this->getResourceNameFromClass();
+        }
+
+        if (! isset($this->objectNamePlural)) {
+            $this->objectNamePlural = $this->getResourceNameFromClass() . 's';
         }
 
         $this->setUpRoutes();
