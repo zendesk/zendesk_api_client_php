@@ -74,7 +74,7 @@ abstract class ResourceAbstract
      *
      * @return string
      */
-    private function getResourceNameFromClass()
+    protected function getResourceNameFromClass()
     {
         $namespacedClassName = get_class($this);
         $resourceName        = join('', array_slice(explode('\\', $namespacedClassName), -1));

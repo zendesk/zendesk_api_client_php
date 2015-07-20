@@ -8,45 +8,45 @@ namespace Zendesk\API;
  */
 
 use Zendesk\API\Exceptions\AuthException;
-use Zendesk\API\Resources\Activities;
-use Zendesk\API\Resources\AppInstallations;
-use Zendesk\API\Resources\Apps;
-use Zendesk\API\Resources\Attachments;
-use Zendesk\API\Resources\AuditLogs;
-use Zendesk\API\Resources\Autocomplete;
-use Zendesk\API\Resources\Automations;
-use Zendesk\API\Resources\Brands;
-use Zendesk\API\Resources\CustomRoles;
-use Zendesk\API\Resources\DynamicContent;
-use Zendesk\API\Resources\GroupMemberships;
-use Zendesk\API\Resources\Groups;
-use Zendesk\API\Resources\Incremental;
-use Zendesk\API\Resources\JobStatuses;
-use Zendesk\API\Resources\Locales;
-use Zendesk\API\Resources\Macros;
-use Zendesk\API\Resources\OAuthClients;
-use Zendesk\API\Resources\OAuthTokens;
-use Zendesk\API\Resources\OrganizationFields;
-use Zendesk\API\Resources\OrganizationMemberships;
-use Zendesk\API\Resources\Organizations;
-use Zendesk\API\Resources\OrganizationSubscriptions;
-use Zendesk\API\Resources\Requests;
-use Zendesk\API\Resources\SatisfactionRatings;
-use Zendesk\API\Resources\Search;
-use Zendesk\API\Resources\Sessions;
-use Zendesk\API\Resources\SharingAgreements;
-use Zendesk\API\Resources\SlaPolicies;
-use Zendesk\API\Resources\SupportAddresses;
-use Zendesk\API\Resources\SuspendedTickets;
-use Zendesk\API\Resources\Tags;
-use Zendesk\API\Resources\Targets;
-use Zendesk\API\Resources\TicketImports;
-use Zendesk\API\Resources\Tickets;
-use Zendesk\API\Resources\Triggers;
-use Zendesk\API\Resources\TwitterHandles;
-use Zendesk\API\Resources\UserFields;
-use Zendesk\API\Resources\Users;
-use Zendesk\API\Resources\Views;
+use Zendesk\API\Resources\Core\Activities;
+use Zendesk\API\Resources\Core\AppInstallations;
+use Zendesk\API\Resources\Core\Attachments;
+use Zendesk\API\Resources\Core\AuditLogs;
+use Zendesk\API\Resources\Core\Autocomplete;
+use Zendesk\API\Resources\Core\Automations;
+use Zendesk\API\Resources\Core\Brands;
+use Zendesk\API\Resources\Core\CustomRoles;
+use Zendesk\API\Resources\Core\DynamicContent;
+use Zendesk\API\Resources\Core\GroupMemberships;
+use Zendesk\API\Resources\Core\Groups;
+use Zendesk\API\Resources\Core\Incremental;
+use Zendesk\API\Resources\Core\JobStatuses;
+use Zendesk\API\Resources\Core\Locales;
+use Zendesk\API\Resources\Core\Macros;
+use Zendesk\API\Resources\Core\OAuthClients;
+use Zendesk\API\Resources\Core\OAuthTokens;
+use Zendesk\API\Resources\Core\OrganizationFields;
+use Zendesk\API\Resources\Core\OrganizationMemberships;
+use Zendesk\API\Resources\Core\Organizations;
+use Zendesk\API\Resources\Core\OrganizationSubscriptions;
+use Zendesk\API\Resources\Core\Requests;
+use Zendesk\API\Resources\Core\SatisfactionRatings;
+use Zendesk\API\Resources\Core\Search;
+use Zendesk\API\Resources\Core\Sessions;
+use Zendesk\API\Resources\Core\SharingAgreements;
+use Zendesk\API\Resources\Core\SlaPolicies;
+use Zendesk\API\Resources\Core\SupportAddresses;
+use Zendesk\API\Resources\Core\SuspendedTickets;
+use Zendesk\API\Resources\Core\Tags;
+use Zendesk\API\Resources\Core\Targets;
+use Zendesk\API\Resources\Core\TicketImports;
+use Zendesk\API\Resources\Core\Tickets;
+use Zendesk\API\Resources\Core\Triggers;
+use Zendesk\API\Resources\Core\TwitterHandles;
+use Zendesk\API\Resources\Core\UserFields;
+use Zendesk\API\Resources\Core\Users;
+use Zendesk\API\Resources\Core\Views;
+use Zendesk\API\Resources\HelpCenter;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 use Zendesk\API\Utilities\Auth;
 
@@ -130,13 +130,17 @@ class HttpClient
     protected $sideload;
 
     /**
-     * @var Debug
+     * @var debug
      */
     protected $debug;
     /**
-     * @var \GuzzleHttp\Client
+     * @var \guzzlehttp\client
      */
     public $guzzle;
+    /**
+     * @var HelpCenter
+     */
+    public $helpCenter;
 
     /**
      * @param string $subdomain
@@ -169,7 +173,8 @@ class HttpClient
             $this->apiUrl = "$scheme://$subdomain.$hostname:$port/api/{$this->apiVer}/";
         }
 
-        $this->debug = new Debug();
+        $this->debug      = new Debug();
+        $this->helpCenter = new HelpCenter($this);
     }
 
     /**
