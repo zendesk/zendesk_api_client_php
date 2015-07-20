@@ -19,11 +19,20 @@ class HelpCenter
 
     public $client;
 
+    /**
+     * Sets the client to be used
+     *
+     * @param HttpClient $client
+     */
     public function __construct(HttpClient $client)
     {
         $this->client = $client;
     }
 
+    /**
+     * @inheritdoc
+     * @return array
+     */
     public static function getValidSubResources()
     {
         return [

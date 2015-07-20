@@ -9,7 +9,6 @@ use Zendesk\API\Traits\Utility\ChainedParametersTrait;
 /**
  * Abstract class for all endpoints
  *
- * @package Zendesk\API
  */
 abstract class ResourceAbstract
 {

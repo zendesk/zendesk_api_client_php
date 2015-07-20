@@ -130,11 +130,11 @@ class HttpClient
     protected $sideload;
 
     /**
-     * @var debug
+     * @var Debug
      */
     protected $debug;
     /**
-     * @var \guzzlehttp\client
+     * @var \Guzzlehttp\Client
      */
     public $guzzle;
     /**
