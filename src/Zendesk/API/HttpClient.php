@@ -202,7 +202,7 @@ class HttpClient
             'sharingAgreements'         => SharingAgreements::class,
             'search'                    => Search::class,
             'slaPolicies'               => SlaPolicies::class,
-						'sessions'                  => Sessions::class,
+            'sessions'                  => Sessions::class,
             'supportAddresses'          => SupportAddresses::class,
             'suspendedTickets'          => SuspendedTickets::class,
             'tags'                      => Tags::class,
