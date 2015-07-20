@@ -51,11 +51,11 @@ class SlaPoliciesTest extends BasicTest
                                     'value'    => 'incident',
                                 ],
                         ],
-                    'any' =>
+                        'any' =>
                         [
                         ],
                 ],
-            'policy_metrics' =>
+                'policy_metrics' =>
                 [
                     0 =>
                         [
@@ -64,7 +64,7 @@ class SlaPoliciesTest extends BasicTest
                             'target'         => 30,
                             'business_hours' => false,
                         ],
-                    1 =>
+                        1 =>
                         [
                             'priority'       => 'urgent',
                             'metric'         => 'first_reply_time',
