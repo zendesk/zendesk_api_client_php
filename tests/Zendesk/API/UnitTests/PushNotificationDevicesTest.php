@@ -2,7 +2,7 @@
 
 namespace Zendesk\API\UnitTests;
 
-use Zendesk\API\Resources\PushNotificationDevices;
+use Zendesk\API\Resources\Core\PushNotificationDevices;
 
 /**
  * PushNotificationDevices test class
