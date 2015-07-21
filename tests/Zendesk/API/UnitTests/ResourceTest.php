@@ -202,6 +202,30 @@ class ResourceTest extends BasicTest
     }
 
     /**
+     * Test multipost upload trait creates an upload method.
+     */
+    public function testUpload()
+    {
+        $this->mockAPIResponses([
+            new Response(200, [], '')
+        ]);
+
+        $params = [
+            'file' => getcwd() . '/tests/assets/UK.png'
+        ];
+
+        $this->dummyResource->upload($params);
+
+        $this->assertLastRequestIs(
+            [
+                'method'    => 'POST',
+                'endpoint'  => 'dummy_resource/uploads.json',
+                'multipart' => true,
+            ]
+        );
+    }
+
+    /**
      * Test we can handle server exceptions
      *
      * @expectedException Zendesk\API\Exceptions\ApiResponseException
