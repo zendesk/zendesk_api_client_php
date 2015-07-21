@@ -83,12 +83,6 @@ use Zendesk\API\Utilities\Auth;
  * @method TwitterHandles twitterHandles()
  * @method Triggers triggers()
  * @method UserFields userFields()
- * @method AuditLogs auditLogs()
- * @method OrganizationFields organizationFields()
- * @method DynamicContent dynamicContent()
- * @method Organizations organizations()
- * @method Activities activities()
- * @method Apps apps()
  */
 class HttpClient
 {
