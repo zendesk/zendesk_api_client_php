@@ -198,7 +198,6 @@ class HttpClient
             'apps'                      => Apps::class,
             'activities'                => Activities::class,
             'appInstallations'          => AppInstallations::class,
-            'appLocations'              => AppLocations::class,
             'attachments'               => Attachments::class,
             'auditLogs'                 => AuditLogs::class,
             'autocomplete'              => Autocomplete::class,

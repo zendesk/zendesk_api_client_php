@@ -12,7 +12,7 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
 /**
  * The Apps class exposes app management methods
  *
- * @method AppInstallationLocations installationLocations()
+ * @method AppLocations locations()
  */
 class Apps extends ResourceAbstract
 {
@@ -41,6 +41,18 @@ class Apps extends ResourceAbstract
             'install'      => "{$this->resourceName}/installations.json",
             'notify'       => "{$this->resourceName}/notify.json",
         ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     *
+     * @return array
+     */
+    public static function getValidSubResources()
+    {
+        return [
+            'locations' => AppLocations::class,
+        ];
     }
 
     /**
