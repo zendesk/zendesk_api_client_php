@@ -1,7 +1,8 @@
 <?php
 
-namespace Zendesk\API\Resources;
+namespace Zendesk\API\Resources\Core;
 
+use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
 
