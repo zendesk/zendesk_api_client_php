@@ -7,9 +7,6 @@ use Zendesk\API\Traits\Resource\Defaults;
 
 class SupportAddresses extends ResourceAbstract
 {
-    const OBJ_NAME = 'recipient_addresses';
-    const OBJ_NAME_PLURAL = 'recipient_addresses';
-
     use Defaults;
 
     protected $resourceName = 'recipient_addresses';
