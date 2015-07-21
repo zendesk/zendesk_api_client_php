@@ -15,6 +15,7 @@ use Zendesk\API\Resources\Core\Attachments;
 use Zendesk\API\Resources\Core\AuditLogs;
 use Zendesk\API\Resources\Core\Autocomplete;
 use Zendesk\API\Resources\Core\Automations;
+use Zendesk\API\Resources\Core\Bookmarks;
 use Zendesk\API\Resources\Core\Brands;
 use Zendesk\API\Resources\Core\CustomRoles;
 use Zendesk\API\Resources\Core\DynamicContent;
