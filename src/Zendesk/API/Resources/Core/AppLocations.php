@@ -14,5 +14,8 @@ class AppLocations extends ResourceAbstract
     use Find;
     use FindAll;
 
+    /**
+     * @var string
+     */
     protected $resourceName = 'apps/locations';
 }
