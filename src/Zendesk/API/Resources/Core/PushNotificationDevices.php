@@ -1,8 +1,9 @@
 <?php
 
-namespace Zendesk\API\Resources;
+namespace Zendesk\API\Resources\Core;
 
 use Zendesk\API\Exceptions\MissingParametersException;
+use Zendesk\API\Resources\ResourceAbstract;
 
 /**
  * The Push Notification Devices class exposes methods seen at

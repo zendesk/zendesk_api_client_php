@@ -30,6 +30,7 @@ use Zendesk\API\Resources\Core\OrganizationFields;
 use Zendesk\API\Resources\Core\OrganizationMemberships;
 use Zendesk\API\Resources\Core\Organizations;
 use Zendesk\API\Resources\Core\OrganizationSubscriptions;
+use Zendesk\API\Resources\Core\PushNotificationDevices;
 use Zendesk\API\Resources\Core\Requests;
 use Zendesk\API\Resources\Core\SatisfactionRatings;
 use Zendesk\API\Resources\Core\Search;
