@@ -9,7 +9,14 @@ class AppLocationsTest extends BasicTest
      */
     public function testRoutes()
     {
-        $this->assertTrue(method_exists($this->client->appLocations(), 'find'));
-        $this->assertTrue(method_exists($this->client->appLocations(), 'findAll'));
+        $this->assertTrue(method_exists($this->client->apps()->locations(), 'find'));
+        $this->assertTrue(method_exists($this->client->apps()->locations(), 'findAll'));
+    }
+
+    public function testMethodsCallable()
+    {
+        $this->assertEndpointCalled(function () {
+            $this->client->apps()->locations()->findAll(['per_page' => 20]);
+        }, 'apps/locations.json', 'GET', ['queryParams' => ['per_page' => 20]]);
     }
 }
