@@ -10,6 +10,7 @@ namespace Zendesk\API;
 use Zendesk\API\Exceptions\AuthException;
 use Zendesk\API\Resources\Core\Activities;
 use Zendesk\API\Resources\Core\AppInstallations;
+use Zendesk\API\Resources\Core\Apps;
 use Zendesk\API\Resources\Core\Attachments;
 use Zendesk\API\Resources\Core\AuditLogs;
 use Zendesk\API\Resources\Core\Autocomplete;
@@ -54,6 +55,7 @@ use Zendesk\API\Utilities\Auth;
  * Client class, base level access
  *
  * @method Activities activities()
+ * @method Apps apps()
  * @method Attachments attachments()
  * @method AuditLogs auditLogs()
  * @method Automations automations()
