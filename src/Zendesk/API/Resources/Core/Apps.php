@@ -7,14 +7,19 @@ use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\Delete;
 use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\MultipartUpload;
+use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
  * The Apps class exposes app management methods
+ *
+ * @method AppInstallationLocations installationLocations()
  */
 class Apps extends ResourceAbstract
 {
     const OBJ_NAME = 'app';
     const OBJ_NAME_PLURAL = 'apps';
+
+    use InstantiatorTrait;
 
     use Find;
     use Delete;
@@ -52,6 +57,16 @@ class Apps extends ResourceAbstract
     public function getUploadRequestMethod()
     {
         return 'POST';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public static function getValidSubResources()
+    {
+        return [
+            'installationLocations' => AppInstallationLocations::class,
+        ];
     }
 
     /**
