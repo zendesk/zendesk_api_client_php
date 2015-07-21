@@ -13,6 +13,9 @@ class AppLocationsTest extends BasicTest
         $this->assertTrue(method_exists($this->client->apps()->locations(), 'findAll'));
     }
 
+    /**
+     * Test if the methods can be called via apps()
+     */
     public function testMethodsCallable()
     {
         $this->assertEndpointCalled(function () {
