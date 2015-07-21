@@ -4,7 +4,6 @@ namespace Zendesk\API\UnitTests;
 
 /**
  * Class BookmarksTest
- * @package Zendesk\API\UnitTests
  */
 class BookmarksTest extends BasicTest
 {
