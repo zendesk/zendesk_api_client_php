@@ -5,6 +5,10 @@ namespace Zendesk\API\Resources\Core;
 use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\Defaults;
 
+/**
+ * The AppInstallations class exposes methods seen at
+ * https://developer.zendesk.com/rest_api/docs/core/apps#list-app-installations
+ */
 class AppInstallations extends ResourceAbstract
 {
     use Defaults;
