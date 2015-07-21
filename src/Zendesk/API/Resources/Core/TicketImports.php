@@ -16,13 +16,9 @@ class TicketImports extends ResourceAbstract
     use CreateMany;
 
     /**
-     * @var String
+     * {@inheritdoc}
      */
-    protected $objectName = 'ticket';
-    /**
-     * @var String
-     */
-    protected $objectNamePlural = 'tickets';
+    protected $resourceName = 'ticket';
 
     /**
      * Sets up the available routes for the resource.
