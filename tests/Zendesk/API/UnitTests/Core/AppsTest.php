@@ -1,8 +1,9 @@
 <?php
 
-namespace Zendesk\API\UnitTests;
+namespace Zendesk\API\UnitTests\Core;
 
 use GuzzleHttp\Psr7\Response;
+use Zendesk\API\UnitTests\BasicTest;
 
 /**
  * Attachments test class
