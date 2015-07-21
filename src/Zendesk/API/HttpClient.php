@@ -48,6 +48,7 @@ use Zendesk\API\Resources\Core\UserFields;
 use Zendesk\API\Resources\Core\Users;
 use Zendesk\API\Resources\Core\Views;
 use Zendesk\API\Resources\HelpCenter;
+use Zendesk\API\Resources\Voice;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 use Zendesk\API\Utilities\Auth;
 
@@ -139,6 +140,11 @@ class HttpClient
     public $helpCenter;
 
     /**
+     * @var Voice
+     */
+    public $voice;
+
+    /**
      * @param string $subdomain
      * @param string $username
      */
@@ -171,6 +177,7 @@ class HttpClient
 
         $this->debug      = new Debug();
         $this->helpCenter = new HelpCenter($this);
+        $this->voice      = new Voice($this);
     }
 
     /**
