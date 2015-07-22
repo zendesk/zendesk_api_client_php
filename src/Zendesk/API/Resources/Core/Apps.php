@@ -45,18 +45,6 @@ class Apps extends ResourceAbstract
 
     /**
      * {@inheritdoc}
-     *
-     * @return array
-     */
-    public static function getValidSubResources()
-    {
-        return [
-            'locations' => AppLocations::class,
-        ];
-    }
-
-    /**
-     * {@inheritdoc}
      */
     public function getUploadName()
     {
@@ -78,6 +66,7 @@ class Apps extends ResourceAbstract
     {
         return [
             'installationLocations' => AppInstallationLocations::class,
+            'locations'             => AppLocations::class,
         ];
     }
 
