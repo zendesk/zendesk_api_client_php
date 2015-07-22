@@ -2,10 +2,6 @@
 
 namespace Zendesk\API\Resources\Core;
 
-use GuzzleHttp\Psr7\LazyOpenStream;
-use Zendesk\API\Exceptions\CustomException;
-use Zendesk\API\Exceptions\MissingParametersException;
-use Zendesk\API\Http;
 use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\MultipartUpload;
@@ -18,7 +14,6 @@ use Zendesk\API\Traits\Resource\MultipartUpload;
  */
 class Brands extends ResourceAbstract
 {
-    use Defaults;
     use Defaults;
     use MultipartUpload;
 
