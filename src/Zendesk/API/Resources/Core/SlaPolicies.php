@@ -11,9 +11,12 @@ use Zendesk\API\Traits\Resource\Defaults;
  */
 class SlaPolicies extends ResourceAbstract
 {
-    const OBJ_NAME = 'sla_policy';
-
     use Defaults;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectName = 'sla_policy';
 
     protected $resourceName = 'slas/policies';
 

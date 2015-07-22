@@ -14,9 +14,6 @@ class TicketMetrics extends ResourceAbstract
     use FindAll;
     use Find;
 
-    const OBJ_NAME = 'ticket_metric';
-    const OBJ_NAME_PLURAL = 'ticket_metrics';
-
     protected $resourceName = 'ticket_metrics';
 
     /**

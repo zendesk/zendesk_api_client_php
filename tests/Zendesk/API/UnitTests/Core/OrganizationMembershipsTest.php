@@ -2,7 +2,6 @@
 
 namespace Zendesk\API\UnitTests\Core;
 
-use Zendesk\API\Resources\Core\OrganizationMemberships;
 use Zendesk\API\UnitTests\BasicTest;
 
 /**
@@ -103,7 +102,7 @@ class OrganizationMembershipsTest extends BasicTest
             'organization_memberships.json',
             'POST',
             [
-                'postFields' => [OrganizationMemberships::OBJ_NAME => $postFields],
+                'postFields' => ['organization_membership' => $postFields],
             ]
         );
     }
@@ -130,7 +129,7 @@ class OrganizationMembershipsTest extends BasicTest
             "users/{$userId}/organization_memberships.json",
             'POST',
             [
-                'postFields' => [OrganizationMemberships::OBJ_NAME => $postFields],
+                'postFields' => ['organization_membership' => $postFields],
             ]
         );
 
@@ -159,7 +158,7 @@ class OrganizationMembershipsTest extends BasicTest
             'organization_memberships/create_many.json',
             'POST',
             [
-                'postFields' => [OrganizationMemberships::OBJ_NAME_PLURAL => $postFields],
+                'postFields' => ['organization_memberships' => $postFields],
             ]
         );
 

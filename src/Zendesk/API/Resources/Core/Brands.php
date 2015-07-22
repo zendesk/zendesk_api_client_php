@@ -18,9 +18,7 @@ use Zendesk\API\Traits\Resource\MultipartUpload;
  */
 class Brands extends ResourceAbstract
 {
-    const OBJ_NAME = 'brand';
-    const OBJ_NAME_PLURAL = 'brands';
-
+    use Defaults;
     use Defaults;
     use MultipartUpload;
 

@@ -3,9 +3,11 @@
 namespace Zendesk\API\UnitTests\Core;
 
 use GuzzleHttp\Psr7\Response;
-use Zendesk\API\Resources\Core\GroupMemberships;
 use Zendesk\API\UnitTests\BasicTest;
 
+/**
+ * Test for GroupMemberships
+ */
 class GroupMembershipsTest extends BasicTest
 {
     /**
@@ -129,7 +131,7 @@ class GroupMembershipsTest extends BasicTest
         $this->assertLastRequestIs([
             'method'     => 'POST',
             'endpoint'   => 'users/123/group_memberships.json',
-            'postFields' => [GroupMemberships::OBJ_NAME => $postData]
+            'postFields' => ['group_membership' => $postData]
         ]);
 
         // POST /api/v2/group_memberships/{id}.json
@@ -138,9 +140,10 @@ class GroupMembershipsTest extends BasicTest
         $this->assertLastRequestIs([
             'method'     => 'POST',
             'endpoint'   => 'group_memberships.json',
-            'postFields' => [GroupMemberships::OBJ_NAME => $postData]
+            'postFields' => ['group_membership' => $postData]
         ]);
     }
+
 
     /**
      * Test the delete endpoint, since this resource involves chaining

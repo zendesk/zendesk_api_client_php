@@ -125,7 +125,7 @@ class ResourceTest extends BasicTest
             },
             'dummy_resource/create_many.json',
             'POST',
-            ['postFields' => [DummyResource::OBJ_NAME_PLURAL => $postFields]]
+            ['postFields' => ['dummies' => $postFields]]
         );
     }
 
@@ -156,7 +156,7 @@ class ResourceTest extends BasicTest
             'PUT',
             [
                 'queryParams' => ['ids' => implode(',', $ids)],
-                'postFields'  => [DummyResource::OBJ_NAME => $postFields],
+                'postFields'  => ['dummy' => $postFields],
             ]
         );
 
@@ -180,7 +180,7 @@ class ResourceTest extends BasicTest
             },
             'dummy_resource/update_many.json',
             'PUT',
-            ['postFields' => [DummyResource::OBJ_NAME_PLURAL => $postFields]]
+            ['postFields' => ['dummies' => $postFields]]
         );
 
     }

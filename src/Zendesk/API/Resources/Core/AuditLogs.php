@@ -12,9 +12,6 @@ use Zendesk\API\Traits\Resource\FindAll;
  */
 class AuditLogs extends ResourceAbstract
 {
-    const OBJ_NAME = 'audit_log';
-    const OBJ_NAME_PLURAL = 'audit_logs';
-
     use Find;
     use FindAll {
         findAll as traitFindAll;

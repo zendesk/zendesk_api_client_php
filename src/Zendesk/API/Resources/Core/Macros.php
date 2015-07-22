@@ -11,9 +11,6 @@ use Zendesk\API\Traits\Resource\Defaults;
  */
 class Macros extends ResourceAbstract
 {
-    const OBJ_NAME = 'macro';
-    const OBJ_NAME_PLURAL = 'macros';
-
     use Defaults;
 
     /**

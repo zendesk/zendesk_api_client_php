@@ -5,6 +5,10 @@ namespace Zendesk\API\Resources\Core;
 use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\Defaults;
 
+/**
+ * Class SupportAddresses
+ * https://developer.zendesk.com/rest_api/docs/core/support_addresses
+ */
 class SupportAddresses extends ResourceAbstract
 {
     use Defaults;

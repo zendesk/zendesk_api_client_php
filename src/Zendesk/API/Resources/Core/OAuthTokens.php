@@ -7,14 +7,23 @@ use Zendesk\API\Traits\Resource\Delete;
 use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
 
+/**
+ * Class OAuthTokens
+ */
 class OAuthTokens extends ResourceAbstract
 {
-    const OBJ_NAME = 'token';
-    const OBJ_NAME_PLURAL = 'tokens';
-
     use FindAll;
     use Find;
     use Delete;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectName = 'token';
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectNamePlural = 'tokens';
 
     /**
      * @var string

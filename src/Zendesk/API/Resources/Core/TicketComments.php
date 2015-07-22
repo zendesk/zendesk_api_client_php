@@ -12,12 +12,18 @@ use Zendesk\API\Traits\Resource\FindAll;
  */
 class TicketComments extends ResourceAbstract
 {
-    const OBJ_NAME = 'comment';
-    const OBJ_NAME_PLURAL = 'comments';
-
     use FindAll {
         findAll as traitFindAll;
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectName = 'comment';
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectNamePlural = 'comments';
 
     /**
      * {@inheritdoc}

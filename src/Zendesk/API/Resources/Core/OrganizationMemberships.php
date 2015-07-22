@@ -9,11 +9,12 @@ use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\DeleteMany;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
+/**
+ * Class OrganizationMemberships
+ * https://developer.zendesk.com/rest_api/docs/core/organization_memberships
+ */
 class OrganizationMemberships extends ResourceAbstract
 {
-    const OBJ_NAME = 'organization_membership';
-    const OBJ_NAME_PLURAL = 'organization_memberships';
-
     use InstantiatorTrait;
 
     use Defaults;

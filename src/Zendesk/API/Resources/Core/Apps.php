@@ -16,9 +16,6 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
  */
 class Apps extends ResourceAbstract
 {
-    const OBJ_NAME = 'app';
-    const OBJ_NAME_PLURAL = 'apps';
-
     use InstantiatorTrait;
 
     use Find;

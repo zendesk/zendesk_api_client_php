@@ -20,9 +20,6 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
  */
 class Organizations extends ResourceAbstract
 {
-    const OBJ_NAME = 'organization';
-    const OBJ_NAME_PLURAL = 'organizations';
-
     use InstantiatorTrait;
 
     use Defaults;
@@ -44,6 +41,9 @@ class Organizations extends ResourceAbstract
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         parent::setUpRoutes();
@@ -81,7 +81,7 @@ class Organizations extends ResourceAbstract
             return parent::getRoute($name, $params);
         } else {
             $id       = reset($lastChained);
-            $resource = $chainedResourceNames[0]::OBJ_NAME_PLURAL;
+            $resource = (new $chainedResourceNames[0]($this->client))->resourceName;
 
             if ('users' === $resource) {
                 return "users/$id/organizations.json";

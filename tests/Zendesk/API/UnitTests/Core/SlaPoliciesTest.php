@@ -80,7 +80,7 @@ class SlaPoliciesTest extends BasicTest
             },
             "slas/policies/{$resourceId}/replace.json",
             'PUT',
-            ['postFields' => [SlaPolicies::OBJ_NAME => $updateFields]]
+            ['postFields' => ['sla_policy' => $updateFields]]
         );
     }
 

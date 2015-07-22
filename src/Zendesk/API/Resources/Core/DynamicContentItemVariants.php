@@ -15,9 +15,6 @@ use Zendesk\API\Traits\Resource\UpdateMany;
  */
 class DynamicContentItemVariants extends ResourceAbstract
 {
-    const OBJ_NAME = 'item';
-    const OBJ_NAME_PLURAL = 'items';
-
     use Create;
     use Delete;
     use Find;
@@ -25,6 +22,15 @@ class DynamicContentItemVariants extends ResourceAbstract
 
     use CreateMany;
     use UpdateMany;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectName = 'item';
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectNamePlural = 'items';
 
     /**
      * {@inheritdoc}
