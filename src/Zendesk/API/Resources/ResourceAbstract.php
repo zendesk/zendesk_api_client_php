@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\Resources;
 
+use Inflect\Inflect;
 use Zendesk\API\Exceptions\RouteException;
 use Zendesk\API\HttpClient;
 use Zendesk\API\Traits\Utility\ChainedParametersTrait;
@@ -18,6 +19,15 @@ abstract class ResourceAbstract
      * @var String
      */
     protected $resourceName;
+
+    /**
+     * @var String
+     */
+    protected $objectName;
+    /**
+     * @var String
+     */
+    protected $objectNamePlural;
 
     /**
      * @var HttpClient
@@ -47,6 +57,14 @@ abstract class ResourceAbstract
 
         if (! isset($this->resourceName)) {
             $this->resourceName = $this->getResourceNameFromClass();
+        }
+
+        if (! isset($this->objectName)) {
+            $this->objectName = Inflect::singularize($this->resourceName);
+        }
+
+        if (! isset($this->objectNamePlural)) {
+            $this->objectNamePlural = Inflect::pluralize($this->resourceName);
         }
 
         $this->setUpRoutes();

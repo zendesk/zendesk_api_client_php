@@ -13,9 +13,6 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
  */
 class Groups extends ResourceAbstract
 {
-    const OBJ_NAME = 'group';
-    const OBJ_NAME_PLURAL = 'groups';
-
     use InstantiatorTrait;
 
     use Defaults;
@@ -63,7 +60,7 @@ class Groups extends ResourceAbstract
             return parent::getRoute($name, $params);
         } else {
             $id       = reset($lastChained);
-            $resource = $chainedResourceNames[0]::OBJ_NAME_PLURAL;
+            $resource = (new $chainedResourceNames[0]($this->client))->resourceName;
 
             if ('users' === $resource) {
                 return "users/$id/groups.json";

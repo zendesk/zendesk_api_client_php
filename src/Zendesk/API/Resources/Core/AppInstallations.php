@@ -13,11 +13,23 @@ class AppInstallations extends ResourceAbstract
 {
     use Defaults;
 
-    const OBJ_NAME = 'installations';
-    const OBJ_NAME_PLURAL = 'installation';
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectName = 'installation';
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectNamePlural = 'installations';
 
+    /**
+     * {@inheritdoc}
+     */
     protected $resourceName = 'apps/installations';
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         $this->setRoutes([

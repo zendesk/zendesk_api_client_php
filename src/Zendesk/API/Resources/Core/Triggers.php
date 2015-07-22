@@ -9,9 +9,6 @@ use Zendesk\API\Traits\Resource\Defaults;
  */
 class Triggers extends ResourceAbstract
 {
-    const OBJ_NAME = 'trigger';
-    const OBJ_NAME_PLURAL = 'triggers';
-
     use Defaults;
 
     /**

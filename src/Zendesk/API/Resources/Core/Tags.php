@@ -13,9 +13,6 @@ use Zendesk\API\Traits\Resource\Defaults;
  */
 class Tags extends ResourceAbstract
 {
-    const OBJ_NAME = 'tags';
-    const OBJ_NAME_PLURAL = 'tags';
-
     use Defaults;
 
     /**
@@ -47,10 +44,9 @@ class Tags extends ResourceAbstract
             throw new CustomException('The ' . $name . '() method needs to be called while chaining.');
         }
 
+        $id                   = reset($lastChained);
         $chainedResourceNames = array_keys($lastChained);
-
-        $id       = reset($lastChained);
-        $resource = $chainedResourceNames[0]::OBJ_NAME_PLURAL;
+        $resource             = (new $chainedResourceNames[0]($this->client))->resourceName;
 
         return "$resource/$id/tags.json";
     }

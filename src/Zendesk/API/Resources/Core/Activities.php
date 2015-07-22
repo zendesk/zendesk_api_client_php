@@ -12,9 +12,6 @@ use Zendesk\API\Traits\Resource\FindAll;
  */
 class Activities extends ResourceAbstract
 {
-    const OBJ_NAME = 'activity';
-    const OBJ_NAME_PLURAL = 'activities';
-
     use Find;
     use FindAll;
 }

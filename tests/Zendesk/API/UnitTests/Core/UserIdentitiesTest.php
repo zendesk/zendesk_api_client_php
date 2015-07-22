@@ -79,7 +79,7 @@ class UserIdentitiesTest extends BasicTest
 
         $this->assertEndpointCalled(function () use ($userId, $postFields) {
             $this->client->users($userId)->identities()->createAsEndUser($postFields);
-        }, "end_users/{$userId}/identities.json", 'POST', ['postFields' => [UserIdentities::OBJ_NAME => $postFields]]);
+        }, "end_users/{$userId}/identities.json", 'POST', ['postFields' => ['identity' => $postFields]]);
     }
 
     /**

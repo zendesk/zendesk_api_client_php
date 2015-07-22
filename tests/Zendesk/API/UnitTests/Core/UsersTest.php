@@ -43,7 +43,7 @@ class UsersTest extends BasicTest
 
         $this->assertEndpointCalled(function () use ($postFields) {
             $this->client->users('me')->merge($postFields);
-        }, 'users/me/merge.json', 'PUT', ['postFields' => [Users::OBJ_NAME => $postFields]]);
+        }, 'users/me/merge.json', 'PUT', ['postFields' => ['user' => $postFields]]);
     }
 
     /**
@@ -60,7 +60,7 @@ class UsersTest extends BasicTest
             'users/12345.json',
             'PUT',
             [
-                'postFields' => [Users::OBJ_NAME => ['id' => $userId, 'suspended' => true]]
+                'postFields' => ['user' => ['id' => $userId, 'suspended' => true]]
             ]
         );
     }
@@ -117,7 +117,7 @@ class UsersTest extends BasicTest
 
         $this->assertEndpointCalled(function () use ($id, $params) {
             $this->client->users($id)->updateProfileImageFromUrl($params);
-        }, "users/{$id}.json", 'PUT', ['postFields' => [Users::OBJ_NAME => ['remote_photo_url' => $params['url']]]]);
+        }, "users/{$id}.json", 'PUT', ['postFields' => ['user' => ['remote_photo_url' => $params['url']]]]);
     }
 
     /**
@@ -139,7 +139,7 @@ class UsersTest extends BasicTest
 
         $this->assertEndpointCalled(function () use ($postFields) {
             $this->client->users(12345)->setPassword($postFields);
-        }, 'users/12345/password.json', 'POST', ['postFields' => [Users::OBJ_NAME => $postFields]]);
+        }, 'users/12345/password.json', 'POST', ['postFields' => ['user' => $postFields]]);
     }
 
     /**

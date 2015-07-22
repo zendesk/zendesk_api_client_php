@@ -5,6 +5,9 @@ namespace Zendesk\API\Resources\Core;
 use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\Defaults;
 
+/**
+ * Class OrganizationSubscriptions
+ */
 class OrganizationSubscriptions extends ResourceAbstract
 {
     use Defaults;
@@ -28,17 +31,16 @@ class OrganizationSubscriptions extends ResourceAbstract
     {
         $lastChained = $this->getLatestChainedParameter();
 
-        $chainedResourceNames = array_keys($lastChained);
-
         if (empty($lastChained) || $name !== 'findAll') {
             return parent::getRoute($name, $params);
         } else {
-            $id       = reset($lastChained);
-            $resource = $chainedResourceNames[0]::OBJ_NAME_PLURAL;
+            $id                   = reset($lastChained);
+            $chainedResourceNames = array_keys($lastChained);
+            $chainedResourceName  = (new $chainedResourceNames[0]($this->client))->resourceName;
 
-            if ('users' === $resource) {
+            if ('users' === $chainedResourceName) {
                 return "users/$id/organization_subscriptions.json";
-            } elseif ('organizations' === $resource) {
+            } elseif ('organizations' === $chainedResourceName) {
                 return "organizations/$id/subscriptions.json";
             } else {
                 return 'organization_subscriptions.json';

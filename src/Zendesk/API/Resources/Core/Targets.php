@@ -10,8 +10,5 @@ use Zendesk\API\Traits\Resource\Defaults;
  */
 class Targets extends ResourceAbstract
 {
-    const OBJ_NAME = 'target';
-    const OBJ_NAME_PLURAL = 'targets';
-
     use Defaults;
 }

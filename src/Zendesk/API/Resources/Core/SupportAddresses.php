@@ -5,11 +5,12 @@ namespace Zendesk\API\Resources\Core;
 use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\Defaults;
 
+/**
+ * Class SupportAddresses
+ * https://developer.zendesk.com/rest_api/docs/core/support_addresses
+ */
 class SupportAddresses extends ResourceAbstract
 {
-    const OBJ_NAME = 'recipient_addresses';
-    const OBJ_NAME_PLURAL = 'recipient_addresses';
-
     use Defaults;
 
     protected $resourceName = 'recipient_addresses';

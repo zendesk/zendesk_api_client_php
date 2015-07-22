@@ -8,15 +8,18 @@ use Zendesk\API\Traits\Resource\CreateMany;
 
 /**
  * The TicketImport class exposes import methods for tickets
+ * https://developer.zendesk.com/rest_api/docs/core/ticket_import
  */
 class TicketImports extends ResourceAbstract
 {
-    const OBJ_NAME = 'ticket';
-    const OBJ_NAME_PLURAL = 'tickets';
-
     use Create;
 
     use CreateMany;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $resourceName = 'ticket';
 
     /**
      * Sets up the available routes for the resource.

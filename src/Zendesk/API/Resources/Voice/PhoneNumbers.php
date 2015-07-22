@@ -4,11 +4,12 @@ namespace Zendesk\API\Resources\Voice;
 
 use Zendesk\API\Traits\Resource\Defaults;
 
+/**
+ * Class PhoneNumbers
+ * https://developer.zendesk.com/rest_api/docs/voice-api/voice
+ */
 class PhoneNumbers extends ResourceAbstract
 {
-    const OBJ_NAME = 'phone_number';
-    const OBJ_NAME_PLURAL = 'phone_numbers';
-
     use Defaults;
 
     /**

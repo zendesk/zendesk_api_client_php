@@ -12,8 +12,6 @@ use Zendesk\API\Traits\Resource\FindAll;
  */
 class Bookmarks extends ResourceAbstract
 {
-    const OBJ_NAME = 'bookmark';
-
     use FindAll;
     use Create;
     use Delete;

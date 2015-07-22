@@ -27,11 +27,9 @@ trait Create
             $this->setRoute(__FUNCTION__, $route);
         }
 
-        $class = get_class($this);
-
         return $this->client->post(
             $route,
-            [$class::OBJ_NAME => $params]
+            [$this->objectName => $params]
         );
     }
 }

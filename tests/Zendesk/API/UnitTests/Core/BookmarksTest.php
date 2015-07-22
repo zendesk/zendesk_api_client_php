@@ -1,9 +1,12 @@
 <?php
 
-namespace Zendesk\API\UnitTests;
+namespace Zendesk\API\UnitTests\Core;
+
+use Zendesk\API\UnitTests\BasicTest;
 
 /**
  * Class BookmarksTest
+ * https://developer.zendesk.com/rest_api/docs/core/bookmarks
  */
 class BookmarksTest extends BasicTest
 {
