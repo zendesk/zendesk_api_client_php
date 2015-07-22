@@ -227,8 +227,7 @@ class HttpClient
             'sessions'                  => Sessions::class,
             'supportAddresses'          => SupportAddresses::class,
             'suspendedTickets'          => SuspendedTickets::class,
-            'tags'
-            => Tags::class,
+            'tags'                      => Tags::class,
             'targets'                   => Targets::class,
             'tickets'                   => Tickets::class,
             'ticketImports'             => TicketImports::class,
