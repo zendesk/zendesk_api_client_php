@@ -30,6 +30,7 @@ use Zendesk\API\Resources\Core\OrganizationFields;
 use Zendesk\API\Resources\Core\OrganizationMemberships;
 use Zendesk\API\Resources\Core\Organizations;
 use Zendesk\API\Resources\Core\OrganizationSubscriptions;
+use Zendesk\API\Resources\Core\PushNotificationDevices;
 use Zendesk\API\Resources\Core\Requests;
 use Zendesk\API\Resources\Core\SatisfactionRatings;
 use Zendesk\API\Resources\Core\Search;
@@ -69,6 +70,7 @@ use Zendesk\API\Utilities\Auth;
  * @method OAuthClients oauthClients()
  * @method OrganizationFields organizationFields()
  * @method Organizations organizations()
+ * @method PushNotificationDevices pushNotificationDevices()
  * @method Requests requests()
  * @method Search search()
  * @method Sessions sessions()
@@ -131,7 +133,7 @@ class HttpClient
      */
     protected $debug;
     /**
-     * @var \Guzzlehttp\Client
+     * @var \GuzzleHttp\Client
      */
     public $guzzle;
     /**
@@ -210,6 +212,7 @@ class HttpClient
             'organizationMemberships'   => OrganizationMemberships::class,
             'organizations'             => Organizations::class,
             'organizationSubscriptions' => OrganizationSubscriptions::class,
+            'pushNotificationDevices'   => PushNotificationDevices::class,
             'requests'                  => Requests::class,
             'satisfactionRatings'       => SatisfactionRatings::class,
             'sharingAgreements'         => SharingAgreements::class,
