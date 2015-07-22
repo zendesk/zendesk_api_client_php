@@ -88,6 +88,9 @@ use Zendesk\API\Utilities\Auth;
  * @method TwitterHandles twitterHandles()
  * @method Triggers triggers()
  * @method UserFields userFields()
+ * @method Users users()
+ * @method Views views()
+ *
  */
 class HttpClient
 {

@@ -12,7 +12,7 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
 /**
  * The Apps class exposes app management methods
  *
- * @method AppInstallationLocations installationLocations()
+ * @method AppLocations locations()
  */
 class Apps extends ResourceAbstract
 {
@@ -66,6 +66,7 @@ class Apps extends ResourceAbstract
     {
         return [
             'installationLocations' => AppInstallationLocations::class,
+            'locations'             => AppLocations::class,
         ];
     }
 
