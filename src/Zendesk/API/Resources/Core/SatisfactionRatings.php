@@ -13,9 +13,6 @@ use Zendesk\API\Traits\Resource\FindAll;
  */
 class SatisfactionRatings extends ResourceAbstract
 {
-    const OBJ_NAME = 'satisfaction_rating';
-    const OBJ_NAME_PLURAL = 'satisfaction_ratings';
-
     use Create;
     use Find;
     use FindAll;

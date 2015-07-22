@@ -11,11 +11,12 @@ use Zendesk\API\Traits\Resource\DeleteMany;
 use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
 
+/**
+ * Class Sessions
+ * https://developer.zendesk.com/rest_api/docs/core/sessions
+ */
 class Sessions extends ResourceAbstract
 {
-    const OBJ_NAME = 'session';
-    const OBJ_NAME_PLURAL = 'sessions';
-
     use Find;
     use FindAll;
     use Delete;
@@ -93,7 +94,6 @@ class Sessions extends ResourceAbstract
 
         return $this->client->delete($this->getRoute(__FUNCTION__, ['userId' => $userId]));
     }
-
 
     /**
      * Deletes the current session.

@@ -13,13 +13,18 @@ use Zendesk\API\Traits\Resource\Defaults;
  */
 class TicketAudits extends ResourceAbstract
 {
-    const OBJ_NAME = 'audit';
-    const OBJ_NAME_PLURAL = 'audits';
-
     use Defaults {
         findAll as traitFindAll;
         find as traitFind;
     }
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectName = 'audit';
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectNamePlural = 'audits';
 
     /**
      * Declares routes to be used by this resource.

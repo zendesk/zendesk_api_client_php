@@ -13,9 +13,6 @@ use Zendesk\API\Traits\Resource\Defaults;
  */
 class Views extends ResourceAbstract
 {
-    const OBJ_NAME = 'view';
-    const OBJ_NAME_PLURAL = 'views';
-
     use Defaults {
         findAll as traitFindall;
         find as traitFind;
@@ -221,7 +218,7 @@ class Views extends ResourceAbstract
      */
     public function preview(array $params)
     {
-        return $this->client->post($this->getRoute(__FUNCTION__), [Views::OBJ_NAME => $params]);
+        return $this->client->post($this->getRoute(__FUNCTION__), [$this->objectName => $params]);
     }
 
     /**
@@ -236,6 +233,6 @@ class Views extends ResourceAbstract
      */
     public function previewCount(array $params)
     {
-        return $this->client->post($this->getRoute(__FUNCTION__), [Views::OBJ_NAME => $params]);
+        return $this->client->post($this->getRoute(__FUNCTION__), [$this->objectName => $params]);
     }
 }

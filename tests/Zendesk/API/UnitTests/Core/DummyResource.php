@@ -14,9 +14,6 @@ use Zendesk\API\Traits\Resource\UpdateMany;
  */
 class DummyResource extends ResourceAbstract
 {
-    const OBJ_NAME = 'dummy';
-    const OBJ_NAME_PLURAL = 'dummies';
-
     use Defaults;
     use MultipartUpload;
 
@@ -24,6 +21,15 @@ class DummyResource extends ResourceAbstract
     use CreateMany;
     use UpdateMany;
     use DeleteMany;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectName = 'dummy';
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectNamePlural = 'dummies';
 
     /**
      * The using resource should define the upload name to use when uploading the file.

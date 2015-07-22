@@ -1,8 +1,8 @@
 <?php
 
-namespace Zendesk\API\UnitTests;
+namespace Zendesk\API\UnitTests\Core;
 
-use Zendesk\API\Resources\Core\PushNotificationDevices;
+use Zendesk\API\UnitTests\BasicTest;
 
 /**
  * PushNotificationDevices test class
@@ -22,7 +22,7 @@ class PushNotificationDevicesTest extends BasicTest
             'push_notification_devices/destroy_many.json',
             'POST',
             [
-                'postFields' => [PushNotificationDevices::OBJ_NAME_PLURAL => $postFields['tokens']]
+                'postFields' => ['push_notification_devices' => $postFields['tokens']]
             ]
         );
     }

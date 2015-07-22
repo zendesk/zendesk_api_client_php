@@ -13,11 +13,12 @@ use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
+/**
+ * Class GroupMemberships
+ * https://developer.zendesk.com/rest_api/docs/core/group_memberships
+ */
 class GroupMemberships extends ResourceAbstract
 {
-    const OBJ_NAME = 'group_membership';
-    const OBJ_NAME_PLURAL = 'group_memberships';
-
     use InstantiatorTrait;
 
     use Create;
@@ -28,6 +29,9 @@ class GroupMemberships extends ResourceAbstract
     use CreateMany;
     use DeleteMany;
 
+    /**
+     * {@inheritdoc}
+     */
     protected function setUpRoutes()
     {
         $this->setRoutes([

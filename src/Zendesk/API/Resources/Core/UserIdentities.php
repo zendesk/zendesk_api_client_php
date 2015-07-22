@@ -12,9 +12,6 @@ use Zendesk\API\Traits\Resource\Defaults;
  */
 class UserIdentities extends ResourceAbstract
 {
-    const OBJ_NAME = 'identity';
-    const OBJ_NAME_PLURAL = 'identities';
-
     use Defaults {
         findAll as traitFindAll;
         find as traitFind;
@@ -104,7 +101,7 @@ class UserIdentities extends ResourceAbstract
             $this->client,
             $this->getRoute(__FUNCTION__),
             [
-                'postFields' => [$this::OBJ_NAME => $params],
+                'postFields' => [$this->objectName => $params],
                 'method'     => 'POST'
             ]
         );

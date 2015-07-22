@@ -2,9 +2,11 @@
 
 namespace Zendesk\API\UnitTests\Core;
 
-use Zendesk\API\Resources\Core\AppInstallations;
 use Zendesk\API\UnitTests\BasicTest;
 
+/**
+ * Class AppInstallationsTest
+ */
 class AppInstallationsTest extends BasicTest
 {
     /**
@@ -27,7 +29,7 @@ class AppInstallationsTest extends BasicTest
 
         $this->assertEndpointCalled(function () use ($postParams) {
             $this->client->appInstallations()->create($postParams);
-        }, 'apps/installations.json', 'POST', ['postFields' => [AppInstallations::OBJ_NAME => $postParams]]);
+        }, 'apps/installations.json', 'POST', ['postFields' => ['installation' => $postParams]]);
 
     }
 

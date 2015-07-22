@@ -11,9 +11,6 @@ use Zendesk\API\Traits\Resource\Defaults;
  */
 class UserFields extends ResourceAbstract
 {
-    const OBJ_NAME = 'user_field';
-    const OBJ_NAME_PLURAL = 'user_fields';
-
     use Defaults;
 
     /**

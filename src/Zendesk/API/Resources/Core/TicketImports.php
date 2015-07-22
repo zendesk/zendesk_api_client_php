@@ -8,6 +8,7 @@ use Zendesk\API\Traits\Resource\CreateMany;
 
 /**
  * The TicketImport class exposes import methods for tickets
+ * https://developer.zendesk.com/rest_api/docs/core/ticket_import
  */
 class TicketImports extends ResourceAbstract
 {

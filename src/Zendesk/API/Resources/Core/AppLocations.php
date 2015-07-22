@@ -12,11 +12,17 @@ use Zendesk\API\Traits\Resource\FindAll;
  */
 class AppLocations extends ResourceAbstract
 {
-    const OBJ_NAME = 'location';
-    const OBJ_NAME_PLURAL = 'locations';
-
     use Find;
     use FindAll;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectName = 'location';
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectNamePlural = 'locations';
 
     /**
      * @var string

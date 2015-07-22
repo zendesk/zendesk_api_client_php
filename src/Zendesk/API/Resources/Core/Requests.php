@@ -13,9 +13,6 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
  */
 class Requests extends ResourceAbstract
 {
-    const OBJ_NAME = 'request';
-    const OBJ_NAME_PLURAL = 'requests';
-
     use InstantiatorTrait;
 
     use Defaults;
