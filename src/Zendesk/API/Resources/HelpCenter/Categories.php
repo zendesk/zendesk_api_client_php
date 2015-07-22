@@ -17,25 +17,11 @@ class Categories extends ResourceAbstract
     private $locale;
 
     /**
-     * @return string
+     * @inheritdoc
      */
-    public function getLocale()
+    protected function setUpRoutes()
     {
-        return $this->locale;
-    }
-
-    /**
-     * @param string $locale
-     *
-     * @return Categories
-     */
-    public function setLocale($locale)
-    {
-        if (is_string($locale)) {
-            $this->locale = $locale;
-        }
-
-        return $this;
+        $this->setRoute('updateSourceLocale', "{$this->resourceName}/{categoryId}/source_locale.json");
     }
 
     /**
@@ -59,6 +45,28 @@ class Categories extends ResourceAbstract
         } else {
             return parent::getRoute($name, $params);
         }
+    }
+
+    /**
+     * @return string
+     */
+    public function getLocale()
+    {
+        return $this->locale;
+    }
+
+    /**
+     * @param string $locale
+     *
+     * @return Categories
+     */
+    public function setLocale($locale)
+    {
+        if (is_string($locale)) {
+            $this->locale = $locale;
+        }
+
+        return $this;
     }
 
     /**
