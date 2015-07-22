@@ -255,4 +255,23 @@ class ResourceTest extends BasicTest
 
         $this->dummyResource->create(['foo' => 'bar']);
     }
+
+    /**
+     * Test findAll method
+     */
+    public function testUserAgent()
+    {
+        $this->assertEndpointCalled(
+            function () {
+                $this->dummyResource->findAll();
+            },
+            'dummy_resource.json',
+            'GET',
+            [
+                'headers' => [
+                    'User-Agent' => "ZendeskAPI PHP {$this->client->getClientVersion()}"
+                ]
+            ]
+        );
+    }
 }

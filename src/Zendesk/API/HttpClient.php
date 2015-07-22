@@ -94,6 +94,11 @@ class HttpClient
     use InstantiatorTrait;
 
     /**
+     * @var string
+     */
+    private $clientVersion = '2.0.0';
+
+    /**
      * @var Auth
      */
     protected $auth;
@@ -129,11 +134,11 @@ class HttpClient
      * @var array|null
      */
     protected $sideload;
-
     /**
      * @var Debug
      */
     protected $debug;
+
     /**
      * @var \GuzzleHttp\Client
      */
@@ -142,7 +147,6 @@ class HttpClient
      * @var HelpCenter
      */
     public $helpCenter;
-
     /**
      * @var Voice
      */
@@ -255,6 +259,27 @@ class HttpClient
     public function setAuth($strategy, array $options)
     {
         $this->auth = new Auth($strategy, $options);
+    }
+
+    public function getUserAgent()
+    {
+        return "ZendeskAPI PHP {$this->getClientVersion()}";
+    }
+
+    /**
+     * @return string
+     */
+    public function getClientVersion()
+    {
+        return $this->clientVersion;
+    }
+
+    /**
+     * @param string $clientVersion
+     */
+    public function setClientVersion($clientVersion)
+    {
+        $this->clientVersion = $clientVersion;
     }
 
     /**
