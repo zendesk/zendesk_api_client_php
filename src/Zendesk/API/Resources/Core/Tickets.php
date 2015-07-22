@@ -35,9 +35,6 @@ class Tickets extends ResourceAbstract
     }
     use DeleteMany;
 
-    const OBJ_NAME = 'ticket';
-    const OBJ_NAME_PLURAL = 'tickets';
-
     /**
      * @var array
      */

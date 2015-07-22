@@ -13,12 +13,18 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
  */
 class DynamicContentItems extends ResourceAbstract
 {
-    const OBJ_NAME = 'item';
-    const OBJ_NAME_PLURAL = 'items';
-
     use InstantiatorTrait;
 
     use Defaults;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectName = 'item';
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectNamePlural = 'items';
 
     /**
      * @var string

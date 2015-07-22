@@ -32,13 +32,13 @@ trait UpdateMany
             $this->setRoute('updateMany', $route);
         }
 
-        $resourceUpdateName = self::OBJ_NAME_PLURAL;
+        $resourceUpdateName = $this->objectNamePlural;
         $queryParams        = [];
         if (isset($params[$key]) && is_array($params[$key])) {
             $queryParams[$key] = implode(',', $params[$key]);
             unset($params[$key]);
 
-            $resourceUpdateName = self::OBJ_NAME;
+            $resourceUpdateName = $this->objectName;
         }
 
         $response = Http::send(

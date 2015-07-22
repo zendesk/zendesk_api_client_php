@@ -33,6 +33,6 @@ trait CreateMany
             $this->setRoute('createMany', $route);
         }
 
-        return $this->client->post($route, [self::OBJ_NAME_PLURAL => $params]);
+        return $this->client->post($route, [$this->objectNamePlural => $params]);
     }
 }

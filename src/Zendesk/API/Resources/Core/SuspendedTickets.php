@@ -12,6 +12,7 @@ use Zendesk\API\Traits\Resource\FindAll;
 
 /**
  * The SuspendedTickets class exposes view management methods
+ * https://developer.zendesk.com/rest_api/docs/core/suspended_tickets
  */
 class SuspendedTickets extends ResourceAbstract
 {

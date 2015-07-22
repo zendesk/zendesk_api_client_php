@@ -105,7 +105,7 @@ class ViewsTest extends BasicTest
 
         $this->assertEndpointCalled(function () use ($postFields) {
             $this->client->views()->preview($postFields);
-        }, 'views/preview.json', 'POST', ['postFields' => [Views::OBJ_NAME => $postFields]]);
+        }, 'views/preview.json', 'POST', ['postFields' => ['view' => $postFields]]);
     }
 
     /**
@@ -128,7 +128,7 @@ class ViewsTest extends BasicTest
 
         $this->assertEndpointCalled(function () use ($postFields) {
             $this->client->views()->previewCount($postFields);
-        }, 'views/preview/count.json', 'POST', ['postFields' => [Views::OBJ_NAME => $postFields]]);
+        }, 'views/preview/count.json', 'POST', ['postFields' => ['view' => $postFields]]);
     }
 
     /**

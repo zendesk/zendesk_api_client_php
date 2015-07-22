@@ -11,10 +11,16 @@ use Zendesk\API\Traits\Resource\Defaults;
  */
 class OAuthClients extends ResourceAbstract
 {
-    const OBJ_NAME = 'client';
-    const OBJ_NAME_PLURAL = 'clients';
-
     use Defaults;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectName = 'client';
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectNamePlural = 'clients';
 
     /**
      * Sets up the available routes for the resource.

@@ -27,9 +27,6 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
  */
 class Users extends ResourceAbstract
 {
-    const OBJ_NAME = 'user';
-    const OBJ_NAME_PLURAL = 'users';
-
     use InstantiatorTrait;
 
     use Defaults {
@@ -184,7 +181,7 @@ class Users extends ResourceAbstract
         $response = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__),
-            ['postFields' => [self::OBJ_NAME => $params], 'method' => 'PUT']
+            ['postFields' => [$this->objectName => $params], 'method' => 'PUT']
         );
 
         return $response;
@@ -309,7 +306,7 @@ class Users extends ResourceAbstract
         $endpoint = $this->getRoute(__FUNCTION__, ['id' => $params['id']]);
 
         $putData = [
-            self::OBJ_NAME => [
+            $this->objectName => [
                 'remote_photo_url' => $params['url']
             ]
         ];
@@ -352,7 +349,7 @@ class Users extends ResourceAbstract
         $id = $params['id'];
         unset($params['id']);
 
-        return $this->client->post($this->getRoute(__FUNCTION__, ['id' => $id]), [self::OBJ_NAME => $params]);
+        return $this->client->post($this->getRoute(__FUNCTION__, ['id' => $id]), [$this->objectName => $params]);
     }
 
     /**

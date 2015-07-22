@@ -11,8 +11,6 @@ use Zendesk\API\Resources\ResourceAbstract;
  */
 class PushNotificationDevices extends ResourceAbstract
 {
-    const OBJ_NAME_PLURAL = 'push_notification_devices';
-
     /**
      * Declares routes to be used by this resource.
      */
@@ -39,7 +37,7 @@ class PushNotificationDevices extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, ['tokens']);
 
         }
-        $postData = [self::OBJ_NAME_PLURAL => $params['tokens']];
+        $postData = [$this->objectNamePlural => $params['tokens']];
 
         return $this->client->post($this->getRoute(__FUNCTION__), $postData);
     }

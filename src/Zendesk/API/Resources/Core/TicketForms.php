@@ -15,9 +15,9 @@ class TicketForms extends ResourceAbstract
 {
     use Defaults;
 
-    const OBJ_NAME = 'ticket_forms';
-    const OBJ_NAME_PLURAL = 'ticket_forms';
-
+    /**
+     * {@inheritdoc}
+     */
     protected $resourceName = 'ticket_forms';
 
     /**

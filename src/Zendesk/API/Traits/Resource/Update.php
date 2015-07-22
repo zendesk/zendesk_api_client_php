@@ -36,7 +36,7 @@ trait Update
 
         return $this->client->put(
             $route,
-            [$class::OBJ_NAME => $updateResourceFields]
+            [$this->objectName => $updateResourceFields]
         );
     }
 }

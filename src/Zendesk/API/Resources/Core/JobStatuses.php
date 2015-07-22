@@ -11,10 +11,16 @@ use Zendesk\API\Traits\Resource\FindMany;
  */
 class JobStatuses extends ResourceAbstract
 {
-    const OBJ_NAME = 'job_status';
-    const OBJ_NAME_PLURAL = 'job_statuses';
-
     use Find;
 
     use FindMany;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectName = 'job_status';
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectNamePlural = 'job_statuses';
 }

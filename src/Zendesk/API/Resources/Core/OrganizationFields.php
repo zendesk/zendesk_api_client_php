@@ -12,9 +12,6 @@ use Zendesk\API\Traits\Resource\Defaults;
  */
 class OrganizationFields extends ResourceAbstract
 {
-    const OBJ_NAME = 'organization_field';
-    const OBJ_NAME_PLURAL = 'organization_fields';
-
     use Defaults;
 
     /**

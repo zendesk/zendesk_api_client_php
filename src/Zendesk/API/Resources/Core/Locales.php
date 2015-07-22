@@ -11,9 +11,6 @@ use Zendesk\API\Traits\Resource\FindAll;
  */
 class Locales extends ResourceAbstract
 {
-    const OBJ_NAME = 'locale';
-    const OBJ_NAME_PLURAL = 'locales';
-
     use Find;
     use FindAll;
 

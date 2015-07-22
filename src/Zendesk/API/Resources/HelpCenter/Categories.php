@@ -4,12 +4,18 @@ namespace Zendesk\API\Resources\HelpCenter;
 
 use Zendesk\API\Traits\Resource\Defaults;
 
+/**
+ * Class Categories
+ * https://developer.zendesk.com/rest_api/docs/help_center/categories
+ */
 class Categories extends ResourceAbstract
 {
-    const OBJ_NAME = 'category';
-    const OBJ_NAME_PLURAL = 'categories';
-
     use Defaults;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectName = 'category';
 
     /**
      * @var locale
