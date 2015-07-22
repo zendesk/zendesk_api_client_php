@@ -32,11 +32,11 @@ class CategoriesTest extends BasicTest
 
         $this->assertEndpointCalled(function () use ($categoriesResource, $postFields) {
             $categoriesResource->create($postFields);
-        }, 'help_center/en-US/categories.json', 'POST', ['postFields' => [Categories::OBJ_NAME => $postFields]]);
+        }, 'help_center/en-US/categories.json', 'POST', ['postFields' => ['category' => $postFields]]);
 
         $this->assertEndpointCalled(function () use ($categoriesResource, $postFields) {
             $categoriesResource->update(1, $postFields);
-        }, 'help_center/en-US/categories/1.json', 'PUT', ['postFields' => [Categories::OBJ_NAME => $postFields]]);
+        }, 'help_center/en-US/categories/1.json', 'PUT', ['postFields' => ['category' => $postFields]]);
     }
 
     /**
