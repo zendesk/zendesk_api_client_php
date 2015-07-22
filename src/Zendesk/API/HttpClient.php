@@ -15,6 +15,7 @@ use Zendesk\API\Resources\Core\Attachments;
 use Zendesk\API\Resources\Core\AuditLogs;
 use Zendesk\API\Resources\Core\Autocomplete;
 use Zendesk\API\Resources\Core\Automations;
+use Zendesk\API\Resources\Core\Bookmarks;
 use Zendesk\API\Resources\Core\Brands;
 use Zendesk\API\Resources\Core\CustomRoles;
 use Zendesk\API\Resources\Core\DynamicContent;
@@ -61,6 +62,7 @@ use Zendesk\API\Utilities\Auth;
  * @method Attachments attachments()
  * @method AuditLogs auditLogs()
  * @method Automations automations()
+ * @method Bookmarks bookmarks()
  * @method Debug debug()
  * @method DynamicContent dynamicContent()
  * @method Groups groups()
@@ -197,6 +199,7 @@ class HttpClient
             'auditLogs'                 => AuditLogs::class,
             'autocomplete'              => Autocomplete::class,
             'automations'               => Automations::class,
+            'bookmarks'                 => Bookmarks::class,
             'brands'                    => Brands::class,
             'customRoles'               => CustomRoles::class,
             'dynamicContent'            => DynamicContent::class,
