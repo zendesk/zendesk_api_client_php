@@ -2,7 +2,6 @@
 namespace Zendesk\API\UnitTests\Core;
 
 use GuzzleHttp\Psr7\Response;
-use Zendesk\API\HttpClient;
 use Zendesk\API\UnitTests\BasicTest;
 
 /**
@@ -262,32 +261,15 @@ class ResourceTest extends BasicTest
      */
     public function testUserAgent()
     {
-        $mockUserAgent         = 'foo';
-        $mockConstructorParams = [$this->subdomain, $this->username, $this->scheme, $this->hostname, $this->port];
+        $this->mockApiResponses([
+            new Response(200, [], '')
+        ]);
 
-        $this->client = $this->getMockBuilder(HttpClient::class)
-                             ->setMethods(['getUserAgent'])
-                             ->setConstructorArgs($mockConstructorParams)
-                             ->getMock();
+        $this->dummyResource->findAll();
 
-        $this->client->method('getUserAgent')
-                     ->willReturn($mockUserAgent);
+        $transaction = $this->mockedTransactionsContainer[0];
+        $request     = $transaction['request'];
 
-        $this->client->setAuth('oauth', ['token' => $this->oAuthToken]);
-
-        $dummyResource = new DummyResource($this->client);
-
-        $this->assertEndpointCalled(
-            function () use ($dummyResource, $mockUserAgent) {
-                $dummyResource->findAll();
-            },
-            'dummy_resource.json',
-            'GET',
-            [
-                'headers' => [
-                    'User-Agent' => $mockUserAgent
-                ]
-            ]
-        );
+        $this->assertRegExp('/ZendeskAPI PHP/', $request->getHeaderLine('User-Agent'));
     }
 }
