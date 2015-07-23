@@ -77,7 +77,7 @@ class OrganizationMembershipsTest extends BasicTest
     {
         $resourceId = 123;
         $this->assertEndpointCalled(function () use ($resourceId) {
-            $this->client->organizations($resourceId)->organizationMemberships()->findAll();
+            $this->client->organizations($resourceId)->memberships()->findAll();
         }, "organizations/{$resourceId}/organization_memberships.json");
     }
 
