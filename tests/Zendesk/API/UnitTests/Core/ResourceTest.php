@@ -2,6 +2,7 @@
 namespace Zendesk\API\UnitTests\Core;
 
 use GuzzleHttp\Psr7\Response;
+use Zendesk\API\HttpClient;
 use Zendesk\API\UnitTests\BasicTest;
 
 /**
@@ -257,19 +258,34 @@ class ResourceTest extends BasicTest
     }
 
     /**
-     * Test findAll method
+     * Test if the correct User-Agent header is passed method
      */
     public function testUserAgent()
     {
+        $mockUserAgent         = 'foo';
+        $mockConstructorParams = [$this->subdomain, $this->username, $this->scheme, $this->hostname, $this->port];
+
+        $this->client = $this->getMockBuilder(HttpClient::class)
+                             ->setMethods(['getUserAgent'])
+                             ->setConstructorArgs($mockConstructorParams)
+                             ->getMock();
+
+        $this->client->method('getUserAgent')
+                     ->willReturn($mockUserAgent);
+
+        $this->client->setAuth('oauth', ['token' => $this->oAuthToken]);
+
+        $dummyResource = new DummyResource($this->client);
+
         $this->assertEndpointCalled(
-            function () {
-                $this->dummyResource->findAll();
+            function () use ($dummyResource, $mockUserAgent) {
+                $dummyResource->findAll();
             },
             'dummy_resource.json',
             'GET',
             [
                 'headers' => [
-                    'User-Agent' => "ZendeskAPI PHP {$this->client->getClientVersion()}"
+                    'User-Agent' => $mockUserAgent
                 ]
             ]
         );

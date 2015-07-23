@@ -91,12 +91,9 @@ use Zendesk\API\Utilities\Auth;
  */
 class HttpClient
 {
-    use InstantiatorTrait;
+    const VERSION = '2.0.0';
 
-    /**
-     * @var string
-     */
-    private $clientVersion = '2.0.0';
+    use InstantiatorTrait;
 
     /**
      * @var Auth
@@ -263,23 +260,7 @@ class HttpClient
 
     public function getUserAgent()
     {
-        return "ZendeskAPI PHP {$this->getClientVersion()}";
-    }
-
-    /**
-     * @return string
-     */
-    public function getClientVersion()
-    {
-        return $this->clientVersion;
-    }
-
-    /**
-     * @param string $clientVersion
-     */
-    public function setClientVersion($clientVersion)
-    {
-        $this->clientVersion = $clientVersion;
+        return 'ZendeskAPI PHP ' . self::VERSION;
     }
 
     /**
