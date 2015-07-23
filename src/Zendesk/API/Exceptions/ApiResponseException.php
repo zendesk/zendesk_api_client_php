@@ -19,7 +19,7 @@ class ApiResponseException extends \Exception
     public function __construct(RequestException $e)
     {
         $response = $e->getResponse();
-        $message = $response->getReasonPhrase();
+        $message  = $response->getReasonPhrase();
 
         $level = floor($response->getStatusCode() / 100);
         // Check if business-level error message
@@ -28,7 +28,7 @@ class ApiResponseException extends \Exception
             $responseBody = json_decode($response->getBody()->getContents());
 
             $this->errorDetails = $responseBody->details;
-            $message = $responseBody->description . "\n" . 'Errors: ' . print_r($this->errorDetails, true);
+            $message            = $responseBody->description . "\n" . 'Errors: ' . print_r($this->errorDetails, true);
         } elseif ($level == '5') {
             $message = 'Zendesk may be experiencing internal issues or undergoing scheduled maintenance.';
         }
