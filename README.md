@@ -6,6 +6,9 @@
 
 This client **only** supports Zendesk's API v2.  Please see our [API documentation](http://developer.zendesk.com) for more information.
 
+## Requrements
+* PHP (at least 5.5)
+
 ## Installation
 
 The Zendesk PHP API client can be installed using [Composer](https://packagist.org/packages/zendesk/zendesk_api_client_php).
