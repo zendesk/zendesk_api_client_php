@@ -35,9 +35,9 @@ class Organizations extends ResourceAbstract
     public static function getValidSubResources()
     {
         return [
-            'organizationMemberships' => OrganizationMemberships::class,
-            'subscriptions'           => OrganizationSubscriptions::class,
-            'requests'                => Requests::class,
+            'memberships'   => OrganizationMemberships::class,
+            'subscriptions' => OrganizationSubscriptions::class,
+            'requests'      => Requests::class,
         ];
     }
 
