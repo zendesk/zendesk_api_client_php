@@ -2,11 +2,18 @@
 
 [![Build Status](https://travis-ci.org/zendesk/zendesk_api_client_php.svg?branch=master)](https://travis-ci.org/zendesk/zendesk_api_client_php)
 
+## API Client Version
+
+API client version 2 is now in public beta and will be the preferred version of the client to use moving forward. 
+Version 2 will now reside in the master branch and will be supported. 
+
+Version 1 of the API Client will still be available to people using it, it is moved over to the branch `v1` and will still be supported until a stable Version 2 is released.
+
 ## API version support
 
 This client **only** supports Zendesk's API v2.  Please see our [API documentation](http://developer.zendesk.com) for more information.
 
-## Requrements
+## Requirements
 * PHP 5.5+
 
 ## Installation
