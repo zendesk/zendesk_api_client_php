@@ -255,4 +255,21 @@ class ResourceTest extends BasicTest
 
         $this->dummyResource->create(['foo' => 'bar']);
     }
+
+    /**
+     * Test if the correct User-Agent header is passed method
+     */
+    public function testUserAgent()
+    {
+        $this->mockApiResponses([
+            new Response(200, [], '')
+        ]);
+
+        $this->dummyResource->findAll();
+
+        $transaction = $this->mockedTransactionsContainer[0];
+        $request     = $transaction['request'];
+
+        $this->assertRegExp('/ZendeskAPI PHP/', $request->getHeaderLine('User-Agent'));
+    }
 }

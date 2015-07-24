@@ -101,7 +101,7 @@ class UsersTest extends BasicTest
                 'file' => getcwd() . '/tests/assets/UK.png'
             ];
             $this->client->users($id)->updateProfileImageFromFile($params);
-        }, "users/{$id}.json", 'PUT', ['multipart']);
+        }, "users/{$id}.json", 'PUT', ['multipart' => true]);
     }
 
     /**

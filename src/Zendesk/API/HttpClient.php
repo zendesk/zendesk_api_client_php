@@ -94,6 +94,8 @@ use Zendesk\API\Utilities\Auth;
  */
 class HttpClient
 {
+    const VERSION = '2.0.0';
+
     use InstantiatorTrait;
 
     /**
@@ -132,11 +134,11 @@ class HttpClient
      * @var array|null
      */
     protected $sideload;
-
     /**
      * @var Debug
      */
     protected $debug;
+
     /**
      * @var \GuzzleHttp\Client
      */
@@ -145,7 +147,6 @@ class HttpClient
      * @var HelpCenter
      */
     public $helpCenter;
-
     /**
      * @var Voice
      */
@@ -258,6 +259,11 @@ class HttpClient
     public function setAuth($strategy, array $options)
     {
         $this->auth = new Auth($strategy, $options);
+    }
+
+    public function getUserAgent()
+    {
+        return 'ZendeskAPI PHP ' . self::VERSION;
     }
 
     /**

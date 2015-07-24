@@ -7,7 +7,6 @@ use GuzzleHttp\Psr7\LazyOpenStream;
 use GuzzleHttp\Psr7\Request;
 use Zendesk\API\Exceptions\ApiResponseException;
 use Zendesk\API\Exceptions\AuthException;
-use Zendesk\API\Utilities\Auth;
 
 /**
  * HTTP functions via curl
@@ -79,6 +78,7 @@ class Http
         $headers = [
             'Accept'       => 'application/json',
             'Content-Type' => $options['contentType'],
+            'User-Agent'   => $client->getUserAgent()
         ];
 
         $request = new Request(
