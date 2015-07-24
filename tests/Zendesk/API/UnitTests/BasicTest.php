@@ -139,10 +139,29 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($options['statusCode'], $response->getStatusCode());
 
+        if (isset($options['multipart'])) {
+            $body = $request->getBody();
+            $this->assertInstanceOf(MultipartStream::class, $body);
+            $this->assertGreaterThan(0, $body->getSize());
+            $this->assertNotEmpty($header = $request->getHeaderLine('Content-Type'));
+            $this->assertContains('multipart/form-data', $header);
+            unset($options['headers']['Content-Type']);
+        }
+
+        if (isset($options['file'])) {
+            $body = $request->getBody();
+            $this->assertInstanceOf(LazyOpenStream::class, $body);
+            $this->assertGreaterThan(0, $body->getSize());
+            $this->assertEquals($options['file'], $body->getMetadata('uri'));
+            $this->assertNotEmpty($header = $request->getHeaderLine('Content-Type'));
+            $this->assertEquals('application/binary', $header);
+            unset($options['headers']['Content-Type']);
+        }
+
         if (isset($options['headers']) && is_array($options['headers'])) {
             foreach ($options['headers'] as $headerKey => $value) {
-                $this->assertNotEmpty($header = $request->getHeader($headerKey));
-                $this->assertEquals($options['headers'][$headerKey], $value);
+                $this->assertNotEmpty($header = $request->getHeaderLine($headerKey));
+                $this->assertEquals($value, $header);
             }
         }
 
@@ -163,21 +182,6 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
 
         if (isset($options['postFields'])) {
             $this->assertEquals(json_encode($options['postFields']), $request->getBody()->getContents());
-        }
-
-        if (isset($options['multipart'])) {
-            $body = $request->getBody();
-            $this->assertInstanceOf(MultipartStream::class, $body);
-            $this->assertGreaterThan(0, $body->getSize());
-            $this->assertNotEmpty($header = $request->getHeader('Content-Type'));
-            $this->assertContains('multipart/form-data', $header[0]);
-        }
-
-        if (isset($options['file'])) {
-            $body = $request->getBody();
-            $this->assertInstanceOf(LazyOpenStream::class, $body);
-            $this->assertGreaterThan(0, $body->getSize());
-            $this->assertEquals($options['file'], $body->getMetadata('uri'));
         }
     }
 
