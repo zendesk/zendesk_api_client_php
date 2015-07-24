@@ -1,5 +1,4 @@
 <?php
-
 namespace Zendesk\API\LiveTests;
 
 /**
@@ -13,8 +12,9 @@ class UsersTest extends BasicTest
     public function testCreate()
     {
         $userFields = [
-            'name'  => 'Roger Wilco',
-            'email' => 'roge' . time() . '@example.org',
+            'name'     => 'Roger Wilco',
+            'email'    => 'roge' . time() . '@example.org',
+            'verified' => true,
         ];
         $response   = $this->client->users()->create($userFields);
         $this->assertTrue(property_exists($response, 'user'));
@@ -47,6 +47,31 @@ class UsersTest extends BasicTest
     }
 
     /**
+     * Tests search for a user
+     *
+     * @depends testCreate
+     */
+    public function testSearch($user)
+    {
+        $response = $this->client->users()->search(['query' => 'Roger Wilco']);
+        $this->assertTrue(property_exists($response, 'users'));
+        $this->assertNotNull($foundUser = $response->users[0]);
+        $this->assertEquals($user->email, $foundUser->email);
+        $this->assertEquals($user->name, $foundUser->name);
+    }
+
+    /**
+     * Tests find a single user
+     *
+     * @depends testCreate
+     */
+    public function testGetRelatedInformation($user)
+    {
+        $response = $this->client->users($user->id)->related();
+        $this->assertTrue(property_exists($response, 'user_related'));
+    }
+
+    /**
      * Tests update
      *
      * @depends testCreate
@@ -63,7 +88,71 @@ class UsersTest extends BasicTest
     }
 
     /**
-     * Tests update
+     * Tests if the client can upload a file to update the profile photo
+     *
+     * @depends testCreate
+     */
+    public function testUpdateProfileImageFromFile($user)
+    {
+        $params   = [
+            'file' => getcwd() . '/tests/assets/UK.png'
+        ];
+        $response = $this->client->users($user->id)->updateProfileImageFromFile($params);
+        $this->assertTrue(property_exists($response->user, 'photo'));
+        $this->assertEquals('UK.png', $response->user->photo->file_name);
+    }
+
+    /**
+     * Tests if the client can call the users/me.json endpoint
+     */
+    public function testAuthenticatedUser()
+    {
+        $response = $this->client->users()->me();
+        $this->assertTrue(property_exists($response, 'user'));
+        $this->assertEquals($this->username, $response->user->email);
+    }
+
+    /**
+     * Tests if the setPassword function calls the correct endpoint and passes the correct POST data
+     *
+     * @depends testCreate
+     */
+    public function testSetPassword($user)
+    {
+        try {
+            $postFields = ['password' => 'aBc12345'];
+
+            $this->client->users($user->id)->setPassword($postFields);
+        } catch (\Exception $e) {
+            $this->fail('An exception was not expected. Exception thrown was ' . $e->__toString());
+        }
+
+        return $user;
+    }
+
+    /**
+     * Tests if the changePassword function calls the correct endpoint and passes the correct PUT data
+     *
+     * @depends testSetPassword
+     */
+    public function testChangePassword($user)
+    {
+        try {
+            $this->client->setAuth('basic', ['username' => $user->email, 'token' => $this->token]);
+
+            $postFields = [
+                'previous_password' => 'aBc12345',
+                'password'          => '12345'
+            ];
+
+            $this->client->users($user->id)->changePassword($postFields);
+        } catch (\Exception $e) {
+            $this->fail('An exception was not expected. Exception thrown was ' . $e->__toString());
+        }
+    }
+
+    /**
+     * Tests delete user
      *
      * @depends testCreate
      */
