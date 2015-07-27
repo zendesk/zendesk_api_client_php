@@ -89,6 +89,11 @@ $attachment = $client->attachments()->upload([
 
 The test suite is run via phpunit. Note that these are all live tests that must be run targeted at a real Zendesk instance. Credentials can be provided by setting the environment variables in phpunit.xml; a sample is provided at phpunit.xml.dist.
 
+To run the unit tests: `vendor/bin/phpunit --testsuite "Zendesk API Unit Test Suites"`
+
+To run the live tests: `vendor/bin/phpunit --testsuite "Zendesk API Live Test Suites"`
+
+
 ### Side-loading
 
 ```
