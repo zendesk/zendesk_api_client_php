@@ -4,10 +4,7 @@
 
 ## API Client Version
 
-API client version 2 is now in public beta and will be the preferred version of the client to use moving forward. 
-Version 2 will now reside in the master branch and will be supported. 
-
-Version 1 of the API Client will still be available to people using it, it is moved over to the branch `v1` and will still be supported until a stable Version 2 is released.
+This is the second version of the API client which was a complete re-write. The previous version of the API client can be found on the v1 branch.
 
 ## API version support
 
