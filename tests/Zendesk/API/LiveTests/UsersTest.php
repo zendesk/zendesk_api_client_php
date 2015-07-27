@@ -1,6 +1,8 @@
 <?php
 namespace Zendesk\API\LiveTests;
 
+use Faker\Factory;
+
 /**
  * Users test class
  */
@@ -11,13 +13,17 @@ class UsersTest extends BasicTest
      */
     public function testCreate()
     {
+        $faker      = Factory::create();
         $userFields = [
-            'name'     => 'Roger Wilco',
-            'email'    => 'roge' . time() . '@example.org',
+            'name'     => $faker->name,
+            'email'    => $faker->safeEmail,
             'verified' => true,
         ];
         $response   = $this->client->users()->create($userFields);
         $this->assertTrue(property_exists($response, 'user'));
+        $this->assertEquals($userFields['name'], $response->user->name);
+        $this->assertEquals(strtolower($userFields['email']), $response->user->email);
+        $this->assertEquals($userFields['verified'], $response->user->verified);
 
         return $response->user;
     }
@@ -53,7 +59,7 @@ class UsersTest extends BasicTest
      */
     public function testSearch($user)
     {
-        $response = $this->client->users()->search(['query' => 'Roger Wilco']);
+        $response = $this->client->users()->search(['query' => $user->name]);
         $this->assertTrue(property_exists($response, 'users'));
         $this->assertNotNull($foundUser = $response->users[0]);
         $this->assertEquals($user->email, $foundUser->email);
@@ -78,8 +84,9 @@ class UsersTest extends BasicTest
      */
     public function testUpdate($user)
     {
+        $faker      = Factory::create();
         $userFields = [
-            'name' => 'Roger Wilco updated' . time(),
+            'name' => $faker->name,
         ];
 
         $response = $this->client->users()->update($user->id, $userFields);
@@ -119,13 +126,11 @@ class UsersTest extends BasicTest
      */
     public function testSetPassword($user)
     {
-        try {
-            $postFields = ['password' => 'aBc12345'];
+        $postFields = ['password' => 'aBc12345'];
 
-            $this->client->users($user->id)->setPassword($postFields);
-        } catch (\Exception $e) {
-            $this->fail('An exception was not expected. Exception thrown was ' . $e->__toString());
-        }
+        $this->client->users($user->id)->setPassword($postFields);
+        $this->assertEquals(200, $this->client->getDebug()->lastResponseCode);
+        $this->assertNull($this->client->getDebug()->lastResponseError);
 
         return $user;
     }
@@ -137,18 +142,16 @@ class UsersTest extends BasicTest
      */
     public function testChangePassword($user)
     {
-        try {
-            $this->client->setAuth('basic', ['username' => $user->email, 'token' => $this->token]);
+        $this->client->setAuth('basic', ['username' => $user->email, 'token' => $this->token]);
 
-            $postFields = [
-                'previous_password' => 'aBc12345',
-                'password'          => '12345'
-            ];
+        $postFields = [
+            'previous_password' => 'aBc12345',
+            'password'          => '12345'
+        ];
 
-            $this->client->users($user->id)->changePassword($postFields);
-        } catch (\Exception $e) {
-            $this->fail('An exception was not expected. Exception thrown was ' . $e->__toString());
-        }
+        $this->client->users($user->id)->changePassword($postFields);
+        $this->assertEquals(200, $this->client->getDebug()->lastResponseCode);
+        $this->assertNull($this->client->getDebug()->lastResponseError);
     }
 
     /**
@@ -158,10 +161,8 @@ class UsersTest extends BasicTest
      */
     public function testDelete($user)
     {
-        try {
-            $this->client->users()->delete($user->id);
-        } catch (\Exception $e) {
-            $this->fail('An exception was not expected. Exception thrown was ' . $e->__toString());
-        }
+        $this->client->users()->delete($user->id);
+        $this->assertEquals(200, $this->client->getDebug()->lastResponseCode);
+        $this->assertNull($this->client->getDebug()->lastResponseError);
     }
 }

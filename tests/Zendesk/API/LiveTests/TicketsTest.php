@@ -2,6 +2,8 @@
 
 namespace Zendesk\API\LiveTests;
 
+use Faker\Factory;
+
 /**
  * Tickets test class
  */
@@ -12,16 +14,15 @@ class TicketsTest extends BasicTest
      */
     public function testCreateTicket()
     {
+        $faker        = Factory::create();
         $ticketParams = [
-            'subject'  => 'The quick brown fox jumps over the lazy dog',
+            'subject'  => $faker->sentence(5),
             'comment'  => [
-                'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor'
-                          . ' incididunt ut labore et dolore magna aliqua.'
+                'body' => $faker->sentence(10),
             ],
             'priority' => 'normal',
         ];
         $response     = $this->client->tickets()->create($ticketParams);
-        $this->assertNotNull($response);
         $this->assertTrue(property_exists($response, 'ticket'));
         $ticket = $response->ticket;
         $this->assertEquals($ticketParams['subject'], $ticket->subject);
@@ -39,7 +40,6 @@ class TicketsTest extends BasicTest
      */
     public function testFindAll($ticket)
     {
-        $this->assertTrue(true);
         $response = $this->client->tickets()->findAll();
         $this->assertTrue(property_exists($response, 'tickets'));
         $this->assertGreaterThan(0, count($response->tickets));
@@ -82,8 +82,9 @@ class TicketsTest extends BasicTest
      */
     public function testUpdate($ticket)
     {
+        $faker         = factory::create();
         $ticketParams  = [
-            'subject'  => 'The new subject',
+            'subject'  => $faker->sentence(3),
             'priority' => 'high',
         ];
         $updatedTicket = $this->client->tickets()->update($ticket->id, $ticketParams);
@@ -110,10 +111,11 @@ class TicketsTest extends BasicTest
             'name' => 'UK test non-alpha chars.png'
         ];
 
+        $faker        = factory::create();
         $ticketParams = [
-            'subject'  => 'This is a sample subject of a ticket with attachment',
+            'subject'  => $faker->sentence(5),
             'comment'  => [
-                'body' => 'Your body is a wonderland'
+                'body' => $faker->sentence(10),
             ],
             'priority' => 'normal',
         ];
@@ -197,18 +199,25 @@ class TicketsTest extends BasicTest
     public function testCollaborators($ticket)
     {
         $collaborators = $this->client->tickets()->collaborators(['id' => $ticket->id]);
-        $this->assertTrue(property_exists($collaborators, 'users'), 'Should return users.');
+        $this->assertTrue(property_exists($collaborators, 'users'), 'Should find the collaborators on a ticket.');
     }
 
     /**
      * Tests if the client can call and build the tickets incidents endpoint with the correct ID
-     *
-     * @depends testCreateTicket
      */
-    public function testIncidents($ticket)
+    public function testIncidents()
     {
-        $incidents = $this->client->tickets($ticket->id)->incidents();
-        $this->assertTrue(property_exists($incidents, 'tickets'), 'Should return tickets.');
+        $problemTicket  = $this->createTestTicket(['type' => 'problem']);
+        $incidentTicket = $this->createTestTicket(['type' => 'incident', 'problem_id' => $problemTicket->id]);
+        $incidents      = $this->client->tickets($problemTicket->id)->incidents();
+        $this->assertTrue(
+            property_exists($incidents, 'tickets'),
+            'Should find the incident tickets associated to a problem ticket.'
+        );
+
+        $this->assertNotNull($incident = $incidents->tickets[0]);
+        $this->assertEquals($incidentTicket->id, $incident->id);
+        $this->assertEquals($incidentTicket->subject, $incident->subject);
     }
 
     /**
@@ -219,11 +228,9 @@ class TicketsTest extends BasicTest
      */
     public function testDelete($ticket)
     {
-        try {
-            $this->client->tickets($ticket->id)->delete();
-        } catch (\Exception $e) {
-            $this->fail('An exception was not expected. Exception thrown was ' . $e->__toString());
-        }
+        $this->client->tickets($ticket->id)->delete();
+        $this->assertEquals(200, $this->client->getDebug()->lastResponseCode);
+        $this->assertNull($this->client->getDebug()->lastResponseError);
     }
 
     /**
@@ -248,17 +255,20 @@ class TicketsTest extends BasicTest
     /**
      * Create a test ticket
      *
+     * @param array $extraParams
+     *
      * @return mixed
      */
-    private function createTestTicket()
+    private function createTestTicket($extraParams = [])
     {
-        $ticketParams = [
-            'subject'  => 'The fox jumps over the dog again.' . microtime(),
+        $faker        = Factory::create();
+        $ticketParams = array_merge([
+            'subject'  => $faker->sentence(5),
             'comment'  => [
-                'body' => 'Lorem ipsum dolor sit amet' . microtime()
+                'body' => $faker->sentence(10),
             ],
             'priority' => 'low',
-        ];
+        ], $extraParams);
         $response     = $this->client->tickets()->create($ticketParams);
 
         return $response->ticket;
