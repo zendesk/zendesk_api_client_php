@@ -27,6 +27,7 @@ class Tickets extends ResourceAbstract
 
     use Defaults {
         create as traitCreate;
+        update as traitUpdate;
     }
 
     use FindMany;
@@ -197,7 +198,7 @@ class Tickets extends ResourceAbstract
             $this->lastAttachments                      = [];
         }
 
-        return parent::update($id, $updateResourceFields);
+        return $this->traitUpdate($id, $updateResourceFields);
     }
 
     /**
@@ -284,7 +285,7 @@ class Tickets extends ResourceAbstract
      * @throws \Exception
      * @return mixed
      */
-    public function collaborators(array $params)
+    public function collaborators(array $params = [])
     {
         $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
 
@@ -305,7 +306,7 @@ class Tickets extends ResourceAbstract
      * @throws \Exception
      * @return mixed
      */
-    public function incidents(array $params)
+    public function incidents(array $params = [])
     {
         $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
 

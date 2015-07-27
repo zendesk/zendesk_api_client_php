@@ -3,9 +3,9 @@
 namespace Zendesk\API\LiveTests;
 
 /**
- * Users test class
+ * Auth test class
  */
-class UsersTest extends BasicTest
+class AuthTest extends BasicTest
 {
     /**
      * Test the use of basic test

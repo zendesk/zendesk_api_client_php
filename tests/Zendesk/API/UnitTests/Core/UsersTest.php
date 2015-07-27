@@ -139,7 +139,7 @@ class UsersTest extends BasicTest
 
         $this->assertEndpointCalled(function () use ($postFields) {
             $this->client->users(12345)->setPassword($postFields);
-        }, 'users/12345/password.json', 'POST', ['postFields' => ['user' => $postFields]]);
+        }, 'users/12345/password.json', 'POST', ['postFields' => $postFields]);
     }
 
     /**
