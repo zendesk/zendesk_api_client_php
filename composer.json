@@ -2,6 +2,7 @@
   "name": "zendesk/zendesk_api_client_php",
   "description": "PHP Client for Zendesk REST API. See http://developer.zendesk.com/api-docs",
   "license": "Apache License Version 2.0",
+  "version": "2.0.0-beta",
   "homepage": "https://github.com/zendesk/zendesk_api_client_php",
   "require": {
     "php": ">=5.3.1",
