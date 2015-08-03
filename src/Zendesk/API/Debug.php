@@ -4,11 +4,13 @@ namespace Zendesk\API;
 
 /**
  * Debug helper class
- * @package Zendesk\API
  */
 class Debug
 {
-
+    /**
+     * @var mixed
+     */
+    public $lastRequestBody;
     /**
      * @var mixed
      */
@@ -32,13 +34,14 @@ class Debug
     public function __toString()
     {
         $lastError = $this->lastResponseError;
-        if (!is_string($lastError)) {
+        if (! is_string($lastError)) {
             $lastError = json_encode($lastError);
         }
         $output = 'LastResponseCode: ' . $this->lastResponseCode
-            . ', LastResponseError: ' . $lastError
-            . ', LastResponseHeaders: ' . $this->lastResponseHeaders
-            . ', LastRequestHeaders: ' . $this->lastRequestHeaders;
+                  . ', LastResponseError: ' . $lastError
+                  . ', LastResponseHeaders: ' . $this->lastResponseHeaders
+                  . ', LastRequestHeaders: ' . $this->lastRequestHeaders
+                  . ', LastRequestBody: ' . $this->lastRequestBody;
 
         return $output;
     }
