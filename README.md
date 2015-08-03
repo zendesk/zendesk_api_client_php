@@ -254,7 +254,7 @@ $this->client->tickets()->comments()->findAll();
 
 ## Copyright and license
 
-Copyright 2013 Zendesk
+Copyright 2013-present Zendesk
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 You may obtain a copy of the License at
