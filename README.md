@@ -21,7 +21,7 @@ The Zendesk PHP API client can be installed using [Composer](https://packagist.o
 
 Inside of `composer.json` specify the following:
 
-```json
+``` json
 {
   "require": {
     "zendesk/zendesk_api_client_php": "dev-master"
@@ -34,7 +34,7 @@ Inside of `composer.json` specify the following:
 Configuration is done through an instance of `Zendesk\API\Client`.
 The block is mandatory and if not passed, an error will be thrown.
 
-```
+``` php
 use Zendesk\API\Client as ZendeskAPI;
 
 $subdomain = "subdomain";
@@ -50,7 +50,7 @@ $client->setAuth('token', $token); // set either token or password
 
 ### Basic Operations
 
-```
+``` php
 // Get all tickets
 $tickets = $client->tickets()->findAll();
 print_r($tickets);
@@ -59,8 +59,8 @@ print_r($tickets);
 $newTicket = $client->tickets()->create([
     'subject'  => 'The quick brown fox jumps over the lazy dog',
     'comment'  => [
-        'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, '
-                  . 'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+        'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, ' .
+                  'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
     ],
     'priority' => 'normal'
 ]);
@@ -77,11 +77,11 @@ $client->ticket(123)->delete();
 
 ### Attachments
 
-```
+``` php
 $attachment = $client->attachments()->upload([
     'file' => getcwd().'/tests/assets/UK.png',
     'type' => 'image/png',
-    'name' => 'UK.png'    // Optional parameter, will default to filename.ext
+    'name' => 'UK.png' // Optional parameter, will default to filename.ext
 ]);
 ```
 
@@ -96,14 +96,13 @@ To run the live tests: `vendor/bin/phpunit --testsuite "Zendesk API Live Test Su
 
 ### Side-loading
 
-```
+``` php
 $tickets = $this->client->tickets()->sideload(['users', 'groups'])->findAll();
 ```
 
-
-
 ## Coding Standard
-This project strictly follows the [PSR-2](http://www.php-fig.org/psr/psr-2/) coding standard. 
+
+This project strictly follows the [PSR-2](http://www.php-fig.org/psr/psr-2/) coding standard.
 
 [PHP Codesniffer](https://github.com/squizlabs/PHP_CodeSniffer) is used to verify that the standard is being followed.
 
@@ -120,7 +119,7 @@ Class docblocks should contain:
 * Any methods available that are called via magic method with what that method returns.
 
 A good example is
-```
+``` php
 /**
  * Client class, base level access
  *
@@ -142,7 +141,7 @@ Method docblocks should contain:
 
 A good example of this is
 
-```
+``` php
 /**
  * Find a specific ticket by id or series of ids
  *
@@ -164,7 +163,7 @@ Class properties docblocs should contain:
 
 A good example of this
 
-```
+``` php
 /**
  * This contains the Auth object to be used for authenticating with the Client
  *
@@ -177,7 +176,7 @@ The short notations for declaring arrays (`[]`) is preferred over the longer `ar
 
 Align `=>`s following the longest key to make the arrays easier to read.
 
-```
+``` php
 [
     'findAll'             => "users/{userId}/{$this->resourceName}.json",
     'find'                => "users/{userId}/{$this->resourceName}/{id}.json",
@@ -195,7 +194,7 @@ Align `=>`s following the longest key to make the arrays easier to read.
 
 Align the `=` for grouped assignment statements.
 
-```
+``` php
 $headers             = 'sample';
 $lastRequestBody     = 'example';
 $lastResponseCode    = 'something';
@@ -204,15 +203,14 @@ $lastResponseError   = 'test2';
 
 ```
 
-
 ### Traits
 
 #### Declaration
 
-* Traits are added after class constants and arranged alphabetically when declared. 
+* Traits are added after class constants and arranged alphabetically when declared.
 * Group traits accordingly by adding a new line after each group.
 * Groups are ordered as follows:
-1. Instantiator 
+1. Instantiator
 2. Single resource
 3. Bulk traits
 
@@ -238,7 +236,7 @@ When adding a resource, use traits to define available API calls. Resource trait
 
 Use `Zendesk\API\Traits\Utility\InstantiatorTrait` when you want a resource to be chainable to other resources. See `Zendesk/API/Resources/Tickets.php`.
 
-```php
+``` php
 $this->client->tickets()->comments()->findAll();
 ```
 
