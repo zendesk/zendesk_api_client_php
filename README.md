@@ -35,15 +35,17 @@ Configuration is done through an instance of `Zendesk\API\Client`.
 The block is mandatory and if not passed, an error will be thrown.
 
 ``` php
-use Zendesk\API\Client as ZendeskAPI;
+// load Composer
+require 'vendor/autoload.php';
+
+use Zendesk\API\HttpClient as ZendeskAPI;
 
 $subdomain = "subdomain";
-$username  = "username";
+$username  = "email@yourdomain.com";
 $token     = "6wiIBWbGkBMo1mRDMuVwkw1EPsNkeUj95PIz2akv"; // replace this with your token
-// $password = "123456";
 
 $client = new ZendeskAPI($subdomain, $username);
-$client->setAuth('token', $token); // set either token or password
+$client->setAuth('basic', ['username' => $username, 'token' => $token]);
 ```
 
 ## Usage
