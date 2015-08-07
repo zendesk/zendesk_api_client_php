@@ -31,7 +31,7 @@ Inside of `composer.json` specify the following:
 
 ## Configuration
 
-Configuration is done through an instance of `Zendesk\API\Client`.
+Configuration is done through an instance of `Zendesk\API\HttpClient`.
 The block is mandatory and if not passed, an error will be thrown.
 
 ``` php
