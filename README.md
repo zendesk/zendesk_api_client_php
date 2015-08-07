@@ -41,7 +41,7 @@ require 'vendor/autoload.php';
 use Zendesk\API\HttpClient as ZendeskAPI;
 
 $subdomain = "subdomain";
-$username  = "email@yourdomain.com";
+$username  = "email@company.com";
 $token     = "6wiIBWbGkBMo1mRDMuVwkw1EPsNkeUj95PIz2akv"; // replace this with your token
 
 $client = new ZendeskAPI($subdomain, $username);
