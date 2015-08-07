@@ -69,13 +69,13 @@ $newTicket = $client->tickets()->create([
 ]);
 print_r($newTicket);
 
-// Update multiple tickets
-$client->ticket([123, 456])->update([
-    'status' => 'urgent'
+// Update a ticket
+$client->tickets()->update(123,[
+    'type' => 'question'
 ]);
 
 // Delete a ticket
-$client->ticket(123)->delete();
+$client->tickets()->delete(123);
 ```
 
 ### Attachments
