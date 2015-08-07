@@ -71,7 +71,7 @@ print_r($newTicket);
 
 // Update a ticket
 $client->tickets()->update(123,[
-    'type' => 'question'
+    'priority' => 'high'
 ]);
 
 // Delete a ticket
