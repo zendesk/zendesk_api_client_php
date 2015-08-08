@@ -100,7 +100,7 @@ To run the live tests: `vendor/bin/phpunit --testsuite "Zendesk API Live Test Su
 ### Side-loading
 
 ``` php
-$tickets = $this->client->tickets()->sideload(['users', 'groups'])->findAll();
+$tickets = $client->tickets()->sideload(['users', 'groups'])->findAll();
 ```
 
 ## Coding Standard
