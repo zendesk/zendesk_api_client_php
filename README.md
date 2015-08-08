@@ -69,13 +69,13 @@ $newTicket = $client->tickets()->create([
 ]);
 print_r($newTicket);
 
-// Update multiple tickets
-$client->ticket([123, 456])->update([
-    'status' => 'urgent'
+// Update a ticket
+$client->tickets()->update(123,[
+    'priority' => 'high'
 ]);
 
 // Delete a ticket
-$client->ticket(123)->delete();
+$client->tickets()->delete(123);
 ```
 
 ### Attachments
@@ -100,7 +100,7 @@ To run the live tests: `vendor/bin/phpunit --testsuite "Zendesk API Live Test Su
 ### Side-loading
 
 ``` php
-$tickets = $this->client->tickets()->sideload(['users', 'groups'])->findAll();
+$tickets = $client->tickets()->sideload(['users', 'groups'])->findAll();
 ```
 
 ## Coding Standard
