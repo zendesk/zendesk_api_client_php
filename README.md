@@ -99,9 +99,28 @@ To run the live tests: `vendor/bin/phpunit --testsuite "Zendesk API Live Test Su
 
 ### Side-loading
 
+Side-loading allows you to retrieve related records as part of a single request. See [the documentation] for more information. (https://developer.zendesk.com/rest_api/docs/core/side_loading).
+
+An example of sideloading with the client is shown below.
+
 ``` php
 $tickets = $client->tickets()->sideload(['users', 'groups'])->findAll();
 ```
+
+### Pagination
+The Zendesk API offers a way to get the next pages for the requests and is documented in [the Zendesk Deveoloper Documentation](https://developer.zendesk.com/rest_api/docs/core/introduction#pagination).
+
+The way to do this is to pass it as an option to your request.
+
+``` php
+$tickets = $this->client->tickets()->findAll(['per_page' => 10, 'page' => 2]);
+```
+
+The allowed options are
+* per_page
+* page
+* sort_order
+
 
 ## Coding Standard
 
