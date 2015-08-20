@@ -160,8 +160,10 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
 
         if (isset($options['headers']) && is_array($options['headers'])) {
             foreach ($options['headers'] as $headerKey => $value) {
-                $this->assertNotEmpty($header = $request->getHeaderLine($headerKey));
-                $this->assertEquals($value, $header);
+                if ($value) {
+                    $this->assertNotEmpty($header = $request->getHeaderLine($headerKey));
+                    $this->assertEquals($value, $header);
+                }
             }
         }
 
@@ -182,6 +184,10 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
 
         if (isset($options['postFields'])) {
             $this->assertEquals(json_encode($options['postFields']), $request->getBody()->getContents());
+        }
+
+        if (isset($options['requestUri'])) {
+            $this->assertEquals($options['requestUri'], $request->getUri()->__toString());
         }
     }
 

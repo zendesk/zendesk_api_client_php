@@ -1,25 +1,30 @@
-<?php
-include("vendor/autoload.php");
-
-use Zendesk\API\HttpClient as ZendeskAPI;
-
-$subdomain = "subdomain";
-$username  = "email@company.com";
-$token     = "6wiIBWbGkBMo1mRDMuVwkw1EPsNkeUj95PIz2akv"; // replace this with your token
-
-$client = new ZendeskAPI($subdomain, $username);
-$client->setAuth('basic', ['username' => $username, 'token' => $token]);
-
-// Get all tickets
-$tickets = $client->tickets()->findAll();
-print_r($tickets);
-
-// Create a new ticket
-$newTicket = $client->tickets()->create(array(
-  'subject'  => 'The quick brown fox jumps over the lazy dog',
-  'comment'  => array(
-    'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-  ),
-  'priority' => 'normal'
-));
-print_r($newTicket);
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <title>Zendesk PHP API Client</title>
+    <style>
+        .zengreen {
+            color: #78A300;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 well">
+            <h1 class="zengreen">Zendesk</h1>
+            <h4>To help you get started, coding examples for authentication and basic usage are available in the `samples` folder.</h4>
+            <ul>
+                <li><a href="samples/getTickets.php">Using an API token and getting a list of tickets.</a></li>
+                <li><a href="samples/oauth.php">Sample oAuth flow.</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
