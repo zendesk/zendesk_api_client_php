@@ -4,6 +4,7 @@ namespace Zendesk\API\Utilities;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
 use Zendesk\API\Exceptions\ApiResponseException;
 
 class OAuth
@@ -21,7 +22,6 @@ class OAuth
     public static function getAccessToken(Client $client, $subDomain, array $params)
     {
         $authUrl  = 'https://' . $subDomain . '.zendesk.com/oauth/tokens';
-        $protocol = (isset($_SERVER['HTTPS'])) ? 'https://' : 'http://';
 
         // Fetch access_token
         $params = array_merge([
@@ -30,11 +30,13 @@ class OAuth
             'client_secret' => null,
             'grant_type'    => 'authorization_code',
             'scope'         => 'read write',
-            'redirect_uri'  => $protocol . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'],
+            'redirect_uri'  => null,
         ], $params);
 
         try {
-            $response = $client->post($authUrl, ['form_params' => $params]);
+            $request = new Request('POST', $authUrl, ['Content-Type' => 'application/json']);
+            $request = $request->withBody(\GuzzleHttp\Psr7\stream_for(json_encode($params)));
+            $response = $client->send($request);
         } catch (RequestException $e) {
             throw new ApiResponseException($e);
         }
