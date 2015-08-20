@@ -20,7 +20,7 @@
             <h1 class="zengreen">Zendesk</h1>
             <h4>To help you get started, coding examples for authentication and basic usage are available in the `samples` folder.</h4>
             <ul>
-                <li><a href="samples/apikey.php">Using an API token and getting a list of tickets.</a></li>
+                <li><a href="samples/getTickets.php">Using an API token and getting a list of tickets.</a></li>
                 <li><a href="samples/oauth.php">Sample oAuth flow.</a></li>
             </ul>
         </div>

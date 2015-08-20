@@ -14,13 +14,13 @@ class OAuthTest extends BasicTest
     public function testAuthUrl()
     {
         $params = [
-            'client_id'    => 'test',
-            'state'        => 'test',
+            'client_id'    => 'test_client',
+            'state'        => 'St8fulbar',
         ];
 
-        $expected = 'https://test.zendesk.com/oauth/authorizations/new?response_type=code&client_id=test&state=test&scope=read+write';
+        $expected = 'https://z3ntestsub.zendesk.com/oauth/authorizations/new?response_type=code&client_id=test_client&state=St8fulbar&scope=read+write';
 
-        $this->assertEquals($expected, OAuth::getAuthUrl('test', $params));
+        $this->assertEquals($expected, OAuth::getAuthUrl('z3ntestsub', $params));
     }
 
     public function testAccessTokenIsRequested()
