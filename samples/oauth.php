@@ -5,10 +5,9 @@
 
 use Zendesk\API\Utilities\OAuth;
 
-include("vendor/autoload.php");
+include("../vendor/autoload.php");
 
 if (isset($_POST['action']) && 'redirect' === $_POST['action']) {
-    $_POST['redirect_uri'] = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
     $state = base64_encode(serialize($_POST));
 
     // Get the oAuth URI using the utility function
@@ -28,6 +27,7 @@ if (isset($_POST['action']) && 'redirect' === $_POST['action']) {
 
     $params = unserialize(base64_decode($_GET['state']));
     $params['code'] = $_REQUEST['code'];
+    $params['redirect_uri'] = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
 
     try {
         // Request for an access token by passing an instance of GuzzleHttp\Client, your Zendesk subdomain, and the
@@ -37,7 +37,7 @@ if (isset($_POST['action']) && 'redirect' === $_POST['action']) {
         echo "<h1>Success!</h1>";
         echo "<p>Your OAuth token is: " . $response->access_token . "</p>";
         echo "<p>Use this code before any other API call:</p>";
-        echo "<code>&lt;?<br />\$client = new ZendeskAPI(\$subdomain, \$username);<br />\$client->setAuth('oauth_token', '" . $response->access_token . "');<br />?&gt;</code>";
+        echo "<code>&lt;?<br />\$client = new ZendeskAPI(\$subdomain, \$username);<br />\$client->setAuth(\Zendesk\API\Utilities\Auth::OAUTH, '" . $response->access_token . "');<br />?&gt;</code>";
     } catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
         echo "<h1>Error!</h1>";
         echo "<p>We couldn't get an access token for you. Please check your credentials and try again.</p>";
