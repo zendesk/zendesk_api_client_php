@@ -15,7 +15,6 @@ class Views extends ResourceAbstract
 {
     use Defaults {
         findAll as traitFindall;
-        find as traitFind;
     }
 
     /**
@@ -61,24 +60,6 @@ class Views extends ResourceAbstract
     }
 
     /**
-     * Show a specific view
-     *
-     * @param int   $id
-     * @param array $queryParams
-     *
-     * @return mixed
-     */
-    public function find($id = null, array $queryParams = [])
-    {
-        $queryParams = Http::prepareQueryParams(
-            $this->client->getSideload($queryParams),
-            $queryParams
-        );
-
-        return $this->traitFind($id, $queryParams);
-    }
-
-    /**
      * Execute a specific view
      *
      * @param array $params
@@ -91,21 +72,18 @@ class Views extends ResourceAbstract
      */
     public function execute(array $params = [])
     {
-        $params = $this->addChainedParametersToParams(
-            $params,
-            ['id' => get_class($this)]
-        );
+        if (! isset($params['id'])) {
+            $id = $this->getChainedParameter(get_class($this));
+        } else {
+            $id = $params['id'];
+            unset($params['id']);
+        }
 
-        if (! $this->hasKeys($params, ['id'])) {
+        if (is_null($id)) {
             throw new MissingParametersException(__METHOD__, ['id']);
         }
 
-        $queryParams = Http::prepareQueryParams(
-            $this->client->getSideload($params),
-            $params
-        );
-
-        return $this->client->get($this->getRoute(__FUNCTION__, ['id' => $params['id']]), $queryParams);
+        return $this->client->get($this->getRoute(__FUNCTION__, ['id' => $id]), $params);
     }
 
     /**
@@ -121,21 +99,18 @@ class Views extends ResourceAbstract
      */
     public function tickets(array $params = [])
     {
-        $params = $this->addChainedParametersToParams(
-            $params,
-            ['id' => get_class($this)]
-        );
+        if (! isset($params['id'])) {
+            $id = $this->getChainedParameter(get_class($this));
+        } else {
+            $id = $params['id'];
+            unset($params['id']);
+        }
 
-        if (! $this->hasKeys($params, ['id'])) {
+        if (is_null($id)) {
             throw new MissingParametersException(__METHOD__, ['id']);
         }
 
-        $queryParams = Http::prepareQueryParams(
-            $this->client->getSideload($params),
-            $params
-        );
-
-        return $this->client->get($this->getRoute(__FUNCTION__, ['id' => $params['id']]), $queryParams);
+        return $this->client->get($this->getRoute(__FUNCTION__, ['id' => $id]), $params);
     }
 
     /**
@@ -169,12 +144,7 @@ class Views extends ResourceAbstract
             $routeParams = ['id' => $params['id']];
         }
 
-        $extraParams = Http::prepareQueryParams(
-            $this->client->getSideload($params),
-            $params
-        );
-
-        return $this->client->get($this->getRoute(__FUNCTION__, $routeParams), array_merge($extraParams, $queryParams));
+        return $this->client->get($this->getRoute(__FUNCTION__, $routeParams), array_merge($params, $queryParams));
     }
 
     /**
@@ -190,20 +160,18 @@ class Views extends ResourceAbstract
      */
     public function export(array $params = [])
     {
-        $params = $this->addChainedParametersToParams(
-            $params,
-            ['id' => get_class($this)]
-        );
-        if (! $this->hasKeys($params, ['id'])) {
+        if (! isset($params['id'])) {
+            $id = $this->getChainedParameter(get_class($this));
+        } else {
+            $id = $params['id'];
+            unset($params['id']);
+        }
+
+        if (is_null($id)) {
             throw new MissingParametersException(__METHOD__, ['id']);
         }
 
-        $queryParams = Http::prepareQueryParams(
-            $this->client->getSideload($params),
-            $params
-        );
-
-        return $this->client->get($this->getRoute(__FUNCTION__, ['id' => $params['id']]), $queryParams);
+        return $this->client->get($this->getRoute(__FUNCTION__, ['id' => $id]), $params);
     }
 
     /**

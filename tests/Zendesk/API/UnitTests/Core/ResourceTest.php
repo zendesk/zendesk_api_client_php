@@ -54,6 +54,23 @@ class ResourceTest extends BasicTest
     }
 
     /**
+     * This tests if passing `include`, or `sideload` is converted to a single `include` query parameter, also tests if other params can be set
+     */
+    public function testCanSetAdditionalParams()
+    {
+        $params = ['include' => ['users', 'groups'], 'sideload' => ['test', 'this'], 'external_id' => 12345];
+
+        $this->assertEndpointCalled(function () use ($params) {
+            $this->dummyResource->findAll($params);
+        }, 'dummy_resource.json', 'GET', [
+            'queryParams' => [
+                'include' => 'users,groups,test,this',
+                'external_id' => 12345
+            ]
+        ]);
+    }
+
+    /**
      * Test create method
      */
     public function testCreate()

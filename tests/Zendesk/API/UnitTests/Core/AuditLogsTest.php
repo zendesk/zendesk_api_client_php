@@ -17,17 +17,13 @@ class AuditLogsTest extends BasicTest
         $queryParams = [
             'filter["source_type"]' => 'rule',
             'filter["valid"]'       => 'somerule',
-            'invalid'               => 'invalidrule',
+            'per_page'              => 1,
         ];
 
         // We expect invalid parameters are removed.
         // We also expect url encoded keys and values
         $expectedQueryParams = [];
         foreach ($queryParams as $key => $value) {
-            if ($key == 'invalid') {
-                continue;
-            }
-
             $expectedQueryParams = array_merge($expectedQueryParams, [urlencode($key) => urlencode($value)]);
         }
 

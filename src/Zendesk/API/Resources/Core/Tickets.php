@@ -68,14 +68,10 @@ class Tickets extends ResourceAbstract
      */
     private function sendGetRequest($route, array $params = [])
     {
-        $queryParams = Http::prepareQueryParams(
-            $this->client->getSideload($params),
-            $params
-        );
-        $response    = Http::send(
+        $response = Http::send(
             $this->client,
             $this->getRoute($route, $params),
-            ['queryParams' => $queryParams]
+            ['queryParams' => $params]
         );
 
         return $response;
@@ -126,7 +122,8 @@ class Tickets extends ResourceAbstract
             $endPointBase . (is_array($params['comment_ids']) ? '?' . implode(',', $params['comment_ids']) : ''),
             $this->client->getSideload($params)
         );
-        $response     = Http::send($this->client, $endPoint);
+
+        $response = Http::send($this->client, $endPoint);
 
         return $response;
     }
