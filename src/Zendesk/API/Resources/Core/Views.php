@@ -72,12 +72,7 @@ class Views extends ResourceAbstract
      */
     public function execute(array $params = [])
     {
-        if (! isset($params['id'])) {
-            $id = $this->getChainedParameter(get_class($this));
-        } else {
-            $id = $params['id'];
-            unset($params['id']);
-        }
+        $id = $this->getIdFromParams($params);
 
         if (is_null($id)) {
             throw new MissingParametersException(__METHOD__, ['id']);
@@ -99,12 +94,7 @@ class Views extends ResourceAbstract
      */
     public function tickets(array $params = [])
     {
-        if (! isset($params['id'])) {
-            $id = $this->getChainedParameter(get_class($this));
-        } else {
-            $id = $params['id'];
-            unset($params['id']);
-        }
+        $id = $this->getIdFromParams($params);
 
         if (is_null($id)) {
             throw new MissingParametersException(__METHOD__, ['id']);
@@ -160,12 +150,7 @@ class Views extends ResourceAbstract
      */
     public function export(array $params = [])
     {
-        if (! isset($params['id'])) {
-            $id = $this->getChainedParameter(get_class($this));
-        } else {
-            $id = $params['id'];
-            unset($params['id']);
-        }
+        $id = $this->getIdFromParams($params);
 
         if (is_null($id)) {
             throw new MissingParametersException(__METHOD__, ['id']);
@@ -202,5 +187,23 @@ class Views extends ResourceAbstract
     public function previewCount(array $params)
     {
         return $this->client->post($this->getRoute(__FUNCTION__), [$this->objectName => $params]);
+    }
+
+    /**
+     * Get the ticket ID from the chained parameters or a params array
+     * 
+     * @param  array  &$params 
+     * @return int
+     */
+    private function getIdFromParams(array &$params)
+    {
+        if (! isset($params['id'])) {
+            $id = $this->getChainedParameter(get_class($this));
+        } else {
+            $id = $params['id'];
+            unset($params['id']);
+        }
+
+        return $id;
     }
 }
