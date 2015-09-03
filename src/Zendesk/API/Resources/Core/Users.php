@@ -209,7 +209,7 @@ class Users extends ResourceAbstract
     /**
      * Search for users
      *
-     * @param array $params
+     * @param array $params Accepts `external_id` & `query`
      *
      * @throws ResponseException
      * @throws \Exception
