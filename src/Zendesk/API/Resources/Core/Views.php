@@ -191,8 +191,8 @@ class Views extends ResourceAbstract
 
     /**
      * Get the ticket ID from the chained parameters or a params array
-     * 
-     * @param  array  &$params 
+     *
+     * @param  array  &$params
      * @return int
      */
     private function getIdFromParams(array &$params)
