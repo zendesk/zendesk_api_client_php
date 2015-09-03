@@ -58,7 +58,11 @@ class ResourceTest extends BasicTest
      */
     public function testCanSetAdditionalParams()
     {
-        $params = ['include' => ['users', 'groups'], 'sideload' => ['test', 'this'], 'external_id' => 12345];
+        $params = [
+            'include' => ['users', 'groups'],
+            'sideload' => ['test', 'this'],
+            'external_id' => 12345
+        ];
 
         $this->assertEndpointCalled(function () use ($params) {
             $this->dummyResource->findAll($params);

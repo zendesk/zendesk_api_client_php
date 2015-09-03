@@ -17,7 +17,6 @@ class AuditLogsTest extends BasicTest
         $queryParams = [
             'filter["source_type"]' => 'rule',
             'filter["valid"]'       => 'somerule',
-            'per_page'              => 1,
         ];
 
         // We expect invalid parameters are removed.

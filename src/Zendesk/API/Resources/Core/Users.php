@@ -217,9 +217,7 @@ class Users extends ResourceAbstract
      */
     public function search(array $params)
     {
-        $queryParams = isset($params['query']) ? ['query' => $params['query']] : [];
-
-        return $this->client->get($this->getRoute(__FUNCTION__), array_merge($params, $queryParams));
+        return $this->client->get($this->getRoute(__FUNCTION__), $params);
     }
 
     /**
