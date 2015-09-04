@@ -88,18 +88,6 @@ class UsersTest extends BasicTest
         }, 'users/search.json', 'GET', ['queryParams' => $queryParams]);
     }
 
-    /**
-     * Tests if the search enpoint can be called by the client and is passed the correct external_id
-     */
-    public function testSearchByExternalId()
-    {
-        $queryParams = ['external_id' => 'ext-1'];
-
-        $this->assertEndpointCalled(function () use ($queryParams) {
-            $this->client->users()->search($queryParams);
-        }, 'users/search.json', 'GET', ['queryParams' => $queryParams]);
-    }
-
     /*
      * Needs an existed User with specified query 'name' keyword to run this function
      */
