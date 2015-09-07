@@ -181,7 +181,6 @@ class TicketsTest extends BasicTest
             'followup_source_ids',
             'from_archive',
             'incidents',
-            'twitter'
         ];
         foreach ($properties as $property) {
             $this->assertTrue(
