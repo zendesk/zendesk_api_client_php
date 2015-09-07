@@ -15,9 +15,10 @@ class UsersTest extends BasicTest
     {
         $faker      = Factory::create();
         $userFields = [
-            'name'     => $faker->name,
-            'email'    => $faker->safeEmail,
-            'verified' => true,
+            'name'        => $faker->name,
+            'email'       => $faker->safeEmail,
+            'verified'    => true,
+            'external_id' => $faker->uuid,
         ];
         $response   = $this->client->users()->create($userFields);
         $this->assertTrue(property_exists($response, 'user'));
@@ -60,6 +61,20 @@ class UsersTest extends BasicTest
     public function testSearch($user)
     {
         $response = $this->client->users()->search(['query' => $user->name]);
+        $this->assertTrue(property_exists($response, 'users'));
+        $this->assertNotNull($foundUser = $response->users[0]);
+        $this->assertEquals($user->email, $foundUser->email);
+        $this->assertEquals($user->name, $foundUser->name);
+    }
+
+    /**
+     * Tests search for a user
+     *
+     * @depends testCreate
+     */
+    public function testSearchByExternalId($user)
+    {
+        $response = $this->client->users()->search(['external_id' => $user->external_id]);
         $this->assertTrue(property_exists($response, 'users'));
         $this->assertNotNull($foundUser = $response->users[0]);
         $this->assertEquals($user->email, $foundUser->email);
