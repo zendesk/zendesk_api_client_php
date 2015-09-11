@@ -141,7 +141,7 @@ class UsersTest extends BasicTest
         }, 'users/me.json');
     }
 
-    /**
+    /*
      * Tests if the setPassword function calls the correct endpoint and passes the correct POST data
      */
     public function testSetPassword()
