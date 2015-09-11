@@ -2,6 +2,7 @@
 namespace Zendesk\API\LiveTests;
 
 use Faker\Factory;
+use Zendesk\API\Exceptions\ApiResponseException;
 
 /**
  * Users test class
@@ -143,9 +144,15 @@ class UsersTest extends BasicTest
     {
         $postFields = ['password' => 'aBc12345'];
 
-        $this->client->users($user->id)->setPassword($postFields);
-        $this->assertEquals(200, $this->client->getDebug()->lastResponseCode);
-        $this->assertNull($this->client->getDebug()->lastResponseError);
+        try {
+            $this->client->users($user->id)->setPassword($postFields);
+            $this->assertEquals(200, $this->client->getDebug()->lastResponseCode);
+            $this->assertNull($this->client->getDebug()->lastResponseError);
+        } catch (ApiResponseException $e) {
+            if ($e->getCode() === 403) {
+                $this->markTestSkipped('Skipping test, `Allow admins to set passwords` must be enabled in Security.');
+            }
+        }
 
         return $user;
     }
