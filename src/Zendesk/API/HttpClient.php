@@ -83,7 +83,7 @@ use Zendesk\API\Utilities\Auth;
  * @method SuspendedTickets suspendedTickets()
  * @method Tags tags()
  * @method Targets targets()
- * @method Tickets ticket()
+ * @method Tickets tickets()
  * @method TicketImports ticketImports()
  * @method TwitterHandles twitterHandles()
  * @method Triggers triggers()
