@@ -31,7 +31,7 @@ Inside of `composer.json` specify the following:
 ```
 
 ### Upgrading from V1 to V2
-If you are upgrading from [v1](https://github.com/zendesk/zendesk_api_client_php/releases/tag/v1.2.0) of the client, we've written an [upgrade guide](https://github.com/zendesk/zendesk_api_client_php/wiki/Upgrading-from-v1-to-v2) to highlight some of the key differences.
+If you are upgrading from [v1](https://github.com/zendesk/zendesk_api_client_php/tree/v1) of the client, we've written an [upgrade guide](https://github.com/zendesk/zendesk_api_client_php/wiki/Upgrading-from-v1-to-v2) to highlight some of the key differences.
 
 ## Configuration
 
