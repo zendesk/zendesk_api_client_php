@@ -30,6 +30,9 @@ Inside of `composer.json` specify the following:
 }
 ```
 
+### Upgrading from V1 to V2
+If you are upgrading from version 1 of the client, [here is a guide to upgrading](https://github.com/zendesk/zendesk_api_client_php/wiki/Upgrading-from-v1-to-v2).
+
 ## Configuration
 
 Configuration is done through an instance of `Zendesk\API\HttpClient`.
