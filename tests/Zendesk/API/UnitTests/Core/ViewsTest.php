@@ -81,8 +81,8 @@ class ViewsTest extends BasicTest
     public function testExport()
     {
         $this->assertEndpointCalled(function () {
-            $this->client->views($this->id)->export();
-        }, "views/{$this->id}/export.json", 'GET');
+            $this->client->views()->export(['id' => $this->id]);
+        }, "views/{$this->id}/export.json", 'GET', ['queryParams' => []]);
     }
 
     /**
