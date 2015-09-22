@@ -33,13 +33,8 @@ class AuditLogs extends ResourceAbstract
      */
     public function findAll(array $params = [])
     {
-        $sideloads = $this->client->getSideload($params);
-
-        $extraParams = Http::prepareQueryParams($sideloads, $params);
         $queryParams = array_filter(array_flip($params), [$this, 'filterParams']);
-        $queryParams = array_flip($queryParams);
-
-        $queryParams = array_merge($queryParams, $extraParams);
+        $queryParams = array_merge($params, array_flip($queryParams));
 
         return $this->traitFindAll($queryParams);
     }

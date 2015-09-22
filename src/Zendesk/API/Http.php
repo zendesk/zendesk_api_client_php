@@ -17,34 +17,6 @@ class Http
     public static $curl;
 
     /**
-     * Prepares an endpoint URL with optional side-loading
-     *
-     * @param array $sideload
-     * @param array $iterators
-     *
-     * @return string
-     */
-    public static function prepareQueryParams(array $sideload = null, array $iterators = null)
-    {
-        $addParams = [];
-        // First look for side-loaded variables
-        if (is_array($sideload)) {
-            $addParams['include'] = implode(',', $sideload);
-        }
-
-        // Next look for special collection iterators
-        if (is_array($iterators)) {
-            foreach ($iterators as $k => $v) {
-                if (in_array($k, ['per_page', 'page', 'sort_order', 'sort_by', 'external_id'])) {
-                    $addParams[$k] = $v;
-                }
-            }
-        }
-
-        return $addParams;
-    }
-
-    /**
      * Use the send method to call every endpoint except for oauth/tokens
      *
      * @param HttpClient $client

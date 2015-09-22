@@ -104,12 +104,9 @@ class Organizations extends ResourceAbstract
      */
     public function autocomplete($name, array $params = [])
     {
-        $sideloads = $this->client->getSideload($params);
+        $params['name'] = $name;
 
-        $queryParams         = Http::prepareQueryParams($sideloads, $params);
-        $queryParams['name'] = $name;
-
-        return $this->client->get($this->getRoute(__FUNCTION__), $queryParams);
+        return $this->client->get($this->getRoute(__FUNCTION__), $params);
     }
 
     /**
@@ -138,11 +135,8 @@ class Organizations extends ResourceAbstract
      */
     public function search($external_id, array $params = [])
     {
-        $sideloads = $this->client->getSideload($params);
+        $params['external_id'] = $external_id;
 
-        $queryParams                = Http::prepareQueryParams($sideloads, $params);
-        $queryParams['external_id'] = $external_id;
-
-        return $this->client->get($this->getRoute(__FUNCTION__), $queryParams);
+        return $this->client->get($this->getRoute(__FUNCTION__), $params);
     }
 }

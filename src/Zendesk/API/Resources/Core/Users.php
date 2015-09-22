@@ -149,11 +149,10 @@ class Users extends ResourceAbstract
             throw new MissingParametersException(__METHOD__, ['id']);
         }
 
-        $queryParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
-        $response    = Http::send(
+        $response = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__, ['id' => $params['id']]),
-            ['queryParams' => $queryParams]
+            ['queryParams' => $params]
         );
 
         return $response;
@@ -210,7 +209,7 @@ class Users extends ResourceAbstract
     /**
      * Search for users
      *
-     * @param array $params
+     * @param array $params Accepts `external_id` & `query`
      *
      * @throws ResponseException
      * @throws \Exception
@@ -218,10 +217,7 @@ class Users extends ResourceAbstract
      */
     public function search(array $params)
     {
-        $queryParams = isset($params['query']) ? ['query' => $params['query']] : [];
-        $extraParams = Http::prepareQueryParams($this->client->getSideload($params), $params);
-
-        return $this->client->get($this->getRoute(__FUNCTION__), array_merge($extraParams, $queryParams));
+        return $this->client->get($this->getRoute(__FUNCTION__), $params);
     }
 
     /**

@@ -339,10 +339,14 @@ class HttpClient
      *
      * @return array|null
      */
-    public function getSideload(array $params = null)
+    public function getSideload(array $params = [])
     {
-        if ((isset($params['sideload'])) && (is_array($params['sideload']))) {
-            return $params['sideload'];
+        // Allow both for backward compatability
+        $sideloadKeys = array('include', 'sideload');
+
+        if (! empty($sideloads = array_intersect_key($params, array_flip($sideloadKeys)))) {
+            // Merge to a single array
+            return call_user_func_array('array_merge', $sideloads);
         } else {
             return $this->sideload;
         }
@@ -352,7 +356,6 @@ class HttpClient
     {
         $sideloads = $this->getSideload($queryParams);
 
-        // TODO: filter allowed query params
         if (is_array($sideloads)) {
             $queryParams['include'] = implode(',', $sideloads);
             unset($queryParams['sideload']);

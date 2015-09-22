@@ -68,7 +68,7 @@ class UsersTest extends BasicTest
     /**
      * Tests if the search enpoint can be called by the client and is passed the correct query
      */
-    public function testSearch()
+    public function testSearchByQuery()
     {
         $queryParams = ['query' => 'Roger'];
 
@@ -141,7 +141,7 @@ class UsersTest extends BasicTest
         }, 'users/me.json');
     }
 
-    /**
+    /*
      * Tests if the setPassword function calls the correct endpoint and passes the correct POST data
      */
     public function testSetPassword()
