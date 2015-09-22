@@ -85,7 +85,8 @@ class Http
             list ($request, $requestOptions) = $client->getAuth()->prepareRequest($request, $requestOptions);
             $response = $client->guzzle->send($request, $requestOptions);
         } catch (RequestException $e) {
-            throw new ApiResponseException($e);
+            $exception = RequestException::create($e->getRequest(), $e->getResponse());
+            throw new ApiResponseException($exception);
         } finally {
             $client->setDebug(
                 $request->getHeaders(),
