@@ -1,6 +1,8 @@
 <?php
 namespace Zendesk\API\UnitTests\Core;
 
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Zendesk\API\UnitTests\BasicTest;
 
@@ -54,13 +56,14 @@ class ResourceTest extends BasicTest
     }
 
     /**
-     * This tests if passing `include`, or `sideload` is converted to a single `include` query parameter, also tests if other params can be set
+     * This tests if passing `include`, or `sideload` is converted to a single `include` query parameter, also tests if
+     * other params can be set
      */
     public function testCanSetAdditionalParams()
     {
         $params = [
-            'include' => ['users', 'groups'],
-            'sideload' => ['test', 'this'],
+            'include'     => ['users', 'groups'],
+            'sideload'    => ['test', 'this'],
             'external_id' => 12345
         ];
 
@@ -68,7 +71,7 @@ class ResourceTest extends BasicTest
             $this->dummyResource->findAll($params);
         }, 'dummy_resource.json', 'GET', [
             'queryParams' => [
-                'include' => 'users,groups,test,this',
+                'include'     => 'users,groups,test,this',
                 'external_id' => 12345
             ]
         ]);
@@ -273,6 +276,21 @@ class ResourceTest extends BasicTest
         $this->mockApiResponses(
             new Response(422, [], '')
         );
+
+        $this->dummyResource->create(['foo' => 'bar']);
+    }
+
+    /**
+     * Test we can handle api exceptions when no response is returned from the API
+     *
+     * @expectedException Zendesk\API\Exceptions\ApiResponseException
+     * @expectedExceptionMessage Error completing request
+     */
+    public function testHandlesEmptyResponse()
+    {
+        // Create an exception object which is thrown when a response couldn't be retrieved
+        $unsuccessfulResponse = RequestException::create(new Request('GET', 'foo'), null);
+        $this->mockApiResponses($unsuccessfulResponse);
 
         $this->dummyResource->create(['foo' => 'bar']);
     }

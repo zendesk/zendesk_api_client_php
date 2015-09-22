@@ -2,7 +2,9 @@
 
 namespace Zendesk\API\Exceptions;
 
+use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ServerException;
 
 /**
  * Class ApiResponseException
@@ -18,22 +20,23 @@ class ApiResponseException extends \Exception
 
     public function __construct(RequestException $e)
     {
-        $response = $e->getResponse();
-        $message  = $response->getReasonPhrase()
-            . " [status code] " . $response->getStatusCode();
+        $message = $e->getMessage();
 
-        $level = floor($response->getStatusCode() / 100);
-        // Check if business-level error message
-        // https://developer.zendesk.com/rest_api/docs/core/introduction#requests
-        if ($level == '4') {
-            $responseBody = $response->getBody()->getContents();
+        if ($e instanceof ClientException) {
+            $response           = $e->getResponse();
+            $responseBody       = $response->getBody()->getContents();
             $this->errorDetails = $responseBody;
             $message .= ' [details] ' . $this->errorDetails;
-        } elseif ($level == '5') {
+        } elseif ($e instanceof ServerException) {
             $message .= ' [details] Zendesk may be experiencing internal issues or undergoing scheduled maintenance.';
+        } elseif (! $e->hasResponse()) {
+            $request = $e->getRequest();
+            // Unsuccessful response, log what we can
+            $message .= ' [url] ' . $request->getUri();
+            $message .= ' [http method] ' . $request->getMethod();
         }
 
-        parent::__construct($message, $response->getStatusCode());
+        parent::__construct($message, $e->getCode());
     }
 
     /**
