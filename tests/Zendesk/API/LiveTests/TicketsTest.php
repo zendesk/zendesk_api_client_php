@@ -272,4 +272,15 @@ class TicketsTest extends BasicTest
 
         return $response->ticket;
     }
+
+    /**
+     * Test we can handle api exceptions, by finding a non-existing ticket
+     *
+     * @expectedException Zendesk\API\Exceptions\ApiResponseException
+     * @expectedExceptionMessage Not Found
+     */
+    public function testHandlesApiException()
+    {
+        $this->client->tickets()->find(99999999);
+    }
 }
