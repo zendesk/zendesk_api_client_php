@@ -93,6 +93,7 @@ class Tickets extends ResourceAbstract
             'deleteMany'          => 'tickets/destroy_many.json',
             'collaborators'       => 'tickets/{id}/collaborators.json',
             'incidents'           => 'tickets/{id}/incidents.json',
+            'merge'               => 'tickets/{id}/merge.json',
             'problems'            => 'problems.json',
             'export'              => 'exports/tickets.json',
             'problemAutoComplete' => 'problems/autocomplete.json'
@@ -378,7 +379,7 @@ class Tickets extends ResourceAbstract
         $response = Http::send(
             $this->client,
             $this->getRoute('export'),
-            ["queryParams" => $queryParams]
+            ['queryParams' => $queryParams]
         );
 
         return $response;
@@ -405,5 +406,35 @@ class Tickets extends ResourceAbstract
         $this->lastAttachments[] = $upload->upload->token;
 
         return $this;
+    }
+
+    /**
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @return Tickets
+     */
+    public function merge(array $params = [])
+    {
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+
+        if (! $this->hasKeys($params, ['id', 'ids'])) {
+            throw new MissingParametersException(__METHOD__, ['id', 'ids']);
+        }
+
+        $route = $this->getRoute(__FUNCTION__, ['id' => $params['id']]);
+        unset($params['id']);
+
+        $response = Http::send(
+            $this->client,
+            $route,
+            [
+                'method'     => 'POST',
+                'postFields' => $params,
+            ]
+        );
+
+        return $response;
     }
 }
