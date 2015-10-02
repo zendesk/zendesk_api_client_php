@@ -295,4 +295,20 @@ class TicketsTest extends BasicTest
             $this->client->tickets()->markAsSpam([12345, 54321]);
         }, 'tickets/mark_many_as_spam.json', 'PUT', ['queryParams' => ['ids' => '12345,54321']]);
     }
+
+    /**
+     * Tests if the client can call the merge endpoint.
+     */
+    public function testMerge()
+    {
+        $params   = [
+            'ids'            => [123, 234],
+            'target_comment' => 'Closing in favor of #345',
+            'source_comment' => 'Combining with #123, #234',
+        ];
+        $ticketId = 345;
+        $this->assertEndpointCalled(function () use ($ticketId, $params) {
+            $this->client->tickets($ticketId)->merge($params);
+        }, "tickets/{$ticketId}/merge.json", 'POST', $params);
+    }
 }
