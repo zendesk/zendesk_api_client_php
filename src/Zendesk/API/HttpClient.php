@@ -42,6 +42,7 @@ use Zendesk\API\Resources\Core\SupportAddresses;
 use Zendesk\API\Resources\Core\SuspendedTickets;
 use Zendesk\API\Resources\Core\Tags;
 use Zendesk\API\Resources\Core\Targets;
+use Zendesk\API\Resources\Core\TicketFields;
 use Zendesk\API\Resources\Core\TicketImports;
 use Zendesk\API\Resources\Core\Tickets;
 use Zendesk\API\Resources\Core\Triggers;
@@ -231,6 +232,7 @@ class HttpClient
             'tags'                      => Tags::class,
             'targets'                   => Targets::class,
             'tickets'                   => Tickets::class,
+            'ticketFields'              => TicketFields::class,
             'ticketImports'             => TicketImports::class,
             'triggers'                  => Triggers::class,
             'twitterHandles'            => TwitterHandles::class,
