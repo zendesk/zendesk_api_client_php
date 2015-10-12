@@ -102,7 +102,7 @@ class Users extends ResourceAbstract
             $this->endpoint = 'users.json';
         }
 
-        return $this->traitFindAll();
+        return $this->traitFindAll($params);
     }
 
     /**
