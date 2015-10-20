@@ -34,6 +34,7 @@ class ApiResponseException extends \Exception
             // Unsuccessful response, log what we can
             $message .= ' [url] ' . $request->getUri();
             $message .= ' [http method] ' . $request->getMethod();
+            $message .= ' [body] ' . $request->getBody()->getContents();
         }
 
         parent::__construct($message, $e->getCode());
