@@ -8,7 +8,7 @@ use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\FindAll;
 
 /**
- * The TicketComments class exposes comment methods for tickets
+ * The UserTickets class exposes ticket methods for users
  */
 class UserTickets extends ResourceAbstract
 {
