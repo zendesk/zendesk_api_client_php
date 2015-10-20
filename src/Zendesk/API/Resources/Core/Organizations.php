@@ -17,6 +17,7 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
  * @method OrganizationMemberships organizationMemberships()
  * @method OrganizationSubscriptions organizationSubscriptions()
  * @method Requests requests()
+ * @method OrganizationTickets tickets()
  */
 class Organizations extends ResourceAbstract
 {
