@@ -38,6 +38,7 @@ class Organizations extends ResourceAbstract
             'memberships'   => OrganizationMemberships::class,
             'subscriptions' => OrganizationSubscriptions::class,
             'requests'      => Requests::class,
+            'tickets'       => OrganizationTickets::class,
         ];
     }
 
