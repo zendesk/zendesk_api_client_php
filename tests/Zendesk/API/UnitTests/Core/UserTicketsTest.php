@@ -10,15 +10,41 @@ use Zendesk\API\UnitTests\BasicTest;
 class UserTicketsTest extends BasicTest
 {
     /**
-     * Test findAll method
+     * Test requested method
      */
-    public function testAll()
+    public function testRequested()
     {
 
         $userId = 1234;
         $this->assertEndpointCalled(function () use ($userId) {
-            $this->client->users($userId)->tickets()->findAll();
-        }, "users/{$userId}/tickets.json");
+            $this->client->users($userId)->tickets()->requested();
+        }, "users/{$userId}/tickets/requested.json");
+
+    }
+
+    /**
+     * Test assigned method
+     */
+    public function testAssigned()
+    {
+
+        $userId = 1234;
+        $this->assertEndpointCalled(function () use ($userId) {
+            $this->client->users($userId)->tickets()->assigned();
+        }, "users/{$userId}/tickets/assigned.json");
+
+    }
+
+    /**
+     * Test requested method
+     */
+    public function testCcd()
+    {
+
+        $userId = 1234;
+        $this->assertEndpointCalled(function () use ($userId) {
+            $this->client->users($userId)->tickets()->ccd();
+        }, "users/{$userId}/tickets/ccd.json");
 
     }
 }

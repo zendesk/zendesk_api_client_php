@@ -32,13 +32,15 @@ class UserTickets extends ResourceAbstract
     {
         $this->setRoutes(
             [
-                'findAll'     => 'users/{user_id}/tickets.json',
+                'requested'     => 'users/{user_id}/tickets/requested.json',
+                'assigned'     => 'users/{user_id}/tickets/assigned.json',
+                'ccd'     => 'users/{user_id}/tickets/ccd.json',
             ]
         );
     }
 
     /**
-     * Returns all tickets for a particular user
+     * Returns all requested tickets for a particular user
      *
      * @param array $queryParams
      *
@@ -47,7 +49,49 @@ class UserTickets extends ResourceAbstract
      *
      * @return mixed
      */
-    public function findAll(array $queryParams = [])
+    public function requested(array $queryParams = [])
+    {
+        $queryParams = $this->addChainedParametersToParams($queryParams, ['user_id' => Users::class]);
+
+        if (! $this->hasKeys($queryParams, ['user_id'])) {
+            throw new MissingParametersException(__METHOD__, ['user_id']);
+        }
+
+        return $this->traitFindAll($queryParams);
+    }
+
+    /**
+     * Returns all ccd'ed tickets for a particular user
+     *
+     * @param array $queryParams
+     *
+     * @throws MissingParametersException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function ccd(array $queryParams = [])
+    {
+        $queryParams = $this->addChainedParametersToParams($queryParams, ['user_id' => Users::class]);
+
+        if (! $this->hasKeys($queryParams, ['user_id'])) {
+            throw new MissingParametersException(__METHOD__, ['user_id']);
+        }
+
+        return $this->traitFindAll($queryParams);
+    }
+
+    /**
+     * Returns all assigned tickets for a particular user
+     *
+     * @param array $queryParams
+     *
+     * @throws MissingParametersException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function assigned(array $queryParams = [])
     {
         $queryParams = $this->addChainedParametersToParams($queryParams, ['user_id' => Users::class]);
 
