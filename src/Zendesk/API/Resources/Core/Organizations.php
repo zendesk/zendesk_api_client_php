@@ -17,6 +17,7 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
  * @method OrganizationMemberships organizationMemberships()
  * @method OrganizationSubscriptions organizationSubscriptions()
  * @method Requests requests()
+ * @method OrganizationTickets tickets()
  */
 class Organizations extends ResourceAbstract
 {
@@ -38,6 +39,7 @@ class Organizations extends ResourceAbstract
             'memberships'   => OrganizationMemberships::class,
             'subscriptions' => OrganizationSubscriptions::class,
             'requests'      => Requests::class,
+            'tickets'       => OrganizationTickets::class,
         ];
     }
 
