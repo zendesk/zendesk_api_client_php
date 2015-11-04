@@ -47,11 +47,11 @@ class Http
             $options
         );
 
-        $headers = [
+        $headers = array_merge([
             'Accept'       => 'application/json',
             'Content-Type' => $options['contentType'],
             'User-Agent'   => $client->getUserAgent()
-        ];
+        ], $client->getHeaders());
 
         $request = new Request(
             $options['method'],
