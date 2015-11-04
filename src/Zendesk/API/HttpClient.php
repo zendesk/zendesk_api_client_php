@@ -100,6 +100,11 @@ class HttpClient
     use InstantiatorTrait;
 
     /**
+     * @var array $headers
+     */
+    private $headers = [];
+
+    /**
      * @var Auth
      */
     protected $auth;
@@ -263,6 +268,31 @@ class HttpClient
         $this->auth = new Auth($strategy, $options);
     }
 
+    /**
+     * @return array
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @param array $headers
+     *
+     * @return HttpClient
+     */
+    public function setHeader($key, $value)
+    {
+        $this->headers[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Return the user agent string
+     *
+     * @return string
+     */
     public function getUserAgent()
     {
         return 'ZendeskAPI PHP ' . self::VERSION;
