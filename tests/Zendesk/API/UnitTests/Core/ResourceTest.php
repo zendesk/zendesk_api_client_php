@@ -311,4 +311,23 @@ class ResourceTest extends BasicTest
 
         $this->assertRegExp('/ZendeskAPI PHP/', $request->getHeaderLine('User-Agent'));
     }
+
+    /**
+     * Tests if extra headers are set
+     */
+    public function testAdditionalHeaders()
+    {
+        $this->client->setHeader('X-CUSTOM-HEADER', 'foo');
+
+        $this->mockApiResponses([
+            new Response(200, [], '')
+        ]);
+
+        $this->dummyResource->findAll();
+
+        $transaction = $this->mockedTransactionsContainer[0];
+        $request     = $transaction['request'];
+
+        $this->assertEquals('foo', $request->getHeaderLine('X-CUSTOM-HEADER'));
+    }
 }
