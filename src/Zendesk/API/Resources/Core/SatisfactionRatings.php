@@ -33,7 +33,8 @@ class SatisfactionRatings extends ResourceAbstract
     }
 
     /**
-     * Returns all comments for a particular ticket
+     * Creates a Satisfaction Rating
+     * https://developer.zendesk.com/rest_api/docs/core/satisfaction_ratings#create-a-satisfaction-rating
      *
      * @param array $queryParams
      *
