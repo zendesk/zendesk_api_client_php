@@ -68,30 +68,36 @@ class Requests extends ResourceAbstract
      * Find all open requests
      *
      * @param array $params
+     *
+     * @return mixed
      */
     public function findAllOpen(array $params = [])
     {
-        $this->findAll($params, __FUNCTION__);
+        return $this->findAll($params, __FUNCTION__);
     }
 
     /**
      * Find all open requests
      *
      * @param array $params
+     *
+     * @return mixed
      */
     public function findAllSolved(array $params = [])
     {
-        $this->findAll($params, __FUNCTION__);
+        return $this->findAll($params, __FUNCTION__);
     }
 
     /**
      * Find all open requests
      *
      * @param array $params
+     *
+     * @return mixed
      */
     public function findAllCCd(array $params = [])
     {
-        $this->findAll($params, __FUNCTION__);
+        return $this->findAll($params, __FUNCTION__);
     }
 
     /**

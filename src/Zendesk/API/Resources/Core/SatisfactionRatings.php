@@ -3,6 +3,7 @@
 namespace Zendesk\API\Resources\Core;
 
 use Zendesk\API\Resources\ResourceAbstract;
+use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Traits\Resource\Create;
 use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
@@ -13,7 +14,42 @@ use Zendesk\API\Traits\Resource\FindAll;
  */
 class SatisfactionRatings extends ResourceAbstract
 {
-    use Create;
+    use Create {
+        create as traitCreate;
+    }
     use Find;
     use FindAll;
+
+    /**
+     * Declares routes to be used by this resource.
+     */
+    protected function setUpRoutes()
+    {
+        parent::setUpRoutes();
+
+        $this->setRoutes([
+            'create' => 'tickets/{ticket_id}/satisfaction_rating.json'
+        ]);
+    }
+
+    /**
+     * Returns all comments for a particular ticket
+     *
+     * @param array $queryParams
+     *
+     * @throws MissingParametersException
+     * @throws \Exception
+     *
+     * @return mixed
+     */
+    public function create(array $queryParams = [])
+    {
+        $queryParams = $this->addChainedParametersToParams($queryParams, ['ticket_id' => Tickets::class]);
+
+        if (! $this->hasKeys($queryParams, ['ticket_id'])) {
+            throw new MissingParametersException(__METHOD__, ['ticket_id']);
+        }
+
+        return $this->traitCreate($queryParams);
+    }
 }
