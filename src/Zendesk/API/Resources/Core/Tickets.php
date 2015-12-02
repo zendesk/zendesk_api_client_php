@@ -47,12 +47,13 @@ class Tickets extends ResourceAbstract
     public static function getValidSubResources()
     {
         return [
-            'comments'    => TicketComments::class,
-            'forms'       => TicketForms::class,
-            'tags'        => Tags::class,
-            'audits'      => TicketAudits::class,
-            'attachments' => Attachments::class,
-            'metrics'     => TicketMetrics::class,
+            'comments'            => TicketComments::class,
+            'forms'               => TicketForms::class,
+            'tags'                => Tags::class,
+            'audits'              => TicketAudits::class,
+            'attachments'         => Attachments::class,
+            'metrics'             => TicketMetrics::class,
+            'satisfactionRatings' => SatisfactionRatings::class,
         ];
     }
 
