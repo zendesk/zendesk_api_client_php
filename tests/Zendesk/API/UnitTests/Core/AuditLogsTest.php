@@ -15,8 +15,8 @@ class AuditLogsTest extends BasicTest
     public function testFindAll()
     {
         $queryParams = [
-            'filter["source_type"]' => 'rule',
-            'filter["valid"]'       => 'somerule',
+            'filter[source_type]' => 'rule',
+            'filter[valid]'       => 'somerule',
         ];
 
         // We expect invalid parameters are removed.
