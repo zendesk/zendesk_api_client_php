@@ -44,6 +44,6 @@ class AuditLogs extends ResourceAbstract
      */
     private function filterParams($param)
     {
-        return preg_match("/^filter[\"[a-zA-Z_]*\"]/", $param);
+        return preg_match("/^filter[[a-zA-Z_]*]/", $param);
     }
 }
