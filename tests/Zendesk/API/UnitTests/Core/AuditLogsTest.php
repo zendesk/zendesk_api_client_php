@@ -15,6 +15,8 @@ class AuditLogsTest extends BasicTest
     public function testFindAll()
     {
         $queryParams = [
+            'sort_by'              => 'actor_id',
+            'sort_order'           => 'desc',
             'filter[source_type]'  => 'rule',
             'filter[valid]'        => 'somerule',
             'filter[created_at][]' => '2016-01-01T00:00:00Z'
