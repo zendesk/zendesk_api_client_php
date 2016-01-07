@@ -15,15 +15,18 @@ class AuditLogsTest extends BasicTest
     public function testFindAll()
     {
         $queryParams = [
-            'filter["source_type"]' => 'rule',
-            'filter["valid"]'       => 'somerule',
+            'sort_by'              => 'actor_id',
+            'sort_order'           => 'desc',
+            'filter[source_type]'  => 'rule',
+            'filter[valid]'        => 'somerule',
+            'filter[created_at][]' => '2016-01-01T00:00:00Z'
         ];
 
         // We expect invalid parameters are removed.
         // We also expect url encoded keys and values
         $expectedQueryParams = [];
         foreach ($queryParams as $key => $value) {
-            $expectedQueryParams = array_merge($expectedQueryParams, [urlencode($key) => urlencode($value)]);
+            $expectedQueryParams = array_merge($expectedQueryParams, [urlencode($key) => $value]);
         }
 
         $this->assertEndpointCalled(
