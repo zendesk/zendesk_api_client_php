@@ -26,7 +26,7 @@ class AuditLogsTest extends BasicTest
         // We also expect url encoded keys and values
         $expectedQueryParams = [];
         foreach ($queryParams as $key => $value) {
-            $expectedQueryParams = array_merge($expectedQueryParams, [urlencode($key) => /*urlencode*/($value)]);
+            $expectedQueryParams = array_merge($expectedQueryParams, [urlencode($key) => $value]);
         }
 
         $this->assertEndpointCalled(
