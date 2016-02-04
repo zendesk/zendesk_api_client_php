@@ -49,4 +49,19 @@ class OAuthTest extends BasicTest
             ],
         ]);
     }
+
+    /**
+     * Tests if the OAuth::getAuthUrl function returns a correct URL.
+     */
+    public function testConfigurableDomain()
+    {
+        $params = [
+            'client_id'    => 'test_client',
+            'state'        => 'St8fulbar',
+        ];
+
+        $expected = 'https://z3ntestsub.testDomain.com/oauth/authorizations/new?response_type=code&client_id=test_client&state=St8fulbar&scope=read+write';
+
+        $this->assertEquals($expected, OAuth::getAuthUrl('z3ntestsub', $params, 'testDomain.com'));
+    }
 }
