@@ -19,9 +19,9 @@ class OAuth
      * @return array
      * @throws ApiResponseException
      */
-    public static function getAccessToken(Client $client, $subdomain, array $params)
+    public static function getAccessToken(Client $client, $subdomain, array $params, $domain = 'zendesk.com')
     {
-        $authUrl  = 'https://' . $subdomain . '.zendesk.com/oauth/tokens';
+        $authUrl  = "https://$subdomain.$domain/oauth/tokens";
 
         // Fetch access_token
         $params = array_merge([
@@ -52,7 +52,7 @@ class OAuth
      *
      * @return string
      */
-    public static function getAuthUrl($subdomain, array $options)
+    public static function getAuthUrl($subdomain, array $options, $domain = 'zendesk.com')
     {
         $queryParams = [
             'response_type' => 'code',
@@ -64,7 +64,7 @@ class OAuth
 
         $options = array_merge($queryParams, $options);
 
-        $oAuthUrl = "https://$subdomain.zendesk.com/oauth/authorizations/new?";
+        $oAuthUrl = "https://$subdomain.$domain/oauth/authorizations/new?";
         // Build query and remove empty values
         $oAuthUrl .= http_build_query(array_filter($options));
 
