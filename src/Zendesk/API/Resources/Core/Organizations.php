@@ -9,6 +9,7 @@ use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\DeleteMany;
 use Zendesk\API\Traits\Resource\FindMany;
 use Zendesk\API\Traits\Resource\UpdateMany;
+use Zendesk\API\Traits\Resource\CreateOrUpdateMany;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
@@ -29,6 +30,7 @@ class Organizations extends ResourceAbstract
     use DeleteMany;
     use FindMany;
     use UpdateMany;
+    use CreateOrUpdateMany;
 
     /**
      * {@inheritdoc}
