@@ -111,6 +111,24 @@ class UsersTest extends BasicTest
     }
 
     /**
+     * Tests update
+     *
+     * @depends testCreateorUpdate
+     */
+    public function testCreateOrUpdate($user)
+    {
+        $faker      = Factory::create();
+        $userFields = [
+            'id'   => $user->id,
+            'name' => $faker->name,
+        ];
+
+        $response = $this->client->users()->createOrUpdate($user->id, $userFields);
+
+        $this->assertEquals($userFields['name'], $response->user->name);
+    }
+
+    /**
      * Tests if the client can upload a file to update the profile photo
      *
      * @depends testCreate
