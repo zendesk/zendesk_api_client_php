@@ -6,7 +6,7 @@ use Zendesk\API\Exceptions\RouteException;
 use Zendesk\API\Http;
 
 /**
- * Allows resources to call a bulk show endpoint.
+ * Allows resources to call a bulk createOrUpdate endpoint.
  */
 trait CreateOrUpdateMany
 {
@@ -15,7 +15,7 @@ trait CreateOrUpdateMany
      * Update group of resources
      *
      * @param array  $params
-     * @param string $key Could be `id` or `external_id`
+     * @param string $key Could be `id`, `external_id` or `email`
      *
      * @return mixed
      */
