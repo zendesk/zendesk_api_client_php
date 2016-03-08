@@ -111,19 +111,21 @@ class UsersTest extends BasicTest
     }
 
     /**
-     * Tests update
+     * Tests create or update user
      *
      * @depends testCreateorUpdate
      */
-    public function testCreateOrUpdate($user)
+    public function testCreateOrUpdateMany($user)
     {
         $faker      = Factory::create();
         $userFields = [
-            'id'   => $user->id,
-            'name' => $faker->name,
+            [
+                'id'   => $user->id,
+                'name' => $faker->name,
+            ]
         ];
 
-        $response = $this->client->users()->createOrUpdate($user->id, $userFields);
+        $response = $this->client->users()->createOrUpdateMany(['users' => $userFields]);
 
         $this->assertEquals($userFields['name'], $response->user->name);
     }

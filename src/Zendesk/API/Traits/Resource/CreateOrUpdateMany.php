@@ -47,7 +47,7 @@ trait CreateOrUpdateMany
             [
                 'queryParams' => $queryParams,
                 'postFields'  => [$resourceUpdateName => $params],
-                'method'      => 'PUT'
+                'method'      => 'POST'
             ]
         );
 
