@@ -256,6 +256,7 @@ When adding a resource, use traits to define available API calls. Resource trait
 * DeleteMany
 * FindMany
 * UpdateMany
+* CreateOrUpdateMany
 
 #### Utility Traits
 

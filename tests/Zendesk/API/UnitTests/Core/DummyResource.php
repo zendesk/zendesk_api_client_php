@@ -8,6 +8,7 @@ use Zendesk\API\Traits\Resource\DeleteMany;
 use Zendesk\API\Traits\Resource\FindMany;
 use Zendesk\API\Traits\Resource\MultipartUpload;
 use Zendesk\API\Traits\Resource\UpdateMany;
+use Zendesk\API\Traits\Resource\CreateOrUpdateMany;
 
 /**
  * Class DummyResource
@@ -21,7 +22,7 @@ class DummyResource extends ResourceAbstract
     use CreateMany;
     use UpdateMany;
     use DeleteMany;
-
+    use CreateOrUpdateMany;
     /**
      * {@inheritdoc}
      */
