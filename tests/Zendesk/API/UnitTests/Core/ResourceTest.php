@@ -330,4 +330,28 @@ class ResourceTest extends BasicTest
 
         $this->assertEquals('foo', $request->getHeaderLine('X-CUSTOM-HEADER'));
     }
+
+    /**
+     * Tests the ability to create or update many
+     */
+    public function testCreateOrUpdateMany()
+    {
+        $postFields = [
+            'resources' =>
+                [
+                    ['foo' => 'test body'],
+                    ['foo2' => 'test body 2'],
+                    ['foo3' => 'test body3']
+                ]
+        ];
+
+        $this->assertEndpointCalled(
+            function () use ($postFields) {
+                $this->dummyResource->createOrUpdateMany($postFields);
+            },
+            'dummy_resource/create_or_update_many.json',
+            'POST',
+            ['postFields' => ['dummies' => $postFields]]
+        );
+    }
 }

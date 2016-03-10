@@ -111,21 +111,24 @@ class UsersTest extends BasicTest
     }
 
     /**
-     * Tests update
+     * Tests create or update many users
      *
-     * @depends testCreateorUpdate
+     * @depends testCreate
      */
-    public function testCreateOrUpdate($user)
+    public function testCreateOrUpdateMany($user)
     {
         $faker      = Factory::create();
         $userFields = [
-            'id'   => $user->id,
-            'name' => $faker->name,
+            [
+                'email' => $user->email,
+                'name'  => $faker->name,
+            ]
         ];
 
-        $response = $this->client->users()->createOrUpdate($user->id, $userFields);
+        $response = $this->client->users()->createOrUpdateMany($userFields);
 
-        $this->assertEquals($userFields['name'], $response->user->name);
+        // Test the job was queued
+        $this->assertEquals('queued', $response->job_status->status);
     }
 
     /**
