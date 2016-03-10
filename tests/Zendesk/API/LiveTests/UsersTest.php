@@ -120,8 +120,8 @@ class UsersTest extends BasicTest
         $faker      = Factory::create();
         $userFields = [
             [
-                'email'   => $user->email,
-                'name' => $faker->name,
+                'email' => $user->email,
+                'name'  => $faker->name,
             ]
         ];
 
