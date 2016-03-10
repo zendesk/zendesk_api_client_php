@@ -228,7 +228,7 @@ class TicketsTest extends BasicTest
     public function testDelete($ticket)
     {
         $this->client->tickets($ticket->id)->delete();
-        $this->assertEquals(200, $this->client->getDebug()->lastResponseCode);
+        $this->assertEquals(204, $this->client->getDebug()->lastResponseCode);
         $this->assertNull($this->client->getDebug()->lastResponseError);
     }
 
