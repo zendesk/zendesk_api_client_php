@@ -3,6 +3,7 @@
 namespace Zendesk\API\Resources\Core;
 
 use Zendesk\API\Exceptions\CustomException;
+use Zendesk\API\HttpClient;
 use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\Defaults;
 
@@ -14,6 +15,15 @@ use Zendesk\API\Traits\Resource\Defaults;
 class Tags extends ResourceAbstract
 {
     use Defaults;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(HttpClient $client)
+    {
+        parent::__construct($client);
+        $this->objectName = $this->resourceName;
+    }
 
     /**
      * Returns a route and replaces tokenized parts of the string with
