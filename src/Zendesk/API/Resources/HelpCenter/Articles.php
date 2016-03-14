@@ -6,16 +6,16 @@ use Zendesk\API\Traits\Resource\Defaults;
 
 /**
  * Class Categories
- * https://developer.zendesk.com/rest_api/docs/help_center/categories
+ * https://developer.zendesk.com/rest_api/docs/help_center/articles
  */
-class Categories extends ResourceAbstract
+class Articles extends ResourceAbstract
 {
     use Defaults;
 
     /**
      * {@inheritdoc}
      */
-    protected $objectName = 'category';
+    protected $objectName = 'articles';
 
     /**
      * @var locale
@@ -27,7 +27,7 @@ class Categories extends ResourceAbstract
      */
     protected function setUpRoutes()
     {
-        $this->setRoute('updateSourceLocale', "{$this->resourceName}/{categoryId}/source_locale.json");
+        $this->setRoute('updateSourceLocale', "{$this->resourceName}/{articleId}/source_locale.json");
     }
 
     /**
@@ -40,7 +40,7 @@ class Categories extends ResourceAbstract
         $locale = $this->getLocale();
         if (in_array($name, $routesWithLocale) && isset($locale)) {
             $originalResourceName = $this->resourceName;
-            $this->resourceName   = "help_center/{$locale}/categories";
+            $this->resourceName = "help_center/{$locale}/articles";
 
             $route = parent::getRoute($name, $params);
 
@@ -91,8 +91,8 @@ class Categories extends ResourceAbstract
         }
 
         return $this->client->put(
-            $this->getRoute(__FUNCTION__, ['categoryId' => $categoryId]),
-            ['category_locale' => $sourceLocale]
+            $this->getRoute(__FUNCTION__, ['articleId' => $categoryId]),
+            ['article_locale' => $sourceLocale]
         );
     }
 }
