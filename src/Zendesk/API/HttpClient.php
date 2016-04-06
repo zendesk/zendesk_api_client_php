@@ -85,6 +85,7 @@ use Zendesk\API\Utilities\Auth;
  * @method Tags tags()
  * @method Targets targets()
  * @method Tickets tickets()
+ * @method TicketFields ticketFields()
  * @method TicketImports ticketImports()
  * @method TwitterHandles twitterHandles()
  * @method Triggers triggers()
