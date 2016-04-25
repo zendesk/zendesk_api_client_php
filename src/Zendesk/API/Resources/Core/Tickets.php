@@ -181,6 +181,31 @@ class Tickets extends ResourceAbstract
     }
 
     /**
+     * Create or Update a ticket
+     *
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     * @return mixed
+     */
+    public function createOrUpdate(array $params)
+    {
+        if (count($this->lastAttachments)) {
+            $params['comment']['uploads'] = $this->lastAttachments;
+            $this->lastAttachments        = [];
+        }
+
+        if (isset($params['id'])) {
+            return $this->traitUpdate($params['id'], $params);
+        } else {
+            return $this->traitCreate($params);
+        }
+
+    }
+
+    /**
      * Update a ticket or series of tickets
      *
      * @param array $updateResourceFields
