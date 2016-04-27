@@ -64,6 +64,7 @@ class Users extends ResourceAbstract
             'setPassword'                => 'users/{id}/password.json',
             'changePassword'             => 'users/{id}/password.json',
             'updateMany'                 => 'users/update_many.json',
+            'createOrUpdate'             => 'users/create_or_update.json',
             'createOrUpdateMany'         => 'users/create_or_update_many.json',
             'createMany'                 => 'users/create_many.json',
             'updateProfileImageFromFile' => 'users/{id}.json',
