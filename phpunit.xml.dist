@@ -19,6 +19,7 @@
         <env name="SCHEME" value="http"/>
         <env name="HOSTNAME" value="localhost"/>
         <env name="PORT" value="8080"/>
+        <env name="AUTH_STRATEGY" value="oauth"/>
     </php>
 
     <testsuites>
