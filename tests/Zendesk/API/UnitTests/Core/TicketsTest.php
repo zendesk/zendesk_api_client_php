@@ -215,16 +215,6 @@ class TicketsTest extends BasicTest
     }
 
     /**
-     * Tests if the client can call and build the create and update ticket endpoint
-     */
-    public function testCreateAndUpdate()
-    {
-        $this->assertEndpointCalled(function () {
-            $this->client->tickets()->createOrUpdate($this->testTicket);
-        }, 'tickets/12345.json', 'PUT');
-    }
-
-    /**
      * Tests if the client can call and build the update many tickets endpoint with the correct IDS and POST fields
      */
     public function testUpdateMany()
