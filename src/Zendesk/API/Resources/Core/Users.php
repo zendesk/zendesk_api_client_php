@@ -62,6 +62,7 @@ class Users extends ResourceAbstract
             'setPassword'                => 'users/{id}/password.json',
             'changePassword'             => 'users/{id}/password.json',
             'updateMany'                 => 'users/update_many.json',
+            'createOrUpdate'             => 'users/create_or_update.json',
             'createOrUpdateMany'         => 'users/create_or_update_many.json',
             'createMany'                 => 'users/create_many.json',
             'updateProfileImageFromFile' => 'users/{id}.json',
@@ -372,5 +373,22 @@ class Users extends ResourceAbstract
 
         return $this->client->put($this->getRoute(__FUNCTION__, ['id' => $id]), $params);
 
+    }
+
+    /**
+     * Create or updates a user
+     *
+     * @param array $params
+     *
+     * @throws \Exception
+     * @return mixed
+     */
+    public function createOrUpdate(array $params, $routeKey = __FUNCTION__)
+    {
+        $route = $this->getRoute($routeKey, $params);
+        return $this->client->post(
+            $route,
+            [$this->objectName => $params]
+        );
     }
 }
