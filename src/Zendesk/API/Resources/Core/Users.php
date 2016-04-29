@@ -9,7 +9,6 @@ use Zendesk\API\Http;
 use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\CreateMany;
 use Zendesk\API\Traits\Resource\CreateOrUpdateMany;
-use Zendesk\API\Traits\Resource\CreateOrUpdate;
 use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\FindMany;
 use Zendesk\API\Traits\Resource\MultipartUpload;
