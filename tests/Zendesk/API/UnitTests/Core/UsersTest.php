@@ -169,4 +169,17 @@ class UsersTest extends BasicTest
             $this->client->users($userId)->changePassword($postFields);
         }, "users/{$userId}/password.json", 'PUT');
     }
+
+    /*
+     * Tests if the createOrUpdate function calls the correct endpoint and passes the correct POST data
+     */
+    public function testCreateOrUpdate()
+    {
+        $postFields = ['id' => '1859295', 'name' => 'John Smith'];
+        $result = ['user' => ['id' => '1859295', 'name' => 'John Smith']];
+
+        $this->assertEndpointCalled(function () use ($postFields) {
+            $this->client->users()->createOrUpdate($postFields);
+        }, 'users/create_or_update.json', 'POST', ['postFields' => $result]);
+    }
 }
