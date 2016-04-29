@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\UnitTests\Core;
 
+use Faker\Factory;
 use Zendesk\API\Resources\Core\Users;
 use Zendesk\API\UnitTests\BasicTest;
 
@@ -168,5 +169,18 @@ class UsersTest extends BasicTest
         $this->assertEndpointCalled(function () use ($postFields, $userId) {
             $this->client->users($userId)->changePassword($postFields);
         }, "users/{$userId}/password.json", 'PUT');
+    }
+
+    /*
+     * Tests if the createOrUpdate function calls the correct endpoint and passes the correct POST data
+     */
+    public function testCreateOrUpdate()
+    {
+        $faker = Factory::create();
+        $postFields = ['id' => $faker->uuid, 'name' => $faker->name];
+        $result = ['user' => $postFields];
+        $this->assertEndpointCalled(function () use ($postFields) {
+            $this->client->users()->createOrUpdate($postFields);
+        }, 'users/create_or_update.json', 'POST', ['postFields' => $result]);
     }
 }
