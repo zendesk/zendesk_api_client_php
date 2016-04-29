@@ -42,7 +42,6 @@ class Users extends ResourceAbstract
     }
     use UpdateMany;
     use CreateOrUpdateMany;
-    use CreateOrUpdate;
 
     /**
      * @var UserIdentities
@@ -375,5 +374,22 @@ class Users extends ResourceAbstract
 
         return $this->client->put($this->getRoute(__FUNCTION__, ['id' => $id]), $params);
 
+    }
+
+    /**
+     * Create or updates a user
+     *
+     * @param array $params
+     *
+     * @throws \Exception
+     * @return mixed
+     */
+    public function createOrUpdate(array $params, $routeKey = __FUNCTION__)
+    {
+        $route = $this->getRoute($routeKey, $params);
+        return $this->client->post(
+            $route,
+            [$this->objectName => $params]
+        );
     }
 }
