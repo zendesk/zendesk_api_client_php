@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\UnitTests\Core;
 
+use Faker\Factory;
 use Zendesk\API\Resources\Core\Users;
 use Zendesk\API\UnitTests\BasicTest;
 
@@ -175,9 +176,9 @@ class UsersTest extends BasicTest
      */
     public function testCreateOrUpdate()
     {
-        $postFields = ['id' => '1859295', 'name' => 'John Smith'];
-        $result = ['user' => ['id' => '1859295', 'name' => 'John Smith']];
-
+        $faker = Factory::create();
+        $postFields = ['id' => $faker->uuid, 'name' => $faker->name];
+        $result = ['user' => $postFields];
         $this->assertEndpointCalled(function () use ($postFields) {
             $this->client->users()->createOrUpdate($postFields);
         }, 'users/create_or_update.json', 'POST', ['postFields' => $result]);
