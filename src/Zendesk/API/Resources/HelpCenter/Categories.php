@@ -3,6 +3,7 @@
 namespace Zendesk\API\Resources\HelpCenter;
 
 use Zendesk\API\Traits\Resource\Defaults;
+use Zendesk\API\Traits\Resource\Localize;
 
 /**
  * Class Categories
@@ -11,6 +12,8 @@ use Zendesk\API\Traits\Resource\Defaults;
 class Categories extends ResourceAbstract
 {
     use Defaults;
+    use Localize;
+
 
     /**
      * {@inheritdoc}
@@ -30,50 +33,6 @@ class Categories extends ResourceAbstract
         $this->setRoute('updateSourceLocale', "{$this->resourceName}/{categoryId}/source_locale.json");
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getRoute($name, array $params = [])
-    {
-        $routesWithLocale = ['findAll', 'find', 'create', 'update'];
-
-        $locale = $this->getLocale();
-        if (in_array($name, $routesWithLocale) && isset($locale)) {
-            $originalResourceName = $this->resourceName;
-            $this->resourceName   = "help_center/{$locale}/categories";
-
-            $route = parent::getRoute($name, $params);
-
-            // Reset resourceName so it doesn't affect succeeding calls
-            $this->resourceName = $originalResourceName;
-
-            return $route;
-        } else {
-            return parent::getRoute($name, $params);
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public function getLocale()
-    {
-        return $this->locale;
-    }
-
-    /**
-     * @param string $locale
-     *
-     * @return Categories
-     */
-    public function setLocale($locale)
-    {
-        if (is_string($locale)) {
-            $this->locale = $locale;
-        }
-
-        return $this;
-    }
 
     /**
      * Updates a categories source_locale property
