@@ -14,7 +14,6 @@ class Categories extends ResourceAbstract
     use Defaults;
     use Localize;
 
-
     /**
      * {@inheritdoc}
      */
