@@ -41,7 +41,7 @@ class ArticlesTest extends BasicTest
     {
         $this->assertEndpointCalled(function () {
             $attachments = [10002, 10003];
-            $this->client->helpCenter->articles()->bulkAttach(1, $attachments); 
+            $this->client->helpCenter->articles()->bulkAttach(1, $attachments);
         }, 'help_center/articles/1/bulk_attachments.json', 'POST');
     }
 
@@ -65,5 +65,4 @@ class ArticlesTest extends BasicTest
             $this->client->helpCenter->articles(1)->updateSourceLocale(null, 'fr');
         }, 'help_center/articles/1/source_locale.json', 'PUT', ['postFields' => ['article_locale' => 'fr']]);
     }
-
 }
