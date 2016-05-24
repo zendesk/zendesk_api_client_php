@@ -6,7 +6,7 @@ use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\Localize;
 
 /**
- * Class Articles 
+ * Class Articles
  * https://developer.zendesk.com/rest_api/docs/help_center/articles
  */
 class Articles extends ResourceAbstract
@@ -47,7 +47,7 @@ class Articles extends ResourceAbstract
     {
         try {
             $route = $this->getRoute($routeKey, ['articleId' => $articleId]);
-        } catch(RouteException $e) {
+        } catch (RouteException $e) {
             if (! isset($this->resourceName)) {
                 $this->resourceName = $this->getResourceNameFromClass();
             }
@@ -82,5 +82,4 @@ class Articles extends ResourceAbstract
             ['article_locale' => $sourceLocale]
         );
     }
-
 }
