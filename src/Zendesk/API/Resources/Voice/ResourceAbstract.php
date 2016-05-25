@@ -2,19 +2,17 @@
 
 namespace Zendesk\API\Resources\Voice;
 
+use Zendesk\API\Traits\Resource\ResourceName;
+
 /**
  * Abstract class for Voice resources
  */
 abstract class ResourceAbstract extends \Zendesk\API\Resources\ResourceAbstract
 {
-    /**
-     * Appends the channels/voice/ prefix to resource names
-     * @return string
-     */
-    protected function getResourceNameFromClass()
-    {
-        $resourceName = parent::getResourceNameFromClass();
+    use ResourceName;
 
-        return 'channels/voice/' . $resourceName;
-    }
+    /**
+     * @var $prefix
+     **/
+    protected $prefix = 'channels/voice/';
 }
