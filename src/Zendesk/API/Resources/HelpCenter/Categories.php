@@ -20,11 +20,6 @@ class Categories extends ResourceAbstract
     protected $objectName = 'category';
 
     /**
-     * @var locale
-     */
-    private $locale;
-
-    /**
      * @inheritdoc
      */
     protected function setUpRoutes()

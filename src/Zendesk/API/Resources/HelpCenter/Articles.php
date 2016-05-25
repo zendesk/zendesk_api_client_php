@@ -20,11 +20,6 @@ class Articles extends ResourceAbstract
     protected $objectName = 'article';
 
     /**
-     * @var locale
-     */
-    private $locale;
-
-    /**
      * @{inheritdoc}
      */
     protected function setupRoutes()
