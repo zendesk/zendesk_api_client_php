@@ -38,7 +38,7 @@ class HelpCenter
     {
         return [
             'categories'    => Categories::class,
-            'articles'      => Articles::class
+            'articles'      => Articles::class,
         ];
     }
 }
