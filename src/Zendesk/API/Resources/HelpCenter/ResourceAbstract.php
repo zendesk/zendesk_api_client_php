@@ -2,20 +2,17 @@
 
 namespace Zendesk\API\Resources\HelpCenter;
 
+use Zendesk\API\Traits\Resource\ResourceName;
+
 /**
  * Abstract class for HelpCenter resources
  */
 abstract class ResourceAbstract extends \Zendesk\API\Resources\ResourceAbstract
 {
+    use ResourceName;
 
     /**
-     * Appends the help_center/ prefix to resource names
-     * @return string
-     */
-    protected function getResourceNameFromClass()
-    {
-        $resourceName = parent::getResourceNameFromClass();
-
-        return 'help_center/' . $resourceName;
-    }
+     * @var $prefix
+     **/
+    protected $prefix = 'help_center/';
 }
