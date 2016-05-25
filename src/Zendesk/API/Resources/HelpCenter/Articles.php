@@ -3,7 +3,7 @@
 namespace Zendesk\API\Resources\HelpCenter;
 
 use Zendesk\API\Traits\Resource\Defaults;
-use Zendesk\API\Traits\Resource\Localize;
+use Zendesk\API\Traits\Resource\Locales;
 
 /**
  * Class Articles
@@ -12,7 +12,7 @@ use Zendesk\API\Traits\Resource\Localize;
 class Articles extends ResourceAbstract
 {
     use Defaults;
-    use Localize;
+    use Locales;
 
     /**
      * @{inheritdoc}
@@ -32,7 +32,7 @@ class Articles extends ResourceAbstract
         parent::setUpRoutes();
         $this->setRoutes([
             'bulkAttach'            =>  "$this->resourceName/{articleId}/bulk_attachments.json",
-            'updateSourceLocale'    =>  "$this->resourceName/{articleId}/source_locale.json"
+            'updateSourceLocale'    =>  "$this->resourceName/{articleId}/source_locale.json",
         ]);
     }
 
@@ -58,28 +58,6 @@ class Articles extends ResourceAbstract
         return $this->client->post(
             $route,
             ['attachement_ids' => $params]
-        );
-    }
-
-
-    /**
-     * Updates an article's source_locale property
-     *
-     * @param $articleId   The article to update
-     * @param $sourceLocale The new source_locale
-     *
-     * @return array
-     * @throws \Zendesk\API\Exceptions\RouteException
-     */
-    public function updateSourceLocale($articleId, $sourceLocale)
-    {
-        if (empty($articleId)) {
-            $articleId = $this->getChainedParameter(get_class($this));
-        }
-
-        return $this->client->put(
-            $this->getRoute(__FUNCTION__, ['articleId' => $articleId]),
-            ['article_locale' => $sourceLocale]
         );
     }
 }
