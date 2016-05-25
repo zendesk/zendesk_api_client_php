@@ -3,7 +3,7 @@
 namespace Zendesk\API\Resources\HelpCenter;
 
 use Zendesk\API\Traits\Resource\Defaults;
-use Zendesk\API\Traits\Resource\Localize;
+use Zendesk\API\Traits\Resource\Locales;
 
 /**
  * Class Categories
@@ -12,7 +12,7 @@ use Zendesk\API\Traits\Resource\Localize;
 class Categories extends ResourceAbstract
 {
     use Defaults;
-    use Localize;
+    use Locales;
 
     /**
      * {@inheritdoc}
@@ -30,27 +30,5 @@ class Categories extends ResourceAbstract
     protected function setUpRoutes()
     {
         $this->setRoute('updateSourceLocale', "{$this->resourceName}/{categoryId}/source_locale.json");
-    }
-
-
-    /**
-     * Updates a categories source_locale property
-     *
-     * @param $categoryId   The category to update
-     * @param $sourceLocale The new source_locale
-     *
-     * @return array
-     * @throws \Zendesk\API\Exceptions\RouteException
-     */
-    public function updateSourceLocale($categoryId, $sourceLocale)
-    {
-        if (empty($categoryId)) {
-            $categoryId = $this->getChainedParameter(get_class($this));
-        }
-
-        return $this->client->put(
-            $this->getRoute(__FUNCTION__, ['categoryId' => $categoryId]),
-            ['category_locale' => $sourceLocale]
-        );
     }
 }
