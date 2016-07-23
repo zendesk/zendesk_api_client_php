@@ -116,10 +116,6 @@ class HttpClient
     /**
      * @var string
      */
-    protected $username;
-    /**
-     * @var string
-     */
     protected $scheme;
     /**
      * @var string
@@ -166,7 +162,7 @@ class HttpClient
 
     public function __construct(
         $subdomain,
-        $username,
+        $username = '',
         $scheme = "https",
         $hostname = "zendesk.com",
         $port = 443,
@@ -179,7 +175,6 @@ class HttpClient
         }
 
         $this->subdomain = $subdomain;
-        $this->username  = $username;
         $this->hostname  = $hostname;
         $this->scheme    = $scheme;
         $this->port      = $port;

@@ -10,7 +10,7 @@ $subdomain = "subdomain";
 $username  = "email@company.com";
 $token     = "6wiIBWbGkBMo1mRDMuVwkw1EPsNkeUj95PIz2akv";
 
-$client = new ZendeskAPI($subdomain, $username);
+$client = new ZendeskAPI($subdomain);
 $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
 try {
