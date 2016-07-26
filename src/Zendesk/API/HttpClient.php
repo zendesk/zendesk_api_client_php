@@ -96,7 +96,7 @@ use Zendesk\API\Utilities\Auth;
  */
 class HttpClient
 {
-    const VERSION = '2.1.1';
+    const VERSION = '2.1.0';
 
     use InstantiatorTrait;
 
