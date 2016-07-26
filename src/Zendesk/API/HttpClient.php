@@ -388,6 +388,15 @@ class HttpClient
         }
     }
 
+    /**
+     * This is a helper method to do a get request.
+     *
+     * @param       $endpoint
+     * @param array $queryParams
+     *
+     * @return mixed
+     * @throws Exceptions\ApiResponseException
+     */
     public function get($endpoint, $queryParams = [])
     {
         $sideloads = $this->getSideload($queryParams);
@@ -412,7 +421,7 @@ class HttpClient
      * @param       $endpoint
      * @param array $postData
      *
-     * @return array
+     * @return mixed
      * @throws Exceptions\ApiResponseException
      */
     public function post($endpoint, $postData = [])
@@ -435,7 +444,7 @@ class HttpClient
      * @param       $endpoint
      * @param array $putData
      *
-     * @return array
+     * @return mixed
      * @throws Exceptions\ApiResponseException
      */
     public function put($endpoint, $putData = [])
@@ -454,7 +463,7 @@ class HttpClient
      *
      * @param $endpoint
      *
-     * @return array
+     * @return mixed
      * @throws Exceptions\ApiResponseException
      */
     public function delete($endpoint)

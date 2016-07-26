@@ -33,7 +33,7 @@ class Brands extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return array
+     * @return mixed
      * @throws \Zendesk\API\Exceptions\RouteException
      */
     public function checkHostMapping(array $params = [])
@@ -62,7 +62,7 @@ class Brands extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return array
+     * @return mixed
      */
     public function updateImage(array $params = [])
     {
