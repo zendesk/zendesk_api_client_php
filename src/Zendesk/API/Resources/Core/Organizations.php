@@ -13,8 +13,8 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
 /**
  * Class Organizations
  *
- * @method OrganizationMemberships organizationMemberships()
- * @method OrganizationSubscriptions organizationSubscriptions()
+ * @method OrganizationMemberships memberships()
+ * @method OrganizationSubscriptions subscriptions()
  * @method Requests requests()
  * @method OrganizationTickets tickets()
  */
