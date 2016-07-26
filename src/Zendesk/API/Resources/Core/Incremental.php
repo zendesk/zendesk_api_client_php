@@ -28,7 +28,7 @@ class Incremental extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return array
+     * @return mixed
      * @throws \Zendesk\API\Exceptions\RouteException
      */
     public function tickets(array $params)
@@ -41,7 +41,7 @@ class Incremental extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return array
+     * @return mixed
      * @throws \Zendesk\API\Exceptions\RouteException
      */
     public function ticketEvents(array $params)
@@ -54,7 +54,7 @@ class Incremental extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return array
+     * @return mixed
      * @throws \Zendesk\API\Exceptions\RouteException
      */
     public function organizations(array $params)
@@ -67,7 +67,7 @@ class Incremental extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return array
+     * @return mixed
      * @throws \Zendesk\API\Exceptions\RouteException
      */
     public function users(array $params)

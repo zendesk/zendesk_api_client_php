@@ -32,7 +32,7 @@ class Search extends ResourceAbstract
      * @param null  $query
      * @param array $queryParams
      *
-     * @return array
+     * @return mixed
      * @throws MissingParametersException
      * @throws \Zendesk\API\Exceptions\RouteException
      */
@@ -55,7 +55,7 @@ class Search extends ResourceAbstract
      * @param       $query
      * @param array $queryParams
      *
-     * @return array
+     * @return mixed
      * @throws \Zendesk\API\Exceptions\RouteException
      */
     public function anonymous($query, $queryParams = [])

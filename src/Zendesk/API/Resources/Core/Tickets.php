@@ -63,7 +63,7 @@ class Tickets extends ResourceAbstract
      * @param       $route
      * @param array $params
      *
-     * @return array
+     * @return mixed
      * @throws ResponseException
      * @throws \Exception
      */
