@@ -42,6 +42,7 @@ class AppInstallations extends ResourceAbstract
     protected function setUpRoutes()
     {
         $this->setRoutes([
+            'create' => $this->resourceName . '.json',
             'jobStatuses' => $this->resourceName . '/job_statuses/{job_id}.json',
             'requirements' => $this->resourceName . '/{id}/requirements.json',
         ]);
