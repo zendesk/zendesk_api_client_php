@@ -60,24 +60,32 @@ use Zendesk\API\Utilities\Auth;
  *
  * @method Activities activities()
  * @method Apps apps()
+ * @method AppInstallations appInstallations()
  * @method Attachments attachments()
  * @method AuditLogs auditLogs()
+ * @method AutoComplete autocomplete()
  * @method Automations automations()
  * @method Bookmarks bookmarks()
- * @method Debug debug()
+ * @method Brands brands()
+ * @method CustomRoles customRoles()
  * @method DynamicContent dynamicContent()
+ * @method GroupMemberships groupMemberships()
  * @method Groups groups()
  * @method Incremental incremental()
+ * @method JobStatuses jobStatuses()
  * @method Locales locales()
  * @method Macros macros()
  * @method OAuthClients oauthClients()
+ * @method OAuthTokens oauthTokens()
  * @method OrganizationFields organizationFields()
+ * @method OrganizationMemberships organizationMemberships()
  * @method Organizations organizations()
+ * @method OrganizationSubscriptions organizationSubscriptions()
  * @method PushNotificationDevices pushNotificationDevices()
  * @method Requests requests()
+ * @method SatisfactionRatings satisfactionRatings()
  * @method Search search()
  * @method Sessions sessions()
- * @method SatisfactionRatings satisfactionRatings()
  * @method SharingAgreements sharingAgreements()
  * @method SlaPolicies slaPolicies()
  * @method SupportAddresses supportAddresses()
@@ -87,8 +95,8 @@ use Zendesk\API\Utilities\Auth;
  * @method Tickets tickets()
  * @method TicketFields ticketFields()
  * @method TicketImports ticketImports()
- * @method TwitterHandles twitterHandles()
  * @method Triggers triggers()
+ * @method TwitterHandles twitterHandles()
  * @method UserFields userFields()
  * @method Users users()
  * @method Views views()
@@ -380,6 +388,15 @@ class HttpClient
         }
     }
 
+    /**
+     * This is a helper method to do a get request.
+     *
+     * @param       $endpoint
+     * @param array $queryParams
+     *
+     * @return mixed
+     * @throws Exceptions\ApiResponseException
+     */
     public function get($endpoint, $queryParams = [])
     {
         $sideloads = $this->getSideload($queryParams);
@@ -404,7 +421,7 @@ class HttpClient
      * @param       $endpoint
      * @param array $postData
      *
-     * @return array
+     * @return mixed
      * @throws Exceptions\ApiResponseException
      */
     public function post($endpoint, $postData = [])
@@ -427,7 +444,7 @@ class HttpClient
      * @param       $endpoint
      * @param array $putData
      *
-     * @return array
+     * @return mixed
      * @throws Exceptions\ApiResponseException
      */
     public function put($endpoint, $putData = [])
@@ -446,7 +463,7 @@ class HttpClient
      *
      * @param $endpoint
      *
-     * @return array
+     * @return mixed
      * @throws Exceptions\ApiResponseException
      */
     public function delete($endpoint)
