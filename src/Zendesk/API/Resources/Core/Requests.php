@@ -105,7 +105,7 @@ class Requests extends ResourceAbstract
      *
      * @param array $queryParams
      *
-     * @return array
+     * @return mixed
      */
     public function search(array $queryParams)
     {
