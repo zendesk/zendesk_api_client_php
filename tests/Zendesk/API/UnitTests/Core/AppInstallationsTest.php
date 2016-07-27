@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\UnitTests\Core;
 
+use Faker\Factory;
 use Zendesk\API\UnitTests\BasicTest;
 
 /**
@@ -22,7 +23,7 @@ class AppInstallationsTest extends BasicTest
 
         $postParams = [
             'settings' => [
-                'name'      => 'Helpful App - Updated',
+                'name' => 'Helpful App - Updated',
                 'api_token' => '659323ngt4ut9an'
             ]
         ];
@@ -50,10 +51,48 @@ class AppInstallationsTest extends BasicTest
     public function testRequirements()
     {
         $queryParams = ['per_page' => 50];
-        $resourceId  = 2727;
+        $resourceId = 2727;
 
         $this->assertEndpointCalled(function () use ($resourceId, $queryParams) {
             $this->client->appInstallations()->requirements($resourceId, $queryParams);
         }, "apps/installations/{$resourceId}/requirements.json", 'GET', ['queryParams' => $queryParams]);
+    }
+
+
+    /**
+     * Tests if the client calls the correct endpoint for installing an app
+     */
+    public function testCreate()
+    {
+        $faker = Factory::create();
+        $params = [
+            'app_id' => $faker->randomNumber(),
+            'settings' => [
+                $faker->word => $faker->boolean(),
+                $faker->word => $faker->randomNumber(),
+            ]
+        ];
+
+        $this->assertEndpointCalled(function () use ($params) {
+            $this->client->appInstallations()->create($params);
+        }, "apps/installations.json", 'POST', ['postFields' => $params]);
+    }
+
+    /**
+     * Tests if the client calls the correct endpoint for installing an app
+     */
+    public function testUpdate()
+    {
+        $faker = Factory::create();
+        $params = [
+            $faker->word => $faker->boolean(),
+            $faker->word => $faker->randomNumber(),
+        ];
+
+        $id = $faker->randomNumber();
+
+        $this->assertEndpointCalled(function () use ($id, $params) {
+            $this->client->appInstallations()->update($id, $params);
+        }, "apps/installations/{$id}.json", 'PUT', ['postFields' => ['settings' => $params]]);
     }
 }
