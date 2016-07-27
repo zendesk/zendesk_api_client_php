@@ -1,7 +1,10 @@
 # Zendesk PHP API Client Library #
 
 [![Build Status](https://travis-ci.org/zendesk/zendesk_api_client_php.svg?branch=master)](https://travis-ci.org/zendesk/zendesk_api_client_php)
+[![Latest Stable Version](https://poser.pugx.org/zendesk/zendesk_api_client_php/v/stable)](https://packagist.org/packages/zendesk/zendesk_api_client_php)
+[![Total Downloads](https://poser.pugx.org/zendesk/zendesk_api_client_php/downloads)](https://packagist.org/packages/zendesk/zendesk_api_client_php)
 [![Code Climate](https://codeclimate.com/github/zendesk/zendesk_api_client_php/badges/gpa.svg)](https://codeclimate.com/github/zendesk/zendesk_api_client_php)
+[![License](https://poser.pugx.org/zendesk/zendesk_api_client_php/license)](https://packagist.org/packages/zendesk/zendesk_api_client_php)
 
 ## API Client Version
 
