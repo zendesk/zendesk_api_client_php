@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e0ccb68ec9ebaa8cfa7c29f8765e3a8c",
-    "content-hash": "ad790fa2d73879d7202fad7c0656570d",
+    "hash": "91090003185f64bc12c5ee2bf0d514ef",
+    "content-hash": "6d4eed34e23b6f4322e36ef802afa135",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -614,7 +614,7 @@
                     "name": "Manuel Pichler",
                     "email": "github@manuel-pichler.de",
                     "homepage": "https://github.com/manuelpichler",
-                    "role": "Project founder"
+                    "role": "Project Founder"
                 },
                 {
                     "name": "Other contributors",
