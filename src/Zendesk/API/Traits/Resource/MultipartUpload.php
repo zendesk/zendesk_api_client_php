@@ -34,7 +34,7 @@ trait MultipartUpload
      *
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function upload(array $params, $routeKey = __FUNCTION__)
     {

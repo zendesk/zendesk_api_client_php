@@ -34,7 +34,7 @@ class Locales extends ResourceAbstract
      *
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findAllPublic(array $params = [])
     {
@@ -48,7 +48,7 @@ class Locales extends ResourceAbstract
      *
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findAllAgent(array $params = [])
     {
@@ -63,7 +63,7 @@ class Locales extends ResourceAbstract
      *
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findCurrent(array $params = [])
     {
@@ -77,7 +77,7 @@ class Locales extends ResourceAbstract
      *
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findBest(array $params = [])
     {

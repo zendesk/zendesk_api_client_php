@@ -70,7 +70,7 @@ class Sessions extends ResourceAbstract
      *
      * @param null $userId
      *
-     * @return mixed
+     * @return null
      * @throws CustomException
      * @throws MissingParametersException
      * @throws RouteException
@@ -98,7 +98,7 @@ class Sessions extends ResourceAbstract
     /**
      * Deletes the current session.
      *
-     * @return mixed
+     * @return null
      * @throws CustomException
      * @throws RouteException
      */
@@ -110,7 +110,7 @@ class Sessions extends ResourceAbstract
     /**
      * Shows the currently authenticated session
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws RouteException
      */
     public function current()

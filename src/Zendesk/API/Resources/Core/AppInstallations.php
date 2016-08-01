@@ -53,7 +53,7 @@ class AppInstallations extends ResourceAbstract
      *
      * @param $jobId
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function jobStatuses($jobId)
     {
@@ -66,7 +66,7 @@ class AppInstallations extends ResourceAbstract
      * @param null $appInstallationId
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws \Zendesk\API\Exceptions\MissingParametersException
      */
     public function requirements($appInstallationId = null, array $params = [])
@@ -80,7 +80,7 @@ class AppInstallations extends ResourceAbstract
      * @param array $params
      *
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function create(array $params, $routeKey = __FUNCTION__)
     {
@@ -107,7 +107,7 @@ class AppInstallations extends ResourceAbstract
      * @param null $id
      * @param array $updateResourceFields
      * @param string $routeKey
-     * @return mixed
+     * @return \stdClass | null
      */
     public function update($id = null, array $updateResourceFields = [], $routeKey = __FUNCTION__)
     {

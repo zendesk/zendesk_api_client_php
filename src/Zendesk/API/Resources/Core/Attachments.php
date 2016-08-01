@@ -43,7 +43,7 @@ class Attachments extends ResourceAbstract
      * @throws CustomException
      * @throws MissingParametersException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function upload(array $params)
     {

@@ -45,7 +45,7 @@ class OrganizationTickets extends ResourceAbstract
      * @throws MissingParametersException
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findAll(array $queryParams = [])
     {

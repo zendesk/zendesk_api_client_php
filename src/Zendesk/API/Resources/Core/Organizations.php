@@ -99,7 +99,7 @@ class Organizations extends ResourceAbstract
      * @param       $name
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
@@ -115,7 +115,7 @@ class Organizations extends ResourceAbstract
      *
      * @param $id Organization ID
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */
@@ -130,7 +130,7 @@ class Organizations extends ResourceAbstract
      * @param       $external_id
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\AuthException
      */

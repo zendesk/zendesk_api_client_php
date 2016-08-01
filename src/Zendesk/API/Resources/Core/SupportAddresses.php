@@ -26,7 +26,7 @@ class SupportAddresses extends ResourceAbstract
      * @param null  $recipientAddressId
      * @param array $updateFields
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function verify($recipientAddressId = null, array $updateFields = [])
     {

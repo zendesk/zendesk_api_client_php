@@ -51,7 +51,7 @@ class OAuthTokens extends ResourceAbstract
     /**
      * Shows the current token
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws \Zendesk\API\Exceptions\RouteException
      */
     public function current()

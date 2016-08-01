@@ -14,7 +14,7 @@ trait Update
      *
      * @throws MissingParametersException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function update($id = null, array $updateResourceFields = [], $routeKey = __FUNCTION__)
     {
