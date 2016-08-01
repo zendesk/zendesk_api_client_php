@@ -69,7 +69,7 @@ class Requests extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findAllOpen(array $params = [])
     {
@@ -81,7 +81,7 @@ class Requests extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findAllSolved(array $params = [])
     {
@@ -93,7 +93,7 @@ class Requests extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findAllCCd(array $params = [])
     {
@@ -105,7 +105,7 @@ class Requests extends ResourceAbstract
      *
      * @param array $queryParams
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function search(array $queryParams)
     {

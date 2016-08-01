@@ -40,7 +40,7 @@ class Views extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findAllActive(array $params = [])
     {
@@ -52,7 +52,7 @@ class Views extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findAllCompact(array $params = [])
     {
@@ -68,7 +68,7 @@ class Views extends ResourceAbstract
      * @throws ResponseException
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function execute(array $params = [])
     {
@@ -90,7 +90,7 @@ class Views extends ResourceAbstract
      * @throws ResponseException
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function tickets(array $params = [])
     {
@@ -112,7 +112,7 @@ class Views extends ResourceAbstract
      * @throws ResponseException
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function count(array $params = [])
     {
@@ -146,7 +146,7 @@ class Views extends ResourceAbstract
      * @throws ResponseException
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function export(array $params = [])
     {
@@ -167,7 +167,7 @@ class Views extends ResourceAbstract
      * @throws ResponseException
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function preview(array $params)
     {
@@ -182,7 +182,7 @@ class Views extends ResourceAbstract
      * @throws ResponseException
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function previewCount(array $params)
     {

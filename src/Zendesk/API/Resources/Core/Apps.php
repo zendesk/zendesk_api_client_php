@@ -74,7 +74,7 @@ class Apps extends ResourceAbstract
      *
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function create(array $params)
     {
@@ -89,7 +89,7 @@ class Apps extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws MissingParametersException
      * @throws \Zendesk\API\Exceptions\RouteException
      */
@@ -114,7 +114,7 @@ class Apps extends ResourceAbstract
      * @param null  $id
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws MissingParametersException
      * @throws \Zendesk\API\Exceptions\RouteException
      */
@@ -143,7 +143,7 @@ class Apps extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findAllOwned(array $params = [])
     {
@@ -156,7 +156,7 @@ class Apps extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function notify(array $params)
     {
@@ -170,7 +170,7 @@ class Apps extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function install(array $params)
     {

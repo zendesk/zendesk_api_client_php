@@ -46,7 +46,7 @@ class TicketComments extends ResourceAbstract
      * @throws MissingParametersException
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findAll(array $queryParams = [])
     {
@@ -67,7 +67,7 @@ class TicketComments extends ResourceAbstract
      * @throws MissingParametersException
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function makePrivate(array $params = [])
     {

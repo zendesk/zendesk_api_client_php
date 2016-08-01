@@ -13,7 +13,7 @@ trait FindAll
      *
      * @param string $routeKey
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findAll(array $params = [], $routeKey = __FUNCTION__)
     {

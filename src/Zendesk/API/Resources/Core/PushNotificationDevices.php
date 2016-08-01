@@ -27,7 +27,7 @@ class PushNotificationDevices extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return mixed
+     * @return null
      * @throws MissingParametersException
      * @throws \Zendesk\API\Exceptions\RouteException
      */

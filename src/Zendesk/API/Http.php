@@ -28,7 +28,7 @@ class Http
      *                             string $method "GET", "POST", etc. Default is GET.
      *                             string $contentType Default is "application/json"
      *
-     * @return mixed The response body, parsed from JSON into an object. Also returns bool or null if something went wrong
+     * @return \stdClass | null The response body, parsed from JSON into an object. Also returns null if something went wrong
      * @throws ApiResponseException
      * @throws AuthException
      */

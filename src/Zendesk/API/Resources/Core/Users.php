@@ -94,7 +94,7 @@ class Users extends ResourceAbstract
      *
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findAll(array $params = [])
     {
@@ -116,7 +116,7 @@ class Users extends ResourceAbstract
      *
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findMany(array $params = [])
     {
@@ -143,7 +143,7 @@ class Users extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function related(array $params = [])
     {
@@ -170,7 +170,7 @@ class Users extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function merge(array $params = [])
     {
@@ -197,7 +197,7 @@ class Users extends ResourceAbstract
      *
      * @throws MissingParametersException
      * @throws ResponseException
-     * @return mixed
+     * @return \stdClass | null
      */
     public function suspend(array $params = [])
     {
@@ -217,7 +217,7 @@ class Users extends ResourceAbstract
      *
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function search(array $params)
     {
@@ -231,7 +231,7 @@ class Users extends ResourceAbstract
      *
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function autocomplete(array $params)
     {
@@ -273,7 +273,7 @@ class Users extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function updateProfileImageFromFile(array $params)
     {
@@ -291,7 +291,7 @@ class Users extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function updateProfileImageFromUrl(array $params)
     {
@@ -321,7 +321,7 @@ class Users extends ResourceAbstract
      *
      * @throws MissingParametersException
      * @throws ResponseException
-     * @return mixed
+     * @return \stdClass | null
      */
     public function me(array $params = [])
     {
@@ -338,7 +338,7 @@ class Users extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return null
      */
     public function setPassword(array $params)
     {
@@ -360,7 +360,7 @@ class Users extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return null
      */
     public function changePassword(array $params)
     {
@@ -381,7 +381,7 @@ class Users extends ResourceAbstract
      * @param array $params
      *
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function createOrUpdate(array $params, $routeKey = __FUNCTION__)
     {
