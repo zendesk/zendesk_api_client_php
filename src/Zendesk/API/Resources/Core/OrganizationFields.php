@@ -32,7 +32,7 @@ class OrganizationFields extends ResourceAbstract
      * @throws MissingParametersException
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function reorder(array $params)
     {

@@ -17,7 +17,7 @@ trait DeleteMany
      * @param array  $ids Array of IDs to delete
      * @param string $key Could be `id` or `external_id`
      *
-     * @return mixed
+     * @return null
      *
      */
     public function deleteMany(array $ids = [], $key = 'ids')

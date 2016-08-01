@@ -43,7 +43,7 @@ class SlaPolicies extends ResourceAbstract
      * @param null  $id
      * @param array $updateResourceFields
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function replace($id = null, $updateResourceFields = [])
     {
@@ -55,7 +55,7 @@ class SlaPolicies extends ResourceAbstract
      *
      * @parama array  $ids
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function reorder($ids = [])
     {
@@ -67,7 +67,7 @@ class SlaPolicies extends ResourceAbstract
      *
      * @parama array  $ids
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function definitions(array $params = [])
     {

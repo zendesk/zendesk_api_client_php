@@ -28,7 +28,7 @@ class Automations extends ResourceAbstract
      * @param array $params
      *
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findActive(array $params = [])
     {

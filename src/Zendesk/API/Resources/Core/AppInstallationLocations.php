@@ -35,7 +35,7 @@ class AppInstallationLocations extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws \Zendesk\API\Exceptions\RouteException
      */
     public function reorder(array $params)

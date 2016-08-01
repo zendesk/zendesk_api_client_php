@@ -17,7 +17,7 @@ trait UpdateMany
      * @param array  $params
      * @param string $key Could be `id` or `external_id`
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function updateMany(array $params, $key = 'ids')
     {

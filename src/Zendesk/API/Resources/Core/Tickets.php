@@ -63,7 +63,7 @@ class Tickets extends ResourceAbstract
      * @param       $route
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws ResponseException
      * @throws \Exception
      */
@@ -110,7 +110,7 @@ class Tickets extends ResourceAbstract
      * @throws ResponseException
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findTwicket(array $params = [])
     {
@@ -137,7 +137,7 @@ class Tickets extends ResourceAbstract
      *
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function create(array $params)
     {
@@ -157,7 +157,7 @@ class Tickets extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function createFromTweet(array $params)
     {
@@ -188,7 +188,7 @@ class Tickets extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function update($id = null, array $updateResourceFields = [])
     {
@@ -208,7 +208,7 @@ class Tickets extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function updateMany(array $params)
     {
@@ -227,7 +227,7 @@ class Tickets extends ResourceAbstract
      *
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function markAsSpam($id = null)
     {
@@ -261,7 +261,7 @@ class Tickets extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function related(array $params = [])
     {
@@ -282,7 +282,7 @@ class Tickets extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function collaborators(array $params = [])
     {
@@ -303,7 +303,7 @@ class Tickets extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function incidents(array $params = [])
     {
@@ -324,7 +324,7 @@ class Tickets extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function problems(array $params = [])
     {
@@ -339,7 +339,7 @@ class Tickets extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function problemAutoComplete(array $params)
     {
@@ -367,7 +367,7 @@ class Tickets extends ResourceAbstract
      * @throws MissingParametersException
      * @throws ResponseException
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function export(array $params)
     {
@@ -414,7 +414,7 @@ class Tickets extends ResourceAbstract
      *
      * @throws MissingParametersException
      * @throws ResponseException
-     * @return Tickets
+     * @return \stdClass | null
      */
     public function merge(array $params = [])
     {

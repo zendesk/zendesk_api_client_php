@@ -12,7 +12,7 @@ trait Create
      * @param array $params
      *
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function create(array $params, $routeKey = __FUNCTION__)
     {

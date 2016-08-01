@@ -162,7 +162,7 @@ class UserIdentities extends ResourceAbstract
      * @param string $callingMethod
      * @param array  $params
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws MissingParametersException
      * @throws \Exception
      * @throws \Zendesk\API\Exceptions\ApiResponseException
