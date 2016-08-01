@@ -394,7 +394,7 @@ class HttpClient
      * @param       $endpoint
      * @param array $queryParams
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws Exceptions\ApiResponseException
      */
     public function get($endpoint, $queryParams = [])
@@ -421,7 +421,7 @@ class HttpClient
      * @param       $endpoint
      * @param array $postData
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws Exceptions\ApiResponseException
      */
     public function post($endpoint, $postData = [])
@@ -444,7 +444,7 @@ class HttpClient
      * @param       $endpoint
      * @param array $putData
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws Exceptions\ApiResponseException
      */
     public function put($endpoint, $putData = [])
@@ -463,7 +463,7 @@ class HttpClient
      *
      * @param $endpoint
      *
-     * @return mixed
+     * @return null
      * @throws Exceptions\ApiResponseException
      */
     public function delete($endpoint)

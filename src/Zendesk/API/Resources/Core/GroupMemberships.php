@@ -108,7 +108,7 @@ class GroupMemberships extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws MissingParametersException
      */
     public function makeDefault($params = [])

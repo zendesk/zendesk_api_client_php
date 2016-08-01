@@ -23,7 +23,7 @@ class Autocomplete extends ResourceAbstract
      * @param array $params
      *
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function tags(array $params)
     {

@@ -33,7 +33,7 @@ class Macros extends ResourceAbstract
      * @param array $params
      *
      * @throws \Exception
-     * @return mixed
+     * @return \stdClass | null
      */
     public function findAllActive(array $params = [])
     {
@@ -71,7 +71,7 @@ class Macros extends ResourceAbstract
      * @param $id
      * @param $ticketId
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws MissingParametersException
      * @throws \Exception
      * @throws \Zendesk\API\Exceptions\ResponseException

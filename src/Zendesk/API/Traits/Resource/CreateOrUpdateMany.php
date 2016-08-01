@@ -15,7 +15,7 @@ trait CreateOrUpdateMany
      *
      * @param array  $params
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function createOrUpdateMany(array $params)
     {

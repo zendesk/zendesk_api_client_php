@@ -18,7 +18,7 @@ trait CreateMany
      * @throws ResponseException
      * @throws \Exception
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function createMany(array $params)
     {

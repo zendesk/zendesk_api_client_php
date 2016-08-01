@@ -24,7 +24,7 @@ class Triggers extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws \Zendesk\API\Exceptions\RouteException
      */
     public function findActive($params = [])

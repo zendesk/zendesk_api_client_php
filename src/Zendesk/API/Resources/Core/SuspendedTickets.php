@@ -38,7 +38,7 @@ class SuspendedTickets extends ResourceAbstract
      *
      * @param $id
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws MissingParametersException
      */
     public function recover($id = null)
@@ -59,7 +59,7 @@ class SuspendedTickets extends ResourceAbstract
      *
      * @param array $ids
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws MissingParametersException
      * @throws \Zendesk\API\Exceptions\ApiResponseException
      * @throws \Zendesk\API\Exceptions\RouteException

@@ -26,7 +26,7 @@ class UserFields extends ResourceAbstract
      *
      * @param array $params
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function reorder(array $params)
     {

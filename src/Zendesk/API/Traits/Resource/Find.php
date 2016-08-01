@@ -13,7 +13,7 @@ trait Find
      * @param       $id
      * @param array $queryParams
      *
-     * @return mixed
+     * @return \stdClass | null
      * @throws MissingParametersException
      * @throws \Exception
      */

@@ -73,7 +73,7 @@ class Groups extends ResourceAbstract
     /**
      * Show assignable groups
      *
-     * @return mixed
+     * @return \stdClass | null
      */
     public function assignable()
     {
