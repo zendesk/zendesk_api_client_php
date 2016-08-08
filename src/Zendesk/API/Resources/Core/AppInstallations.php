@@ -43,6 +43,7 @@ class AppInstallations extends ResourceAbstract
     {
         $this->setRoutes([
             'create' => $this->resourceName . '.json',
+            'update' => $this->resourceName . '/{id}.json',
             'jobStatuses' => $this->resourceName . '/job_statuses/{job_id}.json',
             'requirements' => $this->resourceName . '/{id}/requirements.json',
         ]);
@@ -111,7 +112,15 @@ class AppInstallations extends ResourceAbstract
      */
     public function update($id = null, array $updateResourceFields = [], $routeKey = __FUNCTION__)
     {
-        $this->objectName = 'settings';
-        return $this->traitUpdate($id, $updateResourceFields, $routeKey);
+        if (empty($id)) {
+            $id = $this->getChainedParameter(__CLASS__);
+        }
+
+        $route = $this->getRoute($routeKey, ['id' => $id]);
+
+        return $this->client->put(
+            $route,
+            $updateResourceFields
+        );
     }
 }
