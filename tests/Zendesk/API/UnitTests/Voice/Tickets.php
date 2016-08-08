@@ -13,7 +13,6 @@ class TicketsTest extends BasicTest
     public function testCreate()
     {
 
-        $ticket = 
         $postFields = [
             'display_to_agent' => 1744920396,
             'ticket' => [
