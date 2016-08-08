@@ -4,6 +4,7 @@ namespace Zendesk\API\Resources;
 
 use Zendesk\API\HttpClient;
 use Zendesk\API\Resources\Voice\PhoneNumbers;
+use Zendesk\API\Resources\Voice\Tickets;
 use Zendesk\API\Traits\Utility\ChainedParametersTrait;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
@@ -37,6 +38,7 @@ class Voice
     {
         return [
             'phoneNumbers' => PhoneNumbers::class,
+            'tickets' => Tickets::class,
         ];
     }
 }
