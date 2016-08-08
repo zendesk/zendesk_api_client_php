@@ -85,14 +85,17 @@ class AppInstallationsTest extends BasicTest
     {
         $faker = Factory::create();
         $params = [
-            $faker->word => $faker->boolean(),
-            $faker->word => $faker->randomNumber(),
+            'enabled' => $faker->boolean(),
+            'settings' => [
+                $faker->word => $faker->boolean(),
+                $faker->word => $faker->randomNumber(),
+            ]
         ];
 
         $id = $faker->randomNumber();
 
         $this->assertEndpointCalled(function () use ($id, $params) {
             $this->client->appInstallations()->update($id, $params);
-        }, "apps/installations/{$id}.json", 'PUT', ['postFields' => ['settings' => $params]]);
+        }, "apps/installations/{$id}.json", 'PUT', ['postFields' => $params]);
     }
 }
