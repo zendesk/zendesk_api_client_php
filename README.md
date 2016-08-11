@@ -105,7 +105,7 @@ $tickets = $client->tickets()->sideload(['users', 'groups'])->findAll();
 ```
 
 ### Pagination
-The Zendesk API offers a way to get the next pages for the requests and is documented in [the Zendesk Deveoloper Documentation](https://developer.zendesk.com/rest_api/docs/core/introduction#pagination).
+The Zendesk API offers a way to get the next pages for the requests and is documented in [the Zendesk Developer Documentation](https://developer.zendesk.com/rest_api/docs/core/introduction#pagination).
 
 The way to do this is to pass it as an option to your request.
 
