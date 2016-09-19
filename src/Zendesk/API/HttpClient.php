@@ -50,6 +50,7 @@ use Zendesk\API\Resources\Core\TwitterHandles;
 use Zendesk\API\Resources\Core\UserFields;
 use Zendesk\API\Resources\Core\Users;
 use Zendesk\API\Resources\Core\Views;
+use Zendesk\API\Resources\Embeddable;
 use Zendesk\API\Resources\HelpCenter;
 use Zendesk\API\Resources\Voice;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
@@ -162,6 +163,10 @@ class HttpClient
      * @var Voice
      */
     public $voice;
+    /**
+     * @var Embeddable
+     */
+    public $embeddable;
 
     /**
      * @param string $subdomain
@@ -196,6 +201,7 @@ class HttpClient
         $this->debug      = new Debug();
         $this->helpCenter = new HelpCenter($this);
         $this->voice      = new Voice($this);
+        $this->embeddable = new Embeddable($this);
     }
 
     /**

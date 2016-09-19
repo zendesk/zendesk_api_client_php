@@ -1,0 +1,41 @@
+<?php
+
+namespace Zendesk\API\UnitTests\Embeddable;
+
+use Faker\Factory;
+use Zendesk\API\UnitTests\BasicTest;
+
+class ConfigSetsTest extends BasicTest
+{
+    /**
+     * Tests if the client can call and build the create config sets endpoint
+     */
+    public function testCreate()
+    {
+        $params = [
+            'color' => '#fffff',
+            'position' => 'right',
+        ];
+
+        $this->assertEndpointCalled(function () use ($params) {
+             $this->client->embeddable->configSets()->create($params);
+        }, '../../embeddable/api/config_sets.json', 'POST', ['postFields' => ['config_set' => $params]]);
+    }
+
+    /**
+     * Tests if the client can call and build the update config sets endpoint
+     */
+    public function testUpdate()
+    {
+        $faker = Factory::create();
+        $id = $faker->numberBetween(1);
+        $params = [
+            'color' => '#fffff',
+            'position' => 'right',
+        ];
+
+        $this->assertEndpointCalled(function () use ($params, $id) {
+            $this->client->embeddable->configSets()->update($id, $params);
+        }, "../../embeddable/api/config_sets/{$id}.json", 'PUT', ['postFields' => ['config_set' => $params]]);
+    }
+}
