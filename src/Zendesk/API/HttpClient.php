@@ -139,9 +139,9 @@ class HttpClient
      */
     protected $apiUrl;
     /**
-     * @var string
+     * @var string This is appended between the full base domain and the resource endpoint
      */
-    protected $apiVer = 'v2';
+    protected $apiBasePath;
     /**
      * @var array|null
      */
@@ -193,9 +193,9 @@ class HttpClient
         $this->port      = $port;
 
         if (empty($subdomain)) {
-            $this->apiUrl = "$scheme://$hostname:$port/api/{$this->apiVer}/";
+            $this->apiUrl = "$scheme://$hostname:$port/";
         } else {
-            $this->apiUrl = "$scheme://$subdomain.$hostname:$port/api/{$this->apiVer}/";
+            $this->apiUrl = "$scheme://$subdomain.$hostname:$port/";
         }
 
         $this->debug      = new Debug();
@@ -326,6 +326,26 @@ class HttpClient
     public function getApiUrl()
     {
         return $this->apiUrl;
+    }
+
+    /**
+     * Sets the api base path
+     *
+     * @param string $apiBasePath
+     */
+    public function setApiBasePath($apiBasePath)
+    {
+        $this->apiBasePath = $apiBasePath;
+    }
+
+    /**
+     * Returns the api base path
+     *
+     * @return string
+     */
+    public function getApiBasePath()
+    {
+        return $this->apiBasePath;
     }
 
     /**

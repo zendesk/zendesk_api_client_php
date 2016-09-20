@@ -14,5 +14,10 @@ abstract class ResourceAbstract extends \Zendesk\API\Resources\ResourceAbstract
     /**
      * @var string
      **/
-    protected $prefix = '../../embeddable/api/';
+    protected $prefix = 'embeddable/api/';
+
+    /**
+     * @var string
+     */
+    protected $apiBasePath = '';
 }
