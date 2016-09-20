@@ -172,8 +172,9 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
         }
 
         if (isset($options['endpoint'])) {
-            // Truncate the `/api/v2` part of the target
-            $endpoint = str_replace('/api/v2/', '', $request->getUri()->getPath());
+            // Truncate the base path from the target
+            $apiBasePath = "/{$this->client->getApiBasePath()}";
+            $endpoint = preg_replace('/^' . preg_quote($apiBasePath, '/') . '/', '', $request->getUri()->getPath());
             $this->assertEquals($options['endpoint'], $endpoint);
         }
 
