@@ -55,7 +55,7 @@ class Http
 
         $request = new Request(
             $options['method'],
-            $client->getApiUrl() . $endPoint,
+            $client->getApiUrl() . $client->getApiBasePath() . $endPoint,
             $headers
         );
 
