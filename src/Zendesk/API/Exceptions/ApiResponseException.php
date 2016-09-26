@@ -58,6 +58,6 @@ class ApiResponseException extends \Exception
      */
     public function getErrorDetails()
     {
-        return $this->errorDetails;
+        return json_decode($this->errorDetails, true);
     }
 }
