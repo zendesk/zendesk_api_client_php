@@ -49,11 +49,17 @@ abstract class ResourceAbstract
     protected $additionalRouteParams = [];
 
     /**
+     * @var string
+     */
+    protected $apiBasePath = 'api/v2/';
+
+    /**
      * @param HttpClient $client
      */
     public function __construct(HttpClient $client)
     {
         $this->client = $client;
+        $this->client->setApiBasePath($this->apiBasePath);
 
         if (! isset($this->resourceName)) {
             $this->resourceName = $this->getResourceNameFromClass();

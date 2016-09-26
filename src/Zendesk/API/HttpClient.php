@@ -50,6 +50,7 @@ use Zendesk\API\Resources\Core\TwitterHandles;
 use Zendesk\API\Resources\Core\UserFields;
 use Zendesk\API\Resources\Core\Users;
 use Zendesk\API\Resources\Core\Views;
+use Zendesk\API\Resources\Embeddable;
 use Zendesk\API\Resources\HelpCenter;
 use Zendesk\API\Resources\Voice;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
@@ -138,9 +139,9 @@ class HttpClient
      */
     protected $apiUrl;
     /**
-     * @var string
+     * @var string This is appended between the full base domain and the resource endpoint
      */
-    protected $apiVer = 'v2';
+    protected $apiBasePath;
     /**
      * @var array|null
      */
@@ -162,6 +163,10 @@ class HttpClient
      * @var Voice
      */
     public $voice;
+    /**
+     * @var Embeddable
+     */
+    public $embeddable;
 
     /**
      * @param string $subdomain
@@ -188,14 +193,15 @@ class HttpClient
         $this->port      = $port;
 
         if (empty($subdomain)) {
-            $this->apiUrl = "$scheme://$hostname:$port/api/{$this->apiVer}/";
+            $this->apiUrl = "$scheme://$hostname:$port/";
         } else {
-            $this->apiUrl = "$scheme://$subdomain.$hostname:$port/api/{$this->apiVer}/";
+            $this->apiUrl = "$scheme://$subdomain.$hostname:$port/";
         }
 
         $this->debug      = new Debug();
         $this->helpCenter = new HelpCenter($this);
         $this->voice      = new Voice($this);
+        $this->embeddable = new Embeddable($this);
     }
 
     /**
@@ -320,6 +326,26 @@ class HttpClient
     public function getApiUrl()
     {
         return $this->apiUrl;
+    }
+
+    /**
+     * Sets the api base path
+     *
+     * @param string $apiBasePath
+     */
+    public function setApiBasePath($apiBasePath)
+    {
+        $this->apiBasePath = $apiBasePath;
+    }
+
+    /**
+     * Returns the api base path
+     *
+     * @return string
+     */
+    public function getApiBasePath()
+    {
+        return $this->apiBasePath;
     }
 
     /**
