@@ -97,7 +97,8 @@ class Tickets extends ResourceAbstract
             'merge'               => 'tickets/{id}/merge.json',
             'problems'            => 'problems.json',
             'export'              => 'exports/tickets.json',
-            'problemAutoComplete' => 'problems/autocomplete.json'
+            'problemAutoComplete' => 'problems/autocomplete.json',
+            'findByUser'          => 'users/{user_id}/tickets/requested.json'
         ]);
     }
 
@@ -270,6 +271,24 @@ class Tickets extends ResourceAbstract
         if (! $this->hasKeys($params, ['id'])) {
             throw new MissingParametersException(__METHOD__, ['id']);
         }
+
+        return $this->sendGetRequest(__FUNCTION__, $params);
+    }
+
+    /**
+     * List all of this resource by user_id
+     *
+     * @param string $user_id
+     * @param array $params
+     *
+     * @throws MissingParametersException
+     * @throws ResponseException
+     * @throws \Exception
+     * @return \stdClass | null
+     */
+    public function findByUser($user_id, array $params = [])
+    {
+        $params['user_id'] = $user_id;
 
         return $this->sendGetRequest(__FUNCTION__, $params);
     }
