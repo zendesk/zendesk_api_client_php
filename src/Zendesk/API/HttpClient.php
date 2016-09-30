@@ -407,8 +407,7 @@ class HttpClient
         $sideloadKeys = array('include', 'sideload');
 
         if (! empty($sideloads = array_intersect_key($params, array_flip($sideloadKeys)))) {
-            // Merge to a single array
-            return call_user_func_array('array_merge', $sideloads);
+            return $sideloads;
         } else {
             return $this->sideload;
         }
