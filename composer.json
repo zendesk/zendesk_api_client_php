@@ -1,5 +1,5 @@
 {
-  "name": "net2grid/zendesk_api_client_php",
+  "name": "zendesk/zendesk_api_client_php",
   "description": "PHP Client for Zendesk REST API. See http://developer.zendesk.com/api-docs",
   "license": "Apache License Version 2.0",
   "homepage": "https://github.com/zendesk/zendesk_api_client_php",
