@@ -28,7 +28,7 @@ Inside of `composer.json` specify the following:
 ``` json
 {
   "require": {
-    "net2grid/zendesk_api_client_php": "dev-master"
+    "zendesk/zendesk_api_client_php": "dev-master"
   }
 }
 ```
