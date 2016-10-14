@@ -10,7 +10,8 @@ use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
- * The UserTickets class exposes methods to retrieve tickets created, cc'ed to, or assigned to a user
+ * The UserTickets class exposes methods to retrieve tickets created, cc'ed to, or
+ * assigned to a user
  */
 class UserTickets extends ResourceAbstract
 {
@@ -25,14 +26,13 @@ class UserTickets extends ResourceAbstract
      */
     public static function getValidSubResources()
     {
-        return [
-        ];
+        return [];
     }
 
     /**
      * Wrapper for common GET requests
      *
-     * @param       $route
+     * @param $route
      * @param array $params
      *
      * @return \stdClass | null
@@ -57,11 +57,13 @@ class UserTickets extends ResourceAbstract
     {
         parent::setUpRoutes();
 
-        $this->setRoutes([
+        $this->setRoutes(
+            [
             'requested' => 'users/{id}/tickets/requested.json',
             'ccd'       => 'users/{id}/tickets/ccd.json',
             'assigned'  => 'users/{id}/tickets/assigned.json',
-        ]);
+            ]
+        );
     }
 
     /**
@@ -76,7 +78,10 @@ class UserTickets extends ResourceAbstract
      */
     public function requested(array $params = [])
     {
-        $params = $this->addChainedParametersToParams($params, ['id' => Users::class]);
+        $params = $this->addChainedParametersToParams(
+            $params,
+            ['id' => Users::class]
+        );
 
         if (! $this->hasKeys($params, ['id'])) {
             throw new MissingParametersException(__METHOD__, ['id']);
@@ -97,7 +102,10 @@ class UserTickets extends ResourceAbstract
      */
     public function ccd(array $params = [])
     {
-        $params = $this->addChainedParametersToParams($params, ['id' => Users::class]);
+        $params = $this->addChainedParametersToParams(
+            $params,
+            ['id' => Users::class]
+        );
 
         if (! $this->hasKeys($params, ['id'])) {
             throw new MissingParametersException(__METHOD__, ['id']);
@@ -118,7 +126,10 @@ class UserTickets extends ResourceAbstract
      */
     public function assigned(array $params = [])
     {
-        $params = $this->addChainedParametersToParams($params, ['id' => Users::class]);
+        $params = $this->addChainedParametersToParams(
+            $params,
+            ['id' => Users::class]
+        );
 
         if (! $this->hasKeys($params, ['id'])) {
             throw new MissingParametersException(__METHOD__, ['id']);
