@@ -2,7 +2,6 @@
 
 namespace Zendesk\API\UnitTests\Core;
 
-use Faker\Factory;
 use Zendesk\API\UnitTests\BasicTest;
 
 /**
@@ -41,5 +40,4 @@ class UserTicketsTest extends BasicTest
             $this->client->users(12345)->tickets()->assigned();
         }, 'users/12345/tickets/assigned.json');
     }
-
 }
