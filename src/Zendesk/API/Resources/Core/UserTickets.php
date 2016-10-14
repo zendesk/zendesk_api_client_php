@@ -91,7 +91,7 @@ class UserTickets extends ResourceAbstract
     }
 
     /**
-     * List tickets a user was CC'ed on 
+     * List tickets a user was CC'ed on
      *
      * @param array $params
      *
