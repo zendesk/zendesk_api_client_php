@@ -6,7 +6,6 @@ use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Http;
 use Zendesk\API\Resources\ResourceAbstract;
-use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
@@ -16,18 +15,6 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
 class UserTickets extends ResourceAbstract
 {
     use InstantiatorTrait;
-
-    use Defaults {
-        findAll as traitFindAll;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public static function getValidSubResources()
-    {
-        return [];
-    }
 
     /**
      * Wrapper for common GET requests
