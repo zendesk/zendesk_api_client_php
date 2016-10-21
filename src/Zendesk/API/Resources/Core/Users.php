@@ -379,10 +379,10 @@ class Users extends ResourceAbstract
     /**
      * Create or updates a user
      *
-     * @param array $params
+     * @param array  $params
      *
-     * @throws \Exception
-     * @return \stdClass | null
+     * @param string $routeKey
+     * @return null|\stdClass
      */
     public function createOrUpdate(array $params, $routeKey = __FUNCTION__)
     {

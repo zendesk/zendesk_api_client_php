@@ -111,6 +111,9 @@ class UserIdentities extends ResourceAbstract
 
     /**
      * This API method allows you to set an identity to primary.
+     *
+     * @param array $params
+     * @return null|\stdClass
      */
     public function makePrimary(array $params = [])
     {
@@ -119,6 +122,9 @@ class UserIdentities extends ResourceAbstract
 
     /**
      * This API method only allows you to set an identity as verified. This is allowed only for agents.
+     *
+     * @param array $params
+     * @return null|\stdClass
      */
     public function verify(array $params = [])
     {
@@ -128,6 +134,9 @@ class UserIdentities extends ResourceAbstract
     /**
      * This sends a verification email to the user, asking him to click a link in order to
      * verify ownership of the email address
+     *
+     * @param array $params
+     * @return null|\stdClass
      */
     public function requestVerification(array $params = [])
     {
