@@ -2,7 +2,6 @@
 
 namespace Zendesk\API\Resources\Core;
 
-use Zendesk\API\Http;
 use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
