@@ -13,7 +13,7 @@ use Zendesk\API\Traits\Resource\Defaults;
 class Views extends ResourceAbstract
 {
     use Defaults {
-        findAll as traitFindall;
+        findAll as traitFindAll;
     }
 
     /**
