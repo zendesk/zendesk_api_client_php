@@ -83,7 +83,8 @@ class Users extends ResourceAbstract
             'organizationMemberships'   => OrganizationMemberships::class,
             'organizationSubscriptions' => OrganizationSubscriptions::class,
             'requests'                  => Requests::class,
-            'sessions'                  => Sessions::class
+            'sessions'                  => Sessions::class,
+            'tickets'                   => UserTickets::class,
         ];
     }
 
