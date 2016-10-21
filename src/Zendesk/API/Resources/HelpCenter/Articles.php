@@ -52,7 +52,7 @@ class Articles extends ResourceAbstract
         }
         return $this->client->post(
             $route,
-            ['attachement_ids' => $params]
+            ['attachment_ids' => $params]
         );
     }
 }
