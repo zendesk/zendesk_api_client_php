@@ -10,11 +10,11 @@ trait Update
     /**
      * Update a resource
      *
+     * @param int $id
      * @param array $updateResourceFields
      *
-     * @throws MissingParametersException
-     * @throws \Exception
-     * @return \stdClass | null
+     * @param string $routeKey
+     * @return null|\stdClass
      */
     public function update($id = null, array $updateResourceFields = [], $routeKey = __FUNCTION__)
     {

@@ -34,8 +34,10 @@ class Articles extends ResourceAbstract
     /**
      * Bulk upload attachments to a specified article
      *
-     * @param $articleId    The article to update
-     * @param $params       An array of attachment ids
+     * @param int    $articleId The article to update
+     * @param array  $params    An array of attachment ids
+     * @param string $routeKey  The route to set
+     * @return null|\stdClass
      * @throws \Exception
      */
     public function bulkAttach($articleId, array $params, $routeKey = __FUNCTION__)

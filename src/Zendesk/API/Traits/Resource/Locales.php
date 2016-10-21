@@ -24,6 +24,7 @@ trait Locales
 
     /**
      * @param string $locale
+     * @return Locales
      */
     public function setLocale($locale)
     {

@@ -40,6 +40,9 @@ class AuditLogs extends ResourceAbstract
 
     /**
      * Filter parameters passed and only allow valid query parameters.
+     *
+     * @param $param
+     * @return int
      */
     private function filterParams($param)
     {

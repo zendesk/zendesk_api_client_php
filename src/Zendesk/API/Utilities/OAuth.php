@@ -16,6 +16,7 @@ class OAuth
      * @param string $subdomain
      * @param array  $params
      *
+     * @param string $domain
      * @return array
      * @throws ApiResponseException
      */
@@ -47,9 +48,9 @@ class OAuth
     /**
      * Generates an oAuth URL.
      *
-     * @param       $subdomain
-     * @param array $options
-     *
+     * @param string $subdomain
+     * @param array  $options
+     * @param string $domain
      * @return string
      */
     public static function getAuthUrl($subdomain, array $options, $domain = 'zendesk.com')
