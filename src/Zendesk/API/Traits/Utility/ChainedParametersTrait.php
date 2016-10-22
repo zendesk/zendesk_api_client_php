@@ -40,7 +40,7 @@ trait ChainedParametersTrait
 
     /**
      * Returns chained parameters
-     * @return $this
+     * @return array
      */
     public function getChainedParameters()
     {
