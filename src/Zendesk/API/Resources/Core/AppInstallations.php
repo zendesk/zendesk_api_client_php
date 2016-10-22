@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\Resources\Core;
 
+use Zendesk\API\Exceptions\RouteException;
 use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\Delete;
 use Zendesk\API\Traits\Resource\Find;
