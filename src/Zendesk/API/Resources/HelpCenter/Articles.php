@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\Resources\HelpCenter;
 
+use Zendesk\API\Exceptions\RouteException;
 use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\Locales;
 
