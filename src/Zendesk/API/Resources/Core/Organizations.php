@@ -125,7 +125,7 @@ class Organizations extends ResourceAbstract
     }
 
     /**
-     * Seach organizations by external ID
+     * Search organizations by external ID
      *
      * @param       $external_id
      * @param array $params
