@@ -410,7 +410,7 @@ class HttpClient
      */
     public function getSideload(array $params = [])
     {
-        // Allow both for backward compatability
+        // Allow both for backward compatibility
         $sideloadKeys = array('include', 'sideload');
 
         if (! empty($sideloads = array_intersect_key($params, array_flip($sideloadKeys)))) {
