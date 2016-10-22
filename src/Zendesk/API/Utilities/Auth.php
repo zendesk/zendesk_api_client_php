@@ -24,8 +24,9 @@ class Auth
      * @var string
      */
     protected $authStrategy;
+
     /**
-     * @var Array
+     * @var array
      */
     protected $authOptions;
 

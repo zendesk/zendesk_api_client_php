@@ -25,7 +25,7 @@ class PhoneNumbers extends ResourceAbstract
      *
      * @param array $queryParams
      *
-     * @return array
+     * @return \stdClass
      * @throws \Zendesk\API\Exceptions\RouteException
      */
     public function search(array $queryParams = [])
