@@ -65,7 +65,8 @@ $tickets = $client->tickets()->findAll();
 print_r($tickets);
 
 // Get all tickets regarding a specific user.
-$client->users($requesterId)->requests()->findAll()
+$tickets = $client->users($requesterId)->requests()->findAll()
+print_r($tickets);
 
 // Create a new ticket
 $newTicket = $client->tickets()->create([
@@ -87,7 +88,8 @@ $client->tickets()->update(123,[
 $client->tickets()->delete(123);
 
 // Get all users
-$client->users()->findAll();
+$users = $client->users()->findAll();
+print_r($users);
 ```
 
 ### Attachments
