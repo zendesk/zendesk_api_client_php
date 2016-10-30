@@ -21,7 +21,9 @@
             <h4>To help you get started, coding examples for authentication and basic usage are available in the `samples` folder.</h4>
             <ul>
                 <li><a href="samples/getTickets.php">Using an API token and getting a list of tickets.</a></li>
+                <li><a href="samples/users/searchUser.php">Retrieve tickets by the end-user email address</a></li>
                 <li><a href="samples/oauth.php">Sample oAuth flow.</a></li>
+                <li><a href="samples/users/getUsers.php">Get all end-users</a></li>
             </ul>
         </div>
     </div>
