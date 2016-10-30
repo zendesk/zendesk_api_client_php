@@ -54,7 +54,7 @@ class Sessions extends ResourceAbstract
     {
         $userId = $this->getChainedParameter(Users::class);
 
-        if (in_array($name, ['delete', 'deleteUserSessionss', 'find', 'findAll']) && ! is_null($userId)) {
+        if (in_array($name, ['delete', 'deleteUserSessions', 'find', 'findAll']) && ! is_null($userId)) {
             if ($name === 'findAll') {
                 return "users/{$userId}/sessions.json";
             }

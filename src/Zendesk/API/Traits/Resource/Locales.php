@@ -24,6 +24,7 @@ trait Locales
 
     /**
      * @param string $locale
+     * @return Locales
      */
     public function setLocale($locale)
     {
@@ -66,8 +67,8 @@ trait Locales
     /**
      * Updates a resource's source_locale property
      *
-     * @param $categoryId   The category to update
-     * @param $sourceLocale The new source_locale
+     * @param int $categoryId The category to update
+     * @param string $sourceLocale The new source_locale
      *
      * @return array
      * @throws \Zendesk\API\Exceptions\RouteException

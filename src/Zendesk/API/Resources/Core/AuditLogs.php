@@ -2,7 +2,6 @@
 
 namespace Zendesk\API\Resources\Core;
 
-use Zendesk\API\Http;
 use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
@@ -41,6 +40,9 @@ class AuditLogs extends ResourceAbstract
 
     /**
      * Filter parameters passed and only allow valid query parameters.
+     *
+     * @param $param
+     * @return int
      */
     private function filterParams($param)
     {

@@ -6,7 +6,7 @@ use Zendesk\API\Exceptions\RouteException;
 use Zendesk\API\Http;
 
 /**
- * Allows resources to call a bulk destrpu endpoint.
+ * Allows resources to call a bulk delete endpoint.
  *
  */
 trait DeleteMany

@@ -113,7 +113,7 @@ class Organizations extends ResourceAbstract
     /**
      * Show an organization's related information
      *
-     * @param $id Organization ID
+     * @param int $id Organization ID
      *
      * @return \stdClass | null
      * @throws \Zendesk\API\Exceptions\ApiResponseException
@@ -125,7 +125,7 @@ class Organizations extends ResourceAbstract
     }
 
     /**
-     * Seach organizations by external ID
+     * Search organizations by external ID
      *
      * @param       $external_id
      * @param array $params

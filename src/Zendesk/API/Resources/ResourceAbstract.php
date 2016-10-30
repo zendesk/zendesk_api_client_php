@@ -30,7 +30,7 @@ abstract class ResourceAbstract
     protected $objectNamePlural;
 
     /**
-     * @var HttpClient
+     * @var \Zendesk\API\HttpClient
      */
     protected $client;
     /**
