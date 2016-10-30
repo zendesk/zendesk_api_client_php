@@ -63,12 +63,10 @@ class TicketAudits extends ResourceAbstract
     /**
      * Show a specific audit record
      *
+     * @param null|int $id
      * @param array $params
-     *
+     * @return null|\stdClass
      * @throws MissingParametersException
-     * @throws \Exception
-     *
-     * @return \stdClass | null
      */
     public function find($id = null, array $params = [])
     {

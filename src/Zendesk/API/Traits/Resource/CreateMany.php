@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\Traits\Resource;
 
+use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Exceptions\RouteException;
 
 /**

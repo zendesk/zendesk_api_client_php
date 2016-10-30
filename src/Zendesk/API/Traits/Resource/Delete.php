@@ -10,11 +10,10 @@ trait Delete
     /**
      * Delete a resource
      *
-     * @param null $id
-     *
+     * @param int $id
+     * @param string $routeKey
      * @return bool
      * @throws MissingParametersException
-     * @throws \Exception
      */
     public function delete($id = null, $routeKey = __FUNCTION__)
     {

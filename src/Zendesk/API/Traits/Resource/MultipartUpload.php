@@ -30,11 +30,12 @@ trait MultipartUpload
     /**
      * Uploads an file with the given upload name.
      *
-     * @param array $params
+     * @param array  $params
      *
-     * @throws \Exception
-     *
-     * @return \stdClass | null
+     * @param string $routeKey
+     * @return null|\stdClass
+     * @throws CustomException
+     * @throws MissingParametersException
      */
     public function upload(array $params, $routeKey = __FUNCTION__)
     {

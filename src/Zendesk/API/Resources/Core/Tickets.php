@@ -183,12 +183,9 @@ class Tickets extends ResourceAbstract
     /**
      * Update a ticket or series of tickets
      *
+     * @param int $id
      * @param array $updateResourceFields
-     *
-     * @throws MissingParametersException
-     * @throws ResponseException
-     * @throws \Exception
-     * @return \stdClass | null
+     * @return null|\stdClass
      */
     public function update($id = null, array $updateResourceFields = [])
     {

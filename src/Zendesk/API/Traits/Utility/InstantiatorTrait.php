@@ -20,7 +20,7 @@ trait InstantiatorTrait
      * @param $name
      * @param $arguments
      *
-     * @return
+     * @return ChainedParametersTrait
      * @throws \Exception
      */
     public function __call($name, $arguments)
