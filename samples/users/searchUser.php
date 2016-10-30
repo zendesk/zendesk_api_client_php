@@ -20,7 +20,7 @@ use Zendesk\API\HttpClient as ZendeskAPI;
       $search = $client->users()->search($params);
       // verify if this email address exists
       if(empty($search->users)) {
-        echo 'This email adress could not be found in Zendesk.';
+        echo 'This email adress could not be found on Zendesk.';
       }
       else{
         foreach($search->users as $UserData)

@@ -18,13 +18,36 @@
     <div class="row">
         <div class="col-md-8 col-md-offset-2 well">
             <h1 class="zengreen">Zendesk</h1>
-            <h4>To help you get started, coding examples for authentication and basic usage are available in the `samples` folder.</h4>
+            <h5>To help you get started, coding examples for authentication and basic usage are available in the `samples` folder.</h5>
+
+            <div class="clearfix">&nbsp;</div>
+
+            <strong>Authentication</strong>
             <ul>
-                <li><a href="samples/getTickets.php">Using an API token and getting a list of tickets.</a></li>
-                <li><a href="samples/users/searchUser.php">Retrieve tickets by the end-user email address</a></li>
-                <li><a href="samples/oauth.php">Sample oAuth flow.</a></li>
-                <li><a href="samples/users/getUsers.php">Get all end-users</a></li>
+              <li><a href="samples/auth/oauth.php">Sample oAuth flow.</a></li>
             </ul>
+
+            <div class="clearfix">&nbsp;</div>
+
+            <strong>Tickets</strong>
+            <ul>
+              <li><a href="samples/tickets/createTicket.php">Create a new ticket.</a></li>
+              <li><a href="samples/tickets/getTickets.php">Retrieve all tickets.</a></li>
+              <li><a href="samples/tickets/viewTicket.php">Retrieve ticket details</a></li>
+              <li><a href="samples/tickets/searchTickets.php">Retrieve tickets from the end-user email address</a></li>
+            </ul>
+
+            <div class="clearfix">&nbsp;</div>
+
+            <strong>Users</strong>
+            <ul>
+              <li><a href="samples/users/createUser.php">Create a new end-user</a></li>
+              <li><a href="samples/users/getUsers.php">Retrieve all end-users</a></li>
+              <li><a href="samples/users/searchUser.php">Search end-user</a></li>
+            </ul>
+
+            <div class="clearfix">&nbsp;</div>
+
         </div>
     </div>
 </div>
