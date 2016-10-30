@@ -171,6 +171,10 @@ class HttpClient
     /**
      * @param string $subdomain
      * @param string $username
+     * @param string $scheme
+     * @param string $hostname
+     * @param int $port
+     * @param \GuzzleHttp\Client $guzzle
      */
 
     public function __construct(
@@ -287,9 +291,11 @@ class HttpClient
     }
 
     /**
-     * @param array $headers
-     *
+     * @param string $key The name of the header to set
+     * @param string $value The value to set in the header
      * @return HttpClient
+     * @internal param array $headers
+     *
      */
     public function setHeader($key, $value)
     {
@@ -352,6 +358,7 @@ class HttpClient
      * Set debug information as an object
      *
      * @param mixed  $lastRequestHeaders
+     * @param mixed  $lastRequestBody
      * @param mixed  $lastResponseCode
      * @param string $lastResponseHeaders
      * @param mixed  $lastResponseError
@@ -403,7 +410,7 @@ class HttpClient
      */
     public function getSideload(array $params = [])
     {
-        // Allow both for backward compatability
+        // Allow both for backward compatibility
         $sideloadKeys = array('include', 'sideload');
 
         if (! empty($sideloads = array_intersect_key($params, array_flip($sideloadKeys)))) {

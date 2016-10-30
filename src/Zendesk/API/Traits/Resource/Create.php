@@ -9,10 +9,10 @@ trait Create
     /**
      * Create a new resource
      *
-     * @param array $params
+     * @param array  $params
      *
-     * @throws \Exception
-     * @return \stdClass | null
+     * @param string $routeKey
+     * @return null|\stdClass
      */
     public function create(array $params, $routeKey = __FUNCTION__)
     {

@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\Resources\HelpCenter;
 
+use Zendesk\API\Exceptions\RouteException;
 use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\Locales;
 
@@ -34,8 +35,10 @@ class Articles extends ResourceAbstract
     /**
      * Bulk upload attachments to a specified article
      *
-     * @param $articleId    The article to update
-     * @param $params       An array of attachment ids
+     * @param int    $articleId The article to update
+     * @param array  $params    An array of attachment ids
+     * @param string $routeKey  The route to set
+     * @return null|\stdClass
      * @throws \Exception
      */
     public function bulkAttach($articleId, array $params, $routeKey = __FUNCTION__)
@@ -52,7 +55,7 @@ class Articles extends ResourceAbstract
         }
         return $this->client->post(
             $route,
-            ['attachement_ids' => $params]
+            ['attachment_ids' => $params]
         );
     }
 }

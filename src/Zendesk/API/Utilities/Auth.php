@@ -4,7 +4,6 @@ namespace Zendesk\API\Utilities;
 
 use Psr\Http\Message\RequestInterface;
 use Zendesk\API\Exceptions\AuthException;
-use Zendesk\API\HttpClient;
 
 /**
  * Class Auth
@@ -25,8 +24,9 @@ class Auth
      * @var string
      */
     protected $authStrategy;
+
     /**
-     * @var Array
+     * @var array
      */
     protected $authOptions;
 

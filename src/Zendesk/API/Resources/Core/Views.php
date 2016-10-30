@@ -4,7 +4,6 @@ namespace Zendesk\API\Resources\Core;
 
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
-use Zendesk\API\Http;
 use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\Defaults;
 
@@ -14,7 +13,7 @@ use Zendesk\API\Traits\Resource\Defaults;
 class Views extends ResourceAbstract
 {
     use Defaults {
-        findAll as traitFindall;
+        findAll as traitFindAll;
     }
 
     /**
@@ -192,8 +191,8 @@ class Views extends ResourceAbstract
     /**
      * Get the ticket ID from the chained parameters or a params array
      *
-     * @param  array  &$params
-     * @return int
+     * @param array &$params
+     * @return string
      */
     private function getIdFromParams(array &$params)
     {

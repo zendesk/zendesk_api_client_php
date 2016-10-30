@@ -53,7 +53,7 @@ class SlaPolicies extends ResourceAbstract
     /**
      * Reorder SLA Policies
      *
-     * @parama array  $ids
+     * @param array  $ids
      *
      * @return \stdClass | null
      */
@@ -65,9 +65,10 @@ class SlaPolicies extends ResourceAbstract
     /**
      * Retrieve supported filter definition items
      *
-     * @parama array  $ids
+     * @param array $params
+     * @return null|\stdClass
+     * @internal param array $ids
      *
-     * @return \stdClass | null
      */
     public function definitions(array $params = [])
     {
