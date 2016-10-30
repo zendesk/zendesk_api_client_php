@@ -2,8 +2,8 @@
 
 namespace Zendesk\API\Resources\Core;
 
+use Zendesk\API\Exceptions\RouteException;
 use Zendesk\API\Resources\ResourceAbstract;
-use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\Delete;
 use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
@@ -78,10 +78,10 @@ class AppInstallations extends ResourceAbstract
     /**
      * Installs an app
      *
-     * @param array $params
+     * @param array  $params
      *
-     * @throws \Exception
-     * @return \stdClass | null
+     * @param string $routeKey
+     * @return null|\stdClass
      */
     public function create(array $params, $routeKey = __FUNCTION__)
     {

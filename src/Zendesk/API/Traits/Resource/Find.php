@@ -10,12 +10,12 @@ trait Find
     /**
      * Find a specific ticket by id or series of ids
      *
-     * @param       $id
-     * @param array $queryParams
+     * @param        $id
+     * @param array  $queryParams
      *
-     * @return \stdClass | null
+     * @param string $routeKey
+     * @return null|\stdClass
      * @throws MissingParametersException
-     * @throws \Exception
      */
     public function find($id = null, array $queryParams = [], $routeKey = __FUNCTION__)
     {

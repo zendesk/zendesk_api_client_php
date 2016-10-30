@@ -89,7 +89,8 @@ class TicketComments extends ResourceAbstract
      */
 
     /**
-     * @param array $params
+     * @param string $id
+     * @param array $queryQueryParams
      *
      * @return mixed|void
      * @throws CustomException
