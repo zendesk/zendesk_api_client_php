@@ -64,6 +64,10 @@ $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 $tickets = $client->tickets()->findAll();
 print_r($tickets);
 
+// Get all tickets regarding a specific user.
+$tickets = $client->users($requesterId)->requests()->findAll()
+print_r($tickets);
+
 // Create a new ticket
 $newTicket = $client->tickets()->create([
     'subject'  => 'The quick brown fox jumps over the lazy dog',
@@ -82,6 +86,10 @@ $client->tickets()->update(123,[
 
 // Delete a ticket
 $client->tickets()->delete(123);
+
+// Get all users
+$users = $client->users()->findAll();
+print_r($users);
 ```
 
 ### Attachments
