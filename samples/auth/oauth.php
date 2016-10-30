@@ -5,7 +5,7 @@
 
 use Zendesk\API\Utilities\OAuth;
 
-include("../vendor/autoload.php");
+include("../../vendor/autoload.php");
 
 if (isset($_POST['action']) && 'redirect' === $_POST['action']) {
     $state = base64_encode(serialize($_POST));
