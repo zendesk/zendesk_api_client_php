@@ -98,6 +98,6 @@ class TicketComments extends ResourceAbstract
     public function find($id = null, array $queryQueryParams = [])
     {
         throw new CustomException('Method ' . __METHOD__
-                                  . ' does not exist. Try $client->ticket(ticket_id)->comments()->findAll() instead.');
+                                  . ' does not exist. Try $client->tickets(ticket_id)->comments()->findAll() instead.');
     }
 }
