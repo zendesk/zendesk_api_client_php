@@ -11,6 +11,9 @@
         .zengreen {
             color: #78A300;
         }
+        li{
+          padding-bottom: 4px;
+        }
     </style>
 </head>
 <body>
@@ -31,10 +34,17 @@
 
             <strong>Tickets</strong>
             <ul>
-              <li><a href="samples/tickets/createTicket.php">Create a new ticket.</a></li>
+              <li><a href="samples/tickets/qcreateTicket.php">Create a new ticket.</a></li>
+              <li><a href="samples/tickets/createTicket.php">Create a new ticket with the requester's email address, if the requester's identity doesn't exist.</a></li>
+              <div class="clearfix">&nbsp;</div>
+
               <li><a href="samples/tickets/getTickets.php">Retrieve all tickets.</a></li>
               <li><a href="samples/tickets/viewTicket.php">Retrieve ticket details</a></li>
               <li><a href="samples/tickets/searchTickets.php">Retrieve tickets from the end-user email address</a></li>
+              <div class="clearfix">&nbsp;</div>
+              
+              <li><a href="samples/tickets/updateTicket.php">Update a ticket</a></li>
+              <li><a href="samples/tickets/deleteTicket.php">Delete a ticket</a></li>
             </ul>
 
             <div class="clearfix">&nbsp;</div>

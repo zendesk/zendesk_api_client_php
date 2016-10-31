@@ -16,7 +16,7 @@ use Zendesk\API\HttpClient as ZendeskAPI;
 
 try {
   // Search the current customer
-  $params = array('query' =>'demo@example.com');
+  $params = array('query' =>'customer@example.com');
   $search = $client->users()->search($params);
 
   if(empty($search->users)) {
