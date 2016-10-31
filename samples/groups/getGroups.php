@@ -7,10 +7,10 @@ use Zendesk\API\HttpClient as ZendeskAPI;
  * Replace the following with your own.
  */
 
- $subdomain = "idevelopment";
- $username  = "glenn.hermans@idevelopment.be";
- $token     = "SrPgNIFHvzT9u9UxevHq6wB9M0S8lkDxuVWc52np";
-
+ $subdomain = "subdomain";
+ $username  = "email@example.com";
+ $token     = "6wiIBWbGkBMo1mRDMuVwkw1EPsNkeUj95PIz2akv";
+ 
  $client = new ZendeskAPI($subdomain);
  $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
