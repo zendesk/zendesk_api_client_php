@@ -15,9 +15,9 @@ $client = new ZendeskAPI($subdomain);
 $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
 try {
-      $id = 12;
-
       // Query Zendesk API to retrieve the ticket details
+
+      $id = 31;
       $tickets = $client->tickets()->find($id);
 
       // Show the results
