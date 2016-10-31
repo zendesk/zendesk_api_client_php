@@ -24,13 +24,16 @@
             <h5>To help you get started, coding examples for authentication and basic usage are available in the `samples` folder.</h5>
 
             <div class="clearfix">&nbsp;</div>
-
             <strong>Authentication</strong>
             <ul>
               <li><a href="samples/auth/oauth.php">Sample oAuth flow.</a></li>
             </ul>
 
-            <div class="clearfix">&nbsp;</div>
+            <strong>Groups</strong>
+            <ul>
+              <li><a href="samples/groups/createGroup.php">Create a new group</a></li>
+              <li><a href="samples/groups/getGroups.php">Retrieve all groups</a></li>
+            </ul>
 
             <strong>Tickets</strong>
             <ul>
@@ -42,12 +45,11 @@
               <li><a href="samples/tickets/viewTicket.php">Retrieve ticket details</a></li>
               <li><a href="samples/tickets/searchTickets.php">Retrieve tickets from the end-user email address</a></li>
               <div class="clearfix">&nbsp;</div>
-              
+
               <li><a href="samples/tickets/updateTicket.php">Update a ticket</a></li>
               <li><a href="samples/tickets/deleteTicket.php">Delete a ticket</a></li>
             </ul>
 
-            <div class="clearfix">&nbsp;</div>
 
             <strong>Users</strong>
             <ul>
