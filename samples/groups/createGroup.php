@@ -15,18 +15,14 @@ use Zendesk\API\HttpClient as ZendeskAPI;
  $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
  try {
-   $newGroup = $client->groups()->create(array(
+     $newGroup = $client->groups()->create(array(
      'name' => '2d line',
      ));
 
    // Show result
    echo "<pre>";
-   print_r($newGroup);
-   echo "</pre>";
-
- }
-
- catch (\Zendesk\API\Exceptions\ApiResponseException $e)
- {
-   echo 'Please check your credentials. Make sure to change the $subdomain, $username, and $token variables in this file.';
+     print_r($newGroup);
+     echo "</pre>";
+ } catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
+     echo 'Please check your credentials. Make sure to change the $subdomain, $username, and $token variables in this file.';
  }

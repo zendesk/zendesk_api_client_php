@@ -15,16 +15,14 @@ use Zendesk\API\HttpClient as ZendeskAPI;
  $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
 try {
-      $id   = "1";
+    $id   = "1";
       // Get all tickets
       $tickets = $client->tickets()->findAll();
 
       // Show the results
       echo "<pre>";
-      print_r($tickets);
-      echo "</pre>";
-    }
-    catch (\Zendesk\API\Exceptions\ApiResponseException $e)
-    {
-     echo 'Please check your credentials. Make sure to change the $subdomain, $username, and $token variables in this file.';
-    }
+    print_r($tickets);
+    echo "</pre>";
+} catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
+    echo 'Please check your credentials. Make sure to change the $subdomain, $username, and $token variables in this file.';
+}

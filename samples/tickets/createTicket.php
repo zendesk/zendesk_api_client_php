@@ -15,7 +15,7 @@ $client = new ZendeskAPI($subdomain);
 $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
 try {
-  // Create a new ticket wi
+    // Create a new ticket wi
   $newTicket = $client->tickets()->create(array(
     'type' => 'problem',
     'tags'  => array('demo', 'testing', 'api', 'zendesk'),
@@ -33,10 +33,8 @@ try {
 
   // Show result
   echo "<pre>";
-  print_r($newTicket);
-  echo "</pre>";
+    print_r($newTicket);
+    echo "</pre>";
+} catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
+    echo 'Please check your credentials. Make sure to change the $subdomain, $username, and $token variables in this file.';
 }
- catch (\Zendesk\API\Exceptions\ApiResponseException $e)
- {
-   echo 'Please check your credentials. Make sure to change the $subdomain, $username, and $token variables in this file.';
- }
