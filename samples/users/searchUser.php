@@ -15,24 +15,19 @@ use Zendesk\API\HttpClient as ZendeskAPI;
  $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
  try {
-      // Search the current customer
+     // Search the current customer
       $params = array('query' => 'demo@example.com');
-      $search = $client->users()->search($params);
+     $search = $client->users()->search($params);
       // verify if this email address exists
-      if(empty($search->users)) {
-        echo 'This email adress could not be found on Zendesk.';
+      if (empty($search->users)) {
+          echo 'This email adress could not be found on Zendesk.';
+      } else {
+          foreach ($search->users as $UserData) {
+              echo "<pre>";
+              print_r($UserData);
+              echo "</pre>";
+          }
       }
-      else{
-        foreach($search->users as $UserData)
-        {
-          echo "<pre>";
-          print_r($UserData);
-          echo "</pre>";
-        }
-      }
-    }
-
-    catch (\Zendesk\API\Exceptions\ApiResponseException $e)
-    {
-      echo 'Please check your credentials. Make sure to change the $subdomain, $username, and $token variables in this file.';
-    }
+ } catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
+     echo 'Please check your credentials. Make sure to change the $subdomain, $username, and $token variables in this file.';
+ }

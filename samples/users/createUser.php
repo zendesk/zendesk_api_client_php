@@ -15,7 +15,7 @@ use Zendesk\API\HttpClient as ZendeskAPI;
  $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
  try {
-   $query = $client->users()->create(
+     $query = $client->users()->create(
     [
      'name' => 'API Demo',
      'email' => 'demo@example.com',
@@ -27,10 +27,6 @@ use Zendesk\API\HttpClient as ZendeskAPI;
      echo "<pre>";
      print_r($query);
      echo "</pre>";
-
- }
-
- catch (\Zendesk\API\Exceptions\ApiResponseException $e)
- {
-   echo 'Please check your credentials. Make sure to change the $subdomain, $username, and $token variables in this file.';
+ } catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
+     echo 'Please check your credentials. Make sure to change the $subdomain, $username, and $token variables in this file.';
  }
