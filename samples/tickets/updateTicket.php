@@ -14,19 +14,19 @@ use Zendesk\API\HttpClient as ZendeskAPI;
  $client = new ZendeskAPI($subdomain);
  $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
- try {
-     // Update a new ticket
+try {
+    // Update a new ticket
     $updateTicket = $client->tickets()->update(41, [
-      'priority' => 'urgent',
-      'comment'  => [
-        'body' => 'We have changed your ticket priority to Urgent and will keep you up-to-date asap.'
-      ],
+    'priority' => 'urgent',
+    'comment'  => [
+      'body' => 'We have changed your ticket priority to Urgent and will keep you up-to-date asap.'
+    ],
     ]);
 
 // Show result
-echo "<pre>";
-     print_r($updateTicket);
-     echo "</pre>";
- } catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
-     echo 'Please check your credentials. Make sure to change the $subdomain, $username, and $token variables in this file.';
- }
+    echo "<pre>";
+    print_r($updateTicket);
+    echo "</pre>";
+} catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
+    echo 'Please check your credentials. Make sure to change the $subdomain, $username, and $token variables in this file.';
+}

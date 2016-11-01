@@ -16,7 +16,7 @@ $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
 try {
     // Create a new ticket wi
-  $newTicket = $client->tickets()->create(array(
+    $newTicket = $client->tickets()->create(array(
     'type' => 'problem',
     'tags'  => array('demo', 'testing', 'api', 'zendesk'),
     'subject'  => 'The quick brown fox jumps over the lazy dog',
@@ -29,10 +29,10 @@ try {
                 'email' => 'customer@example.com',
             ),
     'priority' => 'normal',
-  ));
+    ));
 
   // Show result
-  echo "<pre>";
+    echo "<pre>";
     print_r($newTicket);
     echo "</pre>";
 } catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
