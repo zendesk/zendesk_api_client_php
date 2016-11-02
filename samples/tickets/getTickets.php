@@ -15,12 +15,11 @@ use Zendesk\API\HttpClient as ZendeskAPI;
  $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
 try {
-    $id   = "1";
-      // Get all tickets
-      $tickets = $client->tickets()->findAll();
+    // Get all tickets
+    $tickets = $client->tickets()->findAll();
 
-      // Show the results
-      echo "<pre>";
+    // Show the results
+    echo "<pre>";
     print_r($tickets);
     echo "</pre>";
 } catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
