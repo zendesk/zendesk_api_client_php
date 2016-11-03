@@ -44,6 +44,7 @@
               <li><a href="samples/tickets/getTickets.php">Retrieve all tickets.</a></li>
               <li><a href="samples/tickets/viewTicket.php">Retrieve ticket details</a></li>
               <li><a href="samples/tickets/searchTickets.php">Retrieve tickets from the end-user email address</a></li>
+              <li><a href="samples/tickets/getTicketComments.php">Get all comments from a related ticket</a>
               <div class="clearfix">&nbsp;</div>
 
               <li><a href="samples/tickets/updateTicket.php">Update a ticket</a></li>
