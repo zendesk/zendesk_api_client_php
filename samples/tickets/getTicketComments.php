@@ -16,9 +16,8 @@ $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
 try {
     // Query the Zendesk API to retrieve the ticket comments
-
-      $id = 72;
-      $tickets = $client->tickets($id)->comments()->findAll();
+    $id = 72;
+    $tickets = $client->tickets($id)->comments()->findAll();
 
     // Show the results
     echo "<pre>";
