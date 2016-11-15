@@ -37,7 +37,7 @@ class ApiResponseException extends \Exception
             $message .= ' [body] ' . $request->getBody()->getContents();
         }
 
-        parent::__construct($message, $e->getCode());
+        parent::__construct($message, $e->getCode(), $e);
     }
 
     /**
