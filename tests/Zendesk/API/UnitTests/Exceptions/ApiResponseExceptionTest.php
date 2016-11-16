@@ -7,7 +7,9 @@ use Zendesk\API\Exceptions\ApiResponseException;
 
 class ApiResponseExceptionTest extends BasicTest
 {
-
+    /**
+     * Tests if previous exception was passed to ApiResponseException
+     */
     public function testPreviousException()
     {
         $message = 'The previous exception was not passed to ApiResponseException';
