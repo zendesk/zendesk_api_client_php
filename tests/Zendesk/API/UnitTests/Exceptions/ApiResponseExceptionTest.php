@@ -1,11 +1,11 @@
 <?php
 
-namespace Zendesk\API\UnitTests\Utilities;
+namespace Zendesk\API\UnitTests\Exceptions;
 
 use Zendesk\API\UnitTests\BasicTest;
 use Zendesk\API\Exceptions\ApiResponseException;
 
-class ExceptionsTest extends BasicTest
+class ApiResponseExceptionTest extends BasicTest
 {
 
     public function testPreviousException()
