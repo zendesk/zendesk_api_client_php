@@ -10,7 +10,7 @@ class ExceptionsTest extends BasicTest
 
     public function testPreviousException()
     {
-        $message = 'test if previous exception was correctly set on ApiResponseException';
+        $message = 'The previous exception was not passed to ApiResponseException';
         $mockException = $this
             ->getMockBuilder('GuzzleHttp\Exception\RequestException')
             ->disableOriginalConstructor()
