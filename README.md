@@ -102,6 +102,19 @@ $attachment = $client->attachments()->upload([
 ]);
 ```
 
+Attaching files to comments
+
+``` php
+$ticket = $client->tickets()->create([          
+    'subject' => 'The quick brown fox jumps over the lazy dog',      
+    'comment' => [                              
+        'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, ' .
+                  'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' 
+        'uploads'   => [$attachment->upload->token]                 
+    ]                                           
+]);
+```
+
 ### Side-loading
 
 Side-loading allows you to retrieve related records as part of a single request. See [the documentation] for more information. (https://developer.zendesk.com/rest_api/docs/core/side_loading).
