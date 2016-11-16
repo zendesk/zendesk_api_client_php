@@ -16,8 +16,7 @@ class ApiResponseExceptionTest extends BasicTest
         $mockException = $this
             ->getMockBuilder('GuzzleHttp\Exception\RequestException')
             ->disableOriginalConstructor()
-            ->getMock()
-        ;
+            ->getMock();
         $mockException->method('hasResponse')->willReturn(true);
         $apiException = new ApiResponseException($mockException);
         $previousException = $apiException->getPrevious();
