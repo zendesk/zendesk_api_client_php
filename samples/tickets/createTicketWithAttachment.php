@@ -7,10 +7,10 @@ use Zendesk\API\HttpClient as ZendeskAPI;
  * Replace the following with your own.
  */
 
-$subdomain  = "teasetoremember";
-$username   = "teasetoremember@mailinator.com";
-$token      = "MJLzg4N0pwL92a6D0u5IB9Mka5PX9OL4lLC5cGtl";
-$attachment = '/Volumes/workspace/zendesk_api_client_user/sample.jpg';
+$subdomain  = "subdomain";
+$username   = "email@example.com";
+$token      = "6wiIBWbGkBMo1mRDMuVwkw1EPsNkeUj95PIz2akv";
+$attachment = getcwd().'/sample.jpg';
 
 $client = new ZendeskAPI($subdomain);
 $client->setAuth('basic', ['username' => $username, 'token' => $token]);
