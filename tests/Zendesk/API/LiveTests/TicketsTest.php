@@ -283,4 +283,24 @@ class TicketsTest extends BasicTest
     {
         $this->client->tickets()->find(99999999);
     }
+
+    /**
+     * Test if a ticket with a group_id is assigned to the correct group.
+     */
+    public function testAssignTicketToGroup()
+    {
+        $faker = Factory::create();
+        $group = $this->client->groups()->create(['name' => $faker->word])->group;
+
+        $ticket = $this->createTestTicket([
+            'group_id' => $group->id,
+            'type' => 'problem',
+            'tags' => ['testing', 'api']
+        ]);
+
+        $this->assertEquals($group->id, $ticket->group_id);
+
+        $this->client->groups()->delete($group->id);
+        $this->client->tickets()->delete($ticket->id);
+    }
 }
