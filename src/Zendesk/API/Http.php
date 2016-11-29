@@ -82,7 +82,7 @@ class Http
         }
 
         try {
-            // enable unauthorized access to API
+            // enable anonymous access
             if ($client->getAuth()) {
                 list ($request, $requestOptions) = $client->getAuth()->prepareRequest($request, $requestOptions);
             }
