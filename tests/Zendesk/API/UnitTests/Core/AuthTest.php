@@ -2,7 +2,11 @@
 
 namespace Zendesk\API\UnitTests\Core;
 
+use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use Zendesk\API\Http;
+use Zendesk\API\HttpClient;
 use Zendesk\API\UnitTests\BasicTest;
 use Zendesk\API\Utilities\Auth;
 
@@ -11,6 +15,23 @@ use Zendesk\API\Utilities\Auth;
  */
 class AuthTest extends BasicTest
 {
+    /**
+     * Test if request is still sent even without auth details
+     */
+    public function testAnonymousAccess()
+    {
+        $client = $this
+            ->getMockBuilder(HttpClient::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $client->method('getHeaders')->willReturn([]);
+        $client->expects(self::once())->method('getAuth');
+
+        $client->guzzle = $this->getMockBuilder(Client::class)->getMock();
+        $client->guzzle->method('send')->willReturn(new Response);
+        Http::send($client, '');
+    }
+
     /**
      * Test the preparing of a request for basic authentication.
      */
