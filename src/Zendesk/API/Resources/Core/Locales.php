@@ -38,7 +38,7 @@ class Locales extends ResourceAbstract
      */
     public function findAllPublic(array $params = [])
     {
-        $this->findAll($params, __FUNCTION__);
+        return $this->findAll($params, __FUNCTION__);
     }
 
     /**
@@ -52,7 +52,7 @@ class Locales extends ResourceAbstract
      */
     public function findAllAgent(array $params = [])
     {
-        $this->findAll($params, __FUNCTION__);
+        return $this->findAll($params, __FUNCTION__);
     }
 
     /**
@@ -67,7 +67,7 @@ class Locales extends ResourceAbstract
      */
     public function findCurrent(array $params = [])
     {
-        $this->findAll($params, __FUNCTION__);
+        return $this->findAll($params, __FUNCTION__);
     }
 
     /**
@@ -81,6 +81,6 @@ class Locales extends ResourceAbstract
      */
     public function findBest(array $params = [])
     {
-        $this->findAll($params, __FUNCTION__);
+        return $this->findAll($params, __FUNCTION__);
     }
 }
