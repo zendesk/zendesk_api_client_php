@@ -16,17 +16,27 @@ use Zendesk\API\Utilities\Auth;
 class AuthTest extends BasicTest
 {
     /**
-     * Test if request is still sent even without auth details
+     * Test if request is still sent even without authentication
      */
     public function testAnonymousAccess()
     {
+        // mock client
         $client = $this
             ->getMockBuilder(HttpClient::class)
             ->disableOriginalConstructor()
             ->getMock();
         $client->method('getHeaders')->willReturn([]);
-        $client->expects(self::once())->method('getAuth');
+        $client->expects(self::once())->method('getAuth')->willReturn(null);
 
+        // prepareRequest should not be called
+        $auth = $this
+            ->getMockBuilder(Auth::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $auth->expects(self::never())->method('prepareRequest');
+        $client->expects(self::once())->method('getAuth')->willReturn($auth);
+
+        // send request
         $client->guzzle = $this->getMockBuilder(Client::class)->getMock();
         $client->guzzle->method('send')->willReturn(new Response);
         Http::send($client, '');
