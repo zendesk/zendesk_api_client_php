@@ -34,9 +34,11 @@ class OAuthClients extends ResourceAbstract
      * Find all oauth clients belonging to the logged in user.
      *
      * @param array $params
+     *
+     * @return \stdClass | null
      */
     public function findAllMine(array $params = [])
     {
-        $this->findAll($params, __FUNCTION__);
+        return $this->findAll($params, __FUNCTION__);
     }
 }
