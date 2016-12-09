@@ -34,5 +34,4 @@ try {
     }
 } catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
     echo $e->getMessage().'</br>';
-    echo 'Please check your credentials. Make sure to change the $subdomain, $username, and $token variables in this file.';
 }
