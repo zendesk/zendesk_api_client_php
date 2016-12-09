@@ -20,5 +20,5 @@ try {
     $deleteTicket = $client->tickets()->delete($id);
     echo "Ticket ($id) has been removed";
 } catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
-    echo 'Please check your credentials. Make sure to change the $subdomain, $username, and $token variables in this file.';
+    echo $e->getMessage().'</br>';
 }
