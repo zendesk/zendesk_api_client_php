@@ -23,12 +23,13 @@ The Zendesk PHP API client can be installed using [Composer](https://packagist.o
 
 ### Composer
 
-Inside of `composer.json` specify the following:
+To install run `composer require zendesk/zendesk_api_client_php` or
+inside of `composer.json` specify the following:
 
 ``` json
 {
   "require": {
-    "zendesk/zendesk_api_client_php": "dev-master"
+    "zendesk/zendesk_api_client_php": "^2.1"
   }
 }
 ```
