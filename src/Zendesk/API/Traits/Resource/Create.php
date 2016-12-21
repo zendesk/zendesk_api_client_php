@@ -24,6 +24,12 @@ trait Create
             }
 
             $route = $this->resourceName . '.json';
+            
+            if (isset($params['async']) && $params['async'] === true) {
+                $route .= '?async=true';
+                unset($params['async']);
+            }
+            
             $this->setRoute(__FUNCTION__, $route);
         }
 
