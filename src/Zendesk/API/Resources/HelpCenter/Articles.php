@@ -29,6 +29,7 @@ class Articles extends ResourceAbstract
         $this->setRoutes([
             'bulkAttach'            =>  "$this->resourceName/{articleId}/bulk_attachments.json",
             'updateSourceLocale'    =>  "$this->resourceName/{articleId}/source_locale.json",
+            'search'                =>  "$this->resourceName/search.json",
         ]);
     }
 
@@ -58,4 +59,17 @@ class Articles extends ResourceAbstract
             ['attachment_ids' => $params]
         );
     }
+
+    /**
+     * Searching requests
+     *
+     * @param array $queryParams
+     *
+     * @return \stdClass | null
+     */
+    public function search(array $queryParams)
+    {
+        return $this->client->get($this->getRoute(__FUNCTION__), $queryParams);
+    }
+
 }
