@@ -9,7 +9,7 @@ trait Create
     /**
      * Create a new resource
      *
-     * @param array  $params
+     * @param array $params
      *
      * @param string $routeKey
      * @return null|\stdClass
@@ -19,7 +19,7 @@ trait Create
         try {
             $route = $this->getRoute($routeKey, $params);
         } catch (RouteException $e) {
-            if (! isset($this->resourceName)) {
+            if (!isset($this->resourceName)) {
                 $this->resourceName = $this->getResourceNameFromClass();
             }
 
