@@ -180,8 +180,7 @@ class TicketsTest extends BasicTest
     }
     
     /**
-     * Tests if the client can call and build the create ticket witch attachment endpoint and initiate the file upload
-     * headers and POST data
+     * Tests that we can create the ticket with an async parameter which will add `async=true` to the query parameters 
      */
     public function testCreateAsync()
     {
