@@ -180,7 +180,7 @@ class TicketsTest extends BasicTest
     }
     
     /**
-     * Tests that we can create the ticket with an async parameter which will add `async=true` to the query parameters 
+     * Tests that we can create the ticket with an async parameter which will add `async=true` to the query parameters
      */
     public function testCreateAsync()
     {
