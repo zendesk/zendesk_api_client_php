@@ -86,6 +86,7 @@ class Tickets extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
+            'create'              => 'tickets.json',
             'findMany'            => 'tickets/show_many.json',
             'updateMany'          => 'tickets/update_many.json',
             'markAsSpam'          => 'tickets/{id}/mark_as_spam.json',
