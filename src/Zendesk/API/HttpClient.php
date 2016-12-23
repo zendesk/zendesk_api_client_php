@@ -428,6 +428,7 @@ class HttpClient
      * @param array $queryParams
      *
      * @return \stdClass | null
+     * @throws \Zendesk\API\Exceptions\AuthException
      * @throws Exceptions\ApiResponseException
      */
     public function get($endpoint, $queryParams = [])
@@ -454,18 +455,22 @@ class HttpClient
      * @param       $endpoint
      * @param array $postData
      *
-     * @return \stdClass | null
+     * @param array $options
+     * @return null|\stdClass
+     * @throws \Zendesk\API\Exceptions\AuthException
      * @throws Exceptions\ApiResponseException
      */
-    public function post($endpoint, $postData = [])
+    public function post($endpoint, $postData = [], $options = [])
     {
+        $extraOptions = array_merge($options, [
+            'postFields' => $postData,
+            'method' => 'POST'
+        ]);
+
         $response = Http::send(
             $this,
             $endpoint,
-            [
-                'postFields' => $postData,
-                'method'     => 'POST'
-            ]
+            $extraOptions
         );
 
         return $response;

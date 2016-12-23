@@ -140,7 +140,7 @@ class TicketsTest extends BasicTest
      */
     public function testCreateWithAttachment()
     {
-        $this->mockAPIResponses([
+        $this->mockApiResponses([
             new Response(200, [], json_encode(['upload' => ['token' => 'asdf']])),
             new Response(200, [], json_encode(['ticket' => ['id' => '123']])),
         ]);
@@ -176,6 +176,26 @@ class TicketsTest extends BasicTest
             'method'     => 'POST',
             'endpoint'   => 'tickets.json',
             'postFields' => $postFields,
+        ]);
+    }
+    
+    /**
+     * Tests if the client can call and build the create ticket witch attachment endpoint and initiate the file upload
+     * headers and POST data
+     */
+    public function testCreateAsync()
+    {
+        $this->mockApiResponses([
+            new Response(200, [], json_encode(['ticket' => ['id' => '123']])),
+        ]);
+
+        $this->testTicket['async'] = true;
+        $this->client->tickets()->create($this->testTicket);
+
+        $this->assertLastRequestIs([
+            'method'     => 'POST',
+            'endpoint'   => 'tickets.json',
+            'queryParams' => ['async' => true],
         ]);
     }
 
