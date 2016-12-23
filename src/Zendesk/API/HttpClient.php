@@ -429,7 +429,7 @@ class HttpClient
      *
      * @return \stdClass | null
      * @throws \Zendesk\API\Exceptions\AuthException
-     * @throws Exceptions\ApiResponseException
+     * @throws \Zendesk\API\Exceptions\ApiResponseException
      */
     public function get($endpoint, $queryParams = [])
     {
