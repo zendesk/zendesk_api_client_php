@@ -140,7 +140,7 @@ class TicketsTest extends BasicTest
      */
     public function testCreateWithAttachment()
     {
-        $this->mockAPIResponses([
+        $this->mockApiResponses([
             new Response(200, [], json_encode(['upload' => ['token' => 'asdf']])),
             new Response(200, [], json_encode(['ticket' => ['id' => '123']])),
         ]);
@@ -176,6 +176,25 @@ class TicketsTest extends BasicTest
             'method'     => 'POST',
             'endpoint'   => 'tickets.json',
             'postFields' => $postFields,
+        ]);
+    }
+    
+    /**
+     * Tests that we can create the ticket with an async parameter which will add `async=true` to the query parameters
+     */
+    public function testCreateAsync()
+    {
+        $this->mockApiResponses([
+            new Response(200, [], json_encode(['ticket' => ['id' => '123']])),
+        ]);
+
+        $this->testTicket['async'] = true;
+        $this->client->tickets()->create($this->testTicket);
+
+        $this->assertLastRequestIs([
+            'method'     => 'POST',
+            'endpoint'   => 'tickets.json',
+            'queryParams' => ['async' => true],
         ]);
     }
 

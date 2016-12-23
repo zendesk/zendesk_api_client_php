@@ -428,7 +428,8 @@ class HttpClient
      * @param array $queryParams
      *
      * @return \stdClass | null
-     * @throws Exceptions\ApiResponseException
+     * @throws \Zendesk\API\Exceptions\AuthException
+     * @throws \Zendesk\API\Exceptions\ApiResponseException
      */
     public function get($endpoint, $queryParams = [])
     {
@@ -454,18 +455,22 @@ class HttpClient
      * @param       $endpoint
      * @param array $postData
      *
-     * @return \stdClass | null
-     * @throws Exceptions\ApiResponseException
+     * @param array $options
+     * @return null|\stdClass
+     * @throws \Zendesk\API\Exceptions\AuthException
+     * @throws \Zendesk\API\Exceptions\ApiResponseException
      */
-    public function post($endpoint, $postData = [])
+    public function post($endpoint, $postData = [], $options = [])
     {
+        $extraOptions = array_merge($options, [
+            'postFields' => $postData,
+            'method' => 'POST'
+        ]);
+
         $response = Http::send(
             $this,
             $endpoint,
-            [
-                'postFields' => $postData,
-                'method'     => 'POST'
-            ]
+            $extraOptions
         );
 
         return $response;
@@ -478,7 +483,8 @@ class HttpClient
      * @param array $putData
      *
      * @return \stdClass | null
-     * @throws Exceptions\ApiResponseException
+     * @throws \Zendesk\API\Exceptions\AuthException
+     * @throws \Zendesk\API\Exceptions\ApiResponseException
      */
     public function put($endpoint, $putData = [])
     {
@@ -497,7 +503,8 @@ class HttpClient
      * @param $endpoint
      *
      * @return null
-     * @throws Exceptions\ApiResponseException
+     * @throws \Zendesk\API\Exceptions\AuthException
+     * @throws \Zendesk\API\Exceptions\ApiResponseException
      */
     public function delete($endpoint)
     {
