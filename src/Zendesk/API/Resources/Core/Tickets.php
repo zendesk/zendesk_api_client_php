@@ -138,6 +138,8 @@ class Tickets extends ResourceAbstract
      * @throws ResponseException
      * @throws \Exception
      * @return \stdClass | null
+     * @throws \Zendesk\API\Exceptions\AuthException
+     * @throws \Zendesk\API\Exceptions\ApiResponseException
      */
     public function create(array $params)
     {
@@ -146,15 +148,22 @@ class Tickets extends ResourceAbstract
             $this->lastAttachments        = [];
         }
         
+        $extraOptions = [];
         if (isset($params['async']) && ($params['async'] == true)) {
-            $params['extraOptions'] = [
+            $extraOptions = [
                 'queryParams' => [
                     'async' => true
                 ]
             ];
         }
 
-        return $this->traitCreate($params);
+        $route = $this->getRoute(__FUNCTION__, $params);
+
+        return $this->client->post(
+            $route,
+            [$this->objectName => $params],
+            $extraOptions
+        );
     }
 
     /**

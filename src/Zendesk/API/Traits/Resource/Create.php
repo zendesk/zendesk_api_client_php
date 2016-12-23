@@ -29,8 +29,7 @@ trait Create
 
         return $this->client->post(
             $route,
-            [$this->objectName => $params],
-            isset($params['extraOptions']) ? $params['extraOptions'] : []
+            [$this->objectName => $params]
         );
     }
 }
