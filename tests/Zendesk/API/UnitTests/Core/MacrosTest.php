@@ -14,6 +14,17 @@ class MacrosTest extends BasicTest
      * Test the `GET /api/v2/macros/active.json` endpoint
      * Lists active macros for the current user
      */
+    public function testShowMacro()
+    {
+        $this->assertEndpointCalled(function () use ($id) {
+            $this->client->macros()->showMacro($id);
+        }, "macros/{$id}.json");
+    }
+
+    /**
+     * Test the `GET /api/v2/macros/active.json` endpoint
+     * Lists active macros for the current user
+     */
     public function testActive()
     {
         $this->assertEndpointCalled(function () {
