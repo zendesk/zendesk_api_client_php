@@ -16,6 +16,8 @@ class MacrosTest extends BasicTest
      */
     public function testShowMacro()
     {
+        $id = 1;
+        
         $this->assertEndpointCalled(function () use ($id) {
             $this->client->macros()->showMacro($id);
         }, "macros/{$id}.json");
