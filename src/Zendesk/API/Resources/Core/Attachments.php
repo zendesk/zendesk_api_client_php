@@ -62,6 +62,10 @@ class Attachments extends ResourceAbstract
             $queryParams['token'] = $params['token'];
         }
 
+        if (isset($params['inline'])) {
+            $queryParams['inline'] = $params['inline'];
+        }
+
         $response = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__),
