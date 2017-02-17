@@ -21,7 +21,7 @@ class Macros extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
-            'showMacro'     => 'macros/{id}.json',
+            'find'     => 'macros/{id}.json',
             'findAllActive' => 'macros/active.json',
             'apply'         => 'macros/{id}/apply.json',
             'applyToTicket' => 'tickets/{ticketId}/macros/{id}/apply.json',

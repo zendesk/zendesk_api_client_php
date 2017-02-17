@@ -5,7 +5,6 @@ namespace Zendesk\API\UnitTests\Core;
 use Zendesk\API\UnitTests\BasicTest;
 use Zendesk\API\Exceptions\MissingParametersException;
 
-
 /**
  * Macros test class
  * Class MacrosTest
