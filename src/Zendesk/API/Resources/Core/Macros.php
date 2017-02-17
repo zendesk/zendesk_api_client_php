@@ -42,7 +42,7 @@ class Macros extends ResourceAbstract
     }
 
     /**
-     * Returns the full macro object
+     * Returns a full macro object
      *
      * @param $id
      *
@@ -51,7 +51,7 @@ class Macros extends ResourceAbstract
      * @throws \Exception
      * @throws \Zendesk\API\Exceptions\ResponseException
      */
-    public function showMacro($id)
+    public function find($id)
     {
         if (empty($id)) {
             $id = $this->getChainedParameter(get_class($this));

@@ -11,6 +11,7 @@ use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit_Framework_TestCase;
 use Zendesk\API\HttpClient;
+use Faker\Factory;
 
 /**
  * Basic test class
@@ -21,6 +22,10 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
      * @var HttpClient
      */
     protected $client;
+    /**
+     * @var Faker\Factory
+     */
+    protected $faker;
     /**
      * @var string
      */
@@ -78,6 +83,9 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
     {
         $this->client = new HttpClient($this->subdomain, $this->username, $this->scheme, $this->hostname, $this->port);
         $this->client->setAuth('oauth', ['token' => $this->oAuthToken]);
+
+        // set up the Faker instance
+        $this->faker = Factory::create();
     }
 
     /**
