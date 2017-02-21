@@ -56,7 +56,7 @@ class Users extends ResourceAbstract
 
         $this->setRoutes([
             'related'                    => 'users/{id}/related.json',
-            'merge'                      => 'users/me/merge.json',
+            'merge'                      => 'users/{id}/merge.json',
             'search'                     => 'users/search.json',
             'autocomplete'               => 'users/autocomplete.json',
             'setPassword'                => 'users/{id}/password.json',
@@ -164,7 +164,7 @@ class Users extends ResourceAbstract
     }
 
     /**
-     * Merge the specified user (???)
+     * Merge user (by default yourself) with the specified user
      *
      * @param array $params
      *
@@ -175,17 +175,26 @@ class Users extends ResourceAbstract
      */
     public function merge(array $params = [])
     {
-        $myId    = $this->getChainedParameter(get_class($this));
-        $mergeMe = ! isset($myId) || is_null($myId);
-        $hasKeys = $mergeMe ? ['email', 'password'] : ['id'];
+        $mergeMe = ! isset($params['mergingId']);
+        $hasKeys = $mergeMe ? ['email', 'password'] : ['id', 'mergingId'];
+
         if (! $this->hasKeys($params, $hasKeys)) {
             throw new MissingParametersException(__METHOD__, $hasKeys);
         }
 
+        $routeReplace = $mergeMe ? 'me' : $params['id'];
+
+        if (! $mergeMe) {
+            $params['id'] = $params['mergingId'];
+            unset($params['mergingId']);
+        }
+
         $response = Http::send(
             $this->client,
-            $this->getRoute(__FUNCTION__),
-            ['postFields' => [$this->objectName => $params], 'method' => 'PUT']
+            $this->getRoute(__FUNCTION__, [
+                'id' => $routeReplace,
+            ]),
+            ['postFields' => ['user' => $params], 'method' => 'PUT']
         );
 
         return $response;
