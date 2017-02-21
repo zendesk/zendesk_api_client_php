@@ -62,7 +62,7 @@ class Attachments extends ResourceAbstract
             $queryParams['token'] = $params['token'];
         }
 
-        if (isset($params['inline'])) {
+        if (isset($params['inline']) && $params['inline']) {
             $queryParams['inline'] = $params['inline'];
         }
 
