@@ -194,7 +194,7 @@ class Users extends ResourceAbstract
             $this->getRoute(__FUNCTION__, [
                 'id' => $routeReplace,
             ]),
-            ['postFields' => ['user' => $params], 'method' => 'PUT']
+            ['postFields' => [$this->objectName => $params], 'method' => 'PUT']
         );
 
         return $response;
