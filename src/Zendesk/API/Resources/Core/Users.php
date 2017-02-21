@@ -175,7 +175,8 @@ class Users extends ResourceAbstract
      */
     public function merge(array $params = [])
     {
-        $mergeMe = ! isset($params['mergingId']);
+        $myId    = $this->getChainedParameter(get_class($this));
+        $mergeMe = ($myId === 'me');
         $hasKeys = $mergeMe ? ['email', 'password'] : ['id', 'mergingId'];
 
         if (! $this->hasKeys($params, $hasKeys)) {
