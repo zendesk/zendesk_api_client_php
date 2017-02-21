@@ -40,7 +40,10 @@ class UsersTest extends BasicTest
      */
     public function testMerge()
     {
-        $postFields = ['id' => 12345];
+        $postFields = [
+            'email' => 'thecustomer@domain.com',
+            'password' => '123456',
+        ];
 
         $this->assertEndpointCalled(function () use ($postFields) {
             $this->client->users('me')->merge($postFields);
