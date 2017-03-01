@@ -93,7 +93,7 @@ class Http
         } finally {
             $client->setDebug(
                 $request->getHeaders(),
-                $request->getBody()->getContents(),
+                $request->getBody(),
                 isset($response) ? $response->getStatusCode() : null,
                 isset($response) ? $response->getHeaders() : null,
                 isset($e) ? $e : null
@@ -108,6 +108,6 @@ class Http
 
         $client->setSideload(null);
 
-        return json_decode($response->getBody()->getContents());
+        return json_decode($response->getBody());
     }
 }
