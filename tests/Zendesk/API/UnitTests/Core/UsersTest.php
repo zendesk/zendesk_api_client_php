@@ -36,7 +36,7 @@ class UsersTest extends BasicTest
     }
 
     /**
-     * Tests if the nerge enpoint can be called by the client and is passed the correct data
+     * Tests if the merge endpoint can be called by the client and is passed the correct data
      */
     public function testMerge()
     {
@@ -48,6 +48,50 @@ class UsersTest extends BasicTest
         $this->assertEndpointCalled(function () use ($postFields) {
             $this->client->users('me')->merge($postFields);
         }, 'users/me/merge.json', 'PUT', ['postFields' => ['user' => $postFields]]);
+    }
+
+    /**
+     * Tests if the merge endpoint can be called with admin params and is passed the correct data
+     */
+    public function testAdminMerge()
+    {
+        $userId = 12345;
+        $mergingId = 123456;
+
+        $params = [
+            'id' => $userId,
+            'mergingId' => $mergingId,
+        ];
+
+        $postFields = [
+            'id' => $mergingId,
+        ];
+
+        $this->assertEndpointCalled(function () use ($postFields, $params, $userId) {
+            $this->client->users()->merge($params);
+        }, "users/{$userId}/merge.json", 'PUT', ['postFields' => ['user' => $postFields]]);
+    }
+
+
+    /**
+     * Tests if the admin merge endpoint can be called with admin params and chained UserID parameter and is passed the correct data
+     */
+    public function testAdminMergeChained()
+    {
+        $userId = 12345;
+        $mergingId = 123456;
+
+        $params = [
+            'mergingId' => $mergingId,
+        ];
+
+        $postFields = [
+            'id' => $mergingId,
+        ];
+
+        $this->assertEndpointCalled(function () use ($postFields, $params, $userId) {
+            $this->client->users($userId)->merge($params);
+        }, "users/{$userId}/merge.json", 'PUT', ['postFields' => ['user' => $postFields]]);
     }
 
     /**
