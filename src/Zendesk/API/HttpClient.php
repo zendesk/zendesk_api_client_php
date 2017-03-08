@@ -105,8 +105,6 @@ use Zendesk\API\Utilities\Auth;
  */
 class HttpClient
 {
-    const VERSION = '2.1.2';
-
     use InstantiatorTrait;
 
     /**
@@ -311,7 +309,7 @@ class HttpClient
      */
     public function getUserAgent()
     {
-        return 'ZendeskAPI PHP ' . self::VERSION;
+        return 'ZendeskAPI PHP ' . file_get_contents(__DIR__ . '/../../../VERSION');
     }
 
     /**
