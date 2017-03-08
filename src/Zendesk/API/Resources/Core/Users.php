@@ -175,8 +175,8 @@ class Users extends ResourceAbstract
      */
     public function merge(array $params = [])
     {
-        $myId    = $this->getChainedParameter(get_class($this));
-        $mergeMe = ($myId === 'me');
+        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
+        $mergeMe = ($this->getChainedParameter(get_class($this)) === 'me');
         $hasKeys = $mergeMe ? ['email', 'password'] : ['id', 'mergingId'];
 
         if (! $this->hasKeys($params, $hasKeys)) {
@@ -188,6 +188,8 @@ class Users extends ResourceAbstract
         if (! $mergeMe) {
             $params['id'] = $params['mergingId'];
             unset($params['mergingId']);
+        } else {
+            unset($params['id']);
         }
 
         $response = Http::send(
