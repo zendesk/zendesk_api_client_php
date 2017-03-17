@@ -12,11 +12,15 @@
     "phpunit/phpunit": "4.5.*",
     "squizlabs/php_codesniffer": "2.*",
     "phpmd/phpmd": "@stable",
-    "fzaninotto/faker": ">=1.5.0"
+    "fzaninotto/faker": ">=1.5.0",
+    "psy/psysh": "@stable",
+    "symfony/console": "~2.3|~3.0",
+    "symfony/process": "~2.3|~3.0"
   },
   "autoload": {
     "psr-0": {
-      "Zendesk\\API\\": "src/"
+      "Zendesk\\API\\": "src/",
+      "Zendesk\\": "bin/"
     }
   }
 }
