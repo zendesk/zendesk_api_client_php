@@ -175,27 +175,18 @@ class Users extends ResourceAbstract
      */
     public function merge(array $params = [])
     {
-        $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
-        $mergeMe = ($this->getChainedParameter(get_class($this)) === 'me');
-        $hasKeys = $mergeMe ? ['email', 'password'] : ['id', 'mergingId'];
+        $id = $this->getChainedParameter(get_class($this));
+        $mergeMe = ($id === null || $id === 'me');
+        $hasKeys = $mergeMe ? ['email', 'password'] : ['id'];
 
         if (! $this->hasKeys($params, $hasKeys)) {
             throw new MissingParametersException(__METHOD__, $hasKeys);
         }
 
-        $routeReplace = $mergeMe ? 'me' : $params['id'];
-
-        if (! $mergeMe) {
-            $params['id'] = $params['mergingId'];
-            unset($params['mergingId']);
-        } else {
-            unset($params['id']);
-        }
-
         $response = Http::send(
             $this->client,
             $this->getRoute(__FUNCTION__, [
-                'id' => $routeReplace,
+                'id' => $mergeMe ? 'me' : $id,
             ]),
             ['postFields' => [$this->objectName => $params], 'method' => 'PUT']
         );
