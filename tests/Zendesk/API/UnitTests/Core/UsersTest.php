@@ -36,16 +36,37 @@ class UsersTest extends BasicTest
     }
 
     /**
-     * Tests if the nerge enpoint can be called by the client and is passed the correct data
+     * Tests if the merge endpoint can be called by the client and is passed the correct data
      */
     public function testMerge()
     {
-        $postFields = ['id' => 12345];
+        $postFields = [
+            'email' => 'thecustomer@domain.com',
+            'password' => '123456',
+        ];
 
         $this->assertEndpointCalled(function () use ($postFields) {
-            $this->client->users('me')->merge($postFields);
+            $this->client->users()->merge($postFields);
         }, 'users/me/merge.json', 'PUT', ['postFields' => ['user' => $postFields]]);
     }
+
+    /**
+     * Tests if the merge endpoint can be called with admin params and is passed the correct data
+     */
+    public function testAdminMerge()
+    {
+        $userId = 12345;
+        $mergingId = 123456;
+
+        $postFields = [
+            'id' => $mergingId,
+        ];
+
+        $this->assertEndpointCalled(function () use ($userId, $postFields) {
+            $this->client->users($userId)->merge($postFields);
+        }, "users/{$userId}/merge.json", 'PUT', ['postFields' => ['user' => $postFields]]);
+    }
+
 
     /**
      * Tests if the suspend enpoint can be called by the client and is passed the correct ID
