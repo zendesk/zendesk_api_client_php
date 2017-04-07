@@ -4,6 +4,7 @@ namespace Zendesk\API\Resources;
 
 use Zendesk\API\HttpClient;
 use Zendesk\API\Resources\HelpCenter\Categories;
+use Zendesk\API\Resources\HelpCenter\Sections;
 use Zendesk\API\Resources\HelpCenter\Articles;
 use Zendesk\API\Traits\Utility\ChainedParametersTrait;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
@@ -38,6 +39,7 @@ class HelpCenter
     {
         return [
             'categories'    => Categories::class,
+            'sections'      => Sections::class,
             'articles'      => Articles::class,
         ];
     }
