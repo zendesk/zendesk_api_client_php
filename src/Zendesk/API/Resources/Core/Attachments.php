@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\Resources\Core;
 
+use Psr\Http\Message\StreamInterface;
 use Zendesk\API\Exceptions\CustomException;
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Http;
@@ -49,8 +50,12 @@ class Attachments extends ResourceAbstract
     {
         if (! $this->hasKeys($params, ['file'])) {
             throw new MissingParametersException(__METHOD__, ['file']);
-        } elseif (! file_exists($params['file'])) {
+        } elseif (! $params['file'] instanceof StreamInterface && ! file_exists($params['file'])) {
             throw new CustomException('File ' . $params['file'] . ' could not be found in ' . __METHOD__);
+        }
+
+        if (! isset($params['name']) && $params['file'] instanceof StreamInterface) {
+            $params['name'] = basename($params['file']->getMetadata('uri'));
         }
 
         if (! isset($params['name'])) {
