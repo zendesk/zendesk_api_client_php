@@ -8,6 +8,7 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Stream;
 use Zendesk\API\Http;
 use Zendesk\API\HttpClient;
 
@@ -22,11 +23,8 @@ class HttpTest extends BasicTest
     {
         $faker = Factory::create();
 
-        $statusCode = $faker->numberBetween(100, 599);
-        $request = new Request('GET', '/');
-        $response = new Response($statusCode);
         $exceptionMessage = $faker->sentence;
-        $exception = new RequestException($exceptionMessage, $request, $response);
+        $exception = $this->mockRequestException($exceptionMessage);
 
         $guzzleClient = $this->getMockBuilder(GuzzleClient::class)
                       ->disableOriginalConstructor()
@@ -62,5 +60,31 @@ class HttpTest extends BasicTest
 
             throw $e;
         }
+    }
+
+    /**
+     * Create a mocked RequestExcpetion
+     *
+     * @param string $message
+     *
+     * @return RequestException
+     */
+    private function mockRequestException($message)
+    {
+        $request = $this->getMockBuilder(Request::class)
+                 ->disableOriginalConstructor()
+                 ->getMock();
+        $response = $this->getMockBuilder(Response::class)
+                  ->disableOriginalConstructor()
+                  ->getMock();
+        $body = $this->getMockBuilder(Stream::class)
+                      ->disableOriginalConstructor()
+                      ->getMock();
+        $request->method('getBody')
+            ->will($this->returnValue($body));
+        $response->method('getBody')
+            ->will($this->returnValue($body));
+
+        return new RequestException($message, $request, $response);
     }
 }
