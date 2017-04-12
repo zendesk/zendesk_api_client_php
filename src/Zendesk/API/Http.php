@@ -88,7 +88,7 @@ class Http
             }
             $response = $client->guzzle->send($request, $requestOptions);
         } catch (RequestException $e) {
-            $requestException = RequestException::create($e->getRequest(), $e->getResponse());
+            $requestException = RequestException::create($e->getRequest(), $e->getResponse(), $e);
             throw new ApiResponseException($requestException);
         } finally {
             $client->setDebug(
