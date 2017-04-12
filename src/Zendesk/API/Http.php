@@ -102,10 +102,6 @@ class Http
             $request->getBody()->rewind();
         }
 
-        if (isset($file)) {
-            fclose($file);
-        }
-
         $client->setSideload(null);
 
         return json_decode($response->getBody());
