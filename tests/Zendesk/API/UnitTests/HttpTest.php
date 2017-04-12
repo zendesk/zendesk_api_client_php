@@ -16,8 +16,6 @@ class HttpTest extends BasicTest
 {
     /**
      * Test that original request exception is preserved.
-     *
-     * @expectedException Zendesk\API\Exceptions\ApiResponseException
      */
     public function testOriginalRequestExceptionIsPreserved()
     {
@@ -57,8 +55,6 @@ class HttpTest extends BasicTest
             $originalException = $e->getPrevious()->getPrevious();
             $this->assertNotNull($originalException);
             $this->assertEquals($originalException->getMessage(), $exceptionMessage);
-
-            throw $e;
         }
     }
 
