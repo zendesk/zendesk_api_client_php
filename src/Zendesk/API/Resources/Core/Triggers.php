@@ -17,6 +17,7 @@ class Triggers extends ResourceAbstract
     protected function setUpRoutes()
     {
         $this->setRoute('findActive', "{$this->resourceName}/active.json");
+        $this->setRoute('find', "{$this->resourceName}/{id}");
     }
 
     /**
