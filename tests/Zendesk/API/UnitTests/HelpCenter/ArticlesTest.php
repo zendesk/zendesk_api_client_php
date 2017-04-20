@@ -66,6 +66,9 @@ class ArticlesTest extends BasicTest
         }, 'help_center/articles/1/source_locale.json', 'PUT', ['postFields' => ['article_locale' => 'fr']]);
     }
 
+    /**
+     * Tests if the Search on Articles accesses the correct endpoint and that it uses the params provided
+     */
     public function testSearch()
     {
         $faker = Factory::create();
