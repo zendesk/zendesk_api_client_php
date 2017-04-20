@@ -2,7 +2,7 @@
 
 namespace Zendesk\API\UnitTests\HelpCenter;
 
-use Zendesk\API\Resources\HelpCenter\Categories;
+use Faker\Factory;
 use Zendesk\API\UnitTests\BasicTest;
 
 class ArticlesTest extends BasicTest
@@ -64,5 +64,15 @@ class ArticlesTest extends BasicTest
         $this->assertEndpointCalled(function () {
             $this->client->helpCenter->articles(1)->updateSourceLocale(null, 'fr');
         }, 'help_center/articles/1/source_locale.json', 'PUT', ['postFields' => ['article_locale' => 'fr']]);
+    }
+
+    public function testSearch()
+    {
+        $faker = Factory::create();
+        $params = ['query' => $faker->word];
+
+        $this->assertEndpointCalled(function () use ($params) {
+            $this->client->helpCenter->articles()->search($params);
+        }, 'help_center/articles/search.json', 'GET', ['queryParams' => $params]);
     }
 }
