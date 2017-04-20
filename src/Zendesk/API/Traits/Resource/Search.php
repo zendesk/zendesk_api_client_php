@@ -21,8 +21,8 @@ trait Search
                 $this->resourceName = $this->getResourceNameFromClass();
             }
 
-            $this->setRoute(__FUNCTION__, $this->resourceName . '/search.json');
-            $route = $this->getRoute(__FUNCTION__, $params);
+            $route = $this->resourceName . '/search.json';
+            $this->setRoute(__FUNCTION__, $route);
         }
 
         return $this->client->get($route, $params);
