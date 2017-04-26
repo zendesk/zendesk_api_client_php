@@ -60,6 +60,12 @@
               <li><a href="samples/users/searchUser.php">Search end-user</a></li>
             </ul>
 
+            <strong>Attachments</strong>
+            <ul>
+              <li><a href="samples/attachments/uploadFileAttachment.php">Upload a file attachment</a></li>
+              <li><a href="samples/attachments/uploadStreamAttachment.php">Upload a stream attachment</a></li>
+            </ul>
+
             <div class="clearfix">&nbsp;</div>
 
         </div>
