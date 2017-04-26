@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\UnitTests\Core;
 
+use GuzzleHttp\Psr7\LazyOpenStream;
 use Zendesk\API\UnitTests\BasicTest;
 
 /**
@@ -41,6 +42,53 @@ class AttachmentsTest extends BasicTest
     {
         $attachmentData = [
             'file' => getcwd() . '/tests/assets/UK.png',
+            'type' => 'image/png',
+        ];
+
+        $this->assertEndpointCalled(
+            function () use ($attachmentData) {
+                $this->client->attachments()->upload($attachmentData);
+            },
+            'uploads.json',
+            'POST',
+            [
+                'queryParams' => ['filename' => 'UK.png'], // Taken from file path
+                'file'        => $attachmentData['file'],
+            ]
+        );
+    }
+
+    /**
+     * Test upload of file stream
+     */
+    public function testUploadAttachmentStream()
+    {
+        $attachmentData = [
+            'file' => new LazyOpenStream(getcwd() . '/tests/assets/UK.png', 'r'),
+            'type' => 'image/png',
+            'name' => 'UK test non-alpha chars.png'
+        ];
+
+        $this->assertEndpointCalled(
+            function () use ($attachmentData) {
+                $this->client->attachments()->upload($attachmentData);
+            },
+            'uploads.json',
+            'POST',
+            [
+                'queryParams' => ['filename' => rawurlencode($attachmentData['name'])],
+                'file'        => $attachmentData['file'],
+            ]
+        );
+    }
+
+    /**
+     * Test upload of file stream with no name
+     */
+    public function testUploadAttachmentStreamWithNoName()
+    {
+        $attachmentData = [
+            'file' => new LazyOpenStream(getcwd() . '/tests/assets/UK.png', 'r'),
             'type' => 'image/png',
         ];
 
