@@ -50,16 +50,19 @@ class Attachments extends ResourceAbstract
     {
         if (! $this->hasKeys($params, ['file'])) {
             throw new MissingParametersException(__METHOD__, ['file']);
-        } elseif (! $params['file'] instanceof StreamInterface && ! file_exists($params['file'])) {
+        }
+
+        $isFileStream = $params['file'] instanceof StreamInterface;
+        if (! $isFileStream  && ! file_exists($params['file'])) {
             throw new CustomException('File ' . $params['file'] . ' could not be found in ' . __METHOD__);
         }
 
-        if (! isset($params['name']) && $params['file'] instanceof StreamInterface) {
-            $params['name'] = basename($params['file']->getMetadata('uri'));
-        }
-
         if (! isset($params['name'])) {
-            $params['name'] = basename($params['file']);
+            if ($isFileStream) {
+                $params['name'] = basename($params['file']->getMetadata('uri'));
+            } else {
+                $params['name'] = basename($params['file']);
+            }
         }
 
         $queryParams = ['filename' => $params['name']];
