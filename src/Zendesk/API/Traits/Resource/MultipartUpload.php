@@ -44,7 +44,8 @@ trait MultipartUpload
             throw new MissingParametersException(__METHOD__, ['file']);
         }
 
-        if (! $params['file'] instanceof StreamInterface && ! file_exists($params['file'])) {
+        $isFileStream = $params['file'] instanceof StreamInterface;
+        if (! $isFileStream && ! file_exists($params['file'])) {
             throw new CustomException('File ' . $params['file'] . ' could not be found in ' . __METHOD__);
         }
 
@@ -59,7 +60,7 @@ trait MultipartUpload
             $route = $this->resourceName . '/uploads.json';
         }
 
-        if ($params['file'] instanceof StreamInterface) {
+        if ($isFileStream) {
             $filename = $params['file']->getMetadata('uri');
             $stream = $params['file'];
         } else {
