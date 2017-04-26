@@ -6,10 +6,10 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
-use GuzzleHttp\Psr7\LazyOpenStream;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Response;
 use PHPUnit_Framework_TestCase;
+use Psr\Http\Message\StreamInterface;
 use Zendesk\API\HttpClient;
 
 /**
@@ -150,11 +150,15 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
 
         if (isset($options['file'])) {
             $body = $request->getBody();
-            $this->assertInstanceOf(LazyOpenStream::class, $body);
+            $this->assertInstanceOf(StreamInterface::class, $body);
             $this->assertGreaterThan(0, $body->getSize());
-            $this->assertEquals($options['file'], $body->getMetadata('uri'));
             $this->assertNotEmpty($header = $request->getHeaderLine('Content-Type'));
             $this->assertEquals('application/binary', $header);
+            if ($options['file'] instanceof StreamInterface) {
+                $this->assertEquals($options['file']->getMetadata('uri'), $body->getMetadata('uri'));
+            } else {
+                $this->assertEquals($options['file'], $body->getMetadata('uri'));
+            }
             unset($options['headers']['Content-Type']);
         }
 
