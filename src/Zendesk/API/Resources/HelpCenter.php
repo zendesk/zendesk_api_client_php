@@ -12,6 +12,7 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
  * This class serves as a container to allow $this->client->helpCenter
  *
  * @method Categories categories()
+ * @method Articles articles()
  */
 class HelpCenter
 {
