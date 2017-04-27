@@ -1,4 +1,5 @@
 <?php
+
 include("../../vendor/autoload.php");
 
 use Zendesk\API\HttpClient as ZendeskAPI;
@@ -17,10 +18,10 @@ use Zendesk\API\HttpClient as ZendeskAPI;
 try {
     // Update a new ticket
     $updateTicket = $client->tickets()->update(41, [
-    'priority' => 'urgent',
-    'comment'  => [
-      'body' => 'We have changed your ticket priority to Urgent and will keep you up-to-date asap.'
-    ],
+        'priority' => 'urgent',
+        'comment'  => [
+            'body' => 'We have changed your ticket priority to Urgent and will keep you up-to-date asap.'
+        ],
     ]);
 
 // Show result
