@@ -1,4 +1,5 @@
 <?php
+
 include("../../vendor/autoload.php");
 
 use Zendesk\API\HttpClient as ZendeskAPI;
@@ -26,7 +27,7 @@ try {
             $UserId = $UserData->id;
             $tickets = $client->users($UserId)->requests()->findAll();
 
-      // Show the results
+            // Show the results
             echo "<pre>";
             print_r($tickets);
             echo "</pre>";

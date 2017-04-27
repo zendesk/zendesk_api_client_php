@@ -1,4 +1,5 @@
 <?php
+
 include("../../vendor/autoload.php");
 
 use Zendesk\API\HttpClient as ZendeskAPI;
@@ -15,20 +16,20 @@ $client = new ZendeskAPI($subdomain);
 $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
 try {
-    // Create a new ticket wi
+    // Create a new ticket
     $newTicket = $client->tickets()->create(array(
-    'type' => 'problem',
-    'tags'  => array('demo', 'testing', 'api', 'zendesk'),
-    'subject'  => 'The quick brown fox jumps over the lazy dog',
-    'comment'  => array(
-                'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
-                 ),
-                'requester' => array(
-                'locale_id' => '1',
-                'name' => 'Example User',
-                'email' => 'customer@example.com',
-            ),
-    'priority' => 'normal',
+        'type' => 'problem',
+        'tags'  => array('demo', 'testing', 'api', 'zendesk'),
+        'subject'  => 'The quick brown fox jumps over the lazy dog',
+        'comment'  => array(
+            'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.'
+        ),
+        'requester' => array(
+            'locale_id' => '1',
+            'name' => 'Example User',
+            'email' => 'customer@example.com',
+        ),
+        'priority' => 'normal',
     ));
 
   // Show result
