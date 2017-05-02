@@ -1,4 +1,5 @@
 <?php
+
 include("../../vendor/autoload.php");
 
 use Zendesk\API\HttpClient as ZendeskAPI;
@@ -24,7 +25,7 @@ try {
     ]);
 
     // Create a new ticket with attachment
-    $newTicket = $client->tickets()->create(array(
+    $newTicket = $client->tickets()->create([
         'type' => 'problem',
         'tags'  => array('demo', 'testing', 'api', 'zendesk'),
         'subject'  => 'The quick brown fox jumps over the lazy dog',
@@ -38,7 +39,7 @@ try {
             'email' => 'customer@example.com',
         ),
         'priority' => 'normal',
-    ));
+    ]);
 
     // Show result
     echo "<pre>";

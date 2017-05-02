@@ -16,14 +16,12 @@ $client = new ZendeskAPI($subdomain);
 $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
 try {
-    // Query Zendesk API to retrieve the ticket details
-
+    // Find all metrics for a given ticket
     $id = 1;
-    $tickets = $client->tickets()->find($id);
+    $metrics = $client->tickets($id)->metrics()->findAll();
 
-    // Show the results
     echo "<pre>";
-    print_r($tickets->ticket);
+    print_r($metrics);
     echo "</pre>";
 } catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
     echo $e->getMessage().'</br>';
