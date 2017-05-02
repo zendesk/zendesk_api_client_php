@@ -9,15 +9,16 @@ use Zendesk\API\HttpClient as ZendeskAPI;
  */
 
 $subdomain = "subdomain";
-$username  = "email@example.com";
-$token     = "6wiIBWbGkBMo1mRDMuVwkw1EPsNkeUj95PIz2akv";
+$username = "email@example.com";
+$token = "6wiIBWbGkBMo1mRDMuVwkw1EPsNkeUj95PIz2akv";
 
 $client = new ZendeskAPI($subdomain);
 $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
 try {
     // Find all metrics for a given ticket
-    $metrics = $client->tickets(850)->metrics()->findAll();
+    $id = 1;
+    $metrics = $client->tickets($id)->metrics()->findAll();
 
     echo "<pre>";
     print_r($metrics);
