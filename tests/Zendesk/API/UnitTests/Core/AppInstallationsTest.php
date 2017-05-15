@@ -92,7 +92,7 @@ class AppInstallationsTest extends BasicTest
             ]
         ];
 
-        $id = $faker->randomNumber();
+        $id = $faker->randomNumber(null, true);
 
         $this->assertEndpointCalled(function () use ($id, $params) {
             $this->client->appInstallations()->update($id, $params);
