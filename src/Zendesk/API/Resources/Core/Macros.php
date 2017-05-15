@@ -21,6 +21,7 @@ class Macros extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
+            'find'     => 'macros/{id}.json',
             'findAllActive' => 'macros/active.json',
             'apply'         => 'macros/{id}/apply.json',
             'applyToTicket' => 'tickets/{ticketId}/macros/{id}/apply.json',
@@ -38,6 +39,31 @@ class Macros extends ResourceAbstract
     public function findAllActive(array $params = [])
     {
         return $this->client->get($this->getRoute(__FUNCTION__), $params);
+    }
+
+    /**
+     * Returns a full macro object
+     *
+     * @param $id
+     *
+     * @return mixed
+     * @throws MissingParametersException
+     * @throws \Exception
+     * @throws \Zendesk\API\Exceptions\ResponseException
+     */
+    public function find($id)
+    {
+        if (empty($id)) {
+            $id = $this->getChainedParameter(get_class($this));
+        }
+
+        if (empty($id)) {
+            throw new MissingParametersException(__METHOD__, ['id']);
+        }
+
+        return $this->client->get(
+            $this->getRoute(__FUNCTION__, ['id' => $id])
+        );
     }
 
     /**

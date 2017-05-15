@@ -3,6 +3,7 @@
 namespace Zendesk\API\UnitTests\Core;
 
 use Zendesk\API\UnitTests\BasicTest;
+use Zendesk\API\Exceptions\MissingParametersException;
 
 /**
  * Macros test class
@@ -10,6 +11,30 @@ use Zendesk\API\UnitTests\BasicTest;
  */
 class MacrosTest extends BasicTest
 {
+    /**
+     * Test the `GET /api/v2/macros/active.json` endpoint
+     * Lists active macros for the current user
+     */
+    public function testFind()
+    {
+        $id = $this->faker->randomNumber();
+
+        $this->assertEndpointCalled(function () use ($id) {
+            $this->client->macros()->find($id);
+        }, "macros/{$id}.json");
+    }
+
+    /**
+     * Test the `GET /api/v2/macros/active.json` endpoint
+     * Lists active macros for the current user
+     */
+    public function testFindThrowsExceptionWhenIdIsMissing()
+    {
+        $this->setExpectedException(MissingParametersException::class);
+
+        $this->client->macros()->find(null);
+    }
+
     /**
      * Test the `GET /api/v2/macros/active.json` endpoint
      * Lists active macros for the current user
