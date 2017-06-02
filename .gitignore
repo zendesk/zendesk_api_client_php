@@ -1,2 +1,4 @@
 vendor
 phpunit.xml
+
+*.iml

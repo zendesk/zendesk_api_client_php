@@ -42,6 +42,7 @@ use Zendesk\API\Resources\Core\SupportAddresses;
 use Zendesk\API\Resources\Core\SuspendedTickets;
 use Zendesk\API\Resources\Core\Tags;
 use Zendesk\API\Resources\Core\Targets;
+use Zendesk\API\Resources\Core\TicketComments;
 use Zendesk\API\Resources\Core\TicketFields;
 use Zendesk\API\Resources\Core\TicketImports;
 use Zendesk\API\Resources\Core\Tickets;
@@ -94,6 +95,7 @@ use Zendesk\API\Utilities\Auth;
  * @method Tags tags()
  * @method Targets targets()
  * @method Tickets tickets()
+ * @method TicketComments ticketComments()
  * @method TicketFields ticketFields()
  * @method TicketImports ticketImports()
  * @method Triggers triggers()
@@ -251,6 +253,7 @@ class HttpClient
             'tags'                      => Tags::class,
             'targets'                   => Targets::class,
             'tickets'                   => Tickets::class,
+            'ticketComments'            => TicketComments::class,
             'ticketFields'              => TicketFields::class,
             'ticketImports'             => TicketImports::class,
             'triggers'                  => Triggers::class,
