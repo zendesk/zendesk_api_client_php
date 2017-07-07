@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\UnitTests\HelpCenter;
 
+use Faker\Factory;
 use Zendesk\API\Resources\HelpCenter\Sections;
 use Zendesk\API\UnitTests\BasicTest;
 
@@ -12,31 +13,39 @@ class SectionsTest extends BasicTest
      */
     public function testRoutesWithLocale()
     {
+        $faker = Factory::create();
+        $locale = $faker->locale;
+
         $sectionsResource = $this->client->helpCenter->sections();
-        $sectionsResource->setLocale('en-US');
+        $sectionsResource->setLocale($locale);
 
         $this->assertEndpointCalled(function () use ($sectionsResource) {
             $sectionsResource->findAll();
-        }, 'help_center/en-US/sections.json');
+        }, "help_center/{$locale}/sections.json");
 
-        $this->assertEndpointCalled(function () use ($sectionsResource) {
-            $sectionsResource->find(1);
-        }, 'help_center/en-US/sections/1.json');
+        $categoryId = $faker->numberBetween(1);
+        $this->assertEndpointCalled(function () use ($categoryId, $locale) {
+            $resource = $this->client->helpCenter->categories($categoryId)->sections();
+            $resource->setLocale($locale)->findAll();
+        }, "help_center/{$locale}/categories/{$categoryId}/sections.json");
+
+        $sectionId = $faker->numberBetween(1);
+        $this->assertEndpointCalled(function () use ($sectionsResource, $sectionId) {
+            $sectionsResource->find($sectionId);
+        }, "help_center/{$locale}/sections/{$sectionId}.json");
 
         $postFields = [
-            'position'    => 2,
-            'locale'      => 'en-us',
-            'name'        => 'Super Hero Tricks',
-            'description' => 'This section contains a collection of super hero tricks',
+            'position' => $faker->numberBetween(1),
+            'locale' => $locale,
+            'name' => $faker->sentence,
+            'description' => $faker->sentence,
         ];
 
-        $this->assertEndpointCalled(function () use ($sectionsResource, $postFields) {
-            $sectionsResource->create($postFields);
-        }, 'help_center/en-US/sections.json', 'POST', ['postFields' => ['section' => $postFields]]);
-
-        $this->assertEndpointCalled(function () use ($sectionsResource, $postFields) {
-            $sectionsResource->update(1, $postFields);
-        }, 'help_center/en-US/sections/1.json', 'PUT', ['postFields' => ['section' => $postFields]]);
+        $this->assertEndpointCalled(function () use ($sectionsResource, $postFields, $sectionId) {
+            $sectionsResource->update($sectionId, $postFields);
+        }, "help_center/{$locale}/sections/{$sectionId}.json", 'PUT', [
+            'postFields' => ['section' => $postFields]
+        ]);
     }
 
     /**
@@ -44,9 +53,15 @@ class SectionsTest extends BasicTest
      */
     public function testRouteWithoutLocale()
     {
+        $faker = Factory::create();
         $this->assertEndpointCalled(function () {
             $this->client->helpCenter->sections()->findAll();
         }, 'help_center/sections.json');
+
+        $categoryId = $faker->numberBetween(1);
+        $this->assertEndpointCalled(function () use ($categoryId) {
+            $this->client->helpCenter->categories($categoryId)->sections()->findAll();
+        }, "help_center/categories/{$categoryId}/sections.json");
     }
 
     /**
@@ -67,5 +82,26 @@ class SectionsTest extends BasicTest
         $this->assertEndpointCalled(function () {
             $this->client->helpCenter->sections(1)->updateSourceLocale(null, 'fr');
         }, 'help_center/sections/1/source_locale.json', 'PUT', ['postFields' => ['section_locale' => 'fr']]);
+    }
+
+    /**
+     * Tests if the Create section endpoint can be called and passed the correct params
+     */
+    public function testCanCreateSection()
+    {
+        $faker = Factory::create();
+        $params = [
+            'position' => $faker->numberBetween(1),
+            'name' => $faker->sentence,
+            'description' => $faker->sentence,
+            'locale' => $faker->locale,
+        ];
+        $categoryId = $faker->numberBetween(1);
+
+        $this->assertEndpointCalled(function () use ($params, $categoryId) {
+            $this->client->helpCenter->categories($categoryId)->sections()->create($params);
+        }, "help_center/categories/{$categoryId}/sections.json", 'POST', [
+            'postFields' => ['section' => $params]
+        ]);
     }
 }
