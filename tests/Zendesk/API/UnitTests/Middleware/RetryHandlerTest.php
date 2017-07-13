@@ -18,23 +18,6 @@ use Zendesk\API\UnitTests\BasicTest;
 class RetryHandlerTest extends BasicTest
 {
     /**
-     * Checks that the Client by default does not retry requests
-     */
-    public function testDefaultNoRetry()
-    {
-        $client = $this->mockApiResponses([
-            new ConnectException('timeout', new Request('GET', '')),
-            new Response(200)
-        ], [
-            'handlers' => [
-                new RetryHandler()
-            ]
-        ]);
-
-        $this->checkRequest($client, false);
-    }
-
-    /**
      * Checks that only the exceptions to retry are those listed with the assumption
      * that retry_if will return false
      *
