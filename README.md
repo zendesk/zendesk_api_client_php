@@ -133,11 +133,15 @@ The allowed options are
 
 ### Retrying Requests
 
-Add the `RetryHandler` middleware on the `HandlerStack` of your `GuzzleHttp\Client` instance.
+Add the `RetryHandler` middleware on the `HandlerStack` of your `GuzzleHttp\Client` instance. By default `Zendesk\Api\HttpClient` 
+retries timeout requests, those that throw `Psr\Http\Message\RequestInterface\ConnectException:class` and those that throw 
+`Psr\Http\Message\RequestInterface\RequestException:class` that are identified as ssl issue.
 
 #### Available options
-* max = 0 _limit of retries_
-* interval = 0 _base delay between retries in milliseconds_
+Options are passed on `RetryHandler` as an array of values.
+
+* max = 2 _limit of retries_
+* interval = 300 _base delay between retries in milliseconds_
 * max_interval = 20000 _maximum delay value_
 * backoff_factor = 1 _backoff factor_
 * exceptions = [ConnectException::class] _Exceptions to retry without checking retry_if_
