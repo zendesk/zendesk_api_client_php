@@ -131,6 +131,17 @@ The allowed options are
 * page
 * sort_order
 
+### Retrying Requests
+
+Add the `RetryHandler` middleware on the `HandlerStack` of your `GuzzleHttp\Client` instance.
+
+#### Available options
+* max = 0 _limit of retries_
+* interval = 0 _base delay between retries in milliseconds_
+* max_interval = 20000 _maximum delay value_
+* backoff_factor = 1 _backoff factor_
+* exceptions = [ConnectException::class] _Exceptions to retry without checking retry_if_
+* retry_if = null _callable function that can decide whether to retry the request or not_
 
 ## Copyright and license
 
