@@ -74,6 +74,7 @@ class RetryHandlerTest extends BasicTest
             'max' => $limit
         ];
 
+        $responses = [];
         do {
             $responses[] = new ConnectException('', new Request('GET', ''));
         } while (count($responses) < 10);
@@ -168,6 +169,7 @@ class RetryHandlerTest extends BasicTest
             'backoff_factor' => $backoffFactor,
         ];
         $i = 0;
+        $responses = [];
         do {
             $responses[] = new ConnectException($i++, new Request('GET', ''));
         } while (count($responses) < 3);
