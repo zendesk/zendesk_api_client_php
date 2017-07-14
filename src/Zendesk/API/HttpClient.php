@@ -7,7 +7,10 @@ namespace Zendesk\API;
  * spl_autoload_register(function($c){@include 'src/'.preg_replace('#\\\|_(?!.+\\\)#','/',$c).'.php';});
  */
 
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\HandlerStack;
 use Zendesk\API\Exceptions\AuthException;
+use Zendesk\API\Middleware\RetryHandler;
 use Zendesk\API\Resources\Core\Activities;
 use Zendesk\API\Resources\Core\AppInstallations;
 use Zendesk\API\Resources\Core\Apps;
@@ -186,7 +189,11 @@ class HttpClient
         $guzzle = null
     ) {
         if (is_null($guzzle)) {
-            $this->guzzle = new \GuzzleHttp\Client();
+            $handler = HandlerStack::create();
+            $handler->push(new RetryHandler(['retry_if' => function ($retries, $request, $response, $e) {
+                return $e instanceof RequestException && strpos($e->getMessage(), 'ssl') !== false;
+            }]), 'retry_handler');
+            $this->guzzle = new \GuzzleHttp\Client(compact('handler'));
         } else {
             $this->guzzle = $guzzle;
         }

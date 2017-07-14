@@ -85,8 +85,10 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
      *
      * @param array $responses
      *   An array of GuzzleHttp\Psr7\Response objects
+     * @param array $config
+     *   config for the GuzzleHttp\Client
      */
-    protected function mockApiResponses($responses = [])
+    protected function mockApiResponses($responses = [], array $config = [])
     {
         if (empty($responses)) {
             return;
@@ -96,11 +98,16 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
 
         $history = Middleware::history($this->mockedTransactionsContainer);
         $mock    = new MockHandler($responses);
-        $handler = HandlerStack::create($mock);
-        $handler->push($history);
+        $handlerStack = HandlerStack::create($mock);
+        $handlerStack->push($history);
+        if (isset($config['handlers'])) {
+            foreach ($config['handlers'] as $handler) {
+                $handlerStack->push($handler);
+            }
+        }
+        $config['handler'] = $handlerStack;
 
-        $this->client->guzzle = new Client(['handler' => $handler]);
-
+        return $this->client->guzzle = new Client($config);
     }
 
     /**
