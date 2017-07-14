@@ -37,7 +37,7 @@ class RetryHandler
      *
      * @return callable
      */
-    public function decider()
+    public function shouldRetryRequest()
     {
         return function ($retries, Request $request, $response, $exception) {
             if ($retries >= $this->options['max']) {
@@ -76,7 +76,7 @@ class RetryHandler
      */
     public function __invoke(callable $handler)
     {
-        $retryMiddleware = new RetryMiddleware($this->decider(), $handler, $this->delay());
+        $retryMiddleware = new RetryMiddleware($this->shouldRetryRequest(), $handler, $this->delay());
 
         return $retryMiddleware;
     }
