@@ -45,8 +45,8 @@ class Articles extends ResourceAbstract
      *
      * @return mixed The default routes, or if $name is set to `findAll`, any of the following formats
      * based on the parent chain
-     * GET /api/v2/helpcenter/sections.json
-     * GET /api/v2/helpcenter/categories/{category_id}/sections.json
+     * GET /api/v2/helpcenter/articles.json
+     * GET /api/v2/helpcenter/sections/{section_id}/articles.json
      *
      * @throws \Exception
      */
