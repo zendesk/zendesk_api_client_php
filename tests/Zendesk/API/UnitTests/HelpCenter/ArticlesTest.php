@@ -35,7 +35,7 @@ class ArticlesTest extends BasicTest
     /**
      * Test if the route can be generated
      */
-    public function testRouteWithoutLocale()
+    public function testRouteWithLocale()
     {
         $this->assertEndpointCalled(function () {
             $this->client->helpCenter->articles()->findAll();
