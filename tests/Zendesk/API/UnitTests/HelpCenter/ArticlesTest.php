@@ -12,13 +12,21 @@ class ArticlesTest extends BasicTest
      */
     public function testRoutesWithLocale()
     {
+        $faker = Factory::create();
+
         $articlesResource = $this->client->helpCenter->articles();
         $articlesResource->setLocale('en-US');
 
         $this->assertEndpointCalled(function () use ($articlesResource) {
             $articlesResource->findAll();
         }, 'help_center/en-US/articles.json');
-        
+
+        $sectionId = $faker->numberBetween(1);
+        $this->assertEndpointCalled(function () use ($sectionId, $locale) {
+            $articlesResource = $this->client->helpCenter->sections($sectionId)->articles();
+            $articlesResource->setLocale('en-US')->findAll();
+        }, "help_center/en-US/sections/{$sectionId}/articles.json");
+
         $this->assertEndpointCalled(function () use ($articlesResource) {
             $articlesResource->find(1);
         }, 'help_center/en-US/articles/1.json');
@@ -27,13 +35,19 @@ class ArticlesTest extends BasicTest
     /**
      * Test if the route can be generated
      */
-    public function testRouteWithLocale()
+    public function testRouteWithoutLocale()
     {
         $this->assertEndpointCalled(function () {
             $this->client->helpCenter->articles()->findAll();
         }, 'help_center/articles.json');
+
+        $faker = Factory::create();
+        $sectionId = $faker->numberBetween(1);
+        $this->assertEndpointCalled(function () use ($sectionId) {
+            $this->client->helpCenter->sections($sectionId)->articles()->findAll();
+        }, "help_center/sections/{$sectionId}/articles.json");
     }
-    
+
     /**
      * Test if bulk attachments can be called and pass the correct params
      */
