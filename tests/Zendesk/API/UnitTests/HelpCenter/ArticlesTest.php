@@ -22,7 +22,7 @@ class ArticlesTest extends BasicTest
         }, 'help_center/en-US/articles.json');
 
         $sectionId = $faker->numberBetween(1);
-        $this->assertEndpointCalled(function () use ($sectionId, $locale) {
+        $this->assertEndpointCalled(function () use ($sectionId) {
             $articlesResource = $this->client->helpCenter->sections($sectionId)->articles();
             $articlesResource->setLocale('en-US')->findAll();
         }, "help_center/en-US/sections/{$sectionId}/articles.json");
