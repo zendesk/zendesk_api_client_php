@@ -15,7 +15,7 @@ trait FindMany
      *
      * @param array  $ids         Array of IDs to fetch
      * @param array  $extraParams Extra query parameters such as sideloads and iterators
-     * @param string $key         Could be `id` or `external_id`
+     * @param string $key         Could be `id` or `external_ids`
      *
      * @return \stdClass | null
      *
