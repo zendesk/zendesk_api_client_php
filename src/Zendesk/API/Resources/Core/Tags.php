@@ -16,6 +16,15 @@ class Tags extends ResourceAbstract
     use Defaults;
 
     /**
+     * {@inheritdoc}
+     */
+    protected $objectName = 'tags';
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectNamePlural = 'tags';
+
+    /**
      * Returns a route and replaces tokenized parts of the string with
      * the passed params
      *
