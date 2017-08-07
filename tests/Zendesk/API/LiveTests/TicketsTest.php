@@ -313,9 +313,7 @@ class TicketsTest extends BasicTest
     {
         $faker = Factory::create();
 
-        $tags = array_map(function () use ($faker) {
-            return $faker->word;
-        }, array_fill(0, 10, null));
+        $tags = $faker->words(10);
 
         $ticket = $this->createTestTicket();
         $this->client->tickets($ticket->id)->tags()->update(null, $tags);
