@@ -11,6 +11,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\HandlerStack;
 use Zendesk\API\Exceptions\AuthException;
 use Zendesk\API\Middleware\RetryHandler;
+use Zendesk\API\Resources\Chat;
 use Zendesk\API\Resources\Core\Activities;
 use Zendesk\API\Resources\Core\AppInstallations;
 use Zendesk\API\Resources\Core\Apps;
@@ -162,14 +163,21 @@ class HttpClient
      * @var HelpCenter
      */
     public $helpCenter;
+
     /**
      * @var Voice
      */
     public $voice;
+
     /**
      * @var Embeddable
      */
     public $embeddable;
+
+    /**
+     * @var Chat
+     */
+    public $chat;
 
     /**
      * @param string $subdomain
@@ -213,6 +221,7 @@ class HttpClient
         $this->helpCenter = new HelpCenter($this);
         $this->voice      = new Voice($this);
         $this->embeddable = new Embeddable($this);
+        $this->chat       = new Chat($this);
     }
 
     /**
