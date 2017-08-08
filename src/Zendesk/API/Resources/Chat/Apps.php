@@ -16,9 +16,11 @@ class Apps extends ResourceAbstract
     {
         parent::setUpRoutes();
 
-        $this->setRoutes([
+        $this->setRoutes(
+            [
             'install' => "{$this->resourceName}/installations.json",
-        ]);
+            ]
+        );
     }
 
     /**
