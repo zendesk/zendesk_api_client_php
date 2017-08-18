@@ -18,7 +18,6 @@ class DynamicContentItemVariantsTest extends BasicTest
         $this->assertEndpointCalled(function () use ($itemId) {
             $this->client->dynamicContent()->items($itemId)->variants()->findAll();
         }, "dynamic_content/items/{$itemId}/variants.json");
-
     }
 
     /**
