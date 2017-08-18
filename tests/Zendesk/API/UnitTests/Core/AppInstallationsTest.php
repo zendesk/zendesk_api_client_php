@@ -31,7 +31,6 @@ class AppInstallationsTest extends BasicTest
         $this->assertEndpointCalled(function () use ($postParams) {
             $this->client->appInstallations()->create($postParams);
         }, 'apps/installations.json', 'POST', ['postFields' => $postParams]);
-
     }
 
     /**

@@ -35,7 +35,6 @@ class PushNotificationDevices extends ResourceAbstract
     {
         if (! isset($params['tokens']) || ! is_array($params['tokens'])) {
             throw new MissingParametersException(__METHOD__, ['tokens']);
-
         }
         $postData = [$this->objectNamePlural => $params['tokens']];
 

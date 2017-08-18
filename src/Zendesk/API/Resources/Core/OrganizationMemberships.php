@@ -76,7 +76,6 @@ class OrganizationMemberships extends ResourceAbstract
 
             return "{$this->resourceName}.json";
         }
-
     }
 
     /**
