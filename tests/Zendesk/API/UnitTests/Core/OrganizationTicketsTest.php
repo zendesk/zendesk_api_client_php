@@ -19,6 +19,5 @@ class OrganizationTicketsTest extends BasicTest
         $this->assertEndpointCalled(function () use ($organizationId) {
             $this->client->organizations($organizationId)->tickets()->findAll();
         }, "organizations/{$organizationId}/tickets.json");
-
     }
 }

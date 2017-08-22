@@ -67,7 +67,6 @@ class OrganizationMembershipsTest extends BasicTest
         $this->assertEndpointCalled(function () use ($userId) {
             $this->client->users($userId)->organizationMemberships()->findAll();
         }, "users/{$userId}/organization_memberships.json");
-
     }
 
     /**
@@ -132,7 +131,6 @@ class OrganizationMembershipsTest extends BasicTest
                 'postFields' => ['organization_membership' => $postFields],
             ]
         );
-
     }
 
     /**
@@ -161,7 +159,6 @@ class OrganizationMembershipsTest extends BasicTest
                 'postFields' => ['organization_memberships' => $postFields],
             ]
         );
-
     }
 
     /**

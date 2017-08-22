@@ -19,7 +19,6 @@ class TicketCommentsTest extends BasicTest
         $this->assertEndpointCalled(function () use ($ticketId) {
             $this->client->tickets($ticketId)->comments()->findAll();
         }, "tickets/{$ticketId}/comments.json");
-
     }
 
     /**

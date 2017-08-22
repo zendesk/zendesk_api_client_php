@@ -184,7 +184,6 @@ class ResourceTest extends BasicTest
                 'postFields'  => ['dummy' => $postFields],
             ]
         );
-
     }
 
     /**
@@ -207,7 +206,6 @@ class ResourceTest extends BasicTest
             'PUT',
             ['postFields' => ['dummies' => $postFields]]
         );
-
     }
 
     /**

@@ -376,7 +376,6 @@ class Users extends ResourceAbstract
         unset($params['id']);
 
         return $this->client->put($this->getRoute(__FUNCTION__, ['id' => $id]), $params);
-
     }
 
     /**
