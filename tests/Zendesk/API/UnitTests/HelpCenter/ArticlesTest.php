@@ -13,27 +13,26 @@ class ArticlesTest extends BasicTest
     public function testRoutesWithLocale()
     {
         $faker = Factory::create();
+        $locale = $faker->locale;
+        $locale = $faker->locale;
 
         $articlesResource = $this->client->helpCenter->articles();
-        $articlesResource->setLocale('en-US');
+        $articlesResource->setLocale($locale);
 
         $this->assertEndpointCalled(function () use ($articlesResource) {
             $articlesResource->findAll();
-        }, 'help_center/en-US/articles.json');
-
-        $this->assertEndpointCalled(function () use ($articlesResource) {
-            $articlesResource->find(1);
-        }, 'help_center/en-US/articles/1.json');
+        }, "help_center/{$locale}/articles.json");
 
         $sectionId = $faker->numberBetween(1);
-        $this->assertEndpointCalled(function () use ($sectionId) {
-            $articlesResource = $this->client->helpCenter->sections($sectionId)->articles();
-            $articlesResource->setLocale('en-US')->findAll();
-        }, "help_center/en-US/sections/{$sectionId}/articles.json");
+        $this->assertEndpointCalled(function () use ($sectionId, $locale) {
+            $resource = $this->client->helpCenter->sections($sectionId)->articles();
+            $resource->setLocale($locale)->findAll();
+        }, "help_center/{$locale}/sections/{$sectionId}/articles.json");
 
-        $this->assertEndpointCalled(function () use ($articlesResource) {
-            $articlesResource->find(1);
-        }, 'help_center/en-US/articles/1.json');
+        $articleId = $faker->numberBetween(1);
+        $this->assertEndpointCalled(function () use ($articlesResource, $articleId) {
+            $articlesResource->find($articleId);
+        }, "help_center/{$locale}/articles/{$articleId}.json");
     }
 
     /**
@@ -41,11 +40,11 @@ class ArticlesTest extends BasicTest
      */
     public function testRouteWithLocale()
     {
+        $faker = Factory::create();
         $this->assertEndpointCalled(function () {
             $this->client->helpCenter->articles()->findAll();
         }, 'help_center/articles.json');
 
-        $faker = Factory::create();
         $sectionId = $faker->numberBetween(1);
         $this->assertEndpointCalled(function () use ($sectionId) {
             $this->client->helpCenter->sections($sectionId)->articles()->findAll();
