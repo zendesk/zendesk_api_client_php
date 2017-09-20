@@ -24,6 +24,9 @@ class AppsTest extends BasicTest
 
         $this->assertEndpointCalled(function () use ($postFields) {
              $this->client->chat->apps()->install($postFields);
-        }, 'api/chat/apps/installations.json', 'POST', ['postFields' => $postFields]);
+        }, 'apps/installations.json', 'POST', [
+            'postFields' => $postFields,
+            'apiBasePath' => '/api/chat/',
+        ]);
     }
 }

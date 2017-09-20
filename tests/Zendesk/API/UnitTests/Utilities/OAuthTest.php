@@ -47,6 +47,7 @@ class OAuthTest extends BasicTest
             'headers' => [
                 'accept' => false,
             ],
+            'apiBasePath' => '/',
         ]);
     }
 
