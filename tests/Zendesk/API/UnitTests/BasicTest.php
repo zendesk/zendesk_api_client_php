@@ -139,7 +139,8 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
                 'headers'    => [
                     'Accept'       => 'application/json',
                     'Content-Type' => 'application/json'
-                ]
+                ],
+                'apiBasePath' => '/api/v2/',
             ],
             $options
         );
@@ -182,10 +183,18 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($options['method'], $request->getMethod());
         }
 
+        if (isset($options['apiBasePath'])) {
+            $this->assertSame(
+                0,
+                strpos($request->getUri()->getPath(), $options['apiBasePath']),
+                "Failed asserting that the API basepath is {$options['apiBasePath']}"
+            );
+        }
+
         if (isset($options['endpoint'])) {
-            // Truncate the base path from the target
-            $apiBasePath = "/{$this->client->getApiBasePath()}";
-            $endpoint = preg_replace('/^' . preg_quote($apiBasePath, '/') . '/', '', $request->getUri()->getPath());
+            // Truncate the base path from the target, this was added since the existing usage pattern for
+            // $options['endpoint'] does not include the api/v2 base path
+            $endpoint = preg_replace('/^' . preg_quote($options['apiBasePath'], '/') . '/', '', $request->getUri()->getPath());
             $this->assertEquals($options['endpoint'], $endpoint);
         }
 
