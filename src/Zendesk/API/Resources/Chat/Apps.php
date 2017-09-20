@@ -2,6 +2,8 @@
 
 namespace Zendesk\API\Resources\Chat;
 
+use Zendesk\API\Resources\ResourceAbstract;
+
 /**
  * The Apps class exposes app management methods
  *
@@ -9,6 +11,11 @@ namespace Zendesk\API\Resources\Chat;
  */
 class Apps extends ResourceAbstract
 {
+    /**
+     * @var string
+     */
+    protected $apiBasePath = 'api/chat/';
+
     /**
      * {@inheritdoc}
      */

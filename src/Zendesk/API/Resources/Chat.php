@@ -4,6 +4,7 @@ namespace Zendesk\API\Resources;
 
 use Zendesk\API\HttpClient;
 use Zendesk\API\Resources\Chat\Apps;
+use Zendesk\API\Resources\Chat\Integrations;
 use Zendesk\API\Traits\Utility\ChainedParametersTrait;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
@@ -36,6 +37,7 @@ class Chat
     {
         return [
             'apps' => Apps::class,
+            'integrations' => Integrations::class,
         ];
     }
 }
