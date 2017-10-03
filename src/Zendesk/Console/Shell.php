@@ -1,6 +1,6 @@
 <?php
 
-namespace Zendesk;
+namespace Zendesk\Console;
 
 use Psy\TabCompletion\Matcher\ObjectAttributesMatcher;
 use Psy\TabCompletion\Matcher\ObjectMethodsMatcher;

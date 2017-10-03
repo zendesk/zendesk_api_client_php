@@ -1,6 +1,6 @@
 <?php
 
-namespace Zendesk;
+namespace Zendesk\Console\Matchers;
 
 use InvalidArgumentException;
 use Psy\TabCompletion\Matcher\AbstractContextAwareMatcher;
