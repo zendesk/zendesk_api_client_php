@@ -1,9 +1,8 @@
 <?php
 
-namespace Zendesk;
+namespace Zendesk\Console;
 
-require 'DocMethodMatcher.php';
-require 'Shell.php';
+use Zendesk\Console\Matchers\DocMethodMatcher;
 
 use Psy\Configuration;
 use RuntimeException;
