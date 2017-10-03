@@ -6,7 +6,7 @@ use InvalidArgumentException;
 use Psy\TabCompletion\Matcher\AbstractContextAwareMatcher;
 use Psy\TabCompletion\Matcher\AbstractMatcher;
 
-class DocMethodMatcher extends AbstractContextAwareMatcher
+class SubResourceMatcher extends AbstractContextAwareMatcher
 {
 
     /**
@@ -35,7 +35,7 @@ class DocMethodMatcher extends AbstractContextAwareMatcher
             $subresourceToken = array_shift($tokens);
             if (self::tokenIs($subresourceToken, self::T_STRING)) {
                 if ($subresourceToken[1] === $input) {
-                    return $this->searchValidMethods($object, $input);
+                    return $this->methodAttributeMatcher($object, $input);
                 } elseif (array_key_exists($subresourceToken[1], $object->getValidSubResources())) {
                     $object = $object->{$subresourceToken[1]}();
                 } else {
@@ -45,7 +45,7 @@ class DocMethodMatcher extends AbstractContextAwareMatcher
         } while ($tokens);
 
         if ($object && !$input) {
-            return $this->searchValidMethods($object);
+            return $this->methodAttributeMatcher($object);
         }
 
         return [];
@@ -68,7 +68,27 @@ class DocMethodMatcher extends AbstractContextAwareMatcher
         return false;
     }
 
-    private function searchValidMethods($object, $input = '')
+    /**
+     * Look for methods and attributes whose name matches $input
+     *
+     * @param $object object to look for methods and attribute that matches $input
+     * @param string $input string to compare on
+     * @return array of method and attribute names that match $input
+     */
+    private function methodAttributeMatcher($object, $input = '')
+    {
+        return array_merge($this->methodMatcher($object, $input), $this->attributeMatcher($object, $input));
+    }
+
+    /**
+     * Look for methods whose name matches $input. Also treats the return
+     * of $object->getValidSubResources() as a source of methods to compare to.
+     *
+     * @param $object to look for methods that matches $input
+     * @param string $input to compare on
+     * @return array $methods of method names that match $input
+     */
+    private function methodMatcher($object, $input = '')
     {
         $subresources = method_exists($object, 'getValidSubResources') ?
             array_keys($object->getValidSubResources()): [];
@@ -85,6 +105,18 @@ class DocMethodMatcher extends AbstractContextAwareMatcher
             []
         );
 
+        return $methods;
+    }
+
+    /**
+     * Look for attributes whose name matches $input
+     *
+     * @param $object object to look for attributes that matches $input
+     * @param string $input string to compare on
+     * @return array $attributes of attribute names that match $input
+     */
+    private function attributeMatcher($object, $input = '')
+    {
         $attributes = array_filter(
             array_keys(get_class_vars(get_class($object))),
             function ($var) use ($input) {
@@ -92,6 +124,6 @@ class DocMethodMatcher extends AbstractContextAwareMatcher
             }
         );
 
-        return array_merge($methods, $attributes);
+        return $attributes;
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Zendesk\Console;
 
-use Zendesk\Console\Matchers\DocMethodMatcher;
-
 use Psy\Configuration;
 use RuntimeException;
 use Symfony\Component\Console\Command\Command;
@@ -43,7 +41,6 @@ class ConsoleCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $config = new Configuration;
-        $config->addTabCompletionMatchers([new DocMethodMatcher()]);
 
         $client = new HttpClient($input->getArgument('subdomain'));
         $client->setAuth('basic', [
