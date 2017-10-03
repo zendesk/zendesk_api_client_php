@@ -9,6 +9,7 @@ use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Stream;
+use GuzzleHttp\Psr7\Uri;
 use Zendesk\API\Http;
 use Zendesk\API\HttpClient;
 
@@ -78,6 +79,8 @@ class HttpTest extends BasicTest
                       ->getMock();
         $request->method('getBody')
             ->will($this->returnValue($body));
+
+        $request->method('getUri')->will($this->returnValue(new Uri()));
         $response->method('getBody')
             ->will($this->returnValue($body));
 
