@@ -84,7 +84,7 @@ class Auth
         if ($this->authStrategy === self::BASIC) {
             $requestOptions = array_merge($requestOptions, [
                 'auth' => [
-                    $this->authOptions['username'] . '/token',
+                    (substr($this->authOptions['username'], -6) === '/token') ? $this->authOptions['username'] : $this->authOptions['username'] . '/token',
                     $this->authOptions['token'],
                     'basic'
                 ]
