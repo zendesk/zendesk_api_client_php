@@ -88,6 +88,7 @@ class Http
             // enable anonymous access
             $requestOptions['verify'] = FALSE;
             
+            
             if ($client->getAuth()) {
                 list ($request, $requestOptions) = $client->getAuth()->prepareRequest($request, $requestOptions);
             }
