@@ -6,7 +6,7 @@ use Zendesk\API\Traits\Resource\Create;
 
 /**
  * Class Tickets
- * https://developer.zendesk.com/rest_api/docs/voice-api/voice_integration
+ * https://developer.zendesk.com/rest_api/docs/voice-api/talk_partner_edition
  */
 class Tickets extends ResourceAbstract
 {
