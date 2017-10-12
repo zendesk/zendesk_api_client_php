@@ -10,8 +10,6 @@ use Zendesk\API\Traits\Resource\Create;
  */
 class Tickets extends ResourceAbstract
 {
-    use Create;
-
     /**
      * @inheritdoc
      */
@@ -20,6 +18,14 @@ class Tickets extends ResourceAbstract
         $this->setRoute('create', "{$this->getResourceName()}.json");
     }
 
+    /**
+     * Search for available voice tickets.
+     *
+     * @param array $queryParams
+     *
+     * @return array
+     * @throws \Zendesk\API\Exceptions\RouteException
+     */
     public function create(array $params, $routeKey = __FUNCTION__)
     {
         try {
