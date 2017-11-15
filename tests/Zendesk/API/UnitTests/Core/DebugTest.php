@@ -68,5 +68,4 @@ class DebugTest extends BasicTest
 
         $this->assertContains($exception->getMessage(), $debugText);
     }
-
 }
