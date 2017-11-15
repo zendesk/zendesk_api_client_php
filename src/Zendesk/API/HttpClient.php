@@ -376,7 +376,7 @@ class HttpClient
      * @param mixed  $lastRequestHeaders
      * @param mixed  $lastRequestBody
      * @param mixed  $lastResponseCode
-     * @param string $lastResponseHeaders
+     * @param mixed $lastResponseHeaders
      * @param mixed  $lastResponseError
      */
     public function setDebug(

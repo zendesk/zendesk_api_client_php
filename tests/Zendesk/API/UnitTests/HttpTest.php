@@ -59,7 +59,7 @@ class HttpTest extends BasicTest
     }
 
     /**
-     * Create a mocked RequestExcpetion
+     * Create a mocked RequestException
      *
      * @param string $message
      *
