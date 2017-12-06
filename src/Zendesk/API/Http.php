@@ -127,6 +127,7 @@ class Http
         $curl->setopt(CURLOPT_HEADER, true);
         $curl->setopt(CURLOPT_VERBOSE, true);
         $curl->setopt(CURLOPT_FOLLOWLOCATION, true);
+        $curl->setopt(CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
         $curl->setopt(CURLOPT_MAXREDIRS, 3);
 
         $response = $curl->exec();
@@ -194,6 +195,7 @@ class Http
         $curl->setopt(CURLOPT_HEADER, true);
         $curl->setopt(CURLOPT_VERBOSE, true);
         $curl->setopt(CURLOPT_FOLLOWLOCATION, true);
+        $curl->setopt(CURLOPT_PROTOCOLS, CURLPROTO_HTTP | CURLPROTO_HTTPS);
         $curl->setopt(CURLOPT_MAXREDIRS, 3);
         $response = $curl->exec();
         if ($response === false) {
