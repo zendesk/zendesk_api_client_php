@@ -35,12 +35,12 @@ class Attachments extends ClientAbstract
         if (!file_exists($params['file'])) {
             throw new CustomException('File ' . $params['file'] . ' could not be found in ' . __METHOD__);
         }
-        if (!$params['name'] && strrpos($params['file'], '/') > -1) {
+        if (isset($params['name']) && !$params['name'] && strrpos($params['file'], '/') > -1) {
             $path_array = explode('/', $params['file']);
             $file_index = count($path_array) - 1;
             $params['name'] = $path_array[$file_index];
         }
-        if (!$params['name'] && strrpos($params['file'], '/') == false) {
+        if (isset($params['name']) && !$params['name'] && strrpos($params['file'], '/') == false) {
             $params['name'] = $params['file'];
         }
 
