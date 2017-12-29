@@ -127,15 +127,12 @@ class TicketFieldsOptions extends ResourceAbstract
      */
     public function update($id = null, array $updateResourceFields = [])
     {
-        print_r($id);
 
         if (empty($id)) {
             $id = $this->getChainedParameter(get_class($this));
         }
-        print_r($id);
-        print_r($updateResourceFields);
-        $updateResourceFields['id'] = $id;
 
+        $updateResourceFields['id'] = $id;
 
         $this->addTicketFieldIdToRouteParams($updateResourceFields);
 
