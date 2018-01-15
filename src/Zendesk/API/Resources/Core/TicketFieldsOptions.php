@@ -17,7 +17,6 @@ class TicketFieldsOptions extends ResourceAbstract
         findAll as traitFindAll;
         find as traitFind;
         create as traitCreate;
-        update as traitUpdate;
         delete as traitDelete;
     }
 
@@ -110,16 +109,7 @@ class TicketFieldsOptions extends ResourceAbstract
     {
         $this->addTicketFieldIdToRouteParams($params);
 
-        $response = Http::send(
-            $this->client,
-            $this->getRoute(__FUNCTION__),
-            [
-                'postFields' => [$this->objectName => $params],
-                'method'     => 'POST'
-            ]
-        );
-
-        return $response;
+        return $this->traitCreate($params);
     }
 
     /**
@@ -136,16 +126,7 @@ class TicketFieldsOptions extends ResourceAbstract
 
         $this->addTicketFieldIdToRouteParams($updateResourceFields);
 
-        $response = Http::send(
-            $this->client,
-            $this->getRoute(__FUNCTION__),
-            [
-                'postFields' => [$this->objectName => $updateResourceFields],
-                'method'     => 'POST'
-            ]
-        );
-
-        return $response;
+        return $this->client->post($this->getRoute(__FUNCTION__), [$this->objectName => $updateResourceFields]);
     }
 
     /**
