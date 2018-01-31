@@ -95,4 +95,20 @@ class ArticlesTest extends BasicTest
             $this->client->helpCenter->articles()->search($params);
         }, 'help_center/articles/search.json', 'GET', ['queryParams' => $params]);
     }
+
+    /**
+     * Test if Create article endpoint is called with correct params.
+     */
+    public function testCreate()
+    {
+        $faker = Factory::create();
+        $sectionId = $faker->numberBetween(1);
+        $params = ['title' => $faker->word, 'locale' => 'en'];
+
+        $this->assertEndpointCalled(function () use ($params, $sectionId) {
+            $this->client->helpCenter->sections($sectionId)->articles()->create($params);
+        }, "help_center/sections/{$sectionId}/articles.json", 'POST', [
+            'postFields' => ['article' => $params],
+        ]);
+    }
 }
