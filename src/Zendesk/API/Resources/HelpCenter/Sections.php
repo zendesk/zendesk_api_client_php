@@ -25,16 +25,6 @@ class Sections extends ResourceAbstract
     protected $objectName = 'section';
 
     /**
-     * {@inheritdoc}
-     */
-    public static function getValidSubResources()
-    {
-        return [
-            'articles' => Articles::class,
-        ];
-    }
-
-    /**
      * @inheritdoc
      */
     protected function setUpRoutes()
