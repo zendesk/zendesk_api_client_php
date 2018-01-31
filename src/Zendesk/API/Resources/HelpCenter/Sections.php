@@ -13,11 +13,11 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
 class Sections extends ResourceAbstract
 {
     use InstantiatorTrait;
-
     use Defaults;
     use Locales {
         getRoute as protected localesGetRoute;
     }
+
 
     /**
      * {@inheritdoc}

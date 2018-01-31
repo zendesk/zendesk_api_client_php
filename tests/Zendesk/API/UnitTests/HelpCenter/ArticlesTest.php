@@ -12,28 +12,44 @@ class ArticlesTest extends BasicTest
      */
     public function testRoutesWithLocale()
     {
+        $faker = Factory::create();
+        $locale = $faker->locale;
+
         $articlesResource = $this->client->helpCenter->articles();
-        $articlesResource->setLocale('en-US');
+        $articlesResource->setLocale($locale);
 
         $this->assertEndpointCalled(function () use ($articlesResource) {
             $articlesResource->findAll();
-        }, 'help_center/en-US/articles.json');
-        
-        $this->assertEndpointCalled(function () use ($articlesResource) {
-            $articlesResource->find(1);
-        }, 'help_center/en-US/articles/1.json');
+        }, "help_center/{$locale}/articles.json");
+
+        $sectionId = $faker->numberBetween(1);
+        $this->assertEndpointCalled(function () use ($sectionId, $locale) {
+            $resource = $this->client->helpCenter->sections($sectionId)->articles();
+            $resource->setLocale($locale)->findAll();
+        }, "help_center/{$locale}/sections/{$sectionId}/articles.json");
+
+        $articleId = $faker->numberBetween(1);
+        $this->assertEndpointCalled(function () use ($articlesResource, $articleId) {
+            $articlesResource->find($articleId);
+        }, "help_center/{$locale}/articles/{$articleId}.json");
     }
 
     /**
      * Test if the route can be generated
      */
-    public function testRouteWithLocale()
+    public function testRouteWithoutLocale()
     {
+        $faker = Factory::create();
         $this->assertEndpointCalled(function () {
             $this->client->helpCenter->articles()->findAll();
         }, 'help_center/articles.json');
+
+        $sectionId = $faker->numberBetween(1);
+        $this->assertEndpointCalled(function () use ($sectionId) {
+            $this->client->helpCenter->sections($sectionId)->articles()->findAll();
+        }, "help_center/sections/{$sectionId}/articles.json");
     }
-    
+
     /**
      * Test if bulk attachments can be called and pass the correct params
      */

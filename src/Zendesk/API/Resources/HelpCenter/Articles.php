@@ -38,6 +38,44 @@ class Articles extends ResourceAbstract
     }
 
     /**
+     * Returns a route and replaces tokenized parts of the string with
+     * the passed params
+     *
+     * @param string $name
+     * @param array $params
+     *
+     * @return mixed The default routes, or if $name is set to `findAll`, any of the following formats
+     * based on the parent chain
+     * GET /api/v2/helpcenter/articles.json
+     * GET /api/v2/helpcenter/sections/{section_id}/articles.json
+     *
+     * @throws \Exception
+     */
+    public function getRoute($name, array $params = [])
+    {
+        $lastChained = $this->getLatestChainedParameter();
+        $params = $this->addChainedParametersToParams($params, [
+            'section_id' => Sections::class
+        ]);
+        if (empty($lastChained) || $name !== 'findAll') {
+            return $this->localesGetRoute($name, $params);
+        } else {
+            $chainedResourceName = array_keys($lastChained)[0];
+            $id = $lastChained[$chainedResourceName];
+            if ($chainedResourceName === Sections::class) {
+                $locales = $this->getLocale();
+                if ($locales) {
+                    return "{$this->prefix}{$locales}/sections/$id/articles.json";
+                } else {
+                    return "{$this->prefix}sections/$id/articles.json";
+                }
+            } else {
+                return $this->localesGetRoute($name, $params);
+            }
+        }
+    }
+
+    /**
      * Bulk upload attachments to a specified article
      *
      * @param int    $articleId The article to update
@@ -62,17 +100,5 @@ class Articles extends ResourceAbstract
             $route,
             ['attachment_ids' => $params]
         );
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoute($name, array $params = [])
-    {
-        $params = $this->addChainedParametersToParams($params, [
-            'section_id' => Sections::class,
-        ]);
-
-        return $this->localesGetRoute($name, $params);
     }
 }
