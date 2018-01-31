@@ -14,7 +14,6 @@ class ArticlesTest extends BasicTest
     {
         $faker = Factory::create();
         $locale = $faker->locale;
-        $locale = $faker->locale;
 
         $articlesResource = $this->client->helpCenter->articles();
         $articlesResource->setLocale($locale);
@@ -38,7 +37,7 @@ class ArticlesTest extends BasicTest
     /**
      * Test if the route can be generated
      */
-    public function testRouteWithLocale()
+    public function testRouteWithoutLocale()
     {
         $faker = Factory::create();
         $this->assertEndpointCalled(function () {
