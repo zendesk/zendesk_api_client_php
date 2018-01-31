@@ -101,16 +101,4 @@ class Articles extends ResourceAbstract
             ['attachment_ids' => $params]
         );
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getRoute($name, array $params = [])
-    {
-        $params = $this->addChainedParametersToParams($params, [
-            'section_id' => Sections::class,
-        ]);
-
-        return $this->localesGetRoute($name, $params);
-    }
 }
