@@ -20,7 +20,10 @@ class ConfigSetsTest extends BasicTest
 
         $this->assertEndpointCalled(function () use ($params) {
              $this->client->embeddable->configSets()->create($params);
-        }, 'embeddable/api/config_sets.json', 'POST', ['postFields' => ['config_set' => $params]]);
+        }, 'embeddable/api/config_sets.json', 'POST', [
+            'apiBasePath' => '/',
+            'postFields' => ['config_set' => $params],
+        ]);
     }
 
     /**
@@ -37,6 +40,9 @@ class ConfigSetsTest extends BasicTest
 
         $this->assertEndpointCalled(function () use ($params, $id) {
             $this->client->embeddable->configSets()->update($id, $params);
-        }, "embeddable/api/config_sets/{$id}.json", 'PUT', ['postFields' => ['config_set' => $params]]);
+        }, "embeddable/api/config_sets/{$id}.json", 'PUT', [
+            'apiBasePath' => '/',
+            'postFields' => ['config_set' => $params],
+        ]);
     }
 }

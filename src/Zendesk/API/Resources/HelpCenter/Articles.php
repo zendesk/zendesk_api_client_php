@@ -32,6 +32,7 @@ class Articles extends ResourceAbstract
         parent::setUpRoutes();
         $this->setRoutes([
             'bulkAttach'            =>  "$this->resourceName/{articleId}/bulk_attachments.json",
+            'create'                =>  "{$this->prefix}sections/{section_id}/articles.json",
             'updateSourceLocale'    =>  "$this->resourceName/{articleId}/source_locale.json",
         ]);
     }
@@ -99,5 +100,17 @@ class Articles extends ResourceAbstract
             $route,
             ['attachment_ids' => $params]
         );
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getRoute($name, array $params = [])
+    {
+        $params = $this->addChainedParametersToParams($params, [
+            'section_id' => Sections::class,
+        ]);
+
+        return $this->localesGetRoute($name, $params);
     }
 }

@@ -149,6 +149,18 @@ Options are passed on `RetryHandler` as an array of values.
 * exceptions = [ConnectException::class] _Exceptions to retry without checking retry_if_
 * retry_if = null _callable function that can decide whether to retry the request or not_
 
+## Contributing
+
+Pull Requests are always welcome but before you send one please read our [contribution guidelines](#CONTRIBUTING.md). It would
+speed up the process and would make sure that everybody follows the community's standard.
+
+### Debugging
+
+To help would be contributors, we've added a REPL tool. It is a simple wrapper for [psysh](http://psysh.org) and symfony's console.
+On your terminal, run `bin/console <subdomain> <email> <api token>`. This would automatically create an instance of `Zendesk\API\HttpClient` on $client variable.
+After that you would be able to enter any valid php statement. The goal of the tool is to speed up the process in which developers
+can experiment on the code base.
+
 ## Copyright and license
 
 Copyright 2013-present Zendesk

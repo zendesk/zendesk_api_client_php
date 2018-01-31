@@ -46,6 +46,16 @@ class Sections extends ResourceAbstract
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public static function getValidSubResources()
+    {
+        return [
+            'articles' => Articles::class,
+        ];
+    }
+
+    /**
      * Returns a route and replaces tokenized parts of the string with
      * the passed params
      *
