@@ -8,6 +8,7 @@ php:
   - nightly
 matrix:
   allow_failures:
+    - php: 7.2
     - php: nightly
 install:
   - travis_retry composer self-update && composer install
