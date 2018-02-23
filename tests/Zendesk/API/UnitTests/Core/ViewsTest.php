@@ -140,4 +140,18 @@ class ViewsTest extends BasicTest
             $this->client->views($this->id)->tickets();
         }, "views/{$this->id}/tickets.json");
     }
+
+    /**
+     * Test views search
+     */
+    public function testViewsSearch() {
+        $queryParams = [
+            'active' => true,
+            'access' => 'shared',
+            'query' => 'foo'
+        ];
+        $this->assertEndpointCalled(function () use ($queryParams) {
+            $this->client->views()->search($queryParams);
+        }, "views/search.json", 'GET', ['queryParams' => $queryParams]);
+    }
 }

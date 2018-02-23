@@ -6,6 +6,7 @@ use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\Defaults;
+use Zendesk\API\Traits\Resource\Search;
 
 /**
  * The Views class exposes view management methods
@@ -15,6 +16,7 @@ class Views extends ResourceAbstract
     use Defaults {
         findAll as traitFindAll;
     }
+    use Search;
 
     /**
      * {@inheritdoc}
