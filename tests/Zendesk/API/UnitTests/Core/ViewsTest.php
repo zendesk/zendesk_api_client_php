@@ -144,7 +144,8 @@ class ViewsTest extends BasicTest
     /**
      * Test views search
      */
-    public function testViewsSearch() {
+    public function testViewsSearch()
+    {
         $queryParams = [
             'active' => true,
             'access' => 'shared',
