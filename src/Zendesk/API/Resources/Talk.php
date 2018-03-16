@@ -10,7 +10,7 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
  * This class serves as a container to allow $this->client->talk
- * 
+ *
  * @method Stats stats()
  */
 class Talk
