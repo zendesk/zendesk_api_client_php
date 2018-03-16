@@ -56,6 +56,7 @@ use Zendesk\API\Resources\Core\Users;
 use Zendesk\API\Resources\Core\Views;
 use Zendesk\API\Resources\Embeddable;
 use Zendesk\API\Resources\HelpCenter;
+use Zendesk\API\Resources\Talk;
 use Zendesk\API\Resources\Voice;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 use Zendesk\API\Utilities\Auth;
@@ -66,44 +67,44 @@ use Zendesk\API\Utilities\Auth;
  * @method Activities activities()
  * @method Apps apps()
  * @method AppInstallations appInstallations()
- * @method Attachments attachments($id = null)
+ * @method Attachments attachments()
  * @method AuditLogs auditLogs()
  * @method AutoComplete autocomplete()
  * @method Automations automations()
  * @method Bookmarks bookmarks()
- * @method Brands brands($id = null)
+ * @method Brands brands()
  * @method CustomRoles customRoles()
  * @method DynamicContent dynamicContent()
  * @method GroupMemberships groupMemberships()
- * @method Groups groups($id = null)
+ * @method Groups groups()
  * @method Incremental incremental()
  * @method JobStatuses jobStatuses()
  * @method Locales locales()
  * @method Macros macros()
- * @method OAuthClients oauthClients($id = null)
- * @method OAuthTokens oauthTokens($id = null)
+ * @method OAuthClients oauthClients()
+ * @method OAuthTokens oauthTokens()
  * @method OrganizationFields organizationFields()
  * @method OrganizationMemberships organizationMemberships()
  * @method Organizations organizations()
  * @method OrganizationSubscriptions organizationSubscriptions()
  * @method PushNotificationDevices pushNotificationDevices()
- * @method Requests requests($id = null)
+ * @method Requests requests()
  * @method SatisfactionRatings satisfactionRatings()
  * @method Search search()
- * @method Sessions sessions($id = null)
+ * @method Sessions sessions()
  * @method SharingAgreements sharingAgreements()
  * @method SlaPolicies slaPolicies()
  * @method SupportAddresses supportAddresses()
  * @method SuspendedTickets suspendedTickets()
- * @method Tags tags($id = null)
+ * @method Tags tags()
  * @method Targets targets()
- * @method Tickets tickets($id = null)
- * @method TicketFields ticketFields($id = null)
+ * @method Tickets tickets()
+ * @method TicketFields ticketFields()
  * @method TicketImports ticketImports()
  * @method Triggers triggers()
  * @method TwitterHandles twitterHandles()
- * @method UserFields userFields($id = null)
- * @method Users users($id = null)
+ * @method UserFields userFields()
+ * @method Users users()
  * @method Views views()
  *
  */
@@ -180,6 +181,11 @@ class HttpClient
     public $chat;
 
     /**
+     * @var Talk
+     */
+    public $talk;
+
+    /**
      * @param string $subdomain
      * @param string $username
      * @param string $scheme
@@ -222,6 +228,7 @@ class HttpClient
         $this->voice      = new Voice($this);
         $this->embeddable = new Embeddable($this);
         $this->chat       = new Chat($this);
+        $this->talk       = new Talk($this);
     }
 
     /**
