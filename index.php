@@ -51,7 +51,27 @@
               <li><a href="samples/tickets/updateTicket.php">Update a ticket</a></li>
               <li><a href="samples/tickets/deleteTicket.php">Delete a ticket</a></li>
             </ul>
+            
+            <strong>Help Center</strong>
+            <ul>
+              <li><a href="samples/helpcenter/createArticles.php">Create an article</a></li>
+              <li><a href="samples/helpcenter/createSections.php">Create a section</a></li>
+              <li><a href="samples/helpcenter/findArticles.php">Find an article</a></li>
+              <li><a href="samples/helpcenter/findCategories.php">Find a category</a></li>
+              <li><a href="samples/helpcenter/findSections.php">Find a section</a></li>
+            </ul>
 
+            <strong>Ticket Fields</strong>
+            <ul>
+              <li><a href="samples/ticket_fields/createDropdownOption.php">Create a new dropdown option for an existing dropdown custom ticket field</a></li>
+              <li><a href="samples/ticket_fields/editDropdownOption.php">Update an existing dropdown option for a dropdown custom ticket field</a></li>
+              <li><a href="samples/ticket_fields/replaceDropdownOptions.php">Replace all existing dropdown options for a dropdown custom ticket field</a></li>
+            </ul>
+
+            <strong>Organizations</strong>           
+            <ul>
+              <li><a href="samples/organizations/createOrganization.php">Create a new organization</a></li>
+            </ul>
 
             <strong>Users</strong>
             <ul>
