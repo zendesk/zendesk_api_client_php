@@ -14,6 +14,8 @@ trait FindAll
      * @param string $routeKey
      *
      * @return \stdClass | null
+     * @throws \Zendesk\API\Exceptions\AuthException
+     * @throws \Zendesk\API\Exceptions\ApiResponseException
      */
     public function findAll(array $params = [], $routeKey = __FUNCTION__)
     {
