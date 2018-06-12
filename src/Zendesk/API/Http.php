@@ -106,7 +106,21 @@ class Http
         }
 
         $client->setSideload(null);
+        
+        $body = json_decode($response->getBody());
 
-        return json_decode($response->getBody());
+        if ($body != null) {
+            if (isset($response->getHeaders()['X-Rate-Limit'])) {
+                $body->X_Rate_Limit = $response->getHeaders()['X-Rate-Limit'][0];
+            }
+
+            if (isset($response->getHeaders()['X-Rate-Limit-Remaining'])) {
+                $body->X_Rate_Limit_Remaining = $response->getHeaders()['X-Rate-Limit-Remaining'][0];
+            }
+        }
+        
+       
+
+        return $body;
     }
 }
