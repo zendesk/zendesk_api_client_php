@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: ubuntu
- * Date: 3/16/18
- * Time: 10:24 AM
- */
 
 namespace Zendesk\API\Resources\Talk;
 
