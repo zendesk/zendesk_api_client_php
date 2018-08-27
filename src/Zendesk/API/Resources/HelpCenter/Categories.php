@@ -29,6 +29,7 @@ class Categories extends ResourceAbstract
     {
         return [
             'sections' => Sections::class,
+            'articles' => Articles::class,
         ];
     }
 
