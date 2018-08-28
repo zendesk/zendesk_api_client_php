@@ -10,6 +10,7 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
  * Class Categories
  * https://developer.zendesk.com/rest_api/docs/help_center/categories
  * @method Sections sections()
+ * @method Articles articles()
  */
 class Categories extends ResourceAbstract
 {
