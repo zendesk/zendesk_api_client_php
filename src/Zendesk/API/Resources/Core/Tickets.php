@@ -113,7 +113,7 @@ class Tickets extends ResourceAbstract
      *
      * @return \stdClass | null
      */
-    public function findTwicket(array $params = [])
+    public function findTicket(array $params = [])
     {
         $params = $this->addChainedParametersToParams($params, ['id' => get_class($this)]);
 
