@@ -56,6 +56,7 @@ use Zendesk\API\Resources\Core\Users;
 use Zendesk\API\Resources\Core\Views;
 use Zendesk\API\Resources\Embeddable;
 use Zendesk\API\Resources\HelpCenter;
+use Zendesk\API\Resources\Talk;
 use Zendesk\API\Resources\Voice;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 use Zendesk\API\Utilities\Auth;
@@ -180,6 +181,11 @@ class HttpClient
     public $chat;
 
     /**
+     * @var Talk
+     */
+    public $talk;
+
+    /**
      * @param string $subdomain
      * @param string $username
      * @param string $scheme
@@ -222,6 +228,7 @@ class HttpClient
         $this->voice      = new Voice($this);
         $this->embeddable = new Embeddable($this);
         $this->chat       = new Chat($this);
+        $this->talk       = new Talk($this);
     }
 
     /**
