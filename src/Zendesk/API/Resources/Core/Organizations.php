@@ -51,9 +51,10 @@ class Organizations extends ResourceAbstract
 
         $this->setRoutes(
             [
-                'autocomplete' => $this->resourceName . '/autocomplete.json',
-                'related'      => $this->resourceName . '/{id}/related.json',
-                'search'       => $this->resourceName . '/search.json',
+                'autocomplete'   => $this->resourceName . '/autocomplete.json',
+                'related'        => $this->resourceName . '/{id}/related.json',
+                'search'         => $this->resourceName . '/search.json',
+                'createOrUpdate' => $this->resourceName . '/create_or_update.json',
             ]
         );
     }
@@ -139,5 +140,20 @@ class Organizations extends ResourceAbstract
         $params['external_id'] = $external_id;
 
         return $this->client->get($this->getRoute(__FUNCTION__), $params);
+    }
+
+    /**
+     * Creates an organization if it doesn't already exist,
+     * or updates an existing organization identified by ID or external ID
+     *
+     * @param array $params
+     *
+     * @return \stdClass | null
+     * @throws \Zendesk\API\Exceptions\ApiResponseException
+     * @throws \Zendesk\API\Exceptions\AuthException
+     */
+    public function createOrUpdate(array $params = [])
+    {
+        return $this->client->post($this->getRoute(__FUNCTION__), [$this->objectName => $params]);
     }
 }
