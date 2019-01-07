@@ -109,7 +109,7 @@ $ticket = $client->tickets()->create([
 
 ### Side-loading
 
-Side-loading allows you to retrieve related records as part of a single request. See [the documentation] for more information. (https://developer.zendesk.com/rest_api/docs/core/side_loading).
+Side-loading allows you to retrieve related records as part of a single request. See [the documentation for more information](https://developer.zendesk.com/rest_api/docs/core/side_loading).
 
 An example of sideloading with the client is shown below.
 
