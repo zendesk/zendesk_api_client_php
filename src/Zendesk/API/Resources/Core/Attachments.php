@@ -36,8 +36,8 @@ class Attachments extends ResourceAbstract
      *    'file' - an attribute with the absolute local file path on the server
      *    'type' - the MIME type of the file
      * Optional:
-     *    'optional_token' - an existing token
-     *        'name' - preferred filename
+     *    'token' - an existing token
+     *    'name' - preferred filename
      *
      * @param array $params
      *
