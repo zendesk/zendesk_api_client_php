@@ -60,8 +60,17 @@ class Auth
         $this->authStrategy = $strategy;
 
         if ($strategy == self::BASIC) {
-            if (! array_key_exists('username', $options) || ! array_key_exists('token', $options)) {
-                throw new AuthException('Please supply `username` and `token` for basic auth.');
+            if (! array_key_exists('username', $options) || 
+                (! array_key_exists('token', $options) && !array_key_exists('password', $options))
+            ) {
+                throw new AuthException('Please supply `username` and `token` or `password` for basic auth.');
+            } else {
+                if (array_key_exists('token', $options)) {
+                    // normalize parameters
+                    $options['username'] .= '/token';
+                    $options['password'] = $options['token'];
+                    unset($options['token']);
+                }
             }
         } elseif ($strategy == self::OAUTH) {
             if (! array_key_exists('token', $options)) {
@@ -84,8 +93,8 @@ class Auth
         if ($this->authStrategy === self::BASIC) {
             $requestOptions = array_merge($requestOptions, [
                 'auth' => [
-                    $this->authOptions['username'] . '/token',
-                    $this->authOptions['token'],
+                    $this->authOptions['username'],
+                    $this->authOptions['password'],
                     'basic'
                 ]
             ]);
