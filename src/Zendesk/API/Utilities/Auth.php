@@ -60,17 +60,15 @@ class Auth
         $this->authStrategy = $strategy;
 
         if ($strategy == self::BASIC) {
-            if (! array_key_exists('username', $options) || 
+            if (! array_key_exists('username', $options) ||
                 (! array_key_exists('token', $options) && !array_key_exists('password', $options))
             ) {
                 throw new AuthException('Please supply `username` and `token` or `password` for basic auth.');
-            } else {
-                if (array_key_exists('token', $options)) {
-                    // normalize parameters
-                    $options['username'] .= '/token';
-                    $options['password'] = $options['token'];
-                    unset($options['token']);
-                }
+            } else if (array_key_exists('token', $options)) {
+                // normalize parameters
+                $options['username'] .= '/token';
+                $options['password'] = $options['token'];
+                unset($options['token']);
             }
         } elseif ($strategy == self::OAUTH) {
             if (! array_key_exists('token', $options)) {
