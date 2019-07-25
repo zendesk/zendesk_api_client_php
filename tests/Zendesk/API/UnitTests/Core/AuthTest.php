@@ -43,9 +43,9 @@ class AuthTest extends BasicTest
     }
 
     /**
-     * Test the preparing of a request for basic authentication.
+     * Test the preparing of a request for basic authentication with token.
      */
-    public function testPrepareBasicAuth()
+    public function testPrepareBasicTokenAuth()
     {
         $this->client->setAuth('basic', ['username' => $this->username, 'token' => $this->token]);
 
@@ -63,6 +63,30 @@ class AuthTest extends BasicTest
         $this->assertArrayHasKey('auth', $requestOptions);
         $this->assertEquals($this->username . '/token', $requestOptions['auth'][0]);
         $this->assertEquals($this->token, $requestOptions['auth'][1]);
+        $this->assertEquals(Auth::BASIC, $requestOptions['auth'][2]);
+    }
+
+    /**
+     * Test the preparing of a request for basic authentication with password.
+     */
+    public function testPrepareBasicPasswordAuth()
+    {
+        $this->client->setAuth('basic', ['username' => $this->username, 'password' => $this->password]);
+
+        $currentRequest        = new Request('GET', 'http://www.endpoint.com/test.json');
+        $currentRequestOptions = ['existing' => 'option'];
+
+        list ($request, $requestOptions) = $this->client->getAuth()->prepareRequest(
+            $currentRequest,
+            $currentRequestOptions
+        );
+
+        $this->assertInstanceOf(Request::class, $request, 'Should have returned a request');
+
+        $this->assertArrayHasKey('existing', $requestOptions);
+        $this->assertArrayHasKey('auth', $requestOptions);
+        $this->assertEquals($this->username, $requestOptions['auth'][0]);
+        $this->assertEquals($this->password, $requestOptions['auth'][1]);
         $this->assertEquals(Auth::BASIC, $requestOptions['auth'][2]);
     }
 
