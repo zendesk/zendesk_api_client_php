@@ -4,6 +4,7 @@ namespace Zendesk\API\Resources\HelpCenter;
 
 use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\Locales;
+use Zendesk\API\Traits\Resource\Translation;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
@@ -17,7 +18,7 @@ class Sections extends ResourceAbstract
     use Locales {
         getRoute as protected localesGetRoute;
     }
-
+    use Translation;
 
     /**
      * {@inheritdoc}
