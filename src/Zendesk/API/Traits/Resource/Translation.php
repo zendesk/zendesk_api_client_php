@@ -1,14 +1,11 @@
 <?php
 
-
 namespace Zendesk\API\Traits\Resource;
-
 
 use Zendesk\API\Exceptions\RouteException;
 
 trait Translation
 {
-
     /**
      * Updates translation of a resource
      *
@@ -17,7 +14,8 @@ trait Translation
      * @param string $routeKey
      * @return mixed
      */
-    public function translations($id = null, array $updateResourceFields = [], $routeKey = __FUNCTION__) {
+    public function translations($id = null, array $updateResourceFields = [], $routeKey = __FUNCTION__)
+    {
         $class = get_class($this);
         if (empty($id)) {
             $id = $this->getChainedParameter($class);
