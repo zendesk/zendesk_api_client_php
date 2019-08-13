@@ -28,7 +28,7 @@ trait Translation
                 $this->resourceName = $this->getResourceNameFromClass();
             }
 
-            $this->setRoute(__FUNCTION__, $this->resourceName . '/{id}/translations/{locale}.json');
+            $this->setRoute(__FUNCTION__, $this->resourceName . '/{id}/translations/'.$this->getLocale().'.json');
             $route = $this->resourceName . '/' . $id . '/translations/'.$this->getLocale().'.json';
         }
 
