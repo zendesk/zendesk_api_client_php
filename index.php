@@ -37,7 +37,7 @@
 
             <strong>Tickets</strong>
             <ul>
-              <li><a href="samples/tickets/qcreateTicket.php">Create a new ticket.</a></li>
+              <li><a href="samples/tickets/createTicket.php">Create a new ticket.</a></li>
               <li><a href="samples/tickets/createTicketWithAttachment.php">Create a new ticket with attachment.</a></li>
               <li><a href="samples/tickets/createTicket.php">Create a new ticket with the requester's email address, if the requester's identity doesn't exist.</a></li>
               <div class="clearfix">&nbsp;</div>
