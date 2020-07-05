@@ -5,7 +5,7 @@
   "homepage": "https://github.com/zendesk/zendesk_api_client_php",
   "require": {
     "php": ">=5.5.0",
-    "guzzlehttp/guzzle": "^6.0",
+    "guzzlehttp/guzzle": "^6.0 || ^7.0",
     "mmucklo/inflect": "0.3.*"
   },
   "require-dev": {
