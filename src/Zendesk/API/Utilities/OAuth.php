@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\Utilities;
 
+use InvalidArgumentException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
@@ -22,6 +23,7 @@ class OAuth
      */
     public static function getAccessToken(Client $client, $subdomain, array $params, $domain = 'zendesk.com')
     {
+        validateSubdomain($subdomain);
         $authUrl  = "https://$subdomain.$domain/oauth/tokens";
 
         // Fetch access_token
@@ -55,6 +57,7 @@ class OAuth
      */
     public static function getAuthUrl($subdomain, array $options, $domain = 'zendesk.com')
     {
+        validateSubdomain($subdomain);
         $queryParams = [
             'response_type' => 'code',
             'client_id'    => null,
@@ -70,5 +73,18 @@ class OAuth
         $oAuthUrl .= http_build_query(array_filter($options));
 
         return $oAuthUrl;
+    }
+
+    /**
+     * Validate subdomain
+     *
+     * @param string $subdomain
+     * @throws InvalidArgumentException
+     */
+    private static function validateSubdomain($subdomain)
+    {
+        if (! preg_match('/^[0-9A-Za-z-]+$/', $subdomain)) {
+            throw new InvalidArgumentException('Invalid Zendesk subdomain.');
+        }
     }
 }
