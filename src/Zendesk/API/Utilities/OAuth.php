@@ -23,7 +23,7 @@ class OAuth
      */
     public static function getAccessToken(Client $client, $subdomain, array $params, $domain = 'zendesk.com')
     {
-        validateSubdomain($subdomain);
+        static::validateSubdomain($subdomain);
         $authUrl  = "https://$subdomain.$domain/oauth/tokens";
 
         // Fetch access_token
@@ -57,7 +57,7 @@ class OAuth
      */
     public static function getAuthUrl($subdomain, array $options, $domain = 'zendesk.com')
     {
-        validateSubdomain($subdomain);
+        static::validateSubdomain($subdomain);
         $queryParams = [
             'response_type' => 'code',
             'client_id'    => null,
