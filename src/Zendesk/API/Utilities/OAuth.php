@@ -83,7 +83,7 @@ class OAuth
      */
     private static function validateSubdomain($subdomain)
     {
-        if (! preg_match('/^[0-9A-Za-z-]+$/', $subdomain)) {
+        if (! preg_match('/^[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])?$/', $subdomain)) {
             throw new InvalidArgumentException('Invalid Zendesk subdomain.');
         }
     }
