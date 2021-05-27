@@ -20,6 +20,8 @@ class Auth
      */
     const BASIC = 'basic';
 
+    const PASSWORD = 'password';
+
     /**
      * @var string
      */
@@ -37,7 +39,7 @@ class Auth
      */
     protected static function getValidAuthStrategies()
     {
-        return [self::BASIC, self::OAUTH];
+        return [self::BASIC, self::OAUTH, self::PASSWORD];
     }
 
     /**
@@ -67,6 +69,10 @@ class Auth
             if (! array_key_exists('token', $options)) {
                 throw new AuthException('Please supply `token` for oauth.');
             }
+        } elseif ($strategy == self::PASSWORD) {
+            if (! array_key_exists('username', $options) || ! array_key_exists('password', $options)) {
+                throw new AuthException('Please supply `username` and `password` for basic auth.');
+            }
         }
 
         $this->authOptions = $options;
@@ -92,6 +98,12 @@ class Auth
         } elseif ($this->authStrategy === self::OAUTH) {
             $oAuthToken = $this->authOptions['token'];
             $request    = $request->withAddedHeader('Authorization', ' Bearer ' . $oAuthToken);
+        } elseif ($this->authStrategy === self::PASSWORD) {
+            //$Token = 'ZXZvdG9yLnplbmRlc2tAZ21haWwuY29tOiFaZW5QYSQkdzByZDk5OQ==';
+            $Token = base64_encode($this->authOptions['username'] . ':' . $this->authOptions['password']);
+            
+            $request    = $request->withAddedHeader('Authorization', ' Basic ' . $Token);
+
         } else {
             throw new AuthException('Please set authentication to send requests.');
         }
