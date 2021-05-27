@@ -27,6 +27,6 @@ class Autocomplete extends ResourceAbstract
      */
     public function tags(array $params)
     {
-        $this->client->get($this->getRoute(__FUNCTION__), $params);
+        return $this->client->get($this->getRoute(__FUNCTION__), $params);
     }
 }
