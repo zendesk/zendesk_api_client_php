@@ -2,6 +2,10 @@
 
 namespace Zendesk\API\Resources\Core;
 
+/**
+ * @author contributer <yousafsaqib979@gmail.com>
+ */
+
 use Zendesk\API\Exceptions\MissingParametersException;
 use Zendesk\API\Exceptions\ResponseException;
 use Zendesk\API\Http;
@@ -10,6 +14,7 @@ use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\DeleteMany;
 use Zendesk\API\Traits\Resource\FindMany;
 use Zendesk\API\Traits\Resource\UpdateMany;
+use Zendesk\API\Traits\Resource\FindIncremental;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
@@ -24,6 +29,7 @@ use Zendesk\API\Traits\Utility\InstantiatorTrait;
 class Tickets extends ResourceAbstract
 {
     use InstantiatorTrait;
+    use FindIncremental;
 
     use Defaults {
         create as traitCreate;
@@ -98,7 +104,9 @@ class Tickets extends ResourceAbstract
             'merge'               => 'tickets/{id}/merge.json',
             'problems'            => 'problems.json',
             'export'              => 'exports/tickets.json',
-            'problemAutoComplete' => 'problems/autocomplete.json'
+            'problemAutoComplete' => 'problems/autocomplete.json',
+            'findIncremental'     => 'incremental/tickets.json',
+            'findAll'             => 'tickets.json'
         ]);
     }
 
