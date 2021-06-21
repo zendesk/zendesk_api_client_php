@@ -8,6 +8,7 @@ use Zendesk\API\Traits\Resource\CreateMany;
 use Zendesk\API\Traits\Resource\Delete;
 use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
+use Zendesk\API\Traits\Resource\Update;
 use Zendesk\API\Traits\Resource\UpdateMany;
 
 /**
@@ -17,6 +18,7 @@ class DynamicContentItemVariants extends ResourceAbstract
 {
     use Create;
     use Delete;
+    use Update;
     use Find;
     use FindAll;
 
@@ -26,11 +28,11 @@ class DynamicContentItemVariants extends ResourceAbstract
     /**
      * {@inheritdoc}
      */
-    protected $objectName = 'item';
+    protected $objectName = 'variant';
     /**
      * {@inheritdoc}
      */
-    protected $objectNamePlural = 'items';
+    protected $objectNamePlural = 'variants';
 
     /**
      * {@inheritdoc}
@@ -43,6 +45,7 @@ class DynamicContentItemVariants extends ResourceAbstract
                 'find'       => 'dynamic_content/items/{item_id}/variants/{id}.json',
                 'create'     => 'dynamic_content/items/{item_id}/variants.json',
                 'delete'     => 'dynamic_content/items/{item_id}/variants.json',
+                'update'     => 'dynamic_content/items/{item_id}/variants/{id}.json',
                 'createMany' => 'dynamic_content/items/{item_id}/variants/create_many.json',
                 'updateMany' => 'dynamic_content/items/{item_id}/variants/update_many.json',
             ]
