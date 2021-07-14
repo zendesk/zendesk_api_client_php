@@ -88,7 +88,7 @@ class Http
         try {
             // enable anonymous access
             if ($client->getAuth()) {
-                list($request, $requestOptions) = $client->getAuth()->prepareRequest($request, $requestOptions);
+                list ($request, $requestOptions) = $client->getAuth()->prepareRequest($request, $requestOptions);
             }
             $response = $client->guzzle->send($request, $requestOptions);
         } catch (RequestException $e) {
