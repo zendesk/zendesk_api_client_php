@@ -38,7 +38,7 @@ class OAuth
 
         try {
             $request = new Request('POST', $authUrl, ['Content-Type' => 'application/json']);
-            $request = $request->withBody(\GuzzleHttp\Psr7\stream_for(json_encode($params)));
+            $request = $request->withBody(\GuzzleHttp\Psr7\Utils::streamFor(json_encode($params)));
             $response = $client->send($request);
         } catch (RequestException $e) {
             throw new ApiResponseException($e);
