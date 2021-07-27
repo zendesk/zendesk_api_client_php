@@ -66,7 +66,7 @@ class Http
             $request                     = $request->withoutHeader('Content-Type');
             $requestOptions['multipart'] = $options['multipart'];
         } elseif (! empty($options['postFields'])) {
-            $request = $request->withBody(\GuzzleHttp\Psr7\stream_for(json_encode($options['postFields'])));
+            $request = $request->withBody(\GuzzleHttp\Psr7\Utils::streamFor(json_encode($options['postFields'])));
         } elseif (! empty($options['file'])) {
             if ($options['file'] instanceof StreamInterface) {
                 $request = $request->withBody($options['file']);
