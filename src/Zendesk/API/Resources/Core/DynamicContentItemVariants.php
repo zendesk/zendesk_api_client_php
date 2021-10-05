@@ -26,7 +26,7 @@ class DynamicContentItemVariants extends ResourceAbstract
     /**
      * {@inheritdoc}
      */
-    protected $objectName = 'item';
+    protected $objectName = 'variant';
     /**
      * {@inheritdoc}
      */
