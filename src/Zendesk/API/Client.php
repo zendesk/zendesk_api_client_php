@@ -2,6 +2,8 @@
 
 namespace Zendesk\API;
 
+use InvalidArgumentException;
+
     /*
      * Dead simple autoloader:
      * spl_autoload_register(function($c){@include 'src/'.preg_replace('#\\\|_(?!.+\\\)#','/',$c).'.php';});
@@ -263,6 +265,9 @@ class Client
         if (empty($subdomain)) {
             $this->apiUrl = "$scheme://$hostname:$port/api/{$this->apiVer}/";
         } else {
+            if (! preg_match('/^[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])?$/', $subdomain)) {
+                throw new InvalidArgumentException('Invalid Zendesk subdomain.');
+            }
             $this->apiUrl = "$scheme://$subdomain.$hostname:$port/api/{$this->apiVer}/";
         }
 
