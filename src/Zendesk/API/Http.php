@@ -5,6 +5,7 @@ namespace Zendesk\API;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\LazyOpenStream;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Utils;
 use Psr\Http\Message\StreamInterface;
 use Zendesk\API\Exceptions\ApiResponseException;
 use Zendesk\API\Exceptions\AuthException;
@@ -66,7 +67,7 @@ class Http
             $request                     = $request->withoutHeader('Content-Type');
             $requestOptions['multipart'] = $options['multipart'];
         } elseif (! empty($options['postFields'])) {
-            $request = $request->withBody(\GuzzleHttp\Psr7\stream_for(json_encode($options['postFields'])));
+            $request = $request->withBody(Utils::streamFor(json_encode($options['postFields'])));
         } elseif (! empty($options['file'])) {
             if ($options['file'] instanceof StreamInterface) {
                 $request = $request->withBody($options['file']);
