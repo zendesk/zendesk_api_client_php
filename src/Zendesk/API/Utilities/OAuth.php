@@ -2,9 +2,11 @@
 
 namespace Zendesk\API\Utilities;
 
+use InvalidArgumentException;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Utils;
 use Zendesk\API\Exceptions\ApiResponseException;
 
 class OAuth
@@ -22,6 +24,7 @@ class OAuth
      */
     public static function getAccessToken(Client $client, $subdomain, array $params, $domain = 'zendesk.com')
     {
+        static::validateSubdomain($subdomain);
         $authUrl  = "https://$subdomain.$domain/oauth/tokens";
 
         // Fetch access_token
@@ -36,7 +39,7 @@ class OAuth
 
         try {
             $request = new Request('POST', $authUrl, ['Content-Type' => 'application/json']);
-            $request = $request->withBody(\GuzzleHttp\Psr7\stream_for(json_encode($params)));
+            $request = $request->withBody(Utils::streamFor(json_encode($params)));
             $response = $client->send($request);
         } catch (RequestException $e) {
             throw new ApiResponseException($e);
@@ -55,6 +58,7 @@ class OAuth
      */
     public static function getAuthUrl($subdomain, array $options, $domain = 'zendesk.com')
     {
+        static::validateSubdomain($subdomain);
         $queryParams = [
             'response_type' => 'code',
             'client_id'    => null,
@@ -70,5 +74,18 @@ class OAuth
         $oAuthUrl .= http_build_query(array_filter($options));
 
         return $oAuthUrl;
+    }
+
+    /**
+     * Validate subdomain
+     *
+     * @param string $subdomain
+     * @throws InvalidArgumentException
+     */
+    private static function validateSubdomain($subdomain)
+    {
+        if (! preg_match('/^[A-Za-z0-9](?:[A-Za-z0-9\-]{0,61}[A-Za-z0-9])?$/', $subdomain)) {
+            throw new InvalidArgumentException('Invalid Zendesk subdomain.');
+        }
     }
 }
