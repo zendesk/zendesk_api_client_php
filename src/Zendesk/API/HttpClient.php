@@ -54,6 +54,7 @@ use Zendesk\API\Resources\Core\TwitterHandles;
 use Zendesk\API\Resources\Core\UserFields;
 use Zendesk\API\Resources\Core\Users;
 use Zendesk\API\Resources\Core\Views;
+use Zendesk\API\Resources\Core\Webhooks;
 use Zendesk\API\Resources\Embeddable;
 use Zendesk\API\Resources\HelpCenter;
 use Zendesk\API\Resources\Talk;
@@ -98,6 +99,7 @@ use Zendesk\API\Utilities\Auth;
  * @method SuspendedTickets suspendedTickets()
  * @method Tags tags($id = null)
  * @method Targets targets()
+ * @method Webhooks webhooks()
  * @method Tickets tickets($id = null)
  * @method TicketFields ticketFields($id = null)
  * @method TicketImports ticketImports()
@@ -281,6 +283,7 @@ class HttpClient
             'userFields'                => UserFields::class,
             'users'                     => Users::class,
             'views'                     => Views::class,
+            'webhooks'                  => Webhooks::class,
         ];
     }
 
