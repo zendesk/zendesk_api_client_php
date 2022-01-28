@@ -20,7 +20,9 @@ class Webhooks extends ResourceAbstract
         parent::setUpRoutes();
 
         $this->setRoutes([
-            'webhooks'       => "{$this->resourceName}",
+            'create'       => "{$this->resourceName}",
+            'update'       => "{$this->resourceName}/{id}",
+            'delete'       => "{$this->resourceName}",
         ]);
     }
 }
