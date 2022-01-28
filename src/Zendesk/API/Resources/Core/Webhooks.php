@@ -11,4 +11,16 @@ use Zendesk\API\Traits\Resource\Defaults;
 class Webhooks extends ResourceAbstract
 {
     use Defaults;
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUpRoutes()
+    {
+        parent::setUpRoutes();
+
+        $this->setRoutes([
+            'webhooks'       => "{$this->resourceName}",
+        ]);
+    }
 }
