@@ -51,13 +51,14 @@ abstract class ResourceAbstract
     /**
      * @var string
      */
-    protected $apiBasePath = 'api/v2/';
+    protected $apiBasePath;
 
     /**
      * @param HttpClient $client
      */
-    public function __construct(HttpClient $client)
+    public function __construct(HttpClient $client, $apiBasePath='api/v2/')
     {
+        $this->apiBasePath = $apiBasePath;
         $this->client = $client;
         $this->client->setApiBasePath($this->apiBasePath);
 
