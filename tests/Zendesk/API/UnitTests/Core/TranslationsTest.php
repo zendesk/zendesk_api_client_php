@@ -7,7 +7,7 @@ use Zendesk\API\UnitTests\BasicTest;
 /**
  * Translations test class
  */
-class LocalesTest extends BasicTest
+class TranslationsTest extends BasicTest
 {
 /**
  * Test manifest method
