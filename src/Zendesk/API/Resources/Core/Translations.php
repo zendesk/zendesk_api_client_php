@@ -3,7 +3,7 @@
 namespace Zendesk\API\Resources\Core;
 
 use Zendesk\API\Resources\ResourceAbstract;
-use Zendesk\API\Traits\Resource\FindAll;
+use Zendesk\API\Traits\Resource\Find;
 
 /**
  * The Translations class finds the manifest files for localizations
@@ -11,7 +11,7 @@ use Zendesk\API\Traits\Resource\FindAll;
 
 class Translations extends ResourceAbstract
 {
-    use FindAll;
+    use Find;
     /**
      * {@inheritdoc}
      */
@@ -33,7 +33,7 @@ class Translations extends ResourceAbstract
      */
     public function manifest(array $params = [])
     {
-        return $this->findAll($params, __FUNCTION__);
+        return $this->find(null, $params, __FUNCTION__);
     }
 
 }
