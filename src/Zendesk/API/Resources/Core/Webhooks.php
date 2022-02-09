@@ -11,6 +11,9 @@ use Zendesk\API\Traits\Resource\Defaults;
 class Webhooks extends ResourceAbstract
 {
     use Defaults;
+    use FindAll {
+        findAll as traitFindAll;
+    }
 
     /**
      * {@inheritdoc}
