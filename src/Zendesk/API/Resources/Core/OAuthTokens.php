@@ -3,6 +3,7 @@
 namespace Zendesk\API\Resources\Core;
 
 use Zendesk\API\Resources\ResourceAbstract;
+use Zendesk\API\Traits\Resource\Create;
 use Zendesk\API\Traits\Resource\Delete;
 use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
@@ -12,6 +13,7 @@ use Zendesk\API\Traits\Resource\FindAll;
  */
 class OAuthTokens extends ResourceAbstract
 {
+    use Create;
     use FindAll;
     use Find;
     use Delete;

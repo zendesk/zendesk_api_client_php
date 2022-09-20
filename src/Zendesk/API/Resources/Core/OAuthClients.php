@@ -17,10 +17,16 @@ class OAuthClients extends ResourceAbstract
      * {@inheritdoc}
      */
     protected $objectName = 'client';
+
     /**
      * {@inheritdoc}
      */
     protected $objectNamePlural = 'clients';
+
+    /**
+     * {@inheritdoc}
+     */
+    protected $resourceName = 'oauth/clients';
 
     /**
      * Sets up the available routes for the resource.
