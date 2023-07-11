@@ -4,15 +4,13 @@ namespace Zendesk\API\Resources\Core;
 
 use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\Defaults;
-use Zendesk\API\Traits\Resource\FindAll;
 
 /**
  * The Tags class exposes methods as detailed on https://developer.zendesk.com/api-reference/event-connectors/webhooks/webhooks/
  */
 class Webhooks extends ResourceAbstract
 {
-    use Defaults;
-    use FindAll {
+    use Defaults {
         findAll as traitFindAll;
     }
 
@@ -25,8 +23,8 @@ class Webhooks extends ResourceAbstract
 
         $this->setRoutes([
             'create'       => "{$this->resourceName}",
-            'update'       => "{$this->resourceName}/{id}",
-            'delete'       => "{$this->resourceName}",
+            'update'       => "{$this->resourceName}/{id}.json",
+            'delete'       => "{$this->resourceName}/{id}.json",
             'findAll'      => "{$this->resourceName}",
         ]);
     }
