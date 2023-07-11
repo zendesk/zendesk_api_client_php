@@ -23,8 +23,8 @@ class Webhooks extends ResourceAbstract
 
         $this->setRoutes([
             'create'       => "{$this->resourceName}",
-            'update'       => "{$this->resourceName}/{id}.json",
-            'delete'       => "{$this->resourceName}/{id}.json",
+            'update'       => "{$this->resourceName}/{id}",
+            'delete'       => "{$this->resourceName}/{id}",
             'findAll'      => "{$this->resourceName}",
         ]);
     }
