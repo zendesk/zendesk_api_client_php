@@ -1,3 +1,5 @@
+# THIS REPOSITORY IS NO LONGER SUPPORTED #
+
 # Zendesk PHP API Client Library #
 
 [![Build Status](https://travis-ci.org/zendesk/zendesk_api_client_php.svg?branch=master)](https://travis-ci.org/zendesk/zendesk_api_client_php)
