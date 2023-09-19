@@ -15,6 +15,7 @@ This is the second version of our PHP API client. The previous version of the AP
 This client **only** supports Zendesk's API v2.  Please see our [API documentation](http://developer.zendesk.com) for more information.
 
 ## Requirements
+
 * PHP 5.5+
 
 ## Installation
@@ -26,6 +27,7 @@ The Zendesk PHP API client can be installed using [Composer](https://packagist.o
 To install run `composer require zendesk/zendesk_api_client_php`
 
 ### Upgrading from V1 to V2
+
 If you are upgrading from [v1](https://github.com/zendesk/zendesk_api_client_php/tree/v1) of the client, we've written an [upgrade guide](https://github.com/zendesk/zendesk_api_client_php/wiki/Upgrading-from-v1-to-v2) to highlight some of the key differences.
 
 ## Configuration
@@ -97,13 +99,13 @@ $attachment = $client->attachments()->upload([
 Attaching files to comments
 
 ``` php
-$ticket = $client->tickets()->create([          
-    'subject' => 'The quick brown fox jumps over the lazy dog',      
-    'comment' => [                              
+$ticket = $client->tickets()->create([
+    'subject' => 'The quick brown fox jumps over the lazy dog',
+    'comment' => [
         'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, ' .
-                  'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 
-        'uploads'   => [$attachment->upload->token]                 
-    ]                                           
+                  'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        'uploads'   => [$attachment->upload->token]
+    ]
 ]);
 ```
 
@@ -118,6 +120,7 @@ $tickets = $client->tickets()->sideload(['users', 'groups'])->findAll();
 ```
 
 ### Pagination
+
 The Zendesk API offers a way to get the next pages for the requests and is documented in [the Zendesk Developer Documentation](https://developer.zendesk.com/rest_api/docs/core/introduction#pagination).
 
 The way to do this is to pass it as an option to your request.
@@ -126,15 +129,16 @@ The way to do this is to pass it as an option to your request.
 $tickets = $this->client->tickets()->findAll(['per_page' => 10, 'page' => 2]);
 ```
 
-The allowed options are
+The allowed options are:
+
 * per_page
 * page
 * sort_order
 
 ### Retrying Requests
 
-Add the `RetryHandler` middleware on the `HandlerStack` of your `GuzzleHttp\Client` instance. By default `Zendesk\Api\HttpClient` 
-retries: 
+Add the `RetryHandler` middleware on the `HandlerStack` of your `GuzzleHttp\Client` instance. By default `Zendesk\Api\HttpClient`
+retries:
 * timeout requests
 * those that throw `Psr\Http\Message\RequestInterface\ConnectException:class`
 * and those that throw `Psr\Http\Message\RequestInterface\RequestException:class` that are identified as ssl issue.
