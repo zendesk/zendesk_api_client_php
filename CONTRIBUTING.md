@@ -48,7 +48,6 @@ A good example is:
  */
 ```
 
-
 #### Methods
 
 Method docblocks should contain:
@@ -78,6 +77,7 @@ A good example of this is:
 #### Properties
 
 Class properties docblocs should contain:
+
 * A short description of the property (optional)
 * The var type
 

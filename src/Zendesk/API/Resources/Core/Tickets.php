@@ -148,7 +148,7 @@ class Tickets extends ResourceAbstract
             $params['comment']['uploads'] = $this->lastAttachments;
             $this->lastAttachments        = [];
         }
-        
+
         $extraOptions = [];
         if (isset($params['async']) && ($params['async'] == true)) {
             $extraOptions = [

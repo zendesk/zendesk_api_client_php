@@ -123,27 +123,27 @@ $tickets = $client->tickets()->sideload(['users', 'groups'])->findAll();
 
 The Zendesk API offers a way to get the next pages for the requests and is documented in [the Zendesk Developer Documentation](https://developer.zendesk.com/rest_api/docs/core/introduction#pagination).
 
-The way to do this is to pass it as an option to your request.
+There are two ways to do pagination, CBP (cursor based pagination) and OBP (offset based pagination). The recommended and less limited way is to use CBP.
 
 ``` php
-$tickets = $this->client->tickets()->findAll(['per_page' => 10, 'page' => 2]);
+// CBP /endpoint?page[size]=100
+$tickets = $this->client->tickets()->findAll(['page' => ['size' => 100]]);
+
+// OBP /endpoint?per_page=100&page=2
+$tickets = $this->client->tickets()->findAll(['per_page' => 100, 'page' => 2]);
 ```
-
-The allowed options are:
-
-* per_page
-* page
-* sort_order
 
 ### Retrying Requests
 
 Add the `RetryHandler` middleware on the `HandlerStack` of your `GuzzleHttp\Client` instance. By default `Zendesk\Api\HttpClient`
 retries:
+
 * timeout requests
 * those that throw `Psr\Http\Message\RequestInterface\ConnectException:class`
 * and those that throw `Psr\Http\Message\RequestInterface\RequestException:class` that are identified as ssl issue.
 
 #### Available options
+
 Options are passed on `RetryHandler` as an array of values.
 
 * max = 2 _limit of retries_
