@@ -11,6 +11,7 @@ trait Defaults
 {
     use Find;
     use FindAll;
+    use FindPaginating;
     use Delete;
     use Create;
     use Update;

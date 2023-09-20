@@ -36,3 +36,40 @@ trait FindAll
         );
     }
 }
+
+trait FindPaginating
+{
+    // TODO: params array $params = []
+    public function findPaginating($routeKey = __FUNCTION__)
+    {
+        $page = 1;
+        $params = ['page' => $page];
+        while (true) {
+            // findAll
+            try {
+                $route = $this->getRoute($routeKey, $params);
+            } catch (RouteException $e) {
+                if (! isset($this->resourceName)) {
+                    $this->resourceName = $this->getResourceNameFromClass();
+                }
+
+                $route = $this->resourceName . '.json';
+                $this->setRoute(__FUNCTION__, $route);
+            }
+
+            $response = $this->client->get(
+                $route,
+                $params
+            );
+            // findAll end
+
+            if (empty($response->tickets)) {
+                break;
+            }
+
+            echo "findPaginating: " . count($response->tickets) . " page " . $page . "\n";
+
+            $page++;
+        }
+    }
+}
