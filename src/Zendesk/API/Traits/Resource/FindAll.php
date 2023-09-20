@@ -37,13 +37,10 @@ trait FindAll
     }
 }
 
-trait FindPaginating
-{
-    // TODO: params array $params = []
+trait FindPaginating {
     public function findPaginating($routeKey = __FUNCTION__)
     {
-        $page = 1;
-        $params = ['page' => $page];
+        $params = ['page[size]' => 100];
         while (true) {
             // findAll
             try {
@@ -67,9 +64,15 @@ trait FindPaginating
                 break;
             }
 
-            echo "findPaginating: " . count($response->tickets) . " page " . $page . "\n";
+            echo "findPaginating: " . count($response->tickets) . "\n";
 
-            $page++;
+            // Check if there are more pages
+            if (!$response->meta->has_more) {
+                break;
+            }
+
+            // Get the next page
+            $params['page[after]'] = $response->meta->after_cursor;
         }
     }
 }
