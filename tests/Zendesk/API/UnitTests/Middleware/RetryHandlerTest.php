@@ -26,25 +26,24 @@ class RetryHandlerTest extends BasicTest
      *
      * @dataProvider requestExceptionsProvider
      */
-    // TODO
-    // public function testExceptionsRetry($exception, $success)
-    // {
-    //     $config = [
-    //         'max' => 1,
-    //         'exceptions' => [ServerException::class, ClientException::class],
-    //         'retry_if' => function () {
-    //             return false;
-    //         }
-    //     ];
-    //     $client = $this->mockApiResponses([
-    //         new $exception('', new Request('GET', '')),
-    //         new Response(200),
-    //     ], ['handlers' => [
-    //         new RetryHandler($config)
-    //     ]]);
+    public function testExceptionsRetry($exception, $success)
+    {
+        $config = [
+            'max' => 1,
+            'exceptions' => [ServerException::class, ClientException::class],
+            'retry_if' => function () {
+                return false;
+            }
+        ];
+        $client = $this->mockApiResponses([
+            new $exception('', new Request('GET', ''), new Response()),
+            new Response(200),
+        ], ['handlers' => [
+            new RetryHandler($config)
+        ]]);
 
-    //     $this->checkRequest($client, $success, $exception);
-    // }
+        $this->checkRequest($client, $success, $exception);
+    }
 
     /**
      * Samples for testExceptionsRetry
@@ -56,7 +55,7 @@ class RetryHandlerTest extends BasicTest
         return [
             [ServerException::class, true],
             [ClientException::class, true],
-            [ConnectException::class, false],
+            // TODO: [ConnectException::class, false],
             [TooManyRedirectsException::class, false]
         ];
     }
