@@ -16,6 +16,6 @@ public function testFindManifest()
 {
     $this->assertEndpointCalled(function () {
         $this->client->translations()->manifest();
-    }, 'translations/slack-auth-service/manifest.json');
+    }, 'translations/manifest.json');
 }
 }
