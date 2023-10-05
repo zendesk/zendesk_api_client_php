@@ -15,6 +15,8 @@ This is the second version of our PHP API client. The previous version of the AP
 This client **only** supports Zendesk's API v2.  Please see our [API documentation](http://developer.zendesk.com) for more information.
 
 ## Requirements
+
+* TODO
 * PHP 5.5+
 
 ## Installation
@@ -97,13 +99,13 @@ $attachment = $client->attachments()->upload([
 Attaching files to comments
 
 ``` php
-$ticket = $client->tickets()->create([          
-    'subject' => 'The quick brown fox jumps over the lazy dog',      
-    'comment' => [                              
+$ticket = $client->tickets()->create([
+    'subject' => 'The quick brown fox jumps over the lazy dog',
+    'comment' => [
         'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, ' .
-                  'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 
-        'uploads'   => [$attachment->upload->token]                 
-    ]                                           
+                  'sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        'uploads'   => [$attachment->upload->token]
+    ]
 ]);
 ```
 
@@ -133,8 +135,8 @@ The allowed options are
 
 ### Retrying Requests
 
-Add the `RetryHandler` middleware on the `HandlerStack` of your `GuzzleHttp\Client` instance. By default `Zendesk\Api\HttpClient` 
-retries: 
+Add the `RetryHandler` middleware on the `HandlerStack` of your `GuzzleHttp\Client` instance. By default `Zendesk\Api\HttpClient`
+retries:
 * timeout requests
 * those that throw `Psr\Http\Message\RequestInterface\ConnectException:class`
 * and those that throw `Psr\Http\Message\RequestInterface\RequestException:class` that are identified as ssl issue.

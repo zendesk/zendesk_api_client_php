@@ -11,7 +11,8 @@
 ### Test suite
 
 ```sh
-dc up
+docker-compose up
+docker run -it --rm -v $(pwd):/app zendesk_api_client_php-app bash
 ```
 
 The test suite is run via phpunit. Note that these are all live tests that must be run targeted at a real Zendesk instance. Credentials can be provided by setting the environment variables in phpunit.xml; a sample is provided at phpunit.xml.dist.

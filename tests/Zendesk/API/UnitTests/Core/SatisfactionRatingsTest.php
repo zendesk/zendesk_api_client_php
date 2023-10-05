@@ -56,3 +56,7 @@ class SatisfactionRatingsTest extends BasicTest
         $this->client->satisfactionRatings()->create($postParams);
     }
 }
+// 2) Zendesk\API\UnitTests\Core\SatisfactionRatingsTest::testCreateNeedsTicketId
+// count(): Parameter must be an array or an object that implements Countable
+//
+// phpvfscomposer:///app/vendor/phpunit/phpunit/phpunit:35
