@@ -1,0 +1,13 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - vendor:/app/vendor
+    command: vendor/bin/phpunit --testsuite "Zendesk API Unit Test Suites"
+
+volumes:
+  vendor:

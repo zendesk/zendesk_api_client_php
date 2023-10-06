@@ -49,6 +49,7 @@ use Zendesk\API\Resources\Core\Targets;
 use Zendesk\API\Resources\Core\TicketFields;
 use Zendesk\API\Resources\Core\TicketImports;
 use Zendesk\API\Resources\Core\Tickets;
+use Zendesk\API\Resources\Core\Translations;
 use Zendesk\API\Resources\Core\Triggers;
 use Zendesk\API\Resources\Core\TwitterHandles;
 use Zendesk\API\Resources\Core\UserFields;
@@ -278,6 +279,7 @@ class HttpClient
             'tickets'                   => Tickets::class,
             'ticketFields'              => TicketFields::class,
             'ticketImports'             => TicketImports::class,
+            'translations'              => Translations::class,
             'triggers'                  => Triggers::class,
             'twitterHandles'            => TwitterHandles::class,
             'userFields'                => UserFields::class,

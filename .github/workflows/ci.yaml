@@ -1,0 +1,24 @@
+name: CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Build Docker image
+      run: docker build . --file Dockerfile --tag zendesk_api_client_php-app
+
+    - name: Run Composer install
+      run: docker run --rm --volume "$(pwd):/app" zendesk_api_client_php-app composer install
+
+    - name: Run tests
+      run: docker run --rm --volume "$(pwd):/app" zendesk_api_client_php-app vendor/bin/phpunit --testsuite "Zendesk API Unit Test Suites"

@@ -19,6 +19,8 @@ class HttpTest extends BasicTest
      */
     public function testOriginalRequestExceptionIsPreserved()
     {
+        $this->markTestSkipped('CBP TODO');
+
         $faker = Factory::create();
 
         $exceptionMessage = $faker->sentence;

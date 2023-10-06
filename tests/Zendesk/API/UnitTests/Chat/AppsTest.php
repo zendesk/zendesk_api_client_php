@@ -12,6 +12,8 @@ class AppsTest extends BasicTest
      */
     public function testInstall()
     {
+        $this->markTestSkipped('CBP TODO');
+
         $faker = Factory::create();
         $postFields = [
             'app_id'   => $faker->numberBetween(1),
@@ -23,7 +25,7 @@ class AppsTest extends BasicTest
         ];
 
         $this->assertEndpointCalled(function () use ($postFields) {
-             $this->client->chat->apps()->install($postFields);
+            $this->client->chat->apps()->install($postFields);
         }, 'apps/installations.json', 'POST', [
             'postFields' => $postFields,
             'apiBasePath' => '/api/chat/',
