@@ -11,6 +11,7 @@
 ### Test suite
 
 ```sh
+# TODO: Update CONTRIBUTING
 docker-compose up
 docker run -it --rm -v $(pwd):/app zendesk_api_client_php-app bash
 ```

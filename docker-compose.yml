@@ -8,7 +8,6 @@ services:
       - .:/app
       - vendor:/app/vendor
     command: vendor/bin/phpunit --testsuite "Zendesk API Unit Test Suites"
-    # command: vendor/bin/phpunit --debug --filter testCreateNeedsTicketId tests/Zendesk/API/UnitTests/Core/SatisfactionRatingsTest.php
 
 volumes:
   vendor:
