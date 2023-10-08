@@ -205,7 +205,7 @@ class RetryHandlerTest extends BasicTest
      */
     public function testHttpClientRetry()
     {
-        $this->markTestSkipped('CBP TODO');
+        $this->markTestSkipped('CBP TODO deprecated');
 
         $this->setUp();
         $config = $this->client->guzzle->getConfig();

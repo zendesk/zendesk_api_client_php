@@ -12,7 +12,15 @@ class AppsTest extends BasicTest
      */
     public function testInstall()
     {
-        $this->markTestSkipped('CBP TODO');
+        $this->markTestSkipped('CBP TODO assert');
+        // 1) Zendesk\API\UnitTests\Chat\AppsTest::testInstall
+        // Failed asserting that the API basepath is /api/chat/
+        // Failed asserting that false is identical to 0.
+        // /app/tests/Zendesk/API/UnitTests/BasicTest.php:190
+        // /app/tests/Zendesk/API/UnitTests/BasicTest.php:120
+        // /app/tests/Zendesk/API/UnitTests/BasicTest.php:233
+        // /app/tests/Zendesk/API/UnitTests/Chat/AppsTest.php:31
+        // phpvfscomposer:///app/vendor/phpunit/phpunit/phpunit:35
 
         $faker = Factory::create();
         $postFields = [

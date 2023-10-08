@@ -20,7 +20,7 @@ class AuthTest extends BasicTest
      */
     public function testAnonymousAccess()
     {
-        $this->markTestSkipped('CBP TODO');
+        $this->markTestSkipped('CBP TODO deprecated');
 
         // mock client
         $client = $this
