@@ -40,7 +40,6 @@ class SatisfactionRatingsTest extends BasicTest
         );
     }
 
-
     /**
      * Test the create method requires a ticket id
      */

@@ -15,6 +15,7 @@ class Apps extends ResourceAbstract
      * @var string
      */
     protected $apiBasePath = 'api/chat/';
+    // TODO: api/v2
 
     /**
      * {@inheritdoc}

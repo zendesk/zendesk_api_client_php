@@ -185,9 +185,8 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
 
         if (isset($options['apiBasePath'])) {
             $this->assertSame(
-                0,
-                strpos($request->getUri()->getPath(), $options['apiBasePath']),
-                "Failed asserting that the API basepath is {$options['apiBasePath']}"
+                0, strpos($request->getUri()->getPath(), $options['apiBasePath']),
+                "Failed asserting apiBasePath: expected: {$options['apiBasePath']}, actual: {$request->getUri()->getPath()}"
             );
         }
 
@@ -195,7 +194,9 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
             // Truncate the base path from the target, this was added since the existing usage pattern for
             // $options['endpoint'] does not include the api/v2 base path
             $endpoint = preg_replace('/^' . preg_quote($options['apiBasePath'], '/') . '/', '', $request->getUri()->getPath());
-            $this->assertEquals($options['endpoint'], $endpoint);
+            $this->assertEquals(
+                $options['endpoint'], $endpoint,
+                "Failed asserting endpoint: expected: {$options['endpoint']}, actual: {$endpoint}");
         }
 
         if (isset($options['queryParams'])) {
