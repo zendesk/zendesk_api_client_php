@@ -195,7 +195,7 @@ class RetryHandlerTest extends BasicTest
         return [
             [20000, 1, 300, 'for each request delays should be 100ms'], // all delays are 100ms
             [20000, 2, 1400, 'delay should have an exponential growth'], // for each retry delays are 200, 400, 800 ms
-            // TODO: [1000, 3, 2200, 'delay should not exceed max interval'] // for each retry delays are 300, 900, 1000 ms
+            [1000, 3, 2200, 'delay should not exceed max interval'] // for each retry delays are 300, 900, 1000 ms
         ];
     }
 
