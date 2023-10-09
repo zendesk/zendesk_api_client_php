@@ -12,7 +12,7 @@ class ApiResponseExceptionTest extends BasicTest
      */
     public function testPreviousException()
     {
-        $this->markTestSkipped('CBP TODO deprecated');
+        $this->markTestSkipped('CBP TODO mocking');
 
         $message = 'The previous exception was not passed to ApiResponseException';
         $mockException = $this

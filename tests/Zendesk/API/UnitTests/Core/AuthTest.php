@@ -20,7 +20,7 @@ class AuthTest extends BasicTest
      */
     public function testAnonymousAccess()
     {
-        $this->markTestSkipped('CBP TODO deprecated');
+        $this->markTestSkipped('CBP TODO mocking');
 
         // mock client
         $client = $this
@@ -40,7 +40,7 @@ class AuthTest extends BasicTest
 
         // send request
         $client->guzzle = $this->getMockBuilder(Client::class)->getMock();
-        $client->guzzle->method('send')->willReturn(new Response);
+        $client->guzzle->method('send')->willReturn(new Response(200, [], ''));
         Http::send($client, '');
     }
 
