@@ -42,24 +42,19 @@ class SatisfactionRatingsTest extends BasicTest
 
     /**
      * Test the create method requires a ticket id
-     *
-     * XexpectedException Zendesk\API\Exceptions\MissingParametersException
-     * XexpectedExceptionMessage Missing parameters: 'ticket_id' must be supplied for Zendesk\API\Resources\Core\SatisfactionRatings::create
      */
     public function testCreateNeedsTicketId()
     {
-        $this->markTestSkipped('CBP TODO');
-        // replace X with @ above
-
         $postParams = [
             'score' => 'good',
             'comment' => 'Awesome Support!',
         ];
 
+        $this->setExpectedException(
+            'Zendesk\API\Exceptions\MissingParametersException',
+            "Missing parameters: 'ticket_id' must be supplied for Zendesk\API\Resources\Core\SatisfactionRatings::create"
+        );
+
         $this->client->satisfactionRatings()->create($postParams);
     }
 }
-// 2) Zendesk\API\UnitTests\Core\SatisfactionRatingsTest::testCreateNeedsTicketId
-// count(): Parameter must be an array or an object that implements Countable
-//
-// phpvfscomposer:///app/vendor/phpunit/phpunit/phpunit:35

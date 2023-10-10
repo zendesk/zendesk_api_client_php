@@ -19,16 +19,15 @@ class HttpTest extends BasicTest
      */
     public function testOriginalRequestExceptionIsPreserved()
     {
-        $this->markTestSkipped('CBP TODO');
-
+        $this->markTestSkipped('Broken in PHP 7.4 (mocking)');
         $faker = Factory::create();
 
         $exceptionMessage = $faker->sentence;
         $exception = $this->mockRequestException($exceptionMessage);
 
         $guzzleClient = $this->getMockBuilder(GuzzleClient::class)
-                      ->disableOriginalConstructor()
-                      ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $guzzleClient->expects($this->once())
             ->method('send')
             ->will($this->throwException($exception));
@@ -70,14 +69,14 @@ class HttpTest extends BasicTest
     private function mockRequestException($message)
     {
         $request = $this->getMockBuilder(Request::class)
-                 ->disableOriginalConstructor()
-                 ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $response = $this->getMockBuilder(Response::class)
-                  ->disableOriginalConstructor()
-                  ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $body = $this->getMockBuilder(Stream::class)
-                      ->disableOriginalConstructor()
-                      ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
         $request->method('getBody')
             ->will($this->returnValue($body));
         $response->method('getBody')

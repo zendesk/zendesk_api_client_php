@@ -12,11 +12,10 @@ class AppsTest extends BasicTest
      */
     public function testInstall()
     {
-        $this->markTestSkipped('CBP TODO');
-
         $faker = Factory::create();
         $postFields = [
             'app_id'   => $faker->numberBetween(1),
+            'product_name' => 'chat',
             'settings' =>
             [
                 'name'      => $faker->word,
@@ -28,7 +27,7 @@ class AppsTest extends BasicTest
             $this->client->chat->apps()->install($postFields);
         }, 'apps/installations.json', 'POST', [
             'postFields' => $postFields,
-            'apiBasePath' => '/api/chat/',
+            'apiBasePath' => '/api/v2/'
         ]);
     }
 }

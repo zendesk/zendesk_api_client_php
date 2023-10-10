@@ -55,7 +55,6 @@ class RetryHandlerTest extends BasicTest
         return [
             [ServerException::class, true],
             [ClientException::class, true],
-            // TODO: [ConnectException::class, false],
             [TooManyRedirectsException::class, false]
         ];
     }
@@ -205,15 +204,11 @@ class RetryHandlerTest extends BasicTest
      */
     public function testHttpClientRetry()
     {
-        $this->markTestSkipped('CBP TODO');
-
         $this->setUp();
         $config = $this->client->guzzle->getConfig();
         $sslException = new RequestException(
             'ssl',
-            $this->getMockBuilder(Request::class)
-                ->disableOriginalConstructor()
-                ->getMock()
+            new Request('GET', '')
         );
 
         $mock = new MockHandler([
