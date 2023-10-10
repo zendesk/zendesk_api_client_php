@@ -1,6 +1,6 @@
 # Zendesk PHP API Client Library #
 
-[![Build Status](https://travis-ci.org/zendesk/zendesk_api_client_php.svg?branch=master)](https://travis-ci.org/zendesk/zendesk_api_client_php)
+![CI](https://github.com/zendesk/zendesk_api_client_php/actions/workflows/ci.yaml/badge.svg)
 [![Latest Stable Version](https://poser.pugx.org/zendesk/zendesk_api_client_php/v/stable)](https://packagist.org/packages/zendesk/zendesk_api_client_php)
 [![Total Downloads](https://poser.pugx.org/zendesk/zendesk_api_client_php/downloads)](https://packagist.org/packages/zendesk/zendesk_api_client_php)
 [![Code Climate](https://codeclimate.com/github/zendesk/zendesk_api_client_php/badges/gpa.svg)](https://codeclimate.com/github/zendesk/zendesk_api_client_php)
@@ -121,7 +121,7 @@ $tickets = $client->tickets()->sideload(['users', 'groups'])->findAll();
 
 ### Pagination
 
-The Zendesk API offers a way to get the next pages for the requests and is documented in [the Zendesk Developer Documentation](https://developer.zendesk.com/rest_api/docs/core/introduction#pagination).
+The Zendesk API offers a way to get the next pages for the requests and is documented in [the Zendesk Developer Documentation](https://developer.zendesk.com/api-reference/introduction/pagination).
 
 There are two ways to do pagination, CBP (cursor based pagination) and OBP (offset based pagination). The recommended and less limited way is to use CBP.
 
