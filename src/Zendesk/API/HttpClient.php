@@ -87,7 +87,7 @@ use Zendesk\API\Utilities\Auth;
  * @method OAuthTokens oauthTokens($id = null)
  * @method OrganizationFields organizationFields()
  * @method OrganizationMemberships organizationMemberships()
- * @method Organizations organizations()
+ * @method Organizations organizations($id = null)
  * @method OrganizationSubscriptions organizationSubscriptions()
  * @method PushNotificationDevices pushNotificationDevices()
  * @method Requests requests($id = null)
