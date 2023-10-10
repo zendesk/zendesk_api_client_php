@@ -40,7 +40,6 @@ class ConfigSetsTest extends BasicTest
 
         $this->assertEndpointCalled(function () use ($params, $id) {
             $this->client->embeddable->configSets()->update($id, $params);
-            // TODO: Verify calls work
         }, "api/v2/embeddable/api/config_sets/{$id}.json", 'PUT', [
             'apiBasePath' => '/',
             'postFields' => ['config_set' => $params],

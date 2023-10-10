@@ -55,7 +55,6 @@ class RetryHandlerTest extends BasicTest
         return [
             [ServerException::class, true],
             [ClientException::class, true],
-            // TODO: [ConnectException::class, false],
             [TooManyRedirectsException::class, false]
         ];
     }

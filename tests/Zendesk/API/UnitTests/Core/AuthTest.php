@@ -20,7 +20,7 @@ class AuthTest extends BasicTest
      */
     public function testAnonymousAccess()
     {
-        $this->markTestSkipped('CBP TODO mocking');
+        $this->markTestSkipped('Broken in PHP 7.4 (mocking)');
 
         // mock client
         $client = $this

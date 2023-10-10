@@ -10,18 +10,22 @@
 
 ### Test suite
 
-```sh
-# TODO: Update CONTRIBUTING
-docker-compose up
-docker run -it --rm -v $(pwd):/app zendesk_api_client_php-app bash
-```
-
 The test suite is run via phpunit. Note that these are all live tests that must be run targeted at a real Zendesk instance. Credentials can be provided by setting the environment variables in phpunit.xml; a sample is provided at phpunit.xml.dist.
 
 To run the unit tests: `vendor/bin/phpunit --testsuite "Zendesk API Unit Test Suites"`
 
 To run the live tests: `vendor/bin/phpunit --testsuite "Zendesk API Live Test Suites"`
 
+### Docker
+
+If you prefer to use Docker for running your tests:
+
+```sh
+# Run the specs
+docker-compose up
+# Or open a shell in the container
+docker run -it --rm -v $(pwd):/app zendesk_api_client_php-app bash
+```
 
 ## Coding Standard
 

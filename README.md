@@ -18,8 +18,7 @@ This client **only** supports Zendesk's API v2.  Please see our [API documentati
 
 ## Requirements
 
-* TODO: Update README
-* PHP 5.5+
+* PHP 7.4+
 
 ## Installation
 
