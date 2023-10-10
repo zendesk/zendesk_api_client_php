@@ -29,7 +29,7 @@ class Search extends ResourceAbstract
      * narrow your search results according to resource type, dates, and object properties, such as ticket requester or
      * tag.
      *
-     * @param null  $query
+     * @param string  $query
      * @param array $queryParams
      *
      * @return \stdClass | null
