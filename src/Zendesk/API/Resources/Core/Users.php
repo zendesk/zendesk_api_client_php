@@ -85,6 +85,7 @@ class Users extends ResourceAbstract
             'requests'                  => Requests::class,
             'sessions'                  => Sessions::class,
             'tickets'                   => UserTickets::class,
+            'tags'                      => Tags::class,
         ];
     }
 
