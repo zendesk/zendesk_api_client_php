@@ -37,7 +37,7 @@
 
             <strong>Tickets</strong>
             <ul>
-              <li><a href="samples/tickets/qcreateTicket.php">Create a new ticket.</a></li>
+              <li><a href="samples/tickets/createTicket.php">Create a new ticket.</a></li>
               <li><a href="samples/tickets/createTicketWithAttachment.php">Create a new ticket with attachment.</a></li>
               <li><a href="samples/tickets/createTicket.php">Create a new ticket with the requester's email address, if the requester's identity doesn't exist.</a></li>
               <div class="clearfix">&nbsp;</div>
@@ -51,7 +51,7 @@
               <li><a href="samples/tickets/updateTicket.php">Update a ticket</a></li>
               <li><a href="samples/tickets/deleteTicket.php">Delete a ticket</a></li>
             </ul>
-            
+
             <strong>Help Center</strong>
             <ul>
               <li><a href="samples/helpcenter/createArticles.php">Create an article</a></li>
@@ -68,7 +68,7 @@
               <li><a href="samples/ticket_fields/replaceDropdownOptions.php">Replace all existing dropdown options for a dropdown custom ticket field</a></li>
             </ul>
 
-            <strong>Organizations</strong>           
+            <strong>Organizations</strong>
             <ul>
               <li><a href="samples/organizations/createOrganization.php">Create a new organization</a></li>
             </ul>
