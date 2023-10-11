@@ -2,7 +2,7 @@
 
 # Zendesk PHP API Client Library #
 
-[![Build Status](https://travis-ci.org/zendesk/zendesk_api_client_php.svg?branch=master)](https://travis-ci.org/zendesk/zendesk_api_client_php)
+![CI](https://github.com/zendesk/zendesk_api_client_php/actions/workflows/ci.yaml/badge.svg)
 [![Latest Stable Version](https://poser.pugx.org/zendesk/zendesk_api_client_php/v/stable)](https://packagist.org/packages/zendesk/zendesk_api_client_php)
 [![Total Downloads](https://poser.pugx.org/zendesk/zendesk_api_client_php/downloads)](https://packagist.org/packages/zendesk/zendesk_api_client_php)
 [![Code Climate](https://codeclimate.com/github/zendesk/zendesk_api_client_php/badges/gpa.svg)](https://codeclimate.com/github/zendesk/zendesk_api_client_php)
@@ -29,6 +29,7 @@ The Zendesk PHP API client can be installed using [Composer](https://packagist.o
 To install run `composer require zendesk/zendesk_api_client_php`
 
 ### Upgrading from V1 to V2
+
 If you are upgrading from [v1](https://github.com/zendesk/zendesk_api_client_php/tree/v1) of the client, we've written an [upgrade guide](https://github.com/zendesk/zendesk_api_client_php/wiki/Upgrading-from-v1-to-v2) to highlight some of the key differences.
 
 ## Configuration
@@ -121,28 +122,31 @@ $tickets = $client->tickets()->sideload(['users', 'groups'])->findAll();
 ```
 
 ### Pagination
-The Zendesk API offers a way to get the next pages for the requests and is documented in [the Zendesk Developer Documentation](https://developer.zendesk.com/rest_api/docs/core/introduction#pagination).
 
-The way to do this is to pass it as an option to your request.
+The Zendesk API offers a way to get the next pages for the requests and is documented in [the Zendesk Developer Documentation](https://developer.zendesk.com/api-reference/introduction/pagination).
+
+There are two ways to do pagination, CBP (cursor based pagination) and OBP (offset based pagination). The recommended and less limited way is to use CBP. Until CBP becomes the default API response, you should use the `page[size]` parameter to ensure you use cursor based pagination.
 
 ``` php
-$tickets = $this->client->tickets()->findAll(['per_page' => 10, 'page' => 2]);
-```
+// CBP /endpoint?page[size]=100
+$tickets = $this->client->tickets()->findAll(['page' => ['size' => 100]]);
 
-The allowed options are
-* per_page
-* page
-* sort_order
+// OBP /endpoint?per_page=100&page=2
+// Warning, this subject to stricter limits
+$tickets = $this->client->tickets()->findAll(['per_page' => 100, 'page' => 2]);
+```
 
 ### Retrying Requests
 
 Add the `RetryHandler` middleware on the `HandlerStack` of your `GuzzleHttp\Client` instance. By default `Zendesk\Api\HttpClient`
 retries:
+
 * timeout requests
 * those that throw `Psr\Http\Message\RequestInterface\ConnectException:class`
 * and those that throw `Psr\Http\Message\RequestInterface\RequestException:class` that are identified as ssl issue.
 
 #### Available options
+
 Options are passed on `RetryHandler` as an array of values.
 
 * max = 2 _limit of retries_

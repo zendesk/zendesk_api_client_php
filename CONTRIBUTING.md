@@ -1,4 +1,5 @@
 ## Note on Patches/Pull Requests
+
 1. Fork the project.
 2. Make your feature addition or bug fix.
 3. Add tests for it. This is important so that we don't break your improvement in a future version unintentionally.
@@ -45,7 +46,8 @@ Class docblocks should contain:
 * A short description of the class
 * Any methods available that are called via magic method with what that method returns.
 
-A good example is
+A good example is:
+
 ``` php
 /**
  * Client class, base level access
@@ -56,17 +58,17 @@ A good example is
  */
 ```
 
-
 #### Methods
 
 Method docblocks should contain:
+
 * A short description of what the method does.
 * The parameters passed with what type to expect.
 * Description of the parameters passed with examples(optional).
 * The type of the return.
 * All the possible exceptions the method may throw.
 
-A good example of this is
+A good example of this is:
 
 ``` php
 /**
@@ -88,7 +90,7 @@ Class properties docblocs should contain:
 * A short description of the property (optional)
 * The var type
 
-A good example of this
+A good example is:
 
 ``` php
 /**
@@ -99,6 +101,7 @@ A good example of this
 ```
 
 ### Arrays
+
 The short notations for declaring arrays (`[]`) is preferred over the longer `array()`.
 
 Align `=>`s following the longest key to make the arrays easier to read.
@@ -127,7 +130,6 @@ $lastRequestBody     = 'example';
 $lastResponseCode    = 'something';
 $lastResponseHeaders = 'test';
 $lastResponseError   = 'test2';
-
 ```
 
 ### Traits
@@ -146,6 +148,7 @@ $lastResponseError   = 'test2';
 When adding a resource, use traits to define available API calls. Resource traits are namespaced under `Zendesk\API\Traits\Resource`.
 
 **Single Resource**
+
 * Create
 * Delete
 * Find
@@ -154,6 +157,7 @@ When adding a resource, use traits to define available API calls. Resource trait
 * Defaults - this adds **Find**, **FindAll**, **Create**, **Update**, and **Delete**
 
 **Bulk traits**
+
 * CreateMany
 * DeleteMany
 * FindMany
