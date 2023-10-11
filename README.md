@@ -123,17 +123,59 @@ $tickets = $client->tickets()->sideload(['users', 'groups'])->findAll();
 
 ### Pagination
 
-The Zendesk API offers a way to get the next pages for the requests and is documented in [the Zendesk Developer Documentation](https://developer.zendesk.com/api-reference/introduction/pagination).
+See the [API reference for pagination](https://developer.zendesk.com/api-reference/introduction/pagination).
 
-There are two ways to do pagination, CBP (cursor based pagination) and OBP (offset based pagination). The recommended and less limited way is to use CBP. Until CBP becomes the default API response, you should use the `page[size]` parameter to ensure you use cursor based pagination.
+There are two ways to do pagination in the Zendesk API, CBP (cursor based pagination) and OBP (offset based pagination). The recommended and less limited way is to use CBP.
+
+#### Iterator (recommended)
+
+The use of the correct pagination is encapsulated using the iterator pattern, which allows you to retrieve all resources in all pages, without having to deal with pagination at all:
+
+```php
+$ticketsIterator = $this->client->tickets()->iterator();
+
+foreach ($ticketsIterator as $ticket) {
+    echo $ticket.id;
+}
+```
+
+#### Find All using CBP (ok)
+
+If you want use `#findAll`, until CBP becomes the default API response, you should explicitly request CBP responses by using the param `page[size]`.
 
 ``` php
-// CBP /endpoint?page[size]=100
-$tickets = $this->client->tickets()->findAll(['page' => ['size' => 100]]);
+// TODO: sort_order
+// TODO: test
+$tickets = [];
+$response = $this->client->tickets()->findAll(['page' => ['size' => 100]]);
+do {
+    $tickets = array_merge($tickets, $response->tickets);
+    if ($response->meta->has_more) {
+        $nextCursor = $response->meta->links->next;
+        // CBP /endpoint?page[size]=100
+        $response = $this->client->tickets()->findAll(['page' => ['after' => $nextCursor]]);
+        // Consider processing your tickets here, one page at a time, if possible
+    }
+} while ($response->meta->has_more);
+```
 
-// OBP /endpoint?per_page=100&page=2
-// Warning, this subject to stricter limits
-$tickets = $this->client->tickets()->findAll(['per_page' => 100, 'page' => 2]);
+#### Find All using OBP (NOT recommended)
+
+If CBP is not available, this is how you can fetch one page at a time:
+
+```php
+// TODO: sort_order
+// TODO: test
+$pageSize = 100;
+$pageNumber = 1;
+$tickets = [];
+do {
+    // OBP /endpoint?per_page=100&page=2
+    $response = $this->client->tickets()->findAll(['per_page' => $pageSize, 'page' => $pageNumber]);
+    $tickets = array_merge($tickets, $response->tickets);
+    // Consider processing your tickets here, one page at a time, if possible
+    $pageNumber++;
+} while (count($response->tickets) == $pageSize);
 ```
 
 ### Retrying Requests
