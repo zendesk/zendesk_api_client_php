@@ -6,20 +6,24 @@ use Iterator;
 
 class TicketsIterator implements Iterator
 {
-    const DEFAULT_PAGE_SIZE = 100;
     private $client;
     private $position = 0;
     private $tickets = [];
-    private $nextCursor = null;
+    private $afterCursor = null;
+    private $pageSize;
+    private $started = false;
 
-    public function __construct($client)
+    public function __construct($client, $pageSize = 2)
     {
         $this->client = $client;
-        $this->loadTickets();
+        $this->pageSize = $pageSize;
     }
 
     public function current()
     {
+        if (!isset($this->tickets[$this->position]) && (!$this->started || $this->afterCursor)) {
+            $this->getPage();
+        }
         return $this->tickets[$this->position];
     }
 
@@ -31,9 +35,6 @@ class TicketsIterator implements Iterator
     public function next()
     {
         ++$this->position;
-        if (!isset($this->tickets[$this->position]) && $this->nextCursor) {
-            $this->loadTickets();
-        }
     }
 
     public function rewind()
@@ -43,18 +44,22 @@ class TicketsIterator implements Iterator
 
     public function valid()
     {
+        if (!isset($this->tickets[$this->position]) && (!$this->started || $this->afterCursor)) {
+            $this->getPage();
+        }
         return isset($this->tickets[$this->position]);
     }
 
-    private function loadTickets()
+    private function getPage()
     {
-        // TODO: store all meta info
-        $params = ['page[size]' => self::DEFAULT_PAGE_SIZE];
-        if ($this->nextCursor) {
-            $params['page[after]'] = $this->nextCursor;
+        $this->started = true;
+        if ($this->afterCursor) {
+            $params['page[after]'] = $this->afterCursor;
+        } else {
+            $params = ['page[size]' => $this->pageSize];
         }
         $response = $this->client->tickets()->findAll($params);
         $this->tickets = array_merge($this->tickets, $response->tickets);
-        $this->nextCursor = $response->meta->has_more ? $response->meta->links->next : null;
+        $this->afterCursor = $response->meta->has_more ? $response->meta->after_cursor : null;
     }
 }
