@@ -45,10 +45,17 @@ class Tickets extends ResourceAbstract
      */
     protected $lastAttachments = [];
 
-    // TODO: doc
+    /**
+     * Usage:
+     * foreach ($ticketsIterator as $ticket) {
+     *     process($ticket)
+     * }
+     *
+     * @return TicketsIterator Returns a new TicketsIterator object.
+     */
     public function iterator()
     {
-        return new TicketsIterator($this->client);
+        return new TicketsIterator($this);
     }
 
     /**
