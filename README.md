@@ -125,7 +125,7 @@ $tickets = $client->tickets()->sideload(['users', 'groups'])->findAll();
 
 See the [API reference for pagination](https://developer.zendesk.com/api-reference/introduction/pagination).
 
-There are two ways to do pagination in the Zendesk API, CBP (cursor based pagination) and OBP (offset based pagination). The recommended and less limited way is to use CBP.
+There are two ways to do pagination in the Zendesk API, **CBP (Cursor Based Pagination)** and **OBP (Offset Based Pagination)**. The recommended and less limited way is to use CBP.
 
 #### Iterator (recommended)
 
@@ -141,7 +141,7 @@ foreach ($ticketsIterator as $ticket) {
 
 #### Find All using CBP (fine)
 
-If you want use `#findAll`, until CBP becomes the default API response, you should explicitly request CBP responses by using the param `page[size]`.
+If you still want use `findAll()`, until CBP becomes the default API response, you must explicitly request CBP responses by using the param `page[size]`.
 
 ``` php
 // CBP: /path?page[size]=100
@@ -156,7 +156,9 @@ do {
 } while ($response->meta->has_more);
 ```
 
-#### Find All using OBP (NOT recommended)
+**Process data _immediately_ upon fetching**. This optimizes memory usage, enables real-time processing, and helps adhere to API rate limits, enhancing efficiency and user experience.
+
+#### Find All using OBP (only recommended if the endpoint doesn't support CBP)
 
 If CBP is not available, this is how you can fetch one page at a time:
 
@@ -170,6 +172,8 @@ do {
     $pageNumber++;
 } while (count($response->tickets) == $pageSize);
 ```
+
+**Process data _immediately_ upon fetching**. This optimizes memory usage, enables real-time processing, and helps adhere to API rate limits, enhancing efficiency and user experience.
 
 ### Retrying Requests
 
