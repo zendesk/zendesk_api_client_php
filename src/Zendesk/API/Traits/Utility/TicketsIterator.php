@@ -10,6 +10,11 @@ use Iterator;
 class TicketsIterator implements Iterator
 {
     /**
+     * The default number of items per page for pagination.
+     */
+    public const DEFAULT_PAGE_SIZE = 100;
+
+    /**
      * @var Zendesk\API\HttpClient The Zendesk API client.
      */
     private $resources;
@@ -39,14 +44,13 @@ class TicketsIterator implements Iterator
      */
     private $started = false;
 
-    // TODO: pageSize = 100
     /**
      * TicketsIterator constructor.
      *
      * @param \stdClass $resources implementing the iterator ($this), with findAll()
      * @param int $pageSize The number of tickets to fetch per page.
      */
-    public function __construct($resources, $pageSize = 2)
+    public function __construct($resources, $pageSize = self::DEFAULT_PAGE_SIZE)
     {
         $this->resources = $resources;
         $this->pageSize = $pageSize;
