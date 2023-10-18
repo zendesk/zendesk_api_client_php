@@ -14,7 +14,6 @@ class CbpIterator implements Iterator
      */
     public const DEFAULT_PAGE_SIZE = 100;
 
-
     /**
      * @var string The root key in the response with the page resources (eg: users, tickets).
      */
@@ -63,17 +62,6 @@ class CbpIterator implements Iterator
     }
 
     /**
-     * @return mixed (using FindAll) The current resource, maybe fetching a new page.
-     */
-    public function current()
-    {
-        if ($this->isEndOfPage()) {
-            $this->getPage();
-        }
-        return $this->page[$this->position];
-    }
-
-    /**
      * @return int The current position.
      */
     public function key()
@@ -102,17 +90,28 @@ class CbpIterator implements Iterator
      */
     public function valid()
     {
-        if ($this->isEndOfPage()) {
-            $this->getPage();
-        }
+        $this->getPageIfNecessary();
         return isset($this->page[$this->position]);
+    }
+
+    /**
+     * @return mixed (using FindAll) The current resource, maybe fetching a new page.
+     */
+    public function current()
+    {
+        $this->getPageIfNecessary();
+        return $this->page[$this->position];
     }
 
     /**
      * Fetches the next page of resources from the API.
      */
-    private function getPage()
+    private function getPageIfNecessary()
     {
+        if (!$this->isEndOfPage()) {
+            return;
+        }
+
         $this->started = true;
         $params = ['page[size]' => $this->pageSize];
         if ($this->afterCursor) {
