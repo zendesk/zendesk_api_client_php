@@ -5,7 +5,7 @@ namespace Zendesk\API\Traits\Utility;
 use Iterator;
 
 /**
- * An iterator for fetching tickets from the Zendesk API using cursor-based pagination.
+ * An iterator for fetching resources from the Zendesk API using cursor-based pagination.
  */
 class TicketsIterator implements Iterator
 {
@@ -15,40 +15,39 @@ class TicketsIterator implements Iterator
     public const DEFAULT_PAGE_SIZE = 100;
 
     /**
-     * @var Zendesk\API\HttpClient The Zendesk API client.
+     * @var \stdClass implementing the iterator ($this), with findAll() defined
      */
     private $resourcesRoot;
 
     /**
-     * @var int The current position in the tickets array.
+     * @var int The current position in the page.
      */
     private $position = 0;
 
+    // TODO: page is actually growing every call, should be only one page (reset position)
     /**
-     * @var array The fetched tickets.
+     * @var array The fetched page resources.
      */
-    private $tickets = [];
+    private $page = [];
 
     /**
-     * @var string|null The cursor for the next page of tickets.
+     * @var string|null The cursor for the next page of resources.
      */
     private $afterCursor = null;
 
     /**
-     * @var int The number of tickets to fetch per page.
+     * @var int The number of resources to fetch per page.
      */
     private $pageSize;
 
     /**
-     * @var bool A flag indicating whether the iterator has started fetching tickets.
+     * @var bool A flag indicating whether the iterator has started fetching resources.
      */
     private $started = false;
 
     /**
-     * TicketsIterator constructor.
-     *
      * @param \stdClass $resourcesRoot implementing the iterator ($this), with findAll() defined
-     * @param int $pageSize The number of tickets to fetch per page.
+     * @param int $pageSize The number of resources to fetch per page.
      */
     public function __construct($resourcesRoot, $pageSize = self::DEFAULT_PAGE_SIZE)
     {
@@ -57,14 +56,14 @@ class TicketsIterator implements Iterator
     }
 
     /**
-     * @return Ticket The current ticket, possibly fetching a new page.
+     * @return mixed (using FindAll) The current resource, maybe fetching a new page.
      */
     public function current()
     {
         if ($this->isEndOfPage()) {
             $this->getPage();
         }
-        return $this->tickets[$this->position];
+        return $this->page[$this->position];
     }
 
     /**
@@ -76,7 +75,7 @@ class TicketsIterator implements Iterator
     }
 
     /**
-     * Moves to the next ticket.
+     * Moves to the next resource.
      */
     public function next()
     {
@@ -84,7 +83,7 @@ class TicketsIterator implements Iterator
     }
 
     /**
-     * Rewinds to the first ticket.
+     * Rewinds to the first resource.
      */
     public function rewind()
     {
@@ -99,11 +98,11 @@ class TicketsIterator implements Iterator
         if ($this->isEndOfPage()) {
             $this->getPage();
         }
-        return isset($this->tickets[$this->position]);
+        return isset($this->page[$this->position]);
     }
 
     /**
-     * Fetches the next page of tickets from the API.
+     * Fetches the next page of resources from the API.
      */
     private function getPage()
     {
@@ -113,7 +112,7 @@ class TicketsIterator implements Iterator
             $params['page[after]'] = $this->afterCursor;
         }
         $response = $this->resourcesRoot->findAll($params);
-        $this->tickets = array_merge($this->tickets, $response->tickets);
+        $this->page = array_merge($this->page, $response->tickets);
         $this->afterCursor = $response->meta->has_more ? $response->meta->after_cursor : null;
     }
 
@@ -122,6 +121,6 @@ class TicketsIterator implements Iterator
      */
     private function isEndOfPage()
     {
-        return !isset($this->tickets[$this->position]) && (!$this->started || $this->afterCursor);
+        return !isset($this->page[$this->position]) && (!$this->started || $this->afterCursor);
     }
 }
