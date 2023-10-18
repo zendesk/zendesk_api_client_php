@@ -7,7 +7,7 @@ use Iterator;
 /**
  * An iterator for fetching resources from the Zendesk API using cursor-based pagination.
  */
-class TicketsIterator implements Iterator
+class CbpIterator implements Iterator
 {
     /**
      * The default number of items per page for pagination.

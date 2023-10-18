@@ -3,7 +3,7 @@
 namespace Zendesk\API\UnitTests\Core;
 
 use Zendesk\API\UnitTests\BasicTest;
-use Zendesk\API\Traits\Utility\TicketsIterator;
+use Zendesk\API\Traits\Utility\CbpIterator;
 
 class MockTickets {
     public function findAll($params)
@@ -30,12 +30,12 @@ class MockTickets {
     }
 }
 
-class TicketsIteratorTest extends BasicTest
+class CbpIteratorTest extends BasicTest
 {
     public function testFetchesTickets()
     {
         $mockTickets = new MockTickets;
-        $iterator = new TicketsIterator($mockTickets, 2);
+        $iterator = new CbpIterator($mockTickets, 2);
 
         $tickets = iterator_to_array($iterator);
 
