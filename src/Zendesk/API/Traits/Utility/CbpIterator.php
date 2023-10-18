@@ -14,8 +14,13 @@ class CbpIterator implements Iterator
      */
     public const DEFAULT_PAGE_SIZE = 100;
 
+
     /**
-     * @var \stdClass implementing the iterator ($this), with findAll() defined
+     * @var string The root key in the response with the page resources (eg: users, tickets).
+     */
+    private $resourcesKey;
+    /**
+     * @var \stdClass implementing the iterator ($this), with findAll() defined.
      */
     private $resourcesRoot;
 
@@ -46,12 +51,14 @@ class CbpIterator implements Iterator
     private $started = false;
 
     /**
-     * @param \stdClass $resourcesRoot implementing the iterator ($this), with findAll() defined
+     * @param mixed $resourcesRoot (using trait FindAll)
      * @param int $pageSize The number of resources to fetch per page.
+     * @param string $resourcesKey The root key in the response with the page resources (eg: users, tickets)
      */
-    public function __construct($resourcesRoot, $pageSize = self::DEFAULT_PAGE_SIZE)
+    public function __construct($resourcesRoot, $resourcesKey, $pageSize = self::DEFAULT_PAGE_SIZE)
     {
         $this->resourcesRoot = $resourcesRoot;
+        $this->resourcesKey = $resourcesKey;
         $this->pageSize = $pageSize;
     }
 
@@ -112,7 +119,7 @@ class CbpIterator implements Iterator
             $params['page[after]'] = $this->afterCursor;
         }
         $response = $this->resourcesRoot->findAll($params);
-        $this->page = array_merge($this->page, $response->tickets);
+        $this->page = array_merge($this->page, $response->{$this->resourcesKey});
         $this->afterCursor = $response->meta->has_more ? $response->meta->after_cursor : null;
     }
 

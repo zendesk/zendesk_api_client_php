@@ -51,11 +51,11 @@ class Tickets extends ResourceAbstract
      *     process($ticket)
      * }
      *
-     * @return CbpIterator Returns a new CbpIterator object.
+     * @return CbpIterator to fetch all pages.
      */
     public function iterator()
     {
-        return new CbpIterator($this);
+        return new CbpIterator($this, 'tickets');
     }
 
     /**

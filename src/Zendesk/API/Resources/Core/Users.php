@@ -14,6 +14,7 @@ use Zendesk\API\Traits\Resource\FindMany;
 use Zendesk\API\Traits\Resource\MultipartUpload;
 use Zendesk\API\Traits\Resource\UpdateMany;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
+use Zendesk\API\Traits\Utility\CbpIterator;
 
 /**
  * The Users class exposes user management methods
@@ -47,6 +48,19 @@ class Users extends ResourceAbstract
      * @var UserIdentities
      */
     protected $identities;
+
+    /**
+     * Usage:
+     * foreach ($usersIterator as $user) {
+     *     process($user)
+     * }
+     *
+     * @return CbpIterator to fetch all pages.
+     */
+    public function iterator()
+    {
+        return new CbpIterator($this, 'users');
+    }
 
     /**
      * {@inheritdoc}
