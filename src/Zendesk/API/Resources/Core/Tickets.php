@@ -12,6 +12,7 @@ use Zendesk\API\Traits\Resource\DeleteMany;
 use Zendesk\API\Traits\Resource\FindMany;
 use Zendesk\API\Traits\Resource\UpdateMany;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
+use Zendesk\API\Traits\Utility\TicketsIterator;
 
 /**
  * The Tickets class exposes key methods for reading and updating ticket data
@@ -43,6 +44,19 @@ class Tickets extends ResourceAbstract
      * @var array
      */
     protected $lastAttachments = [];
+
+    /**
+     * Usage:
+     * foreach ($ticketsIterator as $ticket) {
+     *     process($ticket)
+     * }
+     *
+     * @return TicketsIterator Returns a new TicketsIterator object.
+     */
+    public function iterator()
+    {
+        return new TicketsIterator($this);
+    }
 
     /**
      * {@inheritdoc}
@@ -152,7 +166,7 @@ class Tickets extends ResourceAbstract
             $params['comment']['uploads'] = $this->lastAttachments;
             $this->lastAttachments        = [];
         }
-        
+
         $extraOptions = [];
         if (isset($params['async']) && ($params['async'] == true)) {
             $extraOptions = [
