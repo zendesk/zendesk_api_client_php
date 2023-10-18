@@ -61,7 +61,7 @@ class TicketsIterator implements Iterator
      */
     public function current()
     {
-        if (!isset($this->tickets[$this->position]) && (!$this->started || $this->afterCursor)) {
+        if ($this->isEndOfPage()) {
             $this->getPage();
         }
         return $this->tickets[$this->position];
@@ -96,7 +96,7 @@ class TicketsIterator implements Iterator
      */
     public function valid()
     {
-        if (!isset($this->tickets[$this->position]) && (!$this->started || $this->afterCursor)) {
+        if ($this->isEndOfPage()) {
             $this->getPage();
         }
         return isset($this->tickets[$this->position]);
@@ -115,5 +115,13 @@ class TicketsIterator implements Iterator
         $response = $this->resources->findAll($params);
         $this->tickets = array_merge($this->tickets, $response->tickets);
         $this->afterCursor = $response->meta->has_more ? $response->meta->after_cursor : null;
+    }
+
+    /**
+     * @return bool True if the end of the page has been reached, false otherwise.
+     */
+    private function isEndOfPage()
+    {
+        return !isset($this->tickets[$this->position]) && (!$this->started || $this->afterCursor);
     }
 }
