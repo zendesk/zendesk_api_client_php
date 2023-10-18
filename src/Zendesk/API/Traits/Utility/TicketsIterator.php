@@ -17,7 +17,7 @@ class TicketsIterator implements Iterator
     /**
      * @var Zendesk\API\HttpClient The Zendesk API client.
      */
-    private $resources;
+    private $resourcesRoot;
 
     /**
      * @var int The current position in the tickets array.
@@ -47,12 +47,12 @@ class TicketsIterator implements Iterator
     /**
      * TicketsIterator constructor.
      *
-     * @param \stdClass $resources implementing the iterator ($this), with findAll()
+     * @param \stdClass $resourcesRoot implementing the iterator ($this), with findAll() defined
      * @param int $pageSize The number of tickets to fetch per page.
      */
-    public function __construct($resources, $pageSize = self::DEFAULT_PAGE_SIZE)
+    public function __construct($resourcesRoot, $pageSize = self::DEFAULT_PAGE_SIZE)
     {
-        $this->resources = $resources;
+        $this->resourcesRoot = $resourcesRoot;
         $this->pageSize = $pageSize;
     }
 
@@ -112,7 +112,7 @@ class TicketsIterator implements Iterator
         if ($this->afterCursor) {
             $params['page[after]'] = $this->afterCursor;
         }
-        $response = $this->resources->findAll($params);
+        $response = $this->resourcesRoot->findAll($params);
         $this->tickets = array_merge($this->tickets, $response->tickets);
         $this->afterCursor = $response->meta->has_more ? $response->meta->after_cursor : null;
     }
