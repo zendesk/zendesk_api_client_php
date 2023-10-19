@@ -2,8 +2,9 @@
 
 namespace Zendesk\API\UnitTests\Core;
 
+use Zendesk\API\Traits\Utility\Pagination\CbpStrategy;
 use Zendesk\API\UnitTests\BasicTest;
-use Zendesk\API\Traits\Utility\CbpIterator;
+use Zendesk\API\Traits\Utility\Pagination\PaginationIterator;
 
 class MockResource {
     private $resources;
@@ -39,7 +40,8 @@ class MockResource {
     }
 }
 
-class CbpIteratorTest extends BasicTest
+// TODO: test resources
+class PaginationTest extends BasicTest
 {
     public function testFetchesTickets()
     {
@@ -47,7 +49,8 @@ class CbpIteratorTest extends BasicTest
             [['id' => 1], ['id' => 2]],
             [['id' => 3], ['id' => 4]]
         ]);
-        $iterator = new CbpIterator($mockTickets, 'tickets', 2);
+        $strategy = new CbpStrategy($mockTickets, 'tickets', 2);
+        $iterator = new PaginationIterator($strategy);
 
         $tickets = iterator_to_array($iterator);
 
@@ -60,7 +63,8 @@ class CbpIteratorTest extends BasicTest
             [['id' => 1, 'name' => 'User 1'], ['id' => 2, 'name' => 'User 2']],
             [['id' => 3, 'name' => 'User 3'], ['id' => 4, 'name' => 'User 4']]
         ]);
-        $iterator = new CbpIterator($mockUsers, 'users', 2);
+        $strategy = new CbpStrategy($mockUsers, 'users', 2);
+        $iterator = new PaginationIterator($strategy);
 
         $users = iterator_to_array($iterator);
 
