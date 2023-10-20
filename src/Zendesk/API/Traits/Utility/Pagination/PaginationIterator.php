@@ -36,7 +36,6 @@ class PaginationIterator implements Iterator
         return isset($this->page[$this->position]);
     }
 
-    // TODO: refactor to isset($this->current())
     public function current()
     {
         $this->getPageIfNecessary();
