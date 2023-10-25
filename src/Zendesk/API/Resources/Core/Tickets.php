@@ -457,8 +457,4 @@ class Tickets extends ResourceAbstract
 
         return $response;
     }
-
-    protected function paginatedPath() {
-        return 'tickets';
-    }
 }

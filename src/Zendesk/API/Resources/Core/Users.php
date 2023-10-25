@@ -51,20 +51,6 @@ class Users extends ResourceAbstract
     protected $identities;
 
     /**
-     * Usage:
-     * foreach ($usersIterator as $user) {
-     *     process($user)
-     * }
-     *
-     * @return PaginationIterator to fetch all pages.
-     */
-    public function iterator()
-    {
-        $strategy = new CbpStrategy($this, 'users', 2);
-        return new PaginationIterator($strategy);
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function setUpRoutes()

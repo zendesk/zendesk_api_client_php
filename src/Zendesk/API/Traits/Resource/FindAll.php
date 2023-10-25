@@ -38,7 +38,8 @@ trait FindAll
         );
     }
 
-    // TODO: own trait?
+    // TODO: own trait
+    // TODO: page size 100
     /**
      * Usage:
      * foreach ($ticketsIterator as $ticket) {
@@ -50,7 +51,7 @@ trait FindAll
     public function iterator()
     {
         $strategyClass = $this->paginationStrategyClass();
-        $strategy = new $strategyClass($this, $this->paginatedPath(), 2);
+        $strategy = new $strategyClass($this, $this->resourcesRoot(), 2);
         return new PaginationIterator($strategy);
     }
 
@@ -59,8 +60,7 @@ trait FindAll
         return CbpStrategy::class;
     }
 
-    // TODO: abstract
-    protected function paginatedPath() {
-        return "/";
+    protected function resourcesRoot() {
+        return $this->objectNamePlural;
     }
 }

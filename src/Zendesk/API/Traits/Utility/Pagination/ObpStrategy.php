@@ -2,6 +2,11 @@
 
 namespace Zendesk\API\Traits\Utility\Pagination;
 
+
+/**
+ * Offset Based Pagination
+ * Can also be used for no pagination
+ */
 class ObpStrategy extends PaginationStrategy
 {
     private $pageNumber = 0;
@@ -11,6 +16,7 @@ class ObpStrategy extends PaginationStrategy
         ++$this->pageNumber;
         $params = ['page' => $this->pageNumber, 'page_size' => $this->pageSize];
         $response = $this->resourcesRoot->findAll($params);
+
         return $response->{$this->resourcesKey};
     }
 

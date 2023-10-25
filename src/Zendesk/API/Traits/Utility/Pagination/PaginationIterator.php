@@ -48,6 +48,7 @@ class PaginationIterator implements Iterator
             return;
         }
 
+        // TODO: don't keep all pages
         $this->page = array_merge($this->page, $this->strategy->getPage());
     }
 
