@@ -3,6 +3,8 @@
 namespace Zendesk\API\Traits\Resource;
 
 use Zendesk\API\Exceptions\RouteException;
+use Zendesk\API\Traits\Utility\Pagination\CbpStrategy;
+use Zendesk\API\Traits\Utility\Pagination\PaginationIterator;
 
 trait FindAll
 {
@@ -34,5 +36,31 @@ trait FindAll
             $route,
             $params
         );
+    }
+
+    // TODO: own trait?
+    /**
+     * Usage:
+     * foreach ($ticketsIterator as $ticket) {
+     *     process($ticket)
+     * }
+     *
+     * @return PaginationIterator to fetch all pages.
+     */
+    public function iterator()
+    {
+        $strategyClass = $this->paginationStrategyClass();
+        $strategy = new $strategyClass($this, $this->paginatedPath(), 2);
+        return new PaginationIterator($strategy);
+    }
+
+
+    private function paginationStrategyClass() {
+        return CbpStrategy::class;
+    }
+
+    // TODO: abstract
+    protected function paginatedPath() {
+        return "/";
     }
 }

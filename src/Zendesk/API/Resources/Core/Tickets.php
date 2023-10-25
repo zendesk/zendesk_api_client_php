@@ -12,8 +12,6 @@ use Zendesk\API\Traits\Resource\DeleteMany;
 use Zendesk\API\Traits\Resource\FindMany;
 use Zendesk\API\Traits\Resource\UpdateMany;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
-use Zendesk\API\Traits\Utility\Pagination\CbpStrategy;
-use Zendesk\API\Traits\Utility\Pagination\PaginationIterator;
 
 /**
  * The Tickets class exposes key methods for reading and updating ticket data
@@ -45,21 +43,6 @@ class Tickets extends ResourceAbstract
      * @var array
      */
     protected $lastAttachments = [];
-
-    /**
-     * Usage:
-     * foreach ($ticketsIterator as $ticket) {
-     *     process($ticket)
-     * }
-     *
-     * @return PaginationIterator to fetch all pages.
-     */
-    public function iterator()
-    {
-        // TODO: default page size everywhere
-        $strategy = new CbpStrategy($this, 'tickets', 2);
-        return new PaginationIterator($strategy);
-    }
 
     /**
      * {@inheritdoc}
@@ -473,5 +456,9 @@ class Tickets extends ResourceAbstract
         );
 
         return $response;
+    }
+
+    protected function paginatedPath() {
+        return 'tickets';
     }
 }
