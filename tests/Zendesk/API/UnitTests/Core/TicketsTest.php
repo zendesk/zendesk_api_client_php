@@ -38,9 +38,6 @@ class TicketsTest extends BasicTest
         parent::setUp();
     }
 
-    /**
-     * Test the iterator
-     */
     public function testIterator()
     {
         $this->mockApiResponses([

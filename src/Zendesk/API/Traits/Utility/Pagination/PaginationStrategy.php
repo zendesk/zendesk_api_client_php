@@ -18,5 +18,5 @@ abstract class PaginationStrategy
     }
 
     abstract public function getPage();
-    abstract public function isEndOfPage();
+    abstract public function shouldGetPage($position);
 }

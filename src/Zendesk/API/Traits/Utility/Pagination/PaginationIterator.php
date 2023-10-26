@@ -4,6 +4,10 @@ namespace Zendesk\API\Traits\Utility\Pagination;
 
 use Iterator;
 
+// TODO: doc
+// TODO: errors
+// TODO: params
+// TODO: sorting
 class PaginationIterator implements Iterator
 {
     private $position = 0;
@@ -33,26 +37,27 @@ class PaginationIterator implements Iterator
     public function valid()
     {
         $this->getPageIfNecessary();
-        return isset($this->page[$this->position]);
+        return !!$this->current();
     }
 
     public function current()
     {
-        $this->getPageIfNecessary();
-        return $this->page[$this->position];
+        if (isset($this->page[$this->position])) {
+            return $this->page[$this->position];
+        } else {
+            return null;
+        }
     }
 
     private function getPageIfNecessary()
     {
-        if (!$this->isEndOfPage()) {
+        if (!$this->strategy->shouldGetPage($this->position)) {
+            // TODO: remove
+            echo("\ngetPageIfNecessary NO. " . $this->position);
             return;
         }
 
         // TODO: don't keep all pages
         $this->page = array_merge($this->page, $this->strategy->getPage());
-    }
-
-    private function isEndOfPage() {
-        return !isset($this->page[$this->position]) && $this->strategy->isEndOfPage();
     }
 }

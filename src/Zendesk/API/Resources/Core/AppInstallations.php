@@ -8,7 +8,7 @@ use Zendesk\API\Traits\Resource\Delete;
 use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
 use Zendesk\API\Traits\Resource\Update;
-use Zendesk\API\Traits\Utility\Pagination\ObpStrategy;
+use Zendesk\API\Traits\Utility\Pagination\SinglePageStrategy;
 
 /**
  * The AppInstallations class exposes methods seen at
@@ -126,6 +126,6 @@ class AppInstallations extends ResourceAbstract
     }
 
     private function paginationStrategyClass() {
-        return ObpStrategy::class;
+        return SinglePageStrategy::class;
     }
 }

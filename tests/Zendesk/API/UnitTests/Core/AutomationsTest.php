@@ -16,6 +16,7 @@ class AutomationsTest extends BasicTest
     public function testActive()
     {
         $this->assertEndpointCalled(function () {
+            // TODO: let's test this
             $this->client->automations()->findActive();
         }, 'automations/active.json');
     }

@@ -15,11 +15,19 @@ class CbpStrategy extends PaginationStrategy
             $params['page[after]'] = $this->afterCursor;
         }
         $response = $this->resourcesRoot->findAll($params);
+
+        // TODO: remove
+        // echo "\npage ids: ";
+        // foreach ($response->tickets as $ticket) {
+        //     echo $ticket->id . " ";
+        // }
+
         $this->afterCursor = $response->meta->has_more ? $response->meta->after_cursor : null;
         return $response->{$this->resourcesKey};
     }
 
-    public function isEndOfPage() {
+    public function shouldGetPage($position) {
+        // TODO: calc position
         return !$this->started || $this->afterCursor;
     }
 }

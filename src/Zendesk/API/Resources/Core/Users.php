@@ -14,8 +14,6 @@ use Zendesk\API\Traits\Resource\FindMany;
 use Zendesk\API\Traits\Resource\MultipartUpload;
 use Zendesk\API\Traits\Resource\UpdateMany;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
-use Zendesk\API\Traits\Utility\Pagination\CbpStrategy;
-use Zendesk\API\Traits\Utility\Pagination\PaginationIterator;
 
 /**
  * The Users class exposes user management methods

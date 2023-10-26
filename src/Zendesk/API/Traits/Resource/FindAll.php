@@ -24,7 +24,7 @@ trait FindAll
         try {
             $route = $this->getRoute($routeKey, $params);
         } catch (RouteException $e) {
-            if (! isset($this->resourceName)) {
+            if (!isset($this->resourceName)) {
                 $this->resourceName = $this->getResourceNameFromClass();
             }
 
