@@ -17,6 +17,7 @@ class CbpStrategy extends PaginationStrategy
         $response = $this->resourcesRoot->findAll($params);
 
         // TODO: remove
+        // print_r( $response);
         // echo "\npage ids: ";
         // foreach ($response->tickets as $ticket) {
         //     echo $ticket->id . " ";
