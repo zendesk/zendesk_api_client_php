@@ -3,7 +3,8 @@ namespace Zendesk\API\Traits\Utility\Pagination;
 
 abstract class AbstractStrategy
 {
-    public const DEFAULT_PAGE_SIZE = 100;
+    // TODO: 100
+    public const DEFAULT_PAGE_SIZE = 2;
 
     protected $resourcesRoot;
     protected $resourcesKey;

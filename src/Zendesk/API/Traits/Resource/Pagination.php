@@ -2,6 +2,7 @@
 
 namespace Zendesk\API\Traits\Resource;
 
+use Zendesk\API\Traits\Utility\Pagination\AbstractStrategy;
 use Zendesk\API\Traits\Utility\Pagination\CbpStrategy;
 use Zendesk\API\Traits\Utility\Pagination\PaginationIterator;
 
@@ -18,16 +19,11 @@ trait Pagination {
     public function iterator()
     {
         $strategyClass = $this->paginationStrategyClass();
-        $strategy = new $strategyClass($this, $this->resourcesRoot(), $this->defaultPageSize());
+        $strategy = new $strategyClass($this, $this->resourcesRoot(), AbstractStrategy::DEFAULT_PAGE_SIZE);
         return new PaginationIterator($strategy);
     }
 
-    private function defaultPageSize()
-    {
-        return 100;
-    }
-
-    private function paginationStrategyClass() {
+    protected function paginationStrategyClass() {
         return CbpStrategy::class;
     }
 

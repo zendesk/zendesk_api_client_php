@@ -16,19 +16,11 @@ class CbpStrategy extends AbstractStrategy
         }
         $response = $this->resourcesRoot->findAll($params);
 
-        // TODO: remove
-        // print_r( $response);
-        // echo "\npage ids: ";
-        // foreach ($response->tickets as $ticket) {
-        //     echo $ticket->id . " ";
-        // }
-
         $this->afterCursor = $response->meta->has_more ? $response->meta->after_cursor : null;
         return $response->{$this->resourcesKey};
     }
 
     public function shouldGetPage($position) {
-        // TODO: calc position
         return !$this->started || $this->afterCursor;
     }
 }
