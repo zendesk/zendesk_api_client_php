@@ -13,7 +13,7 @@ class SinglePageStrategy extends AbstractStrategy
     public function getPage()
     {
         $this->started = true;
-        $response = $this->clientResources->findAll();
+        $response = $this->clientList->findAll();
 
         return $response->{$this->resourcesKey};
     }

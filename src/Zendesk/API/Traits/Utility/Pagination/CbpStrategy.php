@@ -14,7 +14,7 @@ class CbpStrategy extends AbstractStrategy
         if ($this->afterCursor) {
             $params['page[after]'] = $this->afterCursor;
         }
-        $response = $this->clientResources->findAll($params);
+        $response = $this->clientList->findAll($params);
 
         $this->afterCursor = $response->meta->has_more ? $response->meta->after_cursor : null;
         return $response->{$this->resourcesKey};

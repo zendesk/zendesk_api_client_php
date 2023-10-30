@@ -7,9 +7,9 @@ abstract class AbstractStrategy
     public const DEFAULT_PAGE_SIZE = 2;
 
     /*
-     * The object handling the list, Ie: `$client->{clientResources}()`
+     * @var mixed use trait FindAll. The object handling the list, Ie: `$client->{clientList}()`
      */
-    protected $clientResources;
+    protected $clientList;
 
     /*
      * The response key where the data is returned
@@ -17,9 +17,9 @@ abstract class AbstractStrategy
     protected $resourcesKey;
     protected $pageSize;
 
-    public function __construct($clientResources, $resourcesKey, $pageSize = self::DEFAULT_PAGE_SIZE)
+    public function __construct($clientList, $resourcesKey, $pageSize = self::DEFAULT_PAGE_SIZE)
     {
-        $this->clientResources = $clientResources;
+        $this->clientList = $clientList;
         $this->resourcesKey = $resourcesKey;
         $this->pageSize = $pageSize;
     }

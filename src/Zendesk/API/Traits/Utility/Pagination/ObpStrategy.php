@@ -14,7 +14,7 @@ class ObpStrategy extends AbstractStrategy
     {
         ++$this->pageNumber;
         $params = ['page' => $this->pageNumber, 'page_size' => $this->pageSize];
-        $response = $this->clientResources->findAll($params);
+        $response = $this->clientList->findAll($params);
         // TODO: remove
         // echo "\npage ids: ";
         // foreach ($response->{$this->resourcesKey} as $item) {
