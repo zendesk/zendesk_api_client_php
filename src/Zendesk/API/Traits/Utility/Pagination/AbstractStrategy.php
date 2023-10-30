@@ -1,8 +1,7 @@
 <?php
-// TODO: naming redundancies
 namespace Zendesk\API\Traits\Utility\Pagination;
 
-abstract class PaginationStrategy
+abstract class AbstractStrategy
 {
     public const DEFAULT_PAGE_SIZE = 100;
 

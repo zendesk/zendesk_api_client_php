@@ -6,7 +6,7 @@ namespace Zendesk\API\Traits\Utility\Pagination;
 /**
  * Offset Based Pagination
  */
-class ObpStrategy extends PaginationStrategy
+class ObpStrategy extends AbstractStrategy
 {
     private $pageNumber = 0;
 

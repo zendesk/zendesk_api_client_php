@@ -2,7 +2,7 @@
 
 namespace Zendesk\API\Traits\Utility\Pagination;
 
-class CbpStrategy extends PaginationStrategy
+class CbpStrategy extends AbstractStrategy
 {
     private $afterCursor = null;
     private $started = false;

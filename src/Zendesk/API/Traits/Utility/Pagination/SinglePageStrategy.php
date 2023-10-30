@@ -6,7 +6,7 @@ namespace Zendesk\API\Traits\Utility\Pagination;
 /**
  * Single Page (no pagination)
  */
-class SinglePageStrategy extends PaginationStrategy
+class SinglePageStrategy extends AbstractStrategy
 {
     protected $started = false;
 

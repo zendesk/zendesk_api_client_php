@@ -4,17 +4,13 @@ namespace Zendesk\API\Traits\Utility\Pagination;
 
 use Iterator;
 
-// TODO: doc
-// TODO: errors
-// TODO: params
-// TODO: sorting
 class PaginationIterator implements Iterator
 {
     private $position = 0;
     private $page = [];
     private $strategy;
 
-    public function __construct(PaginationStrategy $strategy)
+    public function __construct(AbstractStrategy $strategy)
     {
         $this->strategy = $strategy;
     }
@@ -52,12 +48,9 @@ class PaginationIterator implements Iterator
     private function getPageIfNecessary()
     {
         if (!$this->strategy->shouldGetPage($this->position)) {
-            // TODO: remove
-            echo("\ngetPageIfNecessary NO. " . $this->position);
             return;
         }
 
-        // TODO: don't keep all pages
         $this->page = array_merge($this->page, $this->strategy->getPage());
     }
 }
