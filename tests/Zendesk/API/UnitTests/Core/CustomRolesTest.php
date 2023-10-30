@@ -21,18 +21,12 @@ class CustomRolesTest extends BasicTest
 
     public function testIterator()
     {
-        // CBP
+        // Single Page
         $this->mockApiResponses([
             new Response(200, [], json_encode([
-                'custom_roles' => [$this->testResource0, $this->testResource1],
-                'meta' => ['after_cursor' => '<after_cursor>', 'has_more' => true],
+                'custom_roles' => [$this->testResource0, $this->testResource1, $this->testResource2]
 
-            ])),
-            new Response(200, [], json_encode([
-                'custom_roles' => [$this->testResource2],
-                'meta' => ['has_more' => false],
-
-            ])),
+            ]))
         ]);
 
         $iterator = $this->client->customRoles()->iterator();

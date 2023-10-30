@@ -3,8 +3,7 @@ namespace Zendesk\API\Traits\Utility\Pagination;
 
 abstract class AbstractStrategy
 {
-    // TODO: 100
-    public const DEFAULT_PAGE_SIZE = 2;
+    public const DEFAULT_PAGE_SIZE = 100;
 
     /*
      * @var mixed use trait FindAll. The object handling the list, Ie: `$client->{clientList}()`
@@ -12,7 +11,7 @@ abstract class AbstractStrategy
     protected $clientList;
 
     /*
-     * The response key where the data is returned
+     * @var string The response key where the data is returned
      */
     protected $resourcesKey;
     protected $pageSize;

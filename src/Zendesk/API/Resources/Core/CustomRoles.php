@@ -4,7 +4,7 @@ namespace Zendesk\API\Resources\Core;
 
 use Zendesk\API\Resources\ResourceAbstract;
 use Zendesk\API\Traits\Resource\FindAll;
-use Zendesk\API\Traits\Utility\Pagination\ObpStrategy;
+use Zendesk\API\Traits\Utility\Pagination\SinglePageStrategy;
 
 /**
  * Class CustomRoles
@@ -15,6 +15,6 @@ class CustomRoles extends ResourceAbstract
     use FindAll;
 
     protected function paginationStrategyClass() {
-        return ObpStrategy::class;
+        return SinglePageStrategy::class;
     }
 }
