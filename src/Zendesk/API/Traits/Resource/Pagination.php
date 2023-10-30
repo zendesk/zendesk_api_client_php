@@ -19,7 +19,7 @@ trait Pagination {
     public function iterator()
     {
         $strategyClass = $this->paginationStrategyClass();
-        $strategy = new $strategyClass($this, $this->resourcesRoot(), AbstractStrategy::DEFAULT_PAGE_SIZE);
+        $strategy = new $strategyClass($this, $this->resourcesKey(), AbstractStrategy::DEFAULT_PAGE_SIZE);
         return new PaginationIterator($strategy);
     }
 
@@ -27,7 +27,10 @@ trait Pagination {
         return CbpStrategy::class;
     }
 
-    protected function resourcesRoot() {
+    /*
+     * @return string eg: "job_statuses"
+     */
+    protected function resourcesKey() {
         return $this->objectNamePlural;
     }
 }

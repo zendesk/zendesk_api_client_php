@@ -6,13 +6,20 @@ abstract class AbstractStrategy
     // TODO: 100
     public const DEFAULT_PAGE_SIZE = 2;
 
-    protected $resourcesRoot;
+    /*
+     * The object handling the list, Ie: `$client->{clientResources}()`
+     */
+    protected $clientResources;
+
+    /*
+     * The response key where the data is returned
+     */
     protected $resourcesKey;
     protected $pageSize;
 
-    public function __construct($resourcesRoot, $resourcesKey, $pageSize = self::DEFAULT_PAGE_SIZE)
+    public function __construct($clientResources, $resourcesKey, $pageSize = self::DEFAULT_PAGE_SIZE)
     {
-        $this->resourcesRoot = $resourcesRoot;
+        $this->clientResources = $clientResources;
         $this->resourcesKey = $resourcesKey;
         $this->pageSize = $pageSize;
     }

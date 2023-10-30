@@ -10,7 +10,7 @@ services:
     command: vendor/bin/phpunit --testsuite "Zendesk API Unit Test Suites"
     # command: vendor/bin/phpunit tests/Zendesk/API/UnitTests/Traits/Utility/PaginationTest.php
     # command: vendor/bin/phpunit tests/Zendesk/API/UnitTests/Core/TicketsTest.php
-    # command: vendor/bin/phpunit tests/Zendesk/API/UnitTests/Core/AppInstallationsTest.php
+    # command: vendor/bin/phpunit tests/Zendesk/API/UnitTests/Core/CustomRolesTest.php
 
 volumes:
   vendor:

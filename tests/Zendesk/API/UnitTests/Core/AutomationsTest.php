@@ -18,6 +18,7 @@ class AutomationsTest extends BasicTest
     {
         $this->testResource0 = ['anyField'  => 'Any field 0'];
         $this->testResource1 = ['anyField'  => 'Any field 1'];
+        $this->testResource2 = ['anyField'  => 'Any field 2'];
         parent::setUp();
     }
 
@@ -27,19 +28,24 @@ class AutomationsTest extends BasicTest
         $this->mockApiResponses([
             new Response(200, [], json_encode([
                 'automations' => [$this->testResource0, $this->testResource1],
+                'meta' => ['after_cursor' => '<after_cursor>', 'has_more' => true],
+
+            ])),
+            new Response(200, [], json_encode([
+                'automations' => [$this->testResource2],
                 'meta' => ['has_more' => false],
 
-            ]))
+            ])),
         ]);
 
         $iterator = $this->client->automations()->iterator();
 
         $actual = iterator_to_array($iterator);
-        $this->assertCount(2, $actual);
+        $this->assertCount(3, $actual);
         $this->assertEquals($this->testResource0['anyField'], $actual[0]->anyField);
         $this->assertEquals($this->testResource1['anyField'], $actual[1]->anyField);
+        $this->assertEquals($this->testResource2['anyField'], $actual[2]->anyField);
     }
-
 
     /**
      * Test we can use endpoint to get active automations
