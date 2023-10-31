@@ -3,9 +3,12 @@
 namespace Zendesk\API\Traits\Resource;
 
 use Zendesk\API\Exceptions\RouteException;
+use Zendesk\API\Traits\Utility\Pagination\CbpStrategy;
 
 trait FindAll
 {
+    use Pagination;
+
     /**
      * List all of this resource
      *
@@ -22,7 +25,7 @@ trait FindAll
         try {
             $route = $this->getRoute($routeKey, $params);
         } catch (RouteException $e) {
-            if (! isset($this->resourceName)) {
+            if (!isset($this->resourceName)) {
                 $this->resourceName = $this->getResourceNameFromClass();
             }
 

@@ -135,7 +135,7 @@ The use of the correct pagination is encapsulated using the iterator pattern, wh
 $ticketsIterator = $client->tickets()->iterator();
 
 foreach ($ticketsIterator as $ticket) {
-    process($ticket) // Your implementation
+    process($ticket); // Your implementation
 }
 ```
 

@@ -8,6 +8,7 @@ use Zendesk\API\Traits\Resource\Delete;
 use Zendesk\API\Traits\Resource\Find;
 use Zendesk\API\Traits\Resource\FindAll;
 use Zendesk\API\Traits\Resource\Update;
+use Zendesk\API\Traits\Utility\Pagination\SinglePageStrategy;
 
 /**
  * The AppInstallations class exposes methods seen at
@@ -122,5 +123,9 @@ class AppInstallations extends ResourceAbstract
             $route,
             $updateResourceFields
         );
+    }
+
+    private function paginationStrategyClass() {
+        return SinglePageStrategy::class;
     }
 }
