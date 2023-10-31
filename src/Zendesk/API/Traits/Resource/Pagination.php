@@ -15,11 +15,11 @@ trait Pagination {
      *
      * @return PaginationIterator to fetch all pages.
      */
-    public function iterator()
+    public function iterator($params = [])
     {
         $strategyClass = $this->paginationStrategyClass();
         $strategy = new $strategyClass($this->resourcesKey(), AbstractStrategy::DEFAULT_PAGE_SIZE);
-        return new PaginationIterator($this, $strategy);
+        return new PaginationIterator($this, $strategy, $params);
     }
 
     /**
