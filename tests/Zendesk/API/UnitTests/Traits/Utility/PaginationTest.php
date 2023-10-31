@@ -48,8 +48,8 @@ class PaginationTest extends BasicTest
             [['id' => 1], ['id' => 2]],
             [['id' => 3], ['id' => 4]]
         ]);
-        $strategy = new CbpStrategy($mockTickets, 'tickets', 2);
-        $iterator = new PaginationIterator($strategy);
+        $strategy = new CbpStrategy('tickets', 2);
+        $iterator = new PaginationIterator($mockTickets, $strategy);
 
         $tickets = iterator_to_array($iterator);
 
@@ -62,8 +62,8 @@ class PaginationTest extends BasicTest
             [['id' => 1, 'name' => 'User 1'], ['id' => 2, 'name' => 'User 2']],
             [['id' => 3, 'name' => 'User 3'], ['id' => 4, 'name' => 'User 4']]
         ]);
-        $strategy = new CbpStrategy($mockUsers, 'users', 2);
-        $iterator = new PaginationIterator($strategy);
+        $strategy = new CbpStrategy('users', 2);
+        $iterator = new PaginationIterator($mockUsers, $strategy);
 
         $users = iterator_to_array($iterator);
 

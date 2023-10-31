@@ -9,9 +9,14 @@ class PaginationIterator implements Iterator
     private $position = 0;
     private $page = [];
     private $strategy;
+    /**
+     * @var mixed use trait FindAll. The object handling the list, Ie: `$client->{clientList}()`
+     */
+    private $clientList;
 
-    public function __construct(AbstractStrategy $strategy)
+    public function __construct($clientList, AbstractStrategy $strategy)
     {
+        $this->clientList = $clientList;
         $this->strategy = $strategy;
     }
 
@@ -32,7 +37,7 @@ class PaginationIterator implements Iterator
 
     public function valid()
     {
-        $this->getPageIfNecessary();
+        $this->getPageIfNeeded();
         return !!$this->current();
     }
 
@@ -45,12 +50,16 @@ class PaginationIterator implements Iterator
         }
     }
 
-    private function getPageIfNecessary()
+    private function getPageIfNeeded()
     {
         if (!$this->strategy->shouldGetPage($this->position)) {
             return;
         }
 
-        $this->page = array_merge($this->page, $this->strategy->getPage());
+        $pageFn = function ($params = []) {
+            return $this->clientList->findAll($params);
+        };
+
+        $this->page = array_merge($this->page, $this->strategy->getPage($pageFn));
     }
 }
