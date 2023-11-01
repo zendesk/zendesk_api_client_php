@@ -3,10 +3,12 @@
 namespace Zendesk\API\UnitTests\Core;
 
 use Zendesk\API\Traits\Utility\Pagination\CbpStrategy;
+use Zendesk\API\Traits\Utility\Pagination\SinglePageStrategy;
 use Zendesk\API\UnitTests\BasicTest;
 use Zendesk\API\Traits\Utility\Pagination\PaginationIterator;
 
 class MockResource {
+    public $params;
     private $resources;
     private $resourceName;
     private $callCount = 0;
@@ -30,6 +32,8 @@ class MockResource {
 
         $this->callCount++;
 
+        $this->params = $params;
+
         return (object) [
             $this->resourceName => $resources,
             'meta' => (object) [
@@ -48,8 +52,8 @@ class PaginationTest extends BasicTest
             [['id' => 1], ['id' => 2]],
             [['id' => 3], ['id' => 4]]
         ]);
-        $strategy = new CbpStrategy($mockTickets, 'tickets', 2);
-        $iterator = new PaginationIterator($strategy);
+        $strategy = new CbpStrategy('tickets', 2);
+        $iterator = new PaginationIterator($mockTickets, $strategy);
 
         $tickets = iterator_to_array($iterator);
 
@@ -62,8 +66,8 @@ class PaginationTest extends BasicTest
             [['id' => 1, 'name' => 'User 1'], ['id' => 2, 'name' => 'User 2']],
             [['id' => 3, 'name' => 'User 3'], ['id' => 4, 'name' => 'User 4']]
         ]);
-        $strategy = new CbpStrategy($mockUsers, 'users', 2);
-        $iterator = new PaginationIterator($strategy);
+        $strategy = new CbpStrategy('users', 2);
+        $iterator = new PaginationIterator($mockUsers, $strategy);
 
         $users = iterator_to_array($iterator);
 
@@ -74,4 +78,42 @@ class PaginationTest extends BasicTest
             ['id' => 4, 'name' => 'User 4']
         ], $users);
     }
+
+    public function testFetchesCbpWithParams()
+    {
+        $mockTickets = new MockResource('tickets', [
+            [['id' => 1], ['id' => 2]],
+            [['id' => 3], ['id' => 4]]
+        ]);
+        $strategy = new CbpStrategy('tickets', 2);
+        $iterator = new PaginationIterator($mockTickets, $strategy, ['sort_name' => 'id', 'sort_order' => 'desc']);
+
+        $tickets = iterator_to_array($iterator);
+
+        $this->assertEquals([['id' => 1], ['id' => 2], ['id' => 3], ['id' => 4]], $tickets);
+        $this->assertEquals([
+            'sort_name' => 'id', 'sort_order' => 'desc',
+            'page[size]' => 2, 'page[after]' => 'cursor_for_next_page'
+        ], $mockTickets->params);
+    }
+
+    public function testFetchesSinglePageWithParams()
+    {
+        $resultsKey = 'results';
+        $userParams = ['param' => 1];
+        $mockResults = new MockResource($resultsKey, [
+            [['id' => 1, 'name' => 'Resource 1'], ['id' => 2, 'name' => 'Resource 2']]
+        ]);
+        $strategy = new SinglePageStrategy($resultsKey);
+        $iterator = new PaginationIterator($mockResults, $strategy, $userParams);
+
+        $resources = iterator_to_array($iterator);
+
+        $this->assertEquals([
+            ['id' => 1, 'name' => 'Resource 1'],
+            ['id' => 2, 'name' => 'Resource 2'],
+        ], $resources);
+        $this->assertEquals($mockResults->params, $userParams);
+    }
+
 }
