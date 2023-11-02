@@ -17,6 +17,11 @@ abstract class AbstractStrategy
         $this->pageSize = $pageSize;
     }
 
+    public function orderParams($params)
+    {
+        return $params;
+    }
+
     abstract public function getPage($pageFn);
     abstract public function shouldGetPage($position);
 }

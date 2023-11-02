@@ -3,7 +3,6 @@
 namespace Zendesk\API\Traits\Resource;
 
 use Zendesk\API\Exceptions\RouteException;
-use Zendesk\API\Traits\Utility\Pagination\CbpStrategy;
 
 trait FindAll
 {

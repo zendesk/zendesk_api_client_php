@@ -13,6 +13,7 @@ class PaginationIterator implements Iterator
 
     /**
      * @var mixed use trait FindAll. The object handling the list, Ie: `$client->{clientList}()`
+     * Eg: `$client->tickets()` which uses FindAll
      */
     private $clientList;
 
@@ -60,7 +61,11 @@ class PaginationIterator implements Iterator
         }
 
         $pageFn = function ($paginationParams = []) {
-            return $this->clientList->findAll(array_merge($this->params, $paginationParams));
+            return $this->clientList->findAll(
+                array_merge(
+                    $this->strategy->orderParams($this->params),
+                    $paginationParams
+                ));
         };
 
         $this->page = array_merge($this->page, $this->strategy->getPage($pageFn));

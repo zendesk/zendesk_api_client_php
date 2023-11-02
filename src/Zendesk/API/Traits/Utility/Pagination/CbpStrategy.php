@@ -14,11 +14,8 @@ class CbpStrategy extends AbstractStrategy
     public function getPage($pageFn)
     {
         $this->started = true;
-        $params = ['page[size]' => $this->pageSize];
-        if ($this->afterCursor) {
-            $params['page[after]'] = $this->afterCursor;
-        }
-        $response = $pageFn($params);
+
+        $response = $pageFn($this->paginationParams());
 
         $this->afterCursor = $response->meta->has_more ? $response->meta->after_cursor : null;
         return $response->{$this->resourcesKey};
@@ -26,5 +23,27 @@ class CbpStrategy extends AbstractStrategy
 
     public function shouldGetPage($position) {
         return !$this->started || $this->afterCursor;
+    }
+
+    public function orderParams($params)
+    {
+        if (isset($params['sort']) || !isset($params['sort_by'])) {
+            return $params;
+        } else {
+            $direction = (isset($params['sort_order']) && strtolower($params['sort_order']) === 'desc') ? '-' : '';
+            $result = array_merge($params, ['sort' => $direction . $params['sort_by']]);
+            unset($result['sort_by'], $result['sort_order']);
+            return $result;
+        }
+    }
+    private function paginationParams()
+    {
+        // TODO: per_page...
+        $result = ['page[size]' => $this->pageSize];
+        if ($this->afterCursor) {
+            $result['page[after]'] = $this->afterCursor;
+        }
+
+        return $result;
     }
 }

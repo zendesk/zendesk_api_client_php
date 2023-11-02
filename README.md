@@ -139,6 +139,8 @@ foreach ($ticketsIterator as $ticket) {
 }
 ```
 
+If you want to customise your sort order, please refer to the sorting section in the documentation ([Tickets, for example](https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/#sorting)). If you are upgrading from OBP, please refer to [the upgrade guide](./UPGRADE_GUIDE.md).
+
 #### Find All using CBP (fine)
 
 If you still want use `findAll()`, until CBP becomes the default API response, you must explicitly request CBP responses by using the param `page[size]`.
