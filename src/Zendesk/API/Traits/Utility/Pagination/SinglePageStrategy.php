@@ -11,10 +11,10 @@ class SinglePageStrategy extends AbstractStrategy
 {
     protected $started = false;
 
-    public function getPage($pageFn)
+    public function page($getPageFn)
     {
         $this->started = true;
-        $response = $pageFn();
+        $response = $getPageFn();
 
         return $response->{$this->resourcesKey};
     }

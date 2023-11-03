@@ -2,26 +2,25 @@
 
 namespace Zendesk\API\Traits\Utility\Pagination;
 
+const DEFAULT_PAGE_SIZE = 100;
+
 use Iterator;
 
 class PaginationIterator implements Iterator
 {
-    private $position = 0;
-    private $page = [];
-    private $strategy;
-    private $params;
-
     /**
-     * @var mixed use trait FindAll. The object handling the list, Ie: `$client->{clientList}()`
+     * @var mixed using trait FindAll. The object handling the list, Ie: `$client->{clientList}()`
      * Eg: `$client->tickets()` which uses FindAll
      */
     private $clientList;
+    private $strategy;
+    private $position = 0;
+    private $page = [];
 
-    public function __construct($clientList, AbstractStrategy $strategy, $params = [])
+    public function __construct($clientList, AbstractStrategy $strategy)
     {
         $this->clientList = $clientList;
         $this->strategy = $strategy;
-        $this->params = $params;
     }
 
     public function key()
@@ -60,14 +59,10 @@ class PaginationIterator implements Iterator
             return;
         }
 
-        $pageFn = function ($paginationParams = []) {
-            return $this->clientList->findAll(
-                array_merge(
-                    $this->strategy->orderParams($this->params),
-                    $paginationParams
-                ));
+        $getPageFn = function () {
+            return $this->clientList->findAll($this->strategy->params());
         };
 
-        $this->page = array_merge($this->page, $this->strategy->getPage($pageFn));
+        $this->page = array_merge($this->page, $this->strategy->page($getPageFn));
     }
 }

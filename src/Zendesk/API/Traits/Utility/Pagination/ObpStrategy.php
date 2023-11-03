@@ -10,16 +10,20 @@ class ObpStrategy extends AbstractStrategy
 {
     private $pageNumber = 0;
 
-    public function getPage($pageFn)
+    public function page($getPageFn)
     {
         ++$this->pageNumber;
-        $params = ['page' => $this->pageNumber, 'page_size' => $this->pageSize];
-        $response = $pageFn($params);
+        $response = $getPageFn();
 
         return $response->{$this->resourcesKey};
     }
 
     public function shouldGetPage($position) {
-        return $this->pageNumber == 0 || $position >= $this->pageNumber * $this->pageSize;
+        return $this->pageNumber == 0 || $position >= $this->pageNumber * $this->pageSize();
+    }
+    public function paramsWithPagination()
+    {
+        return ['page' => $this->pageNumber, 'per_page' => $this->pageSize()];
+
     }
 }
