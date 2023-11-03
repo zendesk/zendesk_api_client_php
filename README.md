@@ -132,14 +132,30 @@ There are two ways to do pagination in the Zendesk API, **CBP (Cursor Based Pagi
 The use of the correct pagination is encapsulated using the iterator pattern, which allows you to retrieve all resources in all pages, without having to deal with pagination at all:
 
 ```php
-$ticketsIterator = $client->tickets()->iterator();
+$iterator = $client->tickets()->iterator();
 
-foreach ($ticketsIterator as $ticket) {
-    process($ticket); // Your implementation
+foreach ($iterator as $ticket) {
+    echo($ticket->id . " ");
 }
 ```
 
-If you want to customise your sort order, please refer to the sorting section in the documentation ([Tickets, for example](https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/#sorting)). If you are upgrading from OBP, please refer to [the upgrade guide](./UPGRADE_GUIDE.md).
+If you want a specific sort order, please refer to the sorting section in the documentation ([Tickets, for example](https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/#sorting)). If you are upgrading from OBP, please refer to [the upgrade guide](./UPGRADE_GUIDE.md).
+
+##### Iterator with params example
+
+```php
+$params = ['my' => 'param1', 'extra' => 'param2'];
+$iterator = $client->tickets()->iterator($params);
+
+foreach ($iterator as $ticket) {
+    echo($ticket->id . " ");
+}
+```
+
+* Change page size with: `$params = ['page[size]' => 5];`
+* Change sorting with: `$params = ['sort' => '-updated_at'];`
+  * Refer to the docs for details, including allowed sort fields
+* Combine everything: `$params = ['page[size]' => 2, 'sort' => 'updated_at', 'extra' => 'param'];`
 
 #### Find All using CBP (fine)
 

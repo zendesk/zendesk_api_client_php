@@ -10,7 +10,6 @@ class CbpStrategy extends AbstractStrategy
 {
     private $afterCursor = null;
     private $started = false;
-    private $sortParams;
 
     public function page($getPageFn)
     {
@@ -35,6 +34,9 @@ class CbpStrategy extends AbstractStrategy
     /**
      * The params that are needed to ordering in CBP (eg: ["sort" => "-age"])
      * If OBP params are passed, they are converted to CBP
+     *
+     * OBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort_order=desc&sort_by=updated_at&per_page=2
+     * CBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort=-updated_at&page[size]=2
      *
      * @return array all params with CBP sorting order
      */

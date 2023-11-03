@@ -1,13 +1,24 @@
 # Upgrade guide
 
-TODO: review and provide examples.
-
-## Gotchas moving from OBP to CBP
-
-### Useful links
+## Useful links
 
 * [Pagination](https://developer.zendesk.com/api-reference/introduction/pagination)
 * [Ticketing sorting](https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/#sorting)
+
+## CBP Basics
+
+**OBP (Offset Based Pagination)** is quite inefficient, and increasingly so the higher the page you fetch. Switching to **CBP (Cursor Based Pagination)** will improve your application performance. OBP will eventually be subject to limits.
+
+When in OBP you request page 100, the DB will need to index all 100 pages of records before it can load the rows for the page you requested.
+
+CBP works based on a cursors, so if the order is `id`, 10 elements per page and the last item on your page is 111, the response includes a link to the next page "next 10 elements after id 111", and only your page is indexed before the rows are fetched.
+
+## API calls
+
+URL example:
+
+* OBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort_order=desc&sort_by=updated_at&per_page=2
+* CBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort=-updated_at&page[size]=2
 
 ### CBP ordering
 
@@ -21,7 +32,7 @@ Ticket example:
 * OBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort_order=desc&sort_by=updated_at&per_page=2
 * CBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort=-updated_at&page[size]=2
 
-However, the list of attributes you can sort by is longer in OBP:
+However, the list of **attributes you can sort by might also change** with the pagination type:
 
 https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/#sorting
 
@@ -30,8 +41,8 @@ https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/#sorting
 
 Example:
 
-* OBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort_order=desc&sort_by=assignee.name&per_page=2 HTTP 200, works
-* CBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort=assignee.name&page[size]=2 HTTP 400
+* OBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort_order=desc&sort_by=assignee.name&per_page=2 `HTTP 200`, works
+* CBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort=assignee.name&page[size]=2 `HTTP 400`
 
 ```json
 {
@@ -40,7 +51,40 @@ Example:
 }
 ```
 
-TODO: confirm.
-If this is your situation, you need to change sorting order to a supported one.
+If this is your situation, **you need to change sorting order** to a supported one.
 
-###
+## The new iterator
+
+Your best solution to implement CBP is to use the newly provided iterator on your resources, for example:
+
+```php
+$params = ['my' => 'param1', 'extra' => 'param2'];
+$iterator = $client->tickets()->iterator($params);
+
+foreach ($iterator as $ticket) {
+    echo($ticket->id . " ");
+}
+```
+
+This will choose the right type of pagination and adapt your parameters for pagination and ordering to work with CBP.
+
+##### Iterator with params example
+
+```php
+$params = ['my' => 'param1', 'extra' => 'param2'];
+$iterator = $client->tickets()->iterator($params);
+
+foreach ($iterator as $ticket) {
+    echo($ticket->id . " ");
+}
+```
+
+* Change page size with: `$params = ['page[size]' => 5];`
+* Change sorting with: `$params = ['sort' => '-updated_at'];`
+  * Refer to the docs for details, including allowed sort fields
+* Combine everything: `$params = ['page[size]' => 2, 'sort' => 'updated_at', 'extra' => 'param'];`
+
+
+## Parallel requests
+
+If you are fetching multiple pages in parallel using OBP, you need to refactor to a serial execution, and fetch one page at a time.
