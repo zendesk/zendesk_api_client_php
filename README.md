@@ -123,10 +123,6 @@ $tickets = $client->tickets()->sideload(['users', 'groups'])->findAll();
 
 ### Pagination
 
-See the [API reference for pagination](https://developer.zendesk.com/api-reference/introduction/pagination).
-
-There are two ways to do pagination in the Zendesk API, **CBP (Cursor Based Pagination)** and **OBP (Offset Based Pagination)**. The recommended and less limited way is to use CBP.
-
 #### Iterator (recommended)
 
 The use of the correct pagination is encapsulated using the iterator pattern, which allows you to retrieve all resources in all pages, without having to deal with pagination at all:
@@ -157,7 +153,28 @@ foreach ($iterator as $ticket) {
   * Refer to the docs for details, including allowed sort fields
 * Combine everything: `$params = ['page[size]' => 2, 'sort' => 'updated_at', 'extra' => 'param'];`
 
-#### Find All using CBP (fine)
+##### Custom iterators
+
+If you want to use the iterator for custom methods, as opposed to the default `findAll()`, you can create your iterator like so:
+
+```php
+$strategy = new CbpStrategy( // Or ObpStrategy or SinglePageStrategy
+    "resources_key", // The root key with resources in the response, usually plural and in underscore
+    [], // Extra params for your call
+);
+$iterator = PaginationIterator($client->resources(), $strategy);
+foreach ($ticketsIterator as $ticket) {
+    // Use as normal
+}
+```
+
+Where `resources` is the collection, eg: `$client->tickets()`. This can be useful for filter endpoints like [active automations](https://developer.zendesk.com/api-reference/ticketing/business-rules/automations/#list-active-automations). However, in this common case where you only need to change the method from `findAll()` to `findActive()` there's a better shortcut:
+
+```php
+$iterator = $client->automations()->iterator($params, 'findActive');
+```
+
+#### FindAll using CBP (fine)
 
 If you still want use `findAll()`, until CBP becomes the default API response, you must explicitly request CBP responses by using the param `page[size]`.
 
