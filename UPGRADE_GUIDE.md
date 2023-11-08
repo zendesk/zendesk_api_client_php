@@ -9,9 +9,9 @@
 
 **OBP (Offset Based Pagination)** is quite inefficient, and increasingly so the higher the page you fetch. Switching to **CBP (Cursor Based Pagination)** will improve your application performance. OBP will eventually be subject to limits.
 
-When in OBP you request page 100, the DB will need to index all 100 pages of records before it can load the rows for the page you requested.
+When using OBP, if you request page 100, the DB will need to index all records that proceed it before it can load the rows for the page you requested.
 
-CBP works based on a cursors, so if the order is `id`, 10 elements per page and the last item on your page is 111, the response includes a link to the next page "next 10 elements after id 111", and only your page is indexed before the rows are fetched.
+CBP works based on cursors, so when ordering by `id` with page size 10, if the last item on your page has id 111, the response includes a link to the next page (`links.next`) which can be used to request the next 10 elements after id 111, and only the requested rows are indexed before fetching. When in the response `meta.has_more` is `false` you are done.
 
 ## API calls
 
@@ -51,11 +51,11 @@ Example:
 }
 ```
 
-If this is your situation, **you need to change sorting order** to a supported one.
+If this is your situation, **you will need to change the sorting order** to a supported one.
 
 ## The new iterator
 
-Your best solution to implement CBP is to use the newly provided iterator on your resources, for example:
+The most efficient and elegant way to implement CBP is to use the newly provided iterator on your resources, for example:
 
 ```php
 $params = ['my' => 'param1', 'extra' => 'param2'];
