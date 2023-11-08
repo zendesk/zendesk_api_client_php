@@ -52,7 +52,7 @@ class PaginationTest extends BasicTest
             [['id' => 1], ['id' => 2]],
             [['id' => 3], ['id' => 4]]
         ]);
-        $strategy = new CbpStrategy('tickets', 2);
+        $strategy = new CbpStrategy('tickets', ['page[size]' => 2]);
         $iterator = new PaginationIterator($mockTickets, $strategy);
 
         $tickets = iterator_to_array($iterator);
@@ -66,7 +66,7 @@ class PaginationTest extends BasicTest
             [['id' => 1, 'name' => 'User 1'], ['id' => 2, 'name' => 'User 2']],
             [['id' => 3, 'name' => 'User 3'], ['id' => 4, 'name' => 'User 4']]
         ]);
-        $strategy = new CbpStrategy('users', 2);
+        $strategy = new CbpStrategy('users', ['page[size]' => 2]);
         $iterator = new PaginationIterator($mockUsers, $strategy);
 
         $users = iterator_to_array($iterator);
@@ -85,14 +85,31 @@ class PaginationTest extends BasicTest
             [['id' => 1], ['id' => 2]],
             [['id' => 3], ['id' => 4]]
         ]);
-        $strategy = new CbpStrategy('tickets', 2);
-        $iterator = new PaginationIterator($mockTickets, $strategy, ['sort_name' => 'id', 'sort_order' => 'desc']);
+        $strategy = new CbpStrategy('tickets', ['page[size]' => 2, 'any' => 'param']);
+        $iterator = new PaginationIterator($mockTickets, $strategy);
 
         $tickets = iterator_to_array($iterator);
 
         $this->assertEquals([['id' => 1], ['id' => 2], ['id' => 3], ['id' => 4]], $tickets);
         $this->assertEquals([
-            'sort_name' => 'id', 'sort_order' => 'desc',
+            'any' => 'param',
+            'page[size]' => 2, 'page[after]' => 'cursor_for_next_page'
+        ], $mockTickets->params);
+    }
+
+    public function testCorrectsParamsToCbp()
+    {
+        $mockTickets = new MockResource('tickets', [
+            [['id' => 1], ['id' => 2]],
+            [['id' => 3], ['id' => 4]]
+        ]);
+        $strategy = new CbpStrategy('tickets', ['per_page' => 2, 'sort_by' => 'id', 'sort_order' => 'desc']);
+        $iterator = new PaginationIterator($mockTickets, $strategy);
+
+        iterator_to_array($iterator);
+
+        $this->assertEquals([
+            'sort' => '-id',
             'page[size]' => 2, 'page[after]' => 'cursor_for_next_page'
         ], $mockTickets->params);
     }
@@ -104,8 +121,8 @@ class PaginationTest extends BasicTest
         $mockResults = new MockResource($resultsKey, [
             [['id' => 1, 'name' => 'Resource 1'], ['id' => 2, 'name' => 'Resource 2']]
         ]);
-        $strategy = new SinglePageStrategy($resultsKey);
-        $iterator = new PaginationIterator($mockResults, $strategy, $userParams);
+        $strategy = new SinglePageStrategy($resultsKey, $userParams);
+        $iterator = new PaginationIterator($mockResults, $strategy);
 
         $resources = iterator_to_array($iterator);
 
@@ -115,5 +132,4 @@ class PaginationTest extends BasicTest
         ], $resources);
         $this->assertEquals($mockResults->params, $userParams);
     }
-
 }
