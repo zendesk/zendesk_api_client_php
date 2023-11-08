@@ -62,7 +62,6 @@ class PaginationIterator implements Iterator
         }
 
         $getPageFn = function () {
-            echo("Get page\n");
             return $this->clientList->{$this->method}($this->strategy->params());
         };
 

@@ -9,6 +9,7 @@ use Zendesk\API\Traits\Utility\Pagination\PaginationIterator;
 
 class MockResource {
     public $params;
+    public $foundDifferent = false;
     private $resources;
     private $resourceName;
     private $callCount = 0;
@@ -42,9 +43,15 @@ class MockResource {
             ],
         ];
     }
+
+    public function findDifferent($params)
+    {
+        $this->foundDifferent = true;
+        return $this->findAll($params);
+    }
 }
 
-class PaginationTest extends BasicTest
+class PaginationIteratorTest extends BasicTest
 {
     public function testFetchesTickets()
     {
@@ -131,5 +138,24 @@ class PaginationTest extends BasicTest
             ['id' => 2, 'name' => 'Resource 2'],
         ], $resources);
         $this->assertEquals($mockResults->params, $userParams);
+    }
+    public function testCustomMethod()
+    {
+        $resultsKey = 'results';
+        $userParams = ['param' => 1];
+        $mockResults = new MockResource($resultsKey, [
+            [['id' => 1, 'name' => 'Resource 1'], ['id' => 2, 'name' => 'Resource 2']]
+        ]);
+        $strategy = new SinglePageStrategy($resultsKey, $userParams);
+        $iterator = new PaginationIterator($mockResults, $strategy, 'findDifferent');
+
+        $resources = iterator_to_array($iterator);
+
+        $this->assertEquals([
+            ['id' => 1, 'name' => 'Resource 1'],
+            ['id' => 2, 'name' => 'Resource 2'],
+        ], $resources);
+        $this->assertEquals(true, $mockResults->foundDifferent);
+        $this->assertEquals($userParams, $mockResults->params);
     }
 }

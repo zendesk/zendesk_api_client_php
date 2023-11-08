@@ -123,9 +123,11 @@ $tickets = $client->tickets()->sideload(['users', 'groups'])->findAll();
 
 ### Pagination
 
+Methods like `findAll()` call the API without any pagination parameter. If an endpoint supports pagination, only the first page will be returned. To fetch all resources, you need to make multiple API calls.
+
 #### Iterator (recommended)
 
-The use of the correct pagination is encapsulated using the iterator pattern, which allows you to retrieve all resources in all pages, without having to deal with pagination at all:
+The use of the correct pagination is encapsulated using the iterator pattern, which allows you to retrieve all resources in all pages, making multiple API calls, without having to worry about pagination at all:
 
 ```php
 $iterator = $client->tickets()->iterator();
