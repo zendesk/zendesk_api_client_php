@@ -176,6 +176,22 @@ This can be useful for filter endpoints like [active automations](https://develo
 $iterator = $client->automations()->iterator($params, 'findActive');
 ```
 
+##### Catching API errors
+
+This doesn't change too much:
+
+```php
+try {
+    foreach ($iterator as $ticket) {
+        // your code
+    }
+} catch (ApiResponseException $e) {
+    $errorMessage = $e->getMessage();
+}
+```
+
+If you need to know at what point you got the error, you can store the required information inside the loop in your code.
+
 #### FindAll using CBP (fine)
 
 If you still want use `findAll()`, until CBP becomes the default API response, you must explicitly request CBP responses by using the param `page[size]`.
