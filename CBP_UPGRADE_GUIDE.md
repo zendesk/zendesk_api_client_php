@@ -1,7 +1,8 @@
-# Upgrade guide
+# OBP to CBP Upgrade guide
 
 ## Useful links
 
+* [This README](./README.md#pagination)
 * [Pagination](https://developer.zendesk.com/api-reference/introduction/pagination)
 * [Ticketing sorting](https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/#sorting)
 
@@ -55,35 +56,7 @@ If this is your situation, **you will need to change the sorting order** to a su
 
 ## The new iterator
 
-The most efficient and elegant way to implement CBP is to use the newly provided iterator on your resources, for example:
-
-```php
-$params = ['my' => 'param1', 'extra' => 'param2'];
-$iterator = $client->tickets()->iterator($params);
-
-foreach ($iterator as $ticket) {
-    echo($ticket->id . " ");
-}
-```
-
-This will choose the right type of pagination and adapt your parameters for pagination and ordering to work with CBP.
-
-##### Iterator with params example
-
-```php
-$params = ['my' => 'param1', 'extra' => 'param2'];
-$iterator = $client->tickets()->iterator($params);
-
-foreach ($iterator as $ticket) {
-    echo($ticket->id . " ");
-}
-```
-
-* Change page size with: `$params = ['page[size]' => 5];`
-* Change sorting with: `$params = ['sort' => '-updated_at'];`
-  * Refer to the docs for details, including allowed sort fields
-* Combine everything: `$params = ['page[size]' => 2, 'sort' => 'updated_at', 'extra' => 'param'];`
-
+Please refer to the [README](./README.md#iterator-recommended).
 
 ## Parallel requests
 

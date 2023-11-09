@@ -14,13 +14,15 @@ class PaginationIterator implements Iterator
      */
     private $clientList;
     private $strategy;
+    private $method;
     private $position = 0;
     private $page = [];
 
-    public function __construct($clientList, AbstractStrategy $strategy)
+    public function __construct($clientList, AbstractStrategy $strategy, $method = 'findAll')
     {
         $this->clientList = $clientList;
         $this->strategy = $strategy;
+        $this->method = $method;
     }
 
     public function key()
@@ -60,7 +62,7 @@ class PaginationIterator implements Iterator
         }
 
         $getPageFn = function () {
-            return $this->clientList->findAll($this->strategy->params());
+            return $this->clientList->{$this->method}($this->strategy->params());
         };
 
         $this->page = array_merge($this->page, $this->strategy->page($getPageFn));
