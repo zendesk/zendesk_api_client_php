@@ -127,7 +127,7 @@ Methods like `findAll()` call the API without any pagination parameter. If an en
 
 #### Iterator (recommended)
 
-The use of the correct pagination is encapsulated using the iterator pattern, which allows you to retrieve all resources in all pages, making multiple API calls, without having to worry about pagination at all:
+The use of the correct type of pagination is encapsulated using an iterator, which allows you to retrieve all resources in all pages, making multiple API calls, without having to worry about pagination at all:
 
 ```php
 $iterator = $client->tickets()->iterator();
@@ -157,20 +157,20 @@ foreach ($iterator as $ticket) {
 
 ##### Custom iterators
 
-If you want to use the iterator for custom methods, as opposed to the default `findAll()`, you can create your iterator like so:
+If you want to use the iterator for custom methods, as opposed to the default `findAll()`, you can create an iterator for your collection:
 
 ```php
 $strategy = new CbpStrategy( // Or ObpStrategy or SinglePageStrategy
     "resources_key", // The root key with resources in the response, usually plural and in underscore
     [], // Extra params for your call
 );
-$iterator = PaginationIterator($client->resources(), $strategy);
+$iterator = PaginationIterator($client->tickets(), $strategy);
 foreach ($ticketsIterator as $ticket) {
     // Use as normal
 }
 ```
 
-Where `resources` is the collection, eg: `$client->tickets()`. This can be useful for filter endpoints like [active automations](https://developer.zendesk.com/api-reference/ticketing/business-rules/automations/#list-active-automations). However, in this common case where you only need to change the method from `findAll()` to `findActive()` there's a better shortcut:
+This can be useful for filter endpoints like [active automations](https://developer.zendesk.com/api-reference/ticketing/business-rules/automations/#list-active-automations). However, in this common case where you only need to change the method from `findAll()` to `findActive()` there's a better shortcut:
 
 ```php
 $iterator = $client->automations()->iterator($params, 'findActive');
