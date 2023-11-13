@@ -60,11 +60,14 @@ class PaginationIterator implements Iterator
         if (!$this->strategy->shouldGetPage($this->position)) {
             return;
         }
+        print("!!!!!!!!!!!! src/Zendesk/API/Traits/Utility/Pagination/PaginationIterator.php:63 getPage\n");
+        print_r($this->position); print(" \n");
 
         $getPageFn = function () {
             return $this->clientList->{$this->method}($this->strategy->params());
         };
 
-        $this->page = array_merge($this->page, $this->strategy->page($getPageFn));
+        $this->page = $this->strategy->page($getPageFn);
+        $this->position = 0;
     }
 }

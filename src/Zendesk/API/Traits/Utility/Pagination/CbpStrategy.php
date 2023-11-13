@@ -21,7 +21,13 @@ class CbpStrategy extends AbstractStrategy
     }
 
     public function shouldGetPage($position) {
-        return !$this->started || $this->afterCursor;
+        print("!!!!!!!!!!!! src/Zendesk/API/Traits/Utility/Pagination/CbpStrategy.php:24 shouldGetPage\n");
+        print("started :"); print_r($this->started); print(" \n");
+        print("afterCursor :"); print_r($this->afterCursor); print(" \n");
+        print("position :"); print_r($position); print(" \n");
+        print("page size :"); print_r($this->pageSize()); print(" \n");
+        print("result :"); print_r(!$this->started || !$this->afterCursor && $position == $this->pageSize() ? "true" : "false"); print(" \n");
+        return !$this->started || $this->afterCursor && $position == $this->pageSize();
     }
 
     public function params()
