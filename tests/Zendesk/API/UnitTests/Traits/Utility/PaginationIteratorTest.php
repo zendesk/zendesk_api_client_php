@@ -2,6 +2,10 @@
 
 namespace Zendesk\API\UnitTests\Core;
 
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
+use Zendesk\API\Exceptions\ApiResponseException;
 use Zendesk\API\Traits\Utility\Pagination\CbpStrategy;
 use Zendesk\API\Traits\Utility\Pagination\SinglePageStrategy;
 use Zendesk\API\UnitTests\BasicTest;
@@ -13,16 +17,24 @@ class MockResource {
     private $resources;
     private $resourceName;
     private $callCount = 0;
+    private $errorMessage;
 
-    public function __construct($resourceName, $resources)
+    public function __construct($resourceName, $resources, $errorMessage = null)
     {
         $this->resourceName = $resourceName;
         $this->resources = $resources;
         $this->callCount = 0;
+        $this->errorMessage = $errorMessage;
     }
 
     public function findAll($params)
     {
+        if ($this->errorMessage) {
+            $request = new Request('GET', 'http://example.zendesk.com');
+            $response = new Response(400, [], '{ "a": "json"}');
+            $requestException = new RequestException($this->errorMessage, $request, $response);
+            throw new ApiResponseException($requestException);
+        }
         // Simulate two pages of resources
         $resources = $this->callCount === 0
             ? $this->resources[0]
@@ -157,5 +169,23 @@ class PaginationIteratorTest extends BasicTest
         ], $resources);
         $this->assertEquals(true, $mockResults->foundDifferent);
         $this->assertEquals($userParams, $mockResults->params);
+    }
+
+    public function testHandlesError()
+    {
+        $expectedErrorMessage = "BOOM!";
+        $resultsKey = 'results';
+        $userParams = [];
+        $mockResults = new MockResource($resultsKey, [], $expectedErrorMessage);
+        $strategy = new CbpStrategy($resultsKey, $userParams);
+        $iterator = new PaginationIterator($mockResults, $strategy);
+
+        try {
+            iterator_to_array($iterator);
+        } catch (ApiResponseException $e) {
+            $actualErrorMessage = $e->getMessage();
+        }
+
+        $this->assertEquals($expectedErrorMessage, $actualErrorMessage);
     }
 }
