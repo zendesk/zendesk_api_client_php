@@ -9,19 +9,23 @@ namespace Zendesk\API\Traits\Utility\Pagination;
 class CbpStrategy extends AbstractStrategy
 {
     private $afterCursor;
+    private $hasMore;
     private $started = false;
 
     public function page($getPageFn)
     {
         $this->started = true;
         $this->latestResponse = $getPageFn();
-        $this->afterCursor = $this->latestResponse->meta->has_more ? $this->latestResponse->meta->after_cursor : null;
+        $this->hasMore = $this->latestResponse->meta->has_more;
+        if (isset($this->latestResponse->meta->after_cursor)) {
+            $this->afterCursor = $this->latestResponse->meta->after_cursor;
+        }
 
         return $this->latestResponse->{$this->resourcesKey};
     }
 
     public function shouldGetPage($position) {
-        return !$this->started || $this->afterCursor;
+        return !$this->started || $this->hasMore;
     }
 
     public function params()

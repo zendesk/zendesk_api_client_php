@@ -7,11 +7,11 @@ services:
     volumes:
       - .:/app
       - vendor:/app/vendor
-    # command: vendor/bin/phpunit --testsuite "Zendesk API Unit Test Suites"
+    command: vendor/bin/phpunit --testsuite "Zendesk API Unit Test Suites"
     # command: vendor/bin/phpunit --testdox --testsuite "Zendesk API Unit Test Suites"
-    command: vendor/bin/phpunit tests/Zendesk/API/UnitTests/Traits/Utility/PaginationIteratorTest.php
+    # command: vendor/bin/phpunit tests/Zendesk/API/UnitTests/Traits/Utility/PaginationIteratorTest.php
     # command: vendor/bin/phpunit tests/Zendesk/API/UnitTests/Core/TicketsTest.php
-    # command: vendor/bin/phpunit tests/Zendesk/API/UnitTests/Core/OrganizationMembershipsTest.php
+    # command: vendor/bin/phpunit tests/Zendesk/API/UnitTests/Core/TagsTest.php
 
 volumes:
   vendor:
