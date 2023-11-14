@@ -22,11 +22,21 @@ abstract class AbstractStrategy
         return $this->params;
     }
 
+    /**
+     * Returns the latest HTTP response, unless an error occurred, which causes an exception
+     *
+     * @return \GuzzleHttp\Psr7\Response
+     */
     public function latestResponse()
     {
         return $this->latestResponse;
     }
 
+    /**
+     * From the params or the default value
+     *
+     * @return integer
+     */
     protected function pageSize()
     {
         if (isset($this->pageSize)) {

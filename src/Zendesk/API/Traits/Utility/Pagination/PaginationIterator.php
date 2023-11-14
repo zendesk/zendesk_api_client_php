@@ -8,16 +8,18 @@ use Iterator;
 
 class PaginationIterator implements Iterator
 {
-    /**
-     * @var mixed using trait FindAll. The object handling the list, Ie: `$client->{clientList}()`
-     * Eg: `$client->tickets()` which uses FindAll
-     */
     private $clientList;
     private $strategy;
     private $method;
     private $position = 0;
     private $items = [];
 
+    /**
+     *
+     * @param mixed using trait FindAll. The resources collection, Eg: `$client->tickets()` which uses FindAll
+     * @param AbstractStrategy $strategy For pagination Logic (OBP, CBP, SinglePage)
+     * @param string $method used to make the API call
+     */
     public function __construct($clientList, AbstractStrategy $strategy, $method = 'findAll')
     {
         $this->clientList = $clientList;
@@ -55,6 +57,11 @@ class PaginationIterator implements Iterator
         }
     }
 
+    /**
+     * Returns the latest HTTP response, unless an error occurred, which causes an exception
+     *
+     * @return \GuzzleHttp\Psr7\Response
+     */
     public function latestResponse()
     {
         return $this->strategy->latestResponse();
