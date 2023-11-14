@@ -16,7 +16,7 @@ class PaginationIterator implements Iterator
     private $strategy;
     private $method;
     private $position = 0;
-    private $page = [];
+    private $items = [];
 
     public function __construct($clientList, AbstractStrategy $strategy, $method = 'findAll')
     {
@@ -48,8 +48,8 @@ class PaginationIterator implements Iterator
 
     public function current()
     {
-        if (isset($this->page[$this->position])) {
-            return $this->page[$this->position];
+        if (isset($this->items[$this->position])) {
+            return $this->items[$this->position];
         } else {
             return null;
         }
@@ -61,7 +61,7 @@ class PaginationIterator implements Iterator
     }
     private function getPageIfNeeded()
     {
-        if (isset($this->page[$this->position]) || !$this->strategy->shouldGetPage($this->position)) {
+        if (isset($this->items[$this->position]) || !$this->strategy->shouldGetPage($this->position)) {
             return;
         }
 
@@ -69,6 +69,6 @@ class PaginationIterator implements Iterator
             return $this->clientList->{$this->method}($this->strategy->params());
         };
 
-        $this->page = array_merge($this->page, $this->strategy->page($getPageFn));
+        $this->items = array_merge($this->items, $this->strategy->page($getPageFn));
     }
 }
