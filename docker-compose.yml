@@ -11,7 +11,8 @@ services:
     # command: vendor/bin/phpunit --testdox --testsuite "Zendesk API Unit Test Suites"
     # command: vendor/bin/phpunit tests/Zendesk/API/UnitTests/Traits/Utility/PaginationIteratorTest.php
     # command: vendor/bin/phpunit tests/Zendesk/API/UnitTests/Core/TicketsTest.php
-    # command: vendor/bin/phpunit tests/Zendesk/API/UnitTests/Core/TagsTest.php
+    # command: vendor/bin/phpunit tests/Zendesk/API/UnitTests/HttpTest.php
+    # command: vendor/bin/phpunit --testsuite "Zendesk API Live Test Suites"
 
 volumes:
   vendor:

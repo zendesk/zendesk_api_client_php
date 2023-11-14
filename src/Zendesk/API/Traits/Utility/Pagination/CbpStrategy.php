@@ -43,7 +43,7 @@ class CbpStrategy extends AbstractStrategy
      * OBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort_order=desc&sort_by=updated_at&per_page=2
      * CBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort=-updated_at&page[size]=2
      *
-     * @return array all params with CBP sorting order
+     * @return array Params with proper CBP sorting order
      */
     private function sortParams()
     {
@@ -58,7 +58,7 @@ class CbpStrategy extends AbstractStrategy
      * The params that are needed to for pagination (eg: ["page[size]" => "100"])
      * If OBP params are passed, they are converted to CBP
      *
-     * @return array all params with CBP sorting order
+     * @return array Params for pagination
      */
     private function paginationParams()
     {

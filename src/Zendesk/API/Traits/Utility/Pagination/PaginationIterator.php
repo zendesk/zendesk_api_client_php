@@ -15,7 +15,6 @@ class PaginationIterator implements Iterator
     private $items = [];
 
     /**
-     *
      * @param mixed using trait FindAll. The resources collection, Eg: `$client->tickets()` which uses FindAll
      * @param AbstractStrategy $strategy For pagination Logic (OBP, CBP, SinglePage)
      * @param string $method used to make the API call
