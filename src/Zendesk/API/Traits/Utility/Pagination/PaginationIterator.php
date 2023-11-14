@@ -55,6 +55,10 @@ class PaginationIterator implements Iterator
         }
     }
 
+    public function latestResponse()
+    {
+        return $this->strategy->latestResponse();
+    }
     private function getPageIfNeeded()
     {
         if (isset($this->page[$this->position]) || !$this->strategy->shouldGetPage($this->position)) {

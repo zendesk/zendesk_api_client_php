@@ -8,16 +8,16 @@ namespace Zendesk\API\Traits\Utility\Pagination;
  */
 class CbpStrategy extends AbstractStrategy
 {
-    private $afterCursor = null;
+    private $afterCursor;
     private $started = false;
 
     public function page($getPageFn)
     {
         $this->started = true;
-        $response = $getPageFn();
-        $this->afterCursor = $response->meta->has_more ? $response->meta->after_cursor : null;
+        $this->latestResponse = $getPageFn();
+        $this->afterCursor = $this->latestResponse->meta->has_more ? $this->latestResponse->meta->after_cursor : null;
 
-        return $response->{$this->resourcesKey};
+        return $this->latestResponse->{$this->resourcesKey};
     }
 
     public function shouldGetPage($position) {
@@ -31,6 +31,7 @@ class CbpStrategy extends AbstractStrategy
 
         return $result;
     }
+
     /**
      * The params that are needed to ordering in CBP (eg: ["sort" => "-age"])
      * If OBP params are passed, they are converted to CBP

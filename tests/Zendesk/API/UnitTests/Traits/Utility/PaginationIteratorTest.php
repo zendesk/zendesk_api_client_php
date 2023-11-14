@@ -14,6 +14,7 @@ use Zendesk\API\Traits\Utility\Pagination\PaginationIterator;
 class MockResource {
     public $params;
     public $foundDifferent = false;
+    public $response;
     private $resources;
     private $resourceName;
     private $callCount = 0;
@@ -31,8 +32,8 @@ class MockResource {
     {
         if ($this->errorMessage) {
             $request = new Request('GET', 'http://example.zendesk.com');
-            $response = new Response(400, [], '{ "a": "json"}');
-            $requestException = new RequestException($this->errorMessage, $request, $response);
+            $this->response = new Response(400, [], '{ "a": "json"}');
+            $requestException = new RequestException($this->errorMessage, $request, $this->response);
             throw new ApiResponseException($requestException);
         }
         // Simulate two pages of resources
@@ -44,16 +45,16 @@ class MockResource {
         $afterCursor = $this->callCount === 0 ? 'cursor_for_next_page' : null;
 
         $this->callCount++;
-
         $this->params = $params;
-
-        return (object) [
+        $this->response = (object) [
             $this->resourceName => $resources,
             'meta' => (object) [
                 'has_more' => $afterCursor !== null,
                 'after_cursor' => $afterCursor,
             ],
         ];
+
+        return $this->response;
     }
 
     public function findDifferent($params)
@@ -77,6 +78,7 @@ class PaginationIteratorTest extends BasicTest
         $tickets = iterator_to_array($iterator);
 
         $this->assertEquals([['id' => 1], ['id' => 2], ['id' => 3], ['id' => 4]], $tickets);
+        $this->assertEquals($mockTickets->response, $iterator->latestResponse());
     }
 
     public function testFetchesUsers()
@@ -183,9 +185,10 @@ class PaginationIteratorTest extends BasicTest
         try {
             iterator_to_array($iterator);
         } catch (ApiResponseException $e) {
-            $actualErrorMessage = $e->getMessage();
+            $error = $e;
         }
 
-        $this->assertEquals($expectedErrorMessage, $actualErrorMessage);
+        $this->assertEquals($expectedErrorMessage, $error->getMessage());
+        $this->assertEquals([], $error->getErrorDetails());
     }
 }

@@ -155,6 +155,10 @@ foreach ($iterator as $ticket) {
   * Refer to the docs for details, including allowed sort fields
 * Combine everything: `$params = ['page[size]' => 2, 'sort' => 'updated_at', 'extra' => 'param'];`
 
+##### Iterator API call response
+
+The latest response is exposed in the iterator at `$iterator->latestResponse()`. This could come handy for debugging.
+
 ##### Custom iterators
 
 If you want to use the iterator for custom methods, as opposed to the default `findAll()`, you can create an iterator for your collection:
@@ -187,6 +191,7 @@ try {
     }
 } catch (ApiResponseException $e) {
     $errorMessage = $e->getMessage();
+    $errorDetails = $e=>getErrorDetails();
 }
 ```
 

@@ -9,6 +9,7 @@ abstract class AbstractStrategy
     protected $resourcesKey;
     protected $params;
     protected $pageSize;
+    protected $latestResponse;
 
     public function __construct($resourcesKey, $params)
     {
@@ -19,6 +20,11 @@ abstract class AbstractStrategy
     public function params()
     {
         return $this->params;
+    }
+
+    public function latestResponse()
+    {
+        return $this->latestResponse;
     }
 
     protected function pageSize()
