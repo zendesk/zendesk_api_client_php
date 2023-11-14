@@ -57,7 +57,7 @@ class PaginationIterator implements Iterator
 
     private function getPageIfNeeded()
     {
-        if (!$this->strategy->shouldGetPage($this->position)) {
+        if (isset($this->page[$this->position]) || !$this->strategy->shouldGetPage($this->position)) {
             return;
         }
 
