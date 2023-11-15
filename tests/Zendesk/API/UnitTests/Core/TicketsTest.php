@@ -84,6 +84,32 @@ class TicketsTest extends BasicTest
         $this->assertEquals($this->testTicket2['subject'], $actual[1]->subject);
     }
 
+    public function testIteratorWhileValidLoop()
+    {
+        $this->mockApiResponses([
+            new Response(200, [], json_encode([
+                'tickets' => [$this->testTicket],
+                'meta' => ['has_more' => true, 'after_cursor' => 'some_cursor']
+            ])),
+            new Response(200, [], json_encode([
+                'tickets' => [$this->testTicket2],
+                'meta' => ['has_more' => false, 'after_cursor' => null]
+            ]))
+        ]);
+
+        $iterator = $this->client->tickets()->iterator();
+
+        $actual = [];
+        while ($iterator->valid()) {
+            $actual[] = $iterator->current();
+            $iterator->next();
+        }
+
+        $this->assertCount(2, $actual);
+        $this->assertEquals($this->testTicket['subject'], $actual[0]->subject);
+        $this->assertEquals($this->testTicket2['subject'], $actual[1]->subject);
+    }
+
     /**
      * Tests if the client can call and build the tickets endpoint with the proper sideloads
      */
