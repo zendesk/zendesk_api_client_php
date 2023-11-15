@@ -6,6 +6,7 @@ use Zendesk\API\Exceptions\RouteException;
 use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\Locales;
 use Zendesk\API\Traits\Resource\Search;
+use Zendesk\API\Traits\Resource\Translation;
 
 /**
  * Class Articles
@@ -18,6 +19,7 @@ class Articles extends ResourceAbstract
         getRoute as protected localesGetRoute;
     }
     use Search;
+    use Translation;
 
     /**
      * @{inheritdoc}

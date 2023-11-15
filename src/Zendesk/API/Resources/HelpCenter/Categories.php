@@ -4,6 +4,7 @@ namespace Zendesk\API\Resources\HelpCenter;
 
 use Zendesk\API\Traits\Resource\Defaults;
 use Zendesk\API\Traits\Resource\Locales;
+use Zendesk\API\Traits\Resource\Translation;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 
 /**
@@ -16,6 +17,7 @@ class Categories extends ResourceAbstract
     use InstantiatorTrait;
     use Defaults;
     use Locales;
+    use Translation;
 
     /**
      * {@inheritdoc}
