@@ -80,7 +80,7 @@ class PaginationIteratorTest extends BasicTest
             [['id' => 3], ['id' => 4]]
         ]);
         $strategy = new CbpStrategy('tickets', ['page[size]' => 2]);
-        $iterator = new PaginationIterator($mockTickets, $strategy);
+        $iterator = new PaginationIterator($mockTickets, $strategy, 'findAll');
 
         $tickets = iterator_to_array($iterator);
 
@@ -95,7 +95,7 @@ class PaginationIteratorTest extends BasicTest
             [['id' => 3, 'name' => 'User 3'], ['id' => 4, 'name' => 'User 4']]
         ]);
         $strategy = new CbpStrategy('users', ['page[size]' => 2]);
-        $iterator = new PaginationIterator($mockUsers, $strategy);
+        $iterator = new PaginationIterator($mockUsers, $strategy, 'findAll');
 
         $users = iterator_to_array($iterator);
 
@@ -114,7 +114,7 @@ class PaginationIteratorTest extends BasicTest
             [['id' => 3], ['id' => 4]]
         ]);
         $strategy = new CbpStrategy('tickets', ['page[size]' => 2, 'any' => 'param']);
-        $iterator = new PaginationIterator($mockTickets, $strategy);
+        $iterator = new PaginationIterator($mockTickets, $strategy, 'findAll');
 
         $tickets = iterator_to_array($iterator);
 
@@ -132,7 +132,7 @@ class PaginationIteratorTest extends BasicTest
             [['id' => 3], ['id' => 4]]
         ]);
         $strategy = new CbpStrategy('tickets', ['per_page' => 2, 'sort_by' => 'id', 'sort_order' => 'desc']);
-        $iterator = new PaginationIterator($mockTickets, $strategy);
+        $iterator = new PaginationIterator($mockTickets, $strategy, 'findAll');
 
         iterator_to_array($iterator);
 
@@ -150,7 +150,7 @@ class PaginationIteratorTest extends BasicTest
             [['id' => 1, 'name' => 'Resource 1'], ['id' => 2, 'name' => 'Resource 2']]
         ]);
         $strategy = new SinglePageStrategy($resultsKey, $userParams);
-        $iterator = new PaginationIterator($mockResults, $strategy);
+        $iterator = new PaginationIterator($mockResults, $strategy, 'findAll');
 
         $resources = iterator_to_array($iterator);
 
@@ -188,7 +188,7 @@ class PaginationIteratorTest extends BasicTest
         $mockResults = new MockResource($resultsKey, []);
         $mockResults->errorMessage = $expectedErrorMessage;
         $strategy = new CbpStrategy($resultsKey, $userParams);
-        $iterator = new PaginationIterator($mockResults, $strategy);
+        $iterator = new PaginationIterator($mockResults, $strategy, 'findAll');
 
         try {
             iterator_to_array($iterator);
@@ -208,7 +208,7 @@ class PaginationIteratorTest extends BasicTest
         ]);
         $mockTickets->isObp = true;
         $strategy = new CbpStrategy('tickets', ['page[size]' => 2]);
-        $iterator = new PaginationIterator($mockTickets, $strategy);
+        $iterator = new PaginationIterator($mockTickets, $strategy, 'findAll');
 
         try {
             iterator_to_array($iterator);
@@ -216,6 +216,9 @@ class PaginationIteratorTest extends BasicTest
             $error = $e;
         }
 
-        $this->assertEquals("Response is not CBP, if you think your request is correct, please open an issue at https://github.com/zendesk/zendesk_api_client_php/issues", $error->getMessage());
+        $this->assertEquals(
+            "Response not conforming to the CBP format, if you think your request is correct, please open an issue at https://github.com/zendesk/zendesk_api_client_php/issues",
+            $error->getMessage()
+        );
     }
 }

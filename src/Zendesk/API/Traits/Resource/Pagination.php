@@ -15,12 +15,12 @@ trait Pagination {
      *
      * @return PaginationIterator to fetch all pages.
      */
-    public function iterator($params = [])
+    public function iterator($params = [], $method = 'findAll')
     {
         $strategyClass = $this->paginationStrategyClass();
         $strategy = new $strategyClass($this->resourcesKey(), $params);
 
-        return new PaginationIterator($this, $strategy);
+        return new PaginationIterator($this, $strategy, $method);
     }
 
     /**
@@ -33,6 +33,8 @@ trait Pagination {
     }
 
     /**
+     * The key in the API responses where the resources are returned
+     *
      * @return string eg: "job_statuses"
      */
     protected function resourcesKey() {

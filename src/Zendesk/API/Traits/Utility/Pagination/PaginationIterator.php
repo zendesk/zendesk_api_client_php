@@ -21,34 +21,39 @@ class PaginationIterator implements Iterator
      * @param AbstractStrategy $strategy For pagination Logic (OBP, CBP, SinglePage)
      * @param string $method used to make the API call
      */
-    public function __construct($clientList, AbstractStrategy $strategy, $method = 'findAll')
+    public function __construct($clientList, AbstractStrategy $strategy, $method)
     {
         $this->clientList = $clientList;
         $this->strategy = $strategy;
         $this->method = $method;
     }
 
+    #[\ReturnTypeWillChange]
     public function key()
     {
         return $this->position;
     }
 
+    #[\ReturnTypeWillChange]
     public function next()
     {
         ++$this->position;
     }
 
+    #[\ReturnTypeWillChange]
     public function rewind()
     {
         $this->position = 0;
     }
 
+    #[\ReturnTypeWillChange]
     public function valid()
     {
         $this->getPageIfNeeded();
         return !!$this->current();
     }
 
+    #[\ReturnTypeWillChange]
     public function current()
     {
         if (isset($this->items[$this->position])) {

@@ -4,7 +4,7 @@ namespace Zendesk\API\Traits\Utility\Pagination;
 
 /**
  * Cursor Based Pagination
- * Used in paginationStrategyClass
+ * Used in PaginationIterator
  */
 class CbpStrategy extends AbstractStrategy
 {
@@ -18,7 +18,7 @@ class CbpStrategy extends AbstractStrategy
         $this->latestResponse = $getPageFn();
         if (!isset($this->latestResponse->meta->has_more)) {
             throw new PaginationError(
-                "Response is not CBP, if you think your request is correct, please open an issue at https://github.com/zendesk/zendesk_api_client_php/issues"
+                "Response not conforming to the CBP format, if you think your request is correct, please open an issue at https://github.com/zendesk/zendesk_api_client_php/issues"
             );
         }
         $this->hasMore = $this->latestResponse->meta->has_more;

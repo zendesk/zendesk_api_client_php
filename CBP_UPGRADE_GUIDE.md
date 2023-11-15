@@ -1,5 +1,7 @@
 # OBP to CBP Upgrade guide
 
+TODO version requirement, how to bump.
+
 ## Useful links
 
 * [This README](./README.md#pagination)
@@ -16,7 +18,7 @@ CBP works based on cursors, so when ordering by `id` with page size 10, if the l
 
 ## API calls
 
-URL example:
+Note the query parameters change in these two URL examples:
 
 * OBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort_order=desc&sort_by=updated_at&per_page=2
 * CBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort=-updated_at&page[size]=2
@@ -27,11 +29,6 @@ When moving from OBP to CBP sorting params change as well:
 
 * From: `?sort_name=updated_at&sort_order=desc`
 * To: `sort=-updated_at`
-
-Ticket example:
-
-* OBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort_order=desc&sort_by=updated_at&per_page=2
-* CBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort=-updated_at&page[size]=2
 
 However, the list of **attributes you can sort by might also change** with the pagination type:
 
@@ -56,7 +53,9 @@ If this is your situation, **you will need to change the sorting order** to a su
 
 ## The new iterator
 
-Please refer to the [README](./README.md#iterator-recommended).
+The best way to upgrade your app to support CBP is to use the iterator we provide. Please refer to the [README](./README.md#iterator-recommended).
+
+**Note**: The iterator will automatically convert these parameters to work with CBP: `page_size, sort_by, sort_order`.
 
 ## Parallel requests
 
