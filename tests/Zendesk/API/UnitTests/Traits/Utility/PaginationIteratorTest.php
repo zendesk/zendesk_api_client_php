@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Zendesk\API\Exceptions\ApiResponseException;
 use Zendesk\API\Traits\Utility\Pagination\CbpStrategy;
+use Zendesk\API\Traits\Utility\Pagination\PaginationError;
 use Zendesk\API\Traits\Utility\Pagination\SinglePageStrategy;
 use Zendesk\API\UnitTests\BasicTest;
 use Zendesk\API\Traits\Utility\Pagination\PaginationIterator;
@@ -14,18 +15,18 @@ use Zendesk\API\Traits\Utility\Pagination\PaginationIterator;
 class MockResource {
     public $params;
     public $foundDifferent = false;
+    public $isObp = false;
+    public $errorMessage;
     public $response;
     private $resources;
     private $resourceName;
     private $callCount = 0;
-    private $errorMessage;
 
-    public function __construct($resourceName, $resources, $errorMessage = null)
+    public function __construct($resourceName, $resources)
     {
         $this->resourceName = $resourceName;
         $this->resources = $resources;
         $this->callCount = 0;
-        $this->errorMessage = $errorMessage;
     }
 
     public function findAll($params)
@@ -35,24 +36,30 @@ class MockResource {
             $this->response = new Response(400, [], '{ "a": "json"}');
             $requestException = new RequestException($this->errorMessage, $request, $this->response);
             throw new ApiResponseException($requestException);
+        } else if ($this->isObp) {
+            $this->response = (object) [
+                $this->resourceName => $this->resources[0],
+                // No CBP meta and links
+            ];
+        } else {
+            // Simulate two pages of resources
+            $resources = $this->callCount === 0
+                ? $this->resources[0]
+                : $this->resources[1];
+
+            // Simulate a cursor for the next page on the first call
+            $afterCursor = $this->callCount === 0 ? 'cursor_for_next_page' : null;
+
+            $this->callCount++;
+            $this->params = $params;
+            $this->response = (object) [
+                $this->resourceName => $resources,
+                'meta' => (object) [
+                    'has_more' => $afterCursor !== null,
+                    'after_cursor' => $afterCursor,
+                ],
+            ];
         }
-        // Simulate two pages of resources
-        $resources = $this->callCount === 0
-            ? $this->resources[0]
-            : $this->resources[1];
-
-        // Simulate a cursor for the next page on the first call
-        $afterCursor = $this->callCount === 0 ? 'cursor_for_next_page' : null;
-
-        $this->callCount++;
-        $this->params = $params;
-        $this->response = (object) [
-            $this->resourceName => $resources,
-            'meta' => (object) [
-                'has_more' => $afterCursor !== null,
-                'after_cursor' => $afterCursor,
-            ],
-        ];
 
         return $this->response;
     }
@@ -178,7 +185,8 @@ class PaginationIteratorTest extends BasicTest
         $expectedErrorMessage = "BOOM!";
         $resultsKey = 'results';
         $userParams = [];
-        $mockResults = new MockResource($resultsKey, [], $expectedErrorMessage);
+        $mockResults = new MockResource($resultsKey, []);
+        $mockResults->errorMessage = $expectedErrorMessage;
         $strategy = new CbpStrategy($resultsKey, $userParams);
         $iterator = new PaginationIterator($mockResults, $strategy);
 
@@ -190,5 +198,24 @@ class PaginationIteratorTest extends BasicTest
 
         $this->assertEquals($expectedErrorMessage, $error->getMessage());
         $this->assertEquals([], $error->getErrorDetails());
+    }
+
+    public function testErrorsForWrongPagination()
+    {
+        $mockTickets = new MockResource('tickets', [
+            [['id' => 1], ['id' => 2]],
+            [['id' => 3], ['id' => 4]]
+        ]);
+        $mockTickets->isObp = true;
+        $strategy = new CbpStrategy('tickets', ['page[size]' => 2]);
+        $iterator = new PaginationIterator($mockTickets, $strategy);
+
+        try {
+            iterator_to_array($iterator);
+        } catch (PaginationError $e) {
+            $error = $e;
+        }
+
+        $this->assertEquals("Response is not CBP, if you think your request is correct, please open an issue at https://github.com/zendesk/zendesk_api_client_php/issues", $error->getMessage());
     }
 }

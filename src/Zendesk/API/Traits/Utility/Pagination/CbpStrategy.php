@@ -16,6 +16,11 @@ class CbpStrategy extends AbstractStrategy
     {
         $this->started = true;
         $this->latestResponse = $getPageFn();
+        if (!isset($this->latestResponse->meta->has_more)) {
+            throw new PaginationError(
+                "Response is not CBP, if you think your request is correct, please open an issue at https://github.com/zendesk/zendesk_api_client_php/issues"
+            );
+        }
         $this->hasMore = $this->latestResponse->meta->has_more;
         if (isset($this->latestResponse->meta->after_cursor)) {
             $this->afterCursor = $this->latestResponse->meta->after_cursor;
