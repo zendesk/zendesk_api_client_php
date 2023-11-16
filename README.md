@@ -137,7 +137,7 @@ foreach ($iterator as $ticket) {
 }
 ```
 
-If you want a specific sort order, please refer to the sorting section in the documentation ([Tickets, for example](https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/#sorting)). If you are upgrading from OBP, please refer to [the upgrade guide](./UPGRADE_GUIDE.md).
+If you want a specific sort order, please refer to the sorting section in the documentation ([Tickets, for example](https://developer.zendesk.com/api-reference/ticketing/tickets/tickets/#sorting)).
 
 ##### Iterator with params example
 
@@ -154,6 +154,10 @@ foreach ($iterator as $ticket) {
 * Change sorting with: `$params = ['sort' => '-updated_at'];`
   * Refer to the docs for details, including allowed sort fields
 * Combine everything: `$params = ['page[size]' => 2, 'sort' => 'updated_at', 'extra' => 'param'];`
+
+##### Iterator API call response
+
+The latest response is exposed in the iterator at `$iterator->latestResponse()`. This could come handy for debugging.
 
 ##### Custom iterators
 
@@ -176,6 +180,21 @@ This can be useful for filter endpoints like [active automations](https://develo
 $iterator = $client->automations()->iterator($params, 'findActive');
 ```
 
+Which is analogous to:
+
+```php
+use Zendesk\API\Traits\Utility\Pagination\PaginationIterator;
+use Zendesk\API\Traits\Utility\Pagination\CbpStrategy;
+$strategy = new CbpStrategy('automations', $params);
+$iterator = new PaginationIterator(
+    $client->automations(),
+    $strategy,
+    'findActive'
+);
+```
+
+See how the [Pagination Trait](src/Zendesk/API/Traits/Resource/Pagination.php) is used if you need more custom implementations.
+
 ##### Catching API errors
 
 This doesn't change too much:
@@ -187,6 +206,7 @@ try {
     }
 } catch (ApiResponseException $e) {
     $errorMessage = $e->getMessage();
+    $errorDetails = $e=>getErrorDetails();
 }
 ```
 

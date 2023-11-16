@@ -38,7 +38,7 @@ class TicketsTest extends BasicTest
         parent::setUp();
     }
 
-    public function testIterator()
+    public function testIteratorToArray()
     {
         $this->mockApiResponses([
             new Response(200, [], json_encode([
@@ -54,6 +54,57 @@ class TicketsTest extends BasicTest
         $iterator = $this->client->tickets()->iterator();
 
         $actual = iterator_to_array($iterator);
+        $this->assertCount(2, $actual);
+        $this->assertEquals($this->testTicket['subject'], $actual[0]->subject);
+        $this->assertEquals($this->testTicket2['subject'], $actual[1]->subject);
+    }
+
+    public function testIteratorLoop()
+    {
+        $this->mockApiResponses([
+            new Response(200, [], json_encode([
+                'tickets' => [$this->testTicket],
+                'meta' => ['has_more' => true, 'after_cursor' => 'some_cursor']
+            ])),
+            new Response(200, [], json_encode([
+                'tickets' => [$this->testTicket2],
+                'meta' => ['has_more' => false, 'after_cursor' => null]
+            ]))
+        ]);
+
+        $iterator = $this->client->tickets()->iterator();
+
+        $actual = [];
+        foreach ($iterator as $ticket) {
+            $actual[] = $ticket;
+        }
+
+        $this->assertCount(2, $actual);
+        $this->assertEquals($this->testTicket['subject'], $actual[0]->subject);
+        $this->assertEquals($this->testTicket2['subject'], $actual[1]->subject);
+    }
+
+    public function testIteratorWhileValidLoop()
+    {
+        $this->mockApiResponses([
+            new Response(200, [], json_encode([
+                'tickets' => [$this->testTicket],
+                'meta' => ['has_more' => true, 'after_cursor' => 'some_cursor']
+            ])),
+            new Response(200, [], json_encode([
+                'tickets' => [$this->testTicket2],
+                'meta' => ['has_more' => false, 'after_cursor' => null]
+            ]))
+        ]);
+
+        $iterator = $this->client->tickets()->iterator();
+
+        $actual = [];
+        while ($iterator->valid()) {
+            $actual[] = $iterator->current();
+            $iterator->next();
+        }
+
         $this->assertCount(2, $actual);
         $this->assertEquals($this->testTicket['subject'], $actual[0]->subject);
         $this->assertEquals($this->testTicket2['subject'], $actual[1]->subject);

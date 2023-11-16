@@ -2,11 +2,7 @@
 
 namespace Zendesk\API\UnitTests\Core;
 
-use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
-use Zendesk\API\Http;
-use Zendesk\API\HttpClient;
 use Zendesk\API\UnitTests\BasicTest;
 use Zendesk\API\Utilities\Auth;
 
@@ -15,35 +11,6 @@ use Zendesk\API\Utilities\Auth;
  */
 class AuthTest extends BasicTest
 {
-    /**
-     * Test if request is still sent even without authentication
-     */
-    public function testAnonymousAccess()
-    {
-        $this->markTestSkipped('Broken in PHP 7.4 (mocking)');
-
-        // mock client
-        $client = $this
-            ->getMockBuilder(HttpClient::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $client->method('getHeaders')->willReturn([]);
-        $client->expects(self::once())->method('getAuth')->willReturn(null);
-
-        // prepareRequest should not be called
-        $auth = $this
-            ->getMockBuilder(Auth::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-        $auth->expects(self::never())->method('prepareRequest');
-        $client->expects(self::once())->method('getAuth')->willReturn($auth);
-
-        // send request
-        $client->guzzle = $this->getMockBuilder(Client::class)->getMock();
-        $client->guzzle->method('send')->willReturn(new Response(200, [], ''));
-        Http::send($client, '');
-    }
-
     /**
      * Test the preparing of a request for basic authentication.
      */

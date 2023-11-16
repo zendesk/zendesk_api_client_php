@@ -2,27 +2,23 @@
 
 namespace Zendesk\API\UnitTests\Exceptions;
 
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ServerException;
+use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Response;
 use Zendesk\API\UnitTests\BasicTest;
 use Zendesk\API\Exceptions\ApiResponseException;
 
 class ApiResponseExceptionTest extends BasicTest
 {
-    /**
-     * Tests if previous exception was passed to ApiResponseException
-     */
-    public function testPreviousException()
+    public function testServerException()
     {
-        $this->markTestSkipped('Broken in PHP 7.4 (mocking)');
+        $request = new Request("GET","");
+        $response = new Response(200, ["Content-Type"=> "application/json"],"");
+        $requestException = new ServerException("test", $request, $response);
 
-        $message = 'The previous exception was not passed to ApiResponseException';
-        $mockException = $this
-            ->getMockBuilder('GuzzleHttp\Exception\RequestException')
-            ->disableOriginalConstructor()
-            ->getMock();
-        $mockException->method('hasResponse')->willReturn(true);
-        $apiException = new ApiResponseException($mockException);
-        $previousException = $apiException->getPrevious();
+        $subject = new ApiResponseException($requestException);
 
-        $this->assertEquals($mockException, $previousException, $message);
+        $this->assertEquals([], $subject->getErrorDetails());
     }
 }

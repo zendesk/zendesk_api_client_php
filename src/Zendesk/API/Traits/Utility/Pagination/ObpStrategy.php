@@ -21,9 +21,4 @@ class ObpStrategy extends AbstractStrategy
     public function shouldGetPage($position) {
         return $this->pageNumber == 0 || $position >= $this->pageNumber * $this->pageSize();
     }
-    public function paramsWithPagination()
-    {
-        return ['page' => $this->pageNumber, 'per_page' => $this->pageSize()];
-
-    }
 }

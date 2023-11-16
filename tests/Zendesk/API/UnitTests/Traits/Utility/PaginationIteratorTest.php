@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Zendesk\API\Exceptions\ApiResponseException;
 use Zendesk\API\Traits\Utility\Pagination\CbpStrategy;
+use Zendesk\API\Traits\Utility\Pagination\PaginationError;
 use Zendesk\API\Traits\Utility\Pagination\SinglePageStrategy;
 use Zendesk\API\UnitTests\BasicTest;
 use Zendesk\API\Traits\Utility\Pagination\PaginationIterator;
@@ -14,46 +15,53 @@ use Zendesk\API\Traits\Utility\Pagination\PaginationIterator;
 class MockResource {
     public $params;
     public $foundDifferent = false;
+    public $isObp = false;
+    public $errorMessage;
+    public $response;
     private $resources;
     private $resourceName;
     private $callCount = 0;
-    private $errorMessage;
 
-    public function __construct($resourceName, $resources, $errorMessage = null)
+    public function __construct($resourceName, $resources)
     {
         $this->resourceName = $resourceName;
         $this->resources = $resources;
         $this->callCount = 0;
-        $this->errorMessage = $errorMessage;
     }
 
     public function findAll($params)
     {
         if ($this->errorMessage) {
             $request = new Request('GET', 'http://example.zendesk.com');
-            $response = new Response(400, [], '{ "a": "json"}');
-            $requestException = new RequestException($this->errorMessage, $request, $response);
+            $this->response = new Response(400, [], '{ "a": "json"}');
+            $requestException = new RequestException($this->errorMessage, $request, $this->response);
             throw new ApiResponseException($requestException);
+        } else if ($this->isObp) {
+            $this->response = (object) [
+                $this->resourceName => $this->resources[0],
+                // No CBP meta and links
+            ];
+        } else {
+            // Simulate two pages of resources
+            $resources = $this->callCount === 0
+                ? $this->resources[0]
+                : $this->resources[1];
+
+            // Simulate a cursor for the next page on the first call
+            $afterCursor = $this->callCount === 0 ? 'cursor_for_next_page' : null;
+
+            $this->callCount++;
+            $this->params = $params;
+            $this->response = (object) [
+                $this->resourceName => $resources,
+                'meta' => (object) [
+                    'has_more' => $afterCursor !== null,
+                    'after_cursor' => $afterCursor,
+                ],
+            ];
         }
-        // Simulate two pages of resources
-        $resources = $this->callCount === 0
-            ? $this->resources[0]
-            : $this->resources[1];
 
-        // Simulate a cursor for the next page on the first call
-        $afterCursor = $this->callCount === 0 ? 'cursor_for_next_page' : null;
-
-        $this->callCount++;
-
-        $this->params = $params;
-
-        return (object) [
-            $this->resourceName => $resources,
-            'meta' => (object) [
-                'has_more' => $afterCursor !== null,
-                'after_cursor' => $afterCursor,
-            ],
-        ];
+        return $this->response;
     }
 
     public function findDifferent($params)
@@ -72,11 +80,12 @@ class PaginationIteratorTest extends BasicTest
             [['id' => 3], ['id' => 4]]
         ]);
         $strategy = new CbpStrategy('tickets', ['page[size]' => 2]);
-        $iterator = new PaginationIterator($mockTickets, $strategy);
+        $iterator = new PaginationIterator($mockTickets, $strategy, 'findAll');
 
         $tickets = iterator_to_array($iterator);
 
         $this->assertEquals([['id' => 1], ['id' => 2], ['id' => 3], ['id' => 4]], $tickets);
+        $this->assertEquals($mockTickets->response, $iterator->latestResponse());
     }
 
     public function testFetchesUsers()
@@ -86,7 +95,7 @@ class PaginationIteratorTest extends BasicTest
             [['id' => 3, 'name' => 'User 3'], ['id' => 4, 'name' => 'User 4']]
         ]);
         $strategy = new CbpStrategy('users', ['page[size]' => 2]);
-        $iterator = new PaginationIterator($mockUsers, $strategy);
+        $iterator = new PaginationIterator($mockUsers, $strategy, 'findAll');
 
         $users = iterator_to_array($iterator);
 
@@ -105,7 +114,7 @@ class PaginationIteratorTest extends BasicTest
             [['id' => 3], ['id' => 4]]
         ]);
         $strategy = new CbpStrategy('tickets', ['page[size]' => 2, 'any' => 'param']);
-        $iterator = new PaginationIterator($mockTickets, $strategy);
+        $iterator = new PaginationIterator($mockTickets, $strategy, 'findAll');
 
         $tickets = iterator_to_array($iterator);
 
@@ -123,7 +132,7 @@ class PaginationIteratorTest extends BasicTest
             [['id' => 3], ['id' => 4]]
         ]);
         $strategy = new CbpStrategy('tickets', ['per_page' => 2, 'sort_by' => 'id', 'sort_order' => 'desc']);
-        $iterator = new PaginationIterator($mockTickets, $strategy);
+        $iterator = new PaginationIterator($mockTickets, $strategy, 'findAll');
 
         iterator_to_array($iterator);
 
@@ -141,7 +150,7 @@ class PaginationIteratorTest extends BasicTest
             [['id' => 1, 'name' => 'Resource 1'], ['id' => 2, 'name' => 'Resource 2']]
         ]);
         $strategy = new SinglePageStrategy($resultsKey, $userParams);
-        $iterator = new PaginationIterator($mockResults, $strategy);
+        $iterator = new PaginationIterator($mockResults, $strategy, 'findAll');
 
         $resources = iterator_to_array($iterator);
 
@@ -176,16 +185,40 @@ class PaginationIteratorTest extends BasicTest
         $expectedErrorMessage = "BOOM!";
         $resultsKey = 'results';
         $userParams = [];
-        $mockResults = new MockResource($resultsKey, [], $expectedErrorMessage);
+        $mockResults = new MockResource($resultsKey, []);
+        $mockResults->errorMessage = $expectedErrorMessage;
         $strategy = new CbpStrategy($resultsKey, $userParams);
-        $iterator = new PaginationIterator($mockResults, $strategy);
+        $iterator = new PaginationIterator($mockResults, $strategy, 'findAll');
 
         try {
             iterator_to_array($iterator);
         } catch (ApiResponseException $e) {
-            $actualErrorMessage = $e->getMessage();
+            $error = $e;
         }
 
-        $this->assertEquals($expectedErrorMessage, $actualErrorMessage);
+        $this->assertEquals($expectedErrorMessage, $error->getMessage());
+        $this->assertEquals([], $error->getErrorDetails());
+    }
+
+    public function testErrorsForWrongPagination()
+    {
+        $mockTickets = new MockResource('tickets', [
+            [['id' => 1], ['id' => 2]],
+            [['id' => 3], ['id' => 4]]
+        ]);
+        $mockTickets->isObp = true;
+        $strategy = new CbpStrategy('tickets', ['page[size]' => 2]);
+        $iterator = new PaginationIterator($mockTickets, $strategy, 'findAll');
+
+        try {
+            iterator_to_array($iterator);
+        } catch (PaginationError $e) {
+            $error = $e;
+        }
+
+        $this->assertEquals(
+            "Response not conforming to the CBP format, if you think your request is correct, please open an issue at https://github.com/zendesk/zendesk_api_client_php/issues",
+            $error->getMessage()
+        );
     }
 }

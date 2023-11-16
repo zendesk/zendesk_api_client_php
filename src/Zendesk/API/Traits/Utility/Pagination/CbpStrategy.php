@@ -4,24 +4,33 @@ namespace Zendesk\API\Traits\Utility\Pagination;
 
 /**
  * Cursor Based Pagination
- * Used in paginationStrategyClass
+ * Used in PaginationIterator
  */
 class CbpStrategy extends AbstractStrategy
 {
-    private $afterCursor = null;
+    private $afterCursor;
+    private $hasMore;
     private $started = false;
 
     public function page($getPageFn)
     {
         $this->started = true;
-        $response = $getPageFn();
-        $this->afterCursor = $response->meta->has_more ? $response->meta->after_cursor : null;
+        $this->latestResponse = $getPageFn();
+        if (!isset($this->latestResponse->meta->has_more)) {
+            throw new PaginationError(
+                "Response not conforming to the CBP format, if you think your request is correct, please open an issue at https://github.com/zendesk/zendesk_api_client_php/issues"
+            );
+        }
+        $this->hasMore = $this->latestResponse->meta->has_more;
+        if (isset($this->latestResponse->meta->after_cursor)) {
+            $this->afterCursor = $this->latestResponse->meta->after_cursor;
+        }
 
-        return $response->{$this->resourcesKey};
+        return $this->latestResponse->{$this->resourcesKey};
     }
 
     public function shouldGetPage($position) {
-        return !$this->started || $this->afterCursor;
+        return !$this->started || $this->hasMore;
     }
 
     public function params()
@@ -31,6 +40,7 @@ class CbpStrategy extends AbstractStrategy
 
         return $result;
     }
+
     /**
      * The params that are needed to ordering in CBP (eg: ["sort" => "-age"])
      * If OBP params are passed, they are converted to CBP
@@ -38,7 +48,7 @@ class CbpStrategy extends AbstractStrategy
      * OBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort_order=desc&sort_by=updated_at&per_page=2
      * CBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort=-updated_at&page[size]=2
      *
-     * @return array all params with CBP sorting order
+     * @return array Params with proper CBP sorting order
      */
     private function sortParams()
     {
@@ -53,7 +63,7 @@ class CbpStrategy extends AbstractStrategy
      * The params that are needed to for pagination (eg: ["page[size]" => "100"])
      * If OBP params are passed, they are converted to CBP
      *
-     * @return array all params with CBP sorting order
+     * @return array Params for pagination
      */
     private function paginationParams()
     {

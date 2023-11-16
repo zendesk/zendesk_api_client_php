@@ -14,9 +14,6 @@ use Zendesk\API\HttpClient;
 
 class HttpTest extends BasicTest
 {
-    /**
-     * Test that original request exception is preserved.
-     */
     public function testOriginalRequestExceptionIsPreserved()
     {
         $this->markTestSkipped('Broken in PHP 7.4 (mocking)');

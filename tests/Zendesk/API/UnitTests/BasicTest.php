@@ -76,6 +76,7 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
+        parent::setUp();
         $this->client = new HttpClient($this->subdomain, $this->username, $this->scheme, $this->hostname, $this->port);
         $this->client->setAuth('oauth', ['token' => $this->oAuthToken]);
     }
