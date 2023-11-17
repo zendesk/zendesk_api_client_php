@@ -20,7 +20,7 @@ The best way to upgrade your app to support CBP is to use the iterator we provid
 
 **Note**: The iterator will automatically convert the param `page_size` to work with CBP.
 
-The iterator is available in `v2.3`, which you can download with:
+The iterator is available in `v3.0`, which you can download with:
 
 ```sh
 composer update zendesk/zendesk_api_client_php
