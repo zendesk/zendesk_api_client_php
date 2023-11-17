@@ -125,23 +125,6 @@ class PaginationIteratorTest extends BasicTest
         ], $mockTickets->params);
     }
 
-    public function testCorrectsParamsToCbp()
-    {
-        $mockTickets = new MockResource('tickets', [
-            [['id' => 1], ['id' => 2]],
-            [['id' => 3], ['id' => 4]]
-        ]);
-        $strategy = new CbpStrategy('tickets', ['per_page' => 2, 'sort_by' => 'id', 'sort_order' => 'desc']);
-        $iterator = new PaginationIterator($mockTickets, $strategy, 'findAll');
-
-        iterator_to_array($iterator);
-
-        $this->assertEquals([
-            'sort' => '-id',
-            'page[size]' => 2, 'page[after]' => 'cursor_for_next_page'
-        ], $mockTickets->params);
-    }
-
     public function testFetchesSinglePageWithParams()
     {
         $resultsKey = 'results';

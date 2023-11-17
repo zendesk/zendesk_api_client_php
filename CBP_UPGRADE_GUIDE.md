@@ -39,7 +39,7 @@ Note the query parameters change in these two URL examples:
 
 ### CBP ordering
 
-When moving from OBP to CBP sorting params change as well:
+When moving from OBP to CBP sorting params _may_ change as well:
 
 - From: `?sort_name=updated_at&sort_order=desc`
 - To: `sort=-updated_at`
