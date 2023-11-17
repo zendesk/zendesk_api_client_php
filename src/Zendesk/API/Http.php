@@ -90,7 +90,9 @@ class Http
             if ($client->getAuth()) {
                 list ($request, $requestOptions) = $client->getAuth()->prepareRequest($request, $requestOptions);
             }
-            // echo "\nExternal API call: " . $request->getMethod() . " " . $request->getUri() . "\n";
+            if ($client->log_api_calls) {
+                echo "\nZendesk\API\Http: " . $request->getMethod() . " " . $request->getUri() . "\n";
+            }
             $response = $client->guzzle->send($request, $requestOptions);
         } catch (RequestException $e) {
             $requestException = RequestException::create($e->getRequest(), $e->getResponse(), $e);
