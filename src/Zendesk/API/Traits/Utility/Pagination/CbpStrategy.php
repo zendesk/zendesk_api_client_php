@@ -35,30 +35,12 @@ class CbpStrategy extends AbstractStrategy
 
     public function params()
     {
-        $result = array_merge($this->params, $this->paginationParams(), $this->sortParams());
+        $result = array_merge($this->params, $this->paginationParams());
         $result = $this->unsetObpParams($result);
 
         return $result;
     }
 
-    /**
-     * The params that are needed to ordering in CBP (eg: ["sort" => "-age"])
-     * If OBP params are passed, they are converted to CBP
-     *
-     * OBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort_order=desc&sort_by=updated_at&per_page=2
-     * CBP: https://{subdomain}.zendesk.com/api/v2/tickets?sort=-updated_at&page[size]=2
-     *
-     * @return array Params with proper CBP sorting order
-     */
-    private function sortParams()
-    {
-        if (isset($this->params['sort_by']) && !isset($this->params['sort'])) {
-            $direction = (isset($this->params['sort_order']) && strtolower($this->params['sort_order']) === 'desc') ? '-' : '';
-            return array_merge($this->params, ['sort' => $direction . $this->params['sort_by']]);
-        } else {
-            return [];
-        }
-    }
     /**
      * The params that are needed to for pagination (eg: ["page[size]" => "100"])
      * If OBP params are passed, they are converted to CBP
