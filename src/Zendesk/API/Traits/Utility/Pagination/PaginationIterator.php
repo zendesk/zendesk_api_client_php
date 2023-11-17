@@ -81,7 +81,7 @@ class PaginationIterator implements Iterator
         $getPageFn = function () {
             return $this->clientList->{$this->method}($this->strategy->params());
         };
-
-        $this->items = array_merge($this->items, $this->strategy->page($getPageFn));
+        $this->items = $this->strategy->page($getPageFn);
+        $this->position = 0;
     }
 }

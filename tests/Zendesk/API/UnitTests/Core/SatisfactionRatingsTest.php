@@ -40,7 +40,7 @@ class SatisfactionRatingsTest extends BasicTest
 
         $iterator = $this->client->satisfactionRatings()->iterator();
 
-        $actual = iterator_to_array($iterator);
+        $actual = $this->iterator_to_array($iterator);
         $this->assertCount(3, $actual);
         $this->assertEquals($this->testResource0['anyField'], $actual[0]->anyField);
         $this->assertEquals($this->testResource1['anyField'], $actual[1]->anyField);
