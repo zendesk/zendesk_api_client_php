@@ -155,7 +155,10 @@ foreach ($iterator as $ticket) {
   * Refer to the docs for details, including allowed sort fields
 * Combine everything: `$params = ['page[size]' => 2, 'sort' => 'updated_at', 'extra' => 'param'];`
 
-**Note**: Refer to the documentation for the correct params for sorting with the pagination type you're using.
+**Note**:
+
+* Refer to the documentation for the correct params for sorting with the pagination type you're using
+* The helper method `iterator_to_array` doesn't work with this implementation
 
 ##### Iterator API call response
 

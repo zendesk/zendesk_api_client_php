@@ -29,7 +29,7 @@ class CbpStrategy extends AbstractStrategy
         return $this->latestResponse->{$this->resourcesKey};
     }
 
-    public function shouldGetPage($position) {
+    public function shouldGetPage($current_page) {
         return !$this->started || $this->hasMore;
     }
 

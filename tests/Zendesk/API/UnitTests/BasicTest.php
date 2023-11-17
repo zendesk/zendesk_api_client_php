@@ -236,4 +236,20 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
             ])
         );
     }
+
+    /**
+     * replacement for iterator_to_array
+     * which doesn't work when storing with single page
+     *
+     * @param \Iterator $iterator
+     * @return array all the items
+     */
+    protected function iterator_to_array($iterator)
+    {
+        $results = [];
+        foreach ($iterator as $item) {
+            $results[] = $item;
+        }
+        return $results;
+    }
 }

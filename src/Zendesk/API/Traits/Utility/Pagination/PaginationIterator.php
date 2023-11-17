@@ -14,7 +14,7 @@ class PaginationIterator implements Iterator
     private $strategy;
     private $method;
     private $position = 0;
-    private $items = [];
+    private $page = [];
 
     /**
      * @param mixed using trait FindAll. The resources collection, Eg: `$client->tickets()` which uses FindAll
@@ -56,8 +56,8 @@ class PaginationIterator implements Iterator
     #[\ReturnTypeWillChange]
     public function current()
     {
-        if (isset($this->items[$this->position])) {
-            return $this->items[$this->position];
+        if (isset($this->page[$this->position])) {
+            return $this->page[$this->position];
         } else {
             return null;
         }
@@ -74,14 +74,14 @@ class PaginationIterator implements Iterator
     }
     private function getPageIfNeeded()
     {
-        if (isset($this->items[$this->position]) || !$this->strategy->shouldGetPage($this->position)) {
+        if (isset($this->page[$this->position]) || !$this->strategy->shouldGetPage($this->page)) {
             return;
         }
 
         $getPageFn = function () {
             return $this->clientList->{$this->method}($this->strategy->params());
         };
-
-        $this->items = array_merge($this->items, $this->strategy->page($getPageFn));
+        $this->page = $this->strategy->page($getPageFn);
+        $this->position = 0;
     }
 }

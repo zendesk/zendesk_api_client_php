@@ -82,6 +82,22 @@ class PaginationIteratorTest extends BasicTest
         $strategy = new CbpStrategy('tickets', ['page[size]' => 2]);
         $iterator = new PaginationIterator($mockTickets, $strategy, 'findAll');
 
+        $tickets = $this->iterator_to_array($iterator);
+
+        $this->assertEquals([['id' => 1], ['id' => 2], ['id' => 3], ['id' => 4]], $tickets);
+        $this->assertEquals($mockTickets->response, $iterator->latestResponse());
+    }
+
+    public function testFetchesTicketsIteratorToArray()
+    {
+        $this->markTestSkipped("Doesn't work unless you store all pages in the iterator");
+        $mockTickets = new MockResource('tickets', [
+            [['id' => 1], ['id' => 2]],
+            [['id' => 3], ['id' => 4]]
+        ]);
+        $strategy = new CbpStrategy('tickets', ['page[size]' => 2]);
+        $iterator = new PaginationIterator($mockTickets, $strategy, 'findAll');
+
         $tickets = iterator_to_array($iterator);
 
         $this->assertEquals([['id' => 1], ['id' => 2], ['id' => 3], ['id' => 4]], $tickets);
@@ -97,7 +113,7 @@ class PaginationIteratorTest extends BasicTest
         $strategy = new CbpStrategy('users', ['page[size]' => 2]);
         $iterator = new PaginationIterator($mockUsers, $strategy, 'findAll');
 
-        $users = iterator_to_array($iterator);
+        $users = $this->iterator_to_array($iterator);
 
         $this->assertEquals([
             ['id' => 1, 'name' => 'User 1'],
@@ -116,7 +132,7 @@ class PaginationIteratorTest extends BasicTest
         $strategy = new CbpStrategy('tickets', ['page[size]' => 2, 'any' => 'param']);
         $iterator = new PaginationIterator($mockTickets, $strategy, 'findAll');
 
-        $tickets = iterator_to_array($iterator);
+        $tickets = $this->iterator_to_array($iterator);
 
         $this->assertEquals([['id' => 1], ['id' => 2], ['id' => 3], ['id' => 4]], $tickets);
         $this->assertEquals([
@@ -135,7 +151,7 @@ class PaginationIteratorTest extends BasicTest
         $strategy = new SinglePageStrategy($resultsKey, $userParams);
         $iterator = new PaginationIterator($mockResults, $strategy, 'findAll');
 
-        $resources = iterator_to_array($iterator);
+        $resources = $this->iterator_to_array($iterator);
 
         $this->assertEquals([
             ['id' => 1, 'name' => 'Resource 1'],
@@ -153,7 +169,7 @@ class PaginationIteratorTest extends BasicTest
         $strategy = new SinglePageStrategy($resultsKey, $userParams);
         $iterator = new PaginationIterator($mockResults, $strategy, 'findDifferent');
 
-        $resources = iterator_to_array($iterator);
+        $resources = $this->iterator_to_array($iterator);
 
         $this->assertEquals([
             ['id' => 1, 'name' => 'Resource 1'],

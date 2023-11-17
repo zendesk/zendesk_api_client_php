@@ -19,7 +19,7 @@ class SinglePageStrategy extends AbstractStrategy
         return $response->{$this->resourcesKey};
     }
 
-    public function shouldGetPage($position) {
+    public function shouldGetPage($current_page) {
         return !$this->started;
     }
 }
