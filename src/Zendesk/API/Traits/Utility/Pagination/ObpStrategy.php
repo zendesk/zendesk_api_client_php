@@ -18,7 +18,7 @@ class ObpStrategy extends AbstractStrategy
         return $response->{$this->resourcesKey};
     }
 
-    public function shouldGetPage($position) {
-        return $this->pageNumber == 0 || $position >= $this->pageNumber * $this->pageSize();
+    public function shouldGetPage($current_page) {
+        return $this->pageNumber == 0 || count($current_page) == 0;
     }
 }

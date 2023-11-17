@@ -53,5 +53,5 @@ abstract class AbstractStrategy
     }
 
     abstract public function page($getPageFn);
-    abstract public function shouldGetPage($position);
+    abstract public function shouldGetPage($current_page);
 }
