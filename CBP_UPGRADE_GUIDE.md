@@ -26,6 +26,10 @@ The iterator is available in `v3.0`, which you can download with:
 composer update zendesk/zendesk_api_client_php
 ```
 
+## Debugging
+
+Please refer to the [README](./README.md#debugging).
+
 ## API calls
 
 Note the query parameters change in these two URL examples:

@@ -275,10 +275,29 @@ speed up the process and would make sure that everybody follows the community's 
 
 ### Debugging
 
+#### REPL
+
 To help would be contributors, we've added a REPL tool. It is a simple wrapper for [psysh](http://psysh.org) and symfony's console.
 On your terminal, run `bin/console <subdomain> <email> <api token>`. This would automatically create an instance of `Zendesk\API\HttpClient` on $client variable.
 After that you would be able to enter any valid php statement. The goal of the tool is to speed up the process in which developers
 can experiment on the code base.
+
+#### HTTP client print API calls
+
+You can print a line with details about every API call with:
+
+```php
+$client = new ZendeskAPI($subdomain);
+$client->log_api_calls = true;
+```
+
+#### HTTP client debug
+
+You can inspect this object for info about requests and responses:
+
+```php
+$client->getDebug();
+```
 
 ## Copyright and license
 

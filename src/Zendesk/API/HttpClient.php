@@ -160,6 +160,14 @@ class HttpClient
     protected $debug;
 
     /**
+     * Whether or not to print every API call details right before execution
+     *
+     * E.G.: Zendesk\API\Http: GET https://my_company.zendesk.com/api/v2/tickets.json
+     *
+     * @var boolean
+     */
+    public $log_api_calls = false;
+    /**
      * @var \GuzzleHttp\Client
      */
     public $guzzle;
