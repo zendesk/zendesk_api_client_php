@@ -22,6 +22,7 @@ use Zendesk\API\Resources\Core\Automations;
 use Zendesk\API\Resources\Core\Bookmarks;
 use Zendesk\API\Resources\Core\Brands;
 use Zendesk\API\Resources\Core\CustomRoles;
+use Zendesk\API\Resources\Core\CustomStatuses;
 use Zendesk\API\Resources\Core\DynamicContent;
 use Zendesk\API\Resources\Core\GroupMemberships;
 use Zendesk\API\Resources\Core\Groups;
@@ -76,6 +77,7 @@ use Zendesk\API\Utilities\Auth;
  * @method Bookmarks bookmarks()
  * @method Brands brands($id = null)
  * @method CustomRoles customRoles()
+ * @method CustomStatuses customStatuses()
  * @method DynamicContent dynamicContent()
  * @method GroupMemberships groupMemberships()
  * @method Groups groups($id = null)
@@ -260,6 +262,7 @@ class HttpClient
             'bookmarks'                 => Bookmarks::class,
             'brands'                    => Brands::class,
             'customRoles'               => CustomRoles::class,
+            'customStatuses'            => CustomStatuses::class,
             'dynamicContent'            => DynamicContent::class,
             'groupMemberships'          => GroupMemberships::class,
             'groups'                    => Groups::class,
