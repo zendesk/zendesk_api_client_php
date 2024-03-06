@@ -1,6 +1,4 @@
-# THIS REPOSITORY IS NO LONGER SUPPORTED #
-
-# Zendesk PHP API Client Library #
+# Zendesk PHP API Client Library
 
 ![CI](https://github.com/zendesk/zendesk_api_client_php/actions/workflows/ci.yaml/badge.svg)
 [![Latest Stable Version](https://poser.pugx.org/zendesk/zendesk_api_client_php/v/stable)](https://packagist.org/packages/zendesk/zendesk_api_client_php)
