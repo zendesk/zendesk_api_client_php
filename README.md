@@ -10,6 +10,8 @@
 
 This is the second version of our PHP API client. The previous version of the API client can be found on the [v1 branch](https://github.com/zendesk/zendesk_api_client_php/tree/v1).
 
+## Test Snyk can be triggered, please ignore this line
+
 ## API version support
 
 This client **only** supports Zendesk's API v2.  Please see our [API documentation](http://developer.zendesk.com) for more information.
