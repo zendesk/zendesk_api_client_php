@@ -20,7 +20,7 @@ class Debug
      */
     public $lastResponseCode;
     /**
-     * @var string
+     * @var mixed
      */
     public $lastResponseHeaders;
     /**
@@ -39,8 +39,8 @@ class Debug
         }
         $output = 'LastResponseCode: ' . $this->lastResponseCode
                   . ', LastResponseError: ' . $lastError
-                  . ', LastResponseHeaders: ' . $this->lastResponseHeaders
-                  . ', LastRequestHeaders: ' . $this->lastRequestHeaders
+                  . ', LastResponseHeaders: ' . json_encode($this->lastResponseHeaders)
+                  . ', LastRequestHeaders: ' . json_encode($this->lastRequestHeaders)
                   . ', LastRequestBody: ' . $this->lastRequestBody;
 
         return $output;
