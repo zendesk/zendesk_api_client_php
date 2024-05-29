@@ -10,11 +10,16 @@ use InvalidArgumentException;
  */
 class InvalidSubdomainTest extends BasicTest
 {
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testInvalidSubdomainThrows()
     {
+        $this->setExpectedException('InvalidArgumentException');
+
         new Client('...', '');
+    }
+
+    public function testValidSubdomain()
+    {
+        new Client('zendesk.example.com', 'example');
+        $this->assertTrue(true);
     }
 }
