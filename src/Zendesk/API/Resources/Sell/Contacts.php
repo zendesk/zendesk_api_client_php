@@ -14,6 +14,12 @@ class Contacts extends ResourceAbstract
     use InstantiatorTrait;
     use Defaults;
 
+    // Override constructor to set different API base path
+    public function __construct($client)
+    {
+        parent::__construct($client, 'v2/');
+    }
+
     /**
      * {@inheritdoc}
      */

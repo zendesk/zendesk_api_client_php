@@ -234,6 +234,11 @@ class HttpClient
         $this->scheme    = $scheme;
         $this->port      = $port;
 
+        // If sell is set, we need to use a different base uri
+        if ($this->subdomain === 'api.futuresimple.com') {
+            $this->apiUrl = 'https://api.futuresimple.com/';
+        } else
+
         if (empty($subdomain)) {
             $this->apiUrl = "$scheme://$hostname:$port/";
         } else {
