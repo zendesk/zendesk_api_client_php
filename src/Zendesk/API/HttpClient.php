@@ -60,6 +60,7 @@ use Zendesk\API\Resources\Embeddable;
 use Zendesk\API\Resources\HelpCenter;
 use Zendesk\API\Resources\Talk;
 use Zendesk\API\Resources\Voice;
+use Zendesk\API\Resources\Sell;
 use Zendesk\API\Traits\Utility\InstantiatorTrait;
 use Zendesk\API\Utilities\Auth;
 
@@ -197,6 +198,11 @@ class HttpClient
     public $talk;
 
     /**
+     * @var Sell
+     */
+    public $sell;
+
+    /**
      * @param string $subdomain
      * @param string $username
      * @param string $scheme
@@ -228,6 +234,11 @@ class HttpClient
         $this->scheme    = $scheme;
         $this->port      = $port;
 
+        // If sell is set, we need to use a different base uri
+        if ($this->subdomain === 'api.futuresimple.com') {
+            $this->apiUrl = 'https://api.futuresimple.com/';
+        } else
+
         if (empty($subdomain)) {
             $this->apiUrl = "$scheme://$hostname:$port/";
         } else {
@@ -240,6 +251,7 @@ class HttpClient
         $this->embeddable = new Embeddable($this);
         $this->chat       = new Chat($this);
         $this->talk       = new Talk($this);
+        $this->sell       = new Sell($this);
     }
 
     /**
