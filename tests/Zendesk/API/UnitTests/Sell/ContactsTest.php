@@ -40,10 +40,15 @@ class ContactsTest extends BasicTest
             ]
         ];
 
+        $encodedQueryParams = [];
+        foreach ($queryParams as $key => $value) {
+            $encodedQueryParams[$key] = $value;
+        }
+
         $this->assertEndpointCalled(function () use ($queryParams, $postFields) {
             $this->client->sell->contacts()->upsert($queryParams, $postFields);
         }, '/contacts/upsert', 'POST', [
-            'queryParams' => $queryParams,
+            'queryParams' => $encodedQueryParams,
             'postFields'  => ['data' => $postFields],
             'apiBasePath' => '/v2'
         ]);
