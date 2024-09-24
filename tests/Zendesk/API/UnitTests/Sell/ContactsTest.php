@@ -42,6 +42,10 @@ class ContactsTest extends BasicTest
 
         $encodedQueryParams = [];
         foreach ($queryParams as $key => $value) {
+            // Encode the 'phone' query param's whitespace
+            if ($key === 'phone') {
+                $value = str_replace(' ', '%20', $value);
+            }
             $encodedQueryParams[$key] = $value;
         }
 
