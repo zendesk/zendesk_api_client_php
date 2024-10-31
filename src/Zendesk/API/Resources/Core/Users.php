@@ -49,6 +49,11 @@ class Users extends ResourceAbstract
     protected $identities;
 
     /**
+     * @var string
+     */
+    protected $endpoint;
+
+    /**
      * {@inheritdoc}
      */
     protected function setUpRoutes()
