@@ -17,7 +17,7 @@ class ResponseException extends \Exception
      * @param int        $code
      * @param \Exception $previous
      */
-    public function __construct($method, $detail = '', $code = 0, \Exception $previous = null)
+    public function __construct($method, $detail = '', $code = 0, ?\Exception $previous = null)
     {
         parent::__construct(
             'Response to ' . $method . ' is not valid. Call $client->getDebug() for details' . $detail,
