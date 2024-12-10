@@ -10,7 +10,7 @@
     "mmucklo/inflect": "0.3.*"
   },
   "require-dev": {
-    "phpunit/phpunit": "4.5.*",
+    "phpunit/phpunit": "11.5.0",
     "squizlabs/php_codesniffer": "2.*",
     "phpmd/phpmd": "@stable",
     "fakerphp/faker": "^1.24.1",
