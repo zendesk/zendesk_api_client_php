@@ -13,7 +13,7 @@
     "phpunit/phpunit": "4.5.*",
     "squizlabs/php_codesniffer": "2.*",
     "phpmd/phpmd": "@stable",
-    "fzaninotto/faker": ">=1.5.0",
+    "fakerphp/faker": "^1.24.1",
     "psy/psysh": "@stable"
   },
   "autoload": {
