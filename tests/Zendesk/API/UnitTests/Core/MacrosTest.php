@@ -15,7 +15,7 @@ class MacrosTest extends BasicTest
     protected $testResource1;
     protected $testResource2;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->testResource0 = ['anyField'  => 'Any field 0'];
         $this->testResource1 = ['anyField'  => 'Any field 1'];

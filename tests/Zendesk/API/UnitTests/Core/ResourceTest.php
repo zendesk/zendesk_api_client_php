@@ -17,7 +17,7 @@ class ResourceTest extends BasicTest
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
         $this->dummyResource = new DummyResource($this->client);
