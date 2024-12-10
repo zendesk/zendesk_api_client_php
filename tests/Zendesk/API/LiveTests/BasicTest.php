@@ -7,7 +7,9 @@ use Zendesk\API\HttpClient;
 /**
  * Basic test class
  */
-abstract class BasicTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+abstract class BasicTest extends TestCase
 {
     /**
      * @var HttpClient
@@ -68,7 +70,7 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->client = new HttpClient($this->subdomain, $this->username, $this->scheme, $this->hostname, $this->port);
 

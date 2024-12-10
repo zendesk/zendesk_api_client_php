@@ -1,4 +1,4 @@
-FROM php:7.4-cli
+FROM php:8.2-cli
 
 # OS requirements for PHP
 RUN apt-get update && apt-get install -y git unzip
