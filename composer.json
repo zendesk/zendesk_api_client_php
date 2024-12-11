@@ -21,5 +21,9 @@
       "Zendesk\\API\\": "src/",
       "Zendesk\\Console\\": "src/"
     }
+  },
+  "scripts": {
+    "test:unit": "vendor/bin/phpunit --testsuite 'Zendesk API Unit Test Suites'",
+    "test:live": "vendor/bin/phpunit --testsuite 'Zendesk API Live Test Suites'"
   }
 }
