@@ -50,7 +50,7 @@ class RetryHandlerTest extends BasicTest
      *
      * @return array
      */
-    public function requestExceptionsProvider()
+    public static function requestExceptionsProvider()
     {
         return [
             [ServerException::class, true],
@@ -90,7 +90,7 @@ class RetryHandlerTest extends BasicTest
      *
      * @return array
      */
-    public function retryLimitProvider()
+    public static function retryLimitProvider()
     {
         return [
             [-10, false], // negative value should not retry requests
@@ -131,7 +131,7 @@ class RetryHandlerTest extends BasicTest
      *
      * @return array
      */
-    public function retryIfProvider()
+    public static function retryIfProvider()
     {
         return [
             // check if retry_if is called with appropriate parameters
@@ -189,7 +189,7 @@ class RetryHandlerTest extends BasicTest
      *
      * @return array
      */
-    public function retryDelayProvider()
+    public static function retryDelayProvider()
     {
         return [
             [20000, 1, 300, 'for each request delays should be 100ms'], // all delays are 100ms

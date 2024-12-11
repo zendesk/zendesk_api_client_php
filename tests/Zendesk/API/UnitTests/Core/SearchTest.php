@@ -38,7 +38,7 @@ class SearchTest extends BasicTest
     /**
      * @return array
      */
-    public function basicQueryStrings()
+    public static function basicQueryStrings()
     {
         return [
             [3245227],
