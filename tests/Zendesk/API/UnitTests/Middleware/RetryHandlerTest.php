@@ -233,7 +233,7 @@ class RetryHandlerTest extends BasicTest
     private function checkRequest(Client $client, $success, $exception = ConnectException::class)
     {
         if (!$success) {
-            $this->setExpectedException($exception);
+            $this->expectException($exception);
         }
 
         $response = $client->get('/');

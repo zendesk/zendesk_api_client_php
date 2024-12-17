@@ -251,12 +251,12 @@ class ResourceTest extends BasicTest
 
     /**
      * Test we can handle server exceptions
-     *
-     * @expectedException Zendesk\API\Exceptions\ApiResponseException
-     * @expectedExceptionMessage Zendesk may be experiencing internal issues or undergoing scheduled maintenance.
      */
     public function testHandlesServerException()
     {
+        $this->expectException(\Zendesk\API\Exceptions\ApiResponseException::class);
+        $this->expectExceptionMessage('Zendesk may be experiencing internal issues or undergoing scheduled maintenance.');
+
         $this->mockApiResponses(
             new Response(500, [], '')
         );
@@ -266,12 +266,12 @@ class ResourceTest extends BasicTest
 
     /**
      * Test we can handle api exceptions
-     *
-     * @expectedException Zendesk\API\Exceptions\ApiResponseException
-     * @expectedExceptionMessage Unprocessable Entity
      */
     public function testHandlesApiException()
     {
+        $this->expectException(\Zendesk\API\Exceptions\ApiResponseException::class);
+        $this->expectExceptionMessage('Unprocessable Entity');
+
         $this->mockApiResponses(
             new Response(422, [], '')
         );
@@ -281,12 +281,12 @@ class ResourceTest extends BasicTest
 
     /**
      * Test we can handle api exceptions when no response is returned from the API
-     *
-     * @expectedException Zendesk\API\Exceptions\ApiResponseException
-     * @expectedExceptionMessage Error completing request
      */
     public function testHandlesEmptyResponse()
     {
+        $this->expectException(\Zendesk\API\Exceptions\ApiResponseException::class);
+        $this->expectExceptionMessage('Error completing request');
+
         // Create an exception object which is thrown when a response couldn't be retrieved
         $unsuccessfulResponse = RequestException::create(new Request('GET', 'foo'), null);
         $this->mockApiResponses($unsuccessfulResponse);
@@ -308,7 +308,7 @@ class ResourceTest extends BasicTest
         $transaction = $this->mockedTransactionsContainer[0];
         $request     = $transaction['request'];
 
-        $this->assertRegExp('/ZendeskAPI PHP/', $request->getHeaderLine('User-Agent'));
+        $this->assertMatchesRegularExpression('/ZendeskAPI PHP/', $request->getHeaderLine('User-Agent'));
     }
 
     /**
