@@ -7,7 +7,7 @@ use Zendesk\API\UnitTests\BasicTest;
 /**
  * Ticket Imports test class
  */
-class TicketImportTest extends BasicTest
+class TicketImportsTest extends BasicTest
 {
     /**
      * Test that the routes for importing were set correctly
