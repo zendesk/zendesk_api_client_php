@@ -15,7 +15,7 @@ use Zendesk\API\HttpClient;
 /**
  * Basic test class
  */
-abstract class BasicTest extends \PHPUnit_Framework_TestCase
+abstract class BasicTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var HttpClient
@@ -74,7 +74,7 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->client = new HttpClient($this->subdomain, $this->username, $this->scheme, $this->hostname, $this->port);
@@ -153,7 +153,7 @@ abstract class BasicTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf(MultipartStream::class, $body);
             $this->assertGreaterThan(0, $body->getSize());
             $this->assertNotEmpty($header = $request->getHeaderLine('Content-Type'));
-            $this->assertContains('multipart/form-data', $header);
+            $this->assertStringContainsString('multipart/form-data', $header);
             unset($options['headers']['Content-Type']);
         }
 

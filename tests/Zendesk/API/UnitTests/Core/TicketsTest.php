@@ -13,7 +13,7 @@ class TicketsTest extends BasicTest
     protected $testTicket;
     protected $testTicket2;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->testTicket = [
             'subject'  => 'The quick brown fox jumps over the lazy dog',

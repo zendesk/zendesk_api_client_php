@@ -10,11 +10,9 @@ use Zendesk\API\UnitTests\BasicTest;
  */
 class TicketFormsTest extends BasicTest
 {
-    /**
-     * @expectedException Zendesk\API\Exceptions\ApiResponseException
-     */
     public function testDeleteThrowsException()
     {
+        $this->expectException(\Zendesk\API\Exceptions\ApiResponseException::class);
         $this->mockAPIResponses([
             new Response(422, [], '')
         ]);
@@ -48,11 +46,10 @@ class TicketFormsTest extends BasicTest
     /**
      * Tests if an exception is thrown when a ticket form ID could not be retrieved from
      * the method call.
-     *
-     * @expectedException Zendesk\API\Exceptions\MissingParametersException
      */
     public function testCloneFormThrowsException()
     {
+        $this->expectException(\Zendesk\API\Exceptions\MissingParametersException::class);
         $this->mockAPIResponses([
             new Response(200, [], '')
         ]);

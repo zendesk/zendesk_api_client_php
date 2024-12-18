@@ -14,7 +14,7 @@ class TagsTest extends BasicTest
     protected $testResource1;
     protected $testResource2;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->testResource0 = ['anyField'  => 'Any field 0'];
         $this->testResource1 = ['anyField'  => 'Any field 1'];
@@ -61,19 +61,15 @@ class TagsTest extends BasicTest
         $this->assertEquals('tickets/12345/tags.json', $route);
     }
 
-    /**
-     * @expectedException Zendesk\API\Exceptions\CustomException
-     */
     public function testFindUnchained()
     {
+        $this->expectException(\Zendesk\API\Exceptions\CustomException::class);
         $this->client->tags()->find(1);
     }
 
-    /**
-     * @expectedException Zendesk\API\Exceptions\CustomException
-     */
     public function testFindNoChainedParameter()
     {
+        $this->expectException(\Zendesk\API\Exceptions\CustomException::class);
         $this->client->tickets()->tags()->find(1);
     }
 }

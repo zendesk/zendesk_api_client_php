@@ -8,7 +8,7 @@ use Zendesk\API\UnitTests\BasicTest;
 /**
  * Attachments test class
  */
-class AppsTests extends BasicTest
+class AppsTest extends BasicTest
 {
 
     /**

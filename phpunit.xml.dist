@@ -18,9 +18,11 @@
     <testsuites>
         <testsuite name="Zendesk API Unit Test Suites">
             <directory>./tests/Zendesk/API/UnitTests</directory>
+            <exclude>./tests/Zendesk/API/UnitTests/BasicTest.php</exclude>
         </testsuite>
         <testsuite name="Zendesk API Live Test Suites">
             <directory>./tests/Zendesk/API/LiveTests</directory>
+            <exclude>./tests/Zendesk/API/LiveTests/BasicTest.php</exclude>
         </testsuite>
     </testsuites>
 </phpunit>

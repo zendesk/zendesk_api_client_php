@@ -14,7 +14,7 @@ class SatisfactionRatingsTest extends BasicTest
     protected $testResource1;
     protected $testResource2;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->testResource0 = ['anyField'  => 'Any field 0'];
         $this->testResource1 = ['anyField'  => 'Any field 1'];
@@ -88,10 +88,8 @@ class SatisfactionRatingsTest extends BasicTest
             'comment' => 'Awesome Support!',
         ];
 
-        $this->setExpectedException(
-            'Zendesk\API\Exceptions\MissingParametersException',
-            "Missing parameters: 'ticket_id' must be supplied for Zendesk\API\Resources\Core\SatisfactionRatings::create"
-        );
+        $this->expectException(\Zendesk\API\Exceptions\MissingParametersException::class);
+        $this->expectExceptionMessage("Missing parameters: 'ticket_id' must be supplied for Zendesk\API\Resources\Core\SatisfactionRatings::create");    
 
         $this->client->satisfactionRatings()->create($postParams);
     }

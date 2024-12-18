@@ -16,7 +16,7 @@ class HttpTest extends BasicTest
 {
     public function testOriginalRequestExceptionIsPreserved()
     {
-        $this->markTestSkipped('Broken in PHP 7.4 (mocking)');
+        $this->markTestSkipped('Broken in PHP 8.2 (mocking)');
         $faker = Factory::create();
 
         $exceptionMessage = $faker->sentence;
