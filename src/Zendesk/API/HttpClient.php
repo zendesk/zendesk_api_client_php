@@ -114,7 +114,7 @@ use Zendesk\API\Utilities\Auth;
  */
 class HttpClient
 {
-    const VERSION = '3.1.1';
+    const VERSION = '4.0.0';
 
     use InstantiatorTrait;
 
