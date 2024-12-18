@@ -61,7 +61,7 @@ class UsersTest extends BasicTest
      */
     public function testSearch($user)
     {
-        $response = $this->client->users()->search(['query' => $user->name]);
+        $response = $this->client->users()->search(['query' => $user->email]);
         $this->assertTrue(property_exists($response, 'users'));
         $this->assertNotNull($foundUser = $response->users[0]);
         $this->assertEquals($user->email, $foundUser->email);
