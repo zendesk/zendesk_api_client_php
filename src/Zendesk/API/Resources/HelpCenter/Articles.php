@@ -20,12 +20,15 @@ class Articles extends ResourceAbstract
     use Search;
 
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
      */
     protected $objectName = 'article';
-
     /**
-     * @{inheritdoc}
+     * {@inheritdoc}
+     */
+    protected $objectNamePlural = 'articles';
+    /**
+     * {@inheritdoc}
      */
     protected function setupRoutes()
     {

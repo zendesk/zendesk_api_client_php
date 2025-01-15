@@ -21,6 +21,10 @@ class Categories extends ResourceAbstract
      * {@inheritdoc}
      */
     protected $objectName = 'category';
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectNamePlural = 'categories';
 
     /**
      * {@inheritdoc}
