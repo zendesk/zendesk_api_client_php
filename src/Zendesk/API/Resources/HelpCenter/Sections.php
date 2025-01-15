@@ -23,6 +23,10 @@ class Sections extends ResourceAbstract
      * {@inheritdoc}
      */
     protected $objectName = 'section';
+    /**
+     * {@inheritdoc}
+     */
+    protected $objectNamePlural = 'sections';
 
     /**
      * @inheritdoc
