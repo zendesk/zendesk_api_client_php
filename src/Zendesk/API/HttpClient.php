@@ -116,7 +116,7 @@ class HttpClient
 {
     use InstantiatorTrait;
 
-    const VERSION = '4.0.1';
+    const VERSION = '4.1.0';
 
     /**
      * @var array $headers
