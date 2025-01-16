@@ -2,7 +2,6 @@
 
 namespace Zendesk\API\Traits\Utility\Pagination;
 
-
 /**
  * Single Page (no pagination)
  * Used in paginationStrategyClass
@@ -19,7 +18,8 @@ class SinglePageStrategy extends AbstractStrategy
         return $response->{$this->resourcesKey};
     }
 
-    public function shouldGetPage($current_page) {
+    public function shouldGetPage($current_page)
+    {
         return !$this->started;
     }
 }

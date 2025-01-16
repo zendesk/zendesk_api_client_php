@@ -125,7 +125,8 @@ class AppInstallations extends ResourceAbstract
         );
     }
 
-    private function paginationStrategyClass() {
+    private function paginationStrategyClass()
+    {
         return SinglePageStrategy::class;
     }
 }

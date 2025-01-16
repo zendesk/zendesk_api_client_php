@@ -12,10 +12,10 @@ class TranslationsTest extends BasicTest
 /**
  * Test manifest method
  */
-public function testFindManifest()
-{
-    $this->assertEndpointCalled(function () {
-        $this->client->translations()->manifest();
-    }, 'translations/manifest.json');
-}
+    public function testFindManifest()
+    {
+        $this->assertEndpointCalled(function () {
+            $this->client->translations()->manifest();
+        }, 'translations/manifest.json');
+    }
 }

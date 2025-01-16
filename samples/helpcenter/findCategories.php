@@ -23,5 +23,5 @@ try {
     print_r($categories);
     echo "</pre>";
 } catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
-    echo $e->getMessage().'</br>';
+    echo $e->getMessage() . '</br>';
 }

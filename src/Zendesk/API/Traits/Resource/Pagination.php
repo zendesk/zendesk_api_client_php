@@ -5,7 +5,8 @@ namespace Zendesk\API\Traits\Resource;
 use Zendesk\API\Traits\Utility\Pagination\CbpStrategy;
 use Zendesk\API\Traits\Utility\Pagination\PaginationIterator;
 
-trait Pagination {
+trait Pagination
+{
     /**
      * Usage:
      * $ticketsIterator = $client->tickets()->iterator();
@@ -28,7 +29,8 @@ trait Pagination {
      *
      * @return string subclass of AbstractStrategy used for fetching pages
      */
-    protected function paginationStrategyClass() {
+    protected function paginationStrategyClass()
+    {
         return CbpStrategy::class;
     }
 
@@ -37,7 +39,8 @@ trait Pagination {
      *
      * @return string eg: "job_statuses"
      */
-    protected function resourcesKey() {
+    protected function resourcesKey()
+    {
         return $this->objectNamePlural;
     }
 }

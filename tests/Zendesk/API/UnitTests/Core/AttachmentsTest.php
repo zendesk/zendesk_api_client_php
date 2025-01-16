@@ -10,7 +10,6 @@ use Zendesk\API\UnitTests\BasicTest;
  */
 class AttachmentsTest extends BasicTest
 {
-
     /**
      * Test upload of file
      */

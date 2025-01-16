@@ -18,7 +18,10 @@ jobs:
       run: docker build . --file Dockerfile --tag zendesk_api_client_php-app
 
     - name: Run Composer install
-      run: docker run --rm --volume "$(pwd):/app" zendesk_api_client_php-app composer install
+      run: docker run --rm --volume "$(pwd):/app" zendesk_api_client_php-app make build
+
+    - name: Run lint
+      run: docker run --rm --volume "$(pwd):/app" zendesk_api_client_php-app make lint
 
     - name: Run tests
-      run: docker run --rm --volume "$(pwd):/app" zendesk_api_client_php-app vendor/bin/phpunit --testsuite "Zendesk API Unit Test Suites"
+      run: docker run --rm --volume "$(pwd):/app" zendesk_api_client_php-app make test

@@ -11,7 +11,7 @@
   },
   "require-dev": {
     "phpunit/phpunit": "11.5.0",
-    "squizlabs/php_codesniffer": "2.*",
+    "squizlabs/php_codesniffer": "3.*",
     "phpmd/phpmd": "@stable",
     "fakerphp/faker": "^1.24.1",
     "psy/psysh": "@stable"
@@ -19,11 +19,14 @@
   "autoload": {
     "psr-0": {
       "Zendesk\\API\\": "src/",
-      "Zendesk\\Console\\": "src/"
+      "Zendesk\\Console\\": "src/",
+      "Zendesk\\Fixtures\\": "src/"
     }
-  },
+},
   "scripts": {
     "test:unit": "vendor/bin/phpunit --testsuite 'Zendesk API Unit Test Suites'",
-    "test:live": "vendor/bin/phpunit --testsuite 'Zendesk API Live Test Suites'"
+    "test:live": "vendor/bin/phpunit --testsuite 'Zendesk API Live Test Suites'",
+    "lint": "vendor/bin/phpcs --runtime-set ignore_warnings_on_exit 1 --standard=PSR12 --extensions=php --ignore=vendor/ .",
+    "lint:fix": "vendor/bin/phpcbf --runtime-set ignore_warnings_on_exit 1 --standard=PSR12 --extensions=php --ignore=vendor/ ."
   }
 }

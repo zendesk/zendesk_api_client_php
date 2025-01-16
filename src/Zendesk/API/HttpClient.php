@@ -114,9 +114,9 @@ use Zendesk\API\Utilities\Auth;
  */
 class HttpClient
 {
-    const VERSION = '4.0.1';
-
     use InstantiatorTrait;
+
+    const VERSION = '4.0.1';
 
     /**
      * @var array $headers
@@ -237,9 +237,7 @@ class HttpClient
         // If sell is set, we need to use a different base uri
         if ($this->subdomain === 'api.futuresimple.com') {
             $this->apiUrl = 'https://api.futuresimple.com/';
-        } else
-
-        if (empty($subdomain)) {
+        } elseif (empty($subdomain)) {
             $this->apiUrl = "$scheme://$hostname:$port/";
         } else {
             $this->apiUrl = "$scheme://$subdomain.$hostname:$port/";

@@ -17,6 +17,7 @@ class TicketAudits extends ResourceAbstract
         findAll as traitFindAll;
         find as traitFind;
     }
+
     /**
      * {@inheritdoc}
      */

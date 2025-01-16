@@ -12,10 +12,10 @@ use Zendesk\API\Traits\Resource\FindAll;
  */
 class TwitterHandles extends ResourceAbstract
 {
-    const OBJ_NAME_PLURAL = 'monitored_twitter_handles';
-
     use Find;
     use FindAll;
+
+    const OBJ_NAME_PLURAL = 'monitored_twitter_handles';
 
     /**
      * {@inheritdoc}

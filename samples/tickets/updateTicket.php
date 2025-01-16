@@ -29,5 +29,5 @@ try {
     print_r($updateTicket);
     echo "</pre>";
 } catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
-    echo $e->getMessage().'</br>';
+    echo $e->getMessage() . '</br>';
 }

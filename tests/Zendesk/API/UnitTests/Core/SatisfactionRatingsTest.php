@@ -40,7 +40,7 @@ class SatisfactionRatingsTest extends BasicTest
 
         $iterator = $this->client->satisfactionRatings()->iterator();
 
-        $actual = $this->iterator_to_array($iterator);
+        $actual = $this->iteratorToArray($iterator);
         $this->assertCount(3, $actual);
         $this->assertEquals($this->testResource0['anyField'], $actual[0]->anyField);
         $this->assertEquals($this->testResource1['anyField'], $actual[1]->anyField);
@@ -89,7 +89,7 @@ class SatisfactionRatingsTest extends BasicTest
         ];
 
         $this->expectException(\Zendesk\API\Exceptions\MissingParametersException::class);
-        $this->expectExceptionMessage("Missing parameters: 'ticket_id' must be supplied for Zendesk\API\Resources\Core\SatisfactionRatings::create");    
+        $this->expectExceptionMessage("Missing parameters: 'ticket_id' must be supplied for Zendesk\API\Resources\Core\SatisfactionRatings::create");
 
         $this->client->satisfactionRatings()->create($postParams);
     }

@@ -1,12 +1,12 @@
 <?php
 
-namespace Zendesk\API\LiveTests;
-
-use Zendesk\API\HttpClient;
-
 /**
  * Basic test class
  */
+
+namespace Zendesk\API\LiveTests;
+
+use Zendesk\API\HttpClient;
 use PHPUnit\Framework\TestCase;
 
 abstract class BasicTest extends TestCase

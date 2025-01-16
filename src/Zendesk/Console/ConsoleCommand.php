@@ -40,7 +40,7 @@ class ConsoleCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $config = new Configuration;
+        $config = new Configuration();
 
         $client = new HttpClient($input->getArgument('subdomain'));
         $client->setAuth('basic', [

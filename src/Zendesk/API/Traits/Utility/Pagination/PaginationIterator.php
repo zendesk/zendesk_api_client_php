@@ -2,8 +2,6 @@
 
 namespace Zendesk\API\Traits\Utility\Pagination;
 
-class PaginationError extends \Exception {}
-
 const DEFAULT_PAGE_SIZE = 100;
 
 use Iterator;

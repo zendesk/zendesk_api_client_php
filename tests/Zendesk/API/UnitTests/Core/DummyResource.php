@@ -1,4 +1,5 @@
 <?php
+
 namespace Zendesk\API\UnitTests\Core;
 
 use Zendesk\API\Resources\ResourceAbstract;
@@ -23,6 +24,7 @@ class DummyResource extends ResourceAbstract
     use UpdateMany;
     use DeleteMany;
     use CreateOrUpdateMany;
+
     /**
      * {@inheritdoc}
      */

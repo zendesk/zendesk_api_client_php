@@ -13,7 +13,8 @@ class Targets extends ResourceAbstract
 {
     use Defaults;
 
-    protected function paginationStrategyClass() {
+    protected function paginationStrategyClass()
+    {
         return SinglePageStrategy::class;
     }
 }

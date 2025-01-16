@@ -14,7 +14,8 @@ class CustomRoles extends ResourceAbstract
 {
     use FindAll;
 
-    protected function paginationStrategyClass() {
+    protected function paginationStrategyClass()
+    {
         return SinglePageStrategy::class;
     }
 }

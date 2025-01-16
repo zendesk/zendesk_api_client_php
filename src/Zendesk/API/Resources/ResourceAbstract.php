@@ -56,7 +56,7 @@ abstract class ResourceAbstract
     /**
      * @param HttpClient $client
      */
-    public function __construct(HttpClient $client, $apiBasePath='api/v2/')
+    public function __construct(HttpClient $client, $apiBasePath = 'api/v2/')
     {
         $this->apiBasePath = $apiBasePath;
         $this->client = $client;

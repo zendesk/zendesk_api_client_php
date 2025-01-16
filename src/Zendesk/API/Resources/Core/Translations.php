@@ -12,6 +12,7 @@ use Zendesk\API\Traits\Resource\FindAll;
 class Translations extends ResourceAbstract
 {
     use FindAll;
+
     /**
      * {@inheritdoc}
      */
@@ -35,5 +36,4 @@ class Translations extends ResourceAbstract
     {
         return $this->findAll($params, __FUNCTION__);
     }
-
 }

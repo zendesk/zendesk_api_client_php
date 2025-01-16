@@ -1,4 +1,5 @@
 <?php
+
 namespace Zendesk\API\Resources\Core;
 
 use Zendesk\API\Resources\ResourceAbstract;

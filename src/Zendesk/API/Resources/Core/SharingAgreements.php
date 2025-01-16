@@ -14,7 +14,8 @@ class SharingAgreements extends ResourceAbstract
 {
     use FindAll;
 
-    protected function paginationStrategyClass() {
+    protected function paginationStrategyClass()
+    {
         return SinglePageStrategy::class;
     }
 }

@@ -41,7 +41,7 @@ class Stats extends ResourceAbstract
 
         return $this->client->get($route);
     }
-    
+
     /**
      * Account overview.
      *
@@ -56,7 +56,7 @@ class Stats extends ResourceAbstract
 
         return $this->client->get($route);
     }
-    
+
     /**
      * Agents overview.
      *
@@ -71,7 +71,7 @@ class Stats extends ResourceAbstract
 
         return $this->client->get($route);
     }
-    
+
     /**
      * Agents activity.
      *

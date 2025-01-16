@@ -10,7 +10,6 @@ use Zendesk\API\UnitTests\BasicTest;
  */
 class TicketFieldsTest extends BasicTest
 {
-
     /**
      * Test that the resource name was set correctly
      */
