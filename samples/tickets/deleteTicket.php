@@ -21,5 +21,5 @@ try {
     $deleteTicket = $client->tickets()->delete($id);
     echo "Ticket ($id) has been removed";
 } catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
-    echo $e->getMessage().'</br>';
+    echo $e->getMessage() . '</br>';
 }

@@ -7,7 +7,6 @@ use Zendesk\API\UnitTests\BasicTest;
 
 class ContactsTest extends BasicTest
 {
-
     /**
      * Test that the correct traits were added by checking the available methods
      */

@@ -1,4 +1,5 @@
 <?php
+
 namespace Zendesk\API\Traits\Utility\Pagination;
 
 abstract class AbstractStrategy
@@ -41,9 +42,9 @@ abstract class AbstractStrategy
     {
         if (isset($this->pageSize)) {
             return $this->pageSize;
-        } else if (isset($this->params['page[size]'])) {
+        } elseif (isset($this->params['page[size]'])) {
             $this->pageSize = $this->params['page[size]'];
-        } else if (isset($this->params['per_page'])) {
+        } elseif (isset($this->params['per_page'])) {
             $this->pageSize = $this->params['per_page'];
         } else {
             $this->pageSize = DEFAULT_PAGE_SIZE;

@@ -8,7 +8,6 @@ use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Response;
-use PHPUnit_Framework_TestCase;
 use Psr\Http\Message\StreamInterface;
 use Zendesk\API\HttpClient;
 
@@ -186,7 +185,8 @@ abstract class BasicTest extends \PHPUnit\Framework\TestCase
 
         if (isset($options['apiBasePath'])) {
             $this->assertSame(
-                0, strpos($request->getUri()->getPath(), $options['apiBasePath']),
+                0,
+                strpos($request->getUri()->getPath(), $options['apiBasePath']),
                 "Failed asserting apiBasePath: expected: {$options['apiBasePath']}, actual: {$request->getUri()->getPath()}"
             );
         }
@@ -196,8 +196,10 @@ abstract class BasicTest extends \PHPUnit\Framework\TestCase
             // $options['endpoint'] does not include the api/v2 base path
             $endpoint = preg_replace('/^' . preg_quote($options['apiBasePath'], '/') . '/', '', $request->getUri()->getPath());
             $this->assertEquals(
-                $options['endpoint'], $endpoint,
-                "Failed asserting endpoint: expected: {$options['endpoint']}, actual: {$endpoint}");
+                $options['endpoint'],
+                $endpoint,
+                "Failed asserting endpoint: expected: {$options['endpoint']}, actual: {$endpoint}"
+            );
         }
 
         if (isset($options['queryParams'])) {
@@ -244,7 +246,7 @@ abstract class BasicTest extends \PHPUnit\Framework\TestCase
      * @param \Iterator $iterator
      * @return array all the items
      */
-    protected function iterator_to_array($iterator)
+    protected function iteratorToArray($iterator)
     {
         $results = [];
         foreach ($iterator as $item) {

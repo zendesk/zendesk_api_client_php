@@ -6,7 +6,6 @@ use Zendesk\API\UnitTests\BasicTest;
 
 class SessionsTest extends BasicTest
 {
-
     /**
      * Tests if the delete user session is accessible if the ID is passed
      */

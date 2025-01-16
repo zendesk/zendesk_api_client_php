@@ -9,7 +9,6 @@ use Zendesk\API\UnitTests\BasicTest;
  */
 class AppInstallationLocationsTest extends BasicTest
 {
-
     /**
      * Test get incremental export for tickets
      */

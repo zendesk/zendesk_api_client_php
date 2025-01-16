@@ -2,74 +2,13 @@
 
 namespace Zendesk\API\UnitTests\Core;
 
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Request;
-use GuzzleHttp\Psr7\Response;
 use Zendesk\API\Exceptions\ApiResponseException;
 use Zendesk\API\Traits\Utility\Pagination\CbpStrategy;
-use Zendesk\API\Traits\Utility\Pagination\PaginationError;
 use Zendesk\API\Traits\Utility\Pagination\SinglePageStrategy;
 use Zendesk\API\UnitTests\BasicTest;
+use Zendesk\API\Traits\Utility\Pagination\PaginationError;
 use Zendesk\API\Traits\Utility\Pagination\PaginationIterator;
-
-class MockResource {
-    public $params;
-    public $foundDifferent = false;
-    public $isObp = false;
-    public $errorMessage;
-    public $response;
-    private $resources;
-    private $resourceName;
-    private $callCount = 0;
-
-    public function __construct($resourceName, $resources)
-    {
-        $this->resourceName = $resourceName;
-        $this->resources = $resources;
-        $this->callCount = 0;
-    }
-
-    public function findAll($params)
-    {
-        if ($this->errorMessage) {
-            $request = new Request('GET', 'http://example.zendesk.com');
-            $this->response = new Response(400, [], '{ "a": "json"}');
-            $requestException = new RequestException($this->errorMessage, $request, $this->response);
-            throw new ApiResponseException($requestException);
-        } else if ($this->isObp) {
-            $this->response = (object) [
-                $this->resourceName => $this->resources[0],
-                // No CBP meta and links
-            ];
-        } else {
-            // Simulate two pages of resources
-            $resources = $this->callCount === 0
-                ? $this->resources[0]
-                : $this->resources[1];
-
-            // Simulate a cursor for the next page on the first call
-            $afterCursor = $this->callCount === 0 ? 'cursor_for_next_page' : null;
-
-            $this->callCount++;
-            $this->params = $params;
-            $this->response = (object) [
-                $this->resourceName => $resources,
-                'meta' => (object) [
-                    'has_more' => $afterCursor !== null,
-                    'after_cursor' => $afterCursor,
-                ],
-            ];
-        }
-
-        return $this->response;
-    }
-
-    public function findDifferent($params)
-    {
-        $this->foundDifferent = true;
-        return $this->findAll($params);
-    }
-}
+use Zendesk\Fixtures\MockResource;
 
 class PaginationIteratorTest extends BasicTest
 {
@@ -82,7 +21,7 @@ class PaginationIteratorTest extends BasicTest
         $strategy = new CbpStrategy('tickets', ['page[size]' => 2]);
         $iterator = new PaginationIterator($mockTickets, $strategy, 'findAll');
 
-        $tickets = $this->iterator_to_array($iterator);
+        $tickets = $this->iteratorToArray($iterator);
 
         $this->assertEquals([['id' => 1], ['id' => 2], ['id' => 3], ['id' => 4]], $tickets);
         $this->assertEquals($mockTickets->response, $iterator->latestResponse());
@@ -113,7 +52,7 @@ class PaginationIteratorTest extends BasicTest
         $strategy = new CbpStrategy('users', ['page[size]' => 2]);
         $iterator = new PaginationIterator($mockUsers, $strategy, 'findAll');
 
-        $users = $this->iterator_to_array($iterator);
+        $users = $this->iteratorToArray($iterator);
 
         $this->assertEquals([
             ['id' => 1, 'name' => 'User 1'],
@@ -132,7 +71,7 @@ class PaginationIteratorTest extends BasicTest
         $strategy = new CbpStrategy('tickets', ['page[size]' => 2, 'any' => 'param']);
         $iterator = new PaginationIterator($mockTickets, $strategy, 'findAll');
 
-        $tickets = $this->iterator_to_array($iterator);
+        $tickets = $this->iteratorToArray($iterator);
 
         $this->assertEquals([['id' => 1], ['id' => 2], ['id' => 3], ['id' => 4]], $tickets);
         $this->assertEquals([
@@ -151,7 +90,7 @@ class PaginationIteratorTest extends BasicTest
         $strategy = new SinglePageStrategy($resultsKey, $userParams);
         $iterator = new PaginationIterator($mockResults, $strategy, 'findAll');
 
-        $resources = $this->iterator_to_array($iterator);
+        $resources = $this->iteratorToArray($iterator);
 
         $this->assertEquals([
             ['id' => 1, 'name' => 'Resource 1'],
@@ -169,7 +108,7 @@ class PaginationIteratorTest extends BasicTest
         $strategy = new SinglePageStrategy($resultsKey, $userParams);
         $iterator = new PaginationIterator($mockResults, $strategy, 'findDifferent');
 
-        $resources = $this->iterator_to_array($iterator);
+        $resources = $this->iteratorToArray($iterator);
 
         $this->assertEquals([
             ['id' => 1, 'name' => 'Resource 1'],

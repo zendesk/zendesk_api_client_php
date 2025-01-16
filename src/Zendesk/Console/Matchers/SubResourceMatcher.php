@@ -8,7 +8,6 @@ use Psy\TabCompletion\Matcher\AbstractMatcher;
 
 class SubResourceMatcher extends AbstractContextAwareMatcher
 {
-
     /**
      * Provide tab completion matches for readline input.
      *
@@ -91,7 +90,7 @@ class SubResourceMatcher extends AbstractContextAwareMatcher
     private function methodMatcher($object, $input = '')
     {
         $subresources = method_exists($object, 'getValidSubResources') ?
-            array_keys($object->getValidSubResources()): [];
+            array_keys($object->getValidSubResources()) : [];
 
         $methods = array_reduce(
             array_merge($subresources, get_class_methods($object)),

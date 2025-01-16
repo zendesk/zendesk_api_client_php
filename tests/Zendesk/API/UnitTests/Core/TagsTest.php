@@ -39,7 +39,7 @@ class TagsTest extends BasicTest
         ]);
         $iterator = $this->client->tags()->iterator();
 
-        $actual = $this->iterator_to_array($iterator);
+        $actual = $this->iteratorToArray($iterator);
 
         $this->assertCount(3, $actual);
         $this->assertEquals($this->testResource0['anyField'], $actual[0]->anyField);

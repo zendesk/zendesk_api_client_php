@@ -1,4 +1,5 @@
 <?php
+
 namespace Zendesk\API\LiveTests;
 
 use Faker\Factory;

@@ -1,4 +1,5 @@
 <?php
+
 namespace Zendesk\API\UnitTests\Core;
 
 use GuzzleHttp\Exception\RequestException;

@@ -11,7 +11,7 @@ use Zendesk\API\HttpClient as ZendeskAPI;
 $subdomain  = "subdomain";
 $username   = "email@example.com";
 $token      = "6wiIBWbGkBMo1mRDMuVwkw1EPsNkeUj95PIz2akv";
-$attachment = getcwd().'/sample.jpg';
+$attachment = getcwd() . '/sample.jpg';
 
 $client = new ZendeskAPI($subdomain);
 $client->setAuth('basic', ['username' => $username, 'token' => $token]);
@@ -46,5 +46,5 @@ try {
     print_r($newTicket);
     echo "</pre>";
 } catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
-    echo $e->getMessage().'</br>';
+    echo $e->getMessage() . '</br>';
 }

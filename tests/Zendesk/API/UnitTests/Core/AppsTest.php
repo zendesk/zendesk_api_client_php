@@ -10,7 +10,6 @@ use Zendesk\API\UnitTests\BasicTest;
  */
 class AppsTest extends BasicTest
 {
-
     /**
      * Test uploading of App
      */

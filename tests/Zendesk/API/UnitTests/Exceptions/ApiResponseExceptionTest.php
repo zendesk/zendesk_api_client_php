@@ -13,8 +13,8 @@ class ApiResponseExceptionTest extends BasicTest
 {
     public function testServerException()
     {
-        $request = new Request("GET","");
-        $response = new Response(200, ["Content-Type"=> "application/json"],"");
+        $request = new Request("GET", "");
+        $response = new Response(200, ["Content-Type" => "application/json"], "");
         $requestException = new ServerException("test", $request, $response);
 
         $subject = new ApiResponseException($requestException);

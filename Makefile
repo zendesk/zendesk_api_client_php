@@ -1,6 +1,10 @@
-.PHONY: test all
+.PHONY: build test lint
+
+build:
+	composer install
 
 test:
 	composer test:unit
 
-all: test
+lint:
+	composer lint

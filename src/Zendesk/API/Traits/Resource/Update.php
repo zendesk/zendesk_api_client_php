@@ -6,7 +6,6 @@ use Zendesk\API\Exceptions\RouteException;
 
 trait Update
 {
-
     /**
      * Update a resource
      *

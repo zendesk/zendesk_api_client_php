@@ -8,7 +8,6 @@ namespace Zendesk\API\Exceptions;
  */
 class MissingParametersException extends \Exception
 {
-
     /**
      * @param string $method
      * @param array $params

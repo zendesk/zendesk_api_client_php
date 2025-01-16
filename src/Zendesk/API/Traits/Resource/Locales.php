@@ -7,7 +7,6 @@ namespace Zendesk\API\Traits\Resource;
  */
 trait Locales
 {
-
     /**
      * Used for setting up the locale
      * @var locale

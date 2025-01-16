@@ -9,7 +9,6 @@ use Zendesk\API\Exceptions\RouteException;
  */
 trait CreateOrUpdateMany
 {
-
     /**
      * Update group of resources
      *

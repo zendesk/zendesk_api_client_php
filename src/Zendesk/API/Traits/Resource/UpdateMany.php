@@ -10,7 +10,6 @@ use Zendesk\API\Http;
  */
 trait UpdateMany
 {
-
     /**
      * Update group of resources
      *

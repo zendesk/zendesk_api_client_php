@@ -53,7 +53,7 @@ class TicketsTest extends BasicTest
 
         $iterator = $this->client->tickets()->iterator();
 
-        $actual = $this->iterator_to_array($iterator);
+        $actual = $this->iteratorToArray($iterator);
         $this->assertCount(2, $actual);
         $this->assertEquals($this->testTicket['subject'], $actual[0]->subject);
         $this->assertEquals($this->testTicket2['subject'], $actual[1]->subject);

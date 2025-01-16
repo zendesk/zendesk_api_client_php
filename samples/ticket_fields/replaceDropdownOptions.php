@@ -1,4 +1,5 @@
 <?php
+
 include("../../vendor/autoload.php");
 use Zendesk\API\HttpClient as ZendeskAPI;
 
@@ -11,14 +12,14 @@ $token = "6wiIBWbGkBMo1mRDMuVwkw1EPsNkeUj95PIz2akv";
 $client = new ZendeskAPI($subdomain);
 $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 try {
-    $result = $client->ticketFields()->update(51931448, ["custom_field_options"=> [
+    $result = $client->ticketFields()->update(51931448, ["custom_field_options" => [
         [
-          "name"=> "Apple Pie",
-          "value"=> "apple_pie"
+          "name" => "Apple Pie",
+          "value" => "apple_pie"
         ],
         [
-          "name"=> "Pecan Pie",
-          "value"=> "pecan_pie"
+          "name" => "Pecan Pie",
+          "value" => "pecan_pie"
         ]
       ]
     ]);

@@ -10,7 +10,6 @@ use Zendesk\API\UnitTests\BasicTest;
  */
 class UserIdentitiesTest extends BasicTest
 {
-
     /**
      * Tests if the unique routes are called correctly
      */

@@ -9,7 +9,6 @@ use Zendesk\API\UnitTests\BasicTest;
  */
 class SharingAgreementsTest extends BasicTest
 {
-
     /**
      * Test that the findAll method was included
      */

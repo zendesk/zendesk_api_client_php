@@ -17,7 +17,7 @@ $client->setAuth('basic', ['username' => $username, 'token' => $token]);
 
 try {
     // Search the current customer
-    $params = ['query' =>'customer@example.com'];
+    $params = ['query' => 'customer@example.com'];
     $search = $client->users()->search($params);
 
     if (empty($search->users)) {
@@ -34,5 +34,5 @@ try {
         }
     }
 } catch (\Zendesk\API\Exceptions\ApiResponseException $e) {
-    echo $e->getMessage().'</br>';
+    echo $e->getMessage() . '</br>';
 }

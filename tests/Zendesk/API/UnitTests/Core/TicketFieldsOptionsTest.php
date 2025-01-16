@@ -10,7 +10,6 @@ use Zendesk\API\UnitTests\BasicTest;
  */
 class TicketFieldsOptionsTest extends BasicTest
 {
-
     /**
      * Tests if the unique routes are called correctly
      */
@@ -20,7 +19,7 @@ class TicketFieldsOptionsTest extends BasicTest
         $id           = 123;
         $optionValues = [
             'name' => 'one more',
-            'value'=> 'ça bouge',
+            'value' => 'ça bouge',
         ];
 
         // FindAll
