@@ -18,6 +18,7 @@ class Search extends ResourceAbstract
         $this->setRoutes(
             [
                 'find'      => 'search.json',
+                'count'     => 'search/count.json',
                 'anonymous' => 'portal/search.json'
             ]
         );
@@ -64,4 +65,30 @@ class Search extends ResourceAbstract
 
         return $this->client->get($this->getRoute(__FUNCTION__), $queryParams);
     }
+
+    
+    /**
+     *
+     * The search/count API is a unified search API that returns count of tickets, users, and organizations. You can define filters to
+     * narrow your search results according to resource type, dates, and object properties, such as ticket requester or
+     * tag.
+     *
+     * @param null  $query
+     * @param array $queryParams
+     *
+     * @return \stdClass | null
+     * @throws MissingParametersException
+     * @throws \Zendesk\API\Exceptions\RouteException
+     */
+    public function count($query = null, array $queryParams = [])
+    {
+        if (empty($query)) {
+            throw new MissingParametersException(__METHOD__, ['query']);
+        }
+
+        $queryParams['query'] = $query;
+
+        return $this->client->get($this->getRoute(__FUNCTION__), $queryParams);
+    }
+
 }
