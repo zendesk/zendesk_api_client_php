@@ -3,9 +3,11 @@
 namespace Zendesk\API;
 
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ResponseException;
 use GuzzleHttp\Psr7\LazyOpenStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Utils;
+use Psr\Http\Client\NetworkExceptionInterface;
 use Psr\Http\Message\StreamInterface;
 use Zendesk\API\Exceptions\ApiResponseException;
 use Zendesk\API\Exceptions\AuthException;
@@ -95,8 +97,13 @@ class Http
             }
             $response = $client->guzzle->send($request, $requestOptions);
         } catch (RequestException $e) {
-            $requestException = RequestException::create($e->getRequest(), $e->getResponse(), $e);
+            $errorResponse = $e instanceof ResponseException
+                ? $e->getResponse()
+                : (is_callable([$e, 'getResponse']) ? $e->getResponse() : null);
+            $requestException = RequestException::create($e->getRequest(), $errorResponse, $e);
             throw new ApiResponseException($requestException);
+        } catch (NetworkExceptionInterface $e) {
+            throw new ApiResponseException(RequestException::create($e->getRequest(), null, $e));
         } finally {
             $client->setDebug(
                 $request->getHeaders(),

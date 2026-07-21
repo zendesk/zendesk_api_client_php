@@ -3,6 +3,7 @@
 namespace Zendesk\Fixtures;
 
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ResponseException;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use Zendesk\API\Exceptions\ApiResponseException;
@@ -30,7 +31,11 @@ class MockResource
         if ($this->errorMessage) {
             $request = new Request('GET', 'http://example.zendesk.com');
             $this->response = new Response(400, [], '{ "a": "json"}');
-            $requestException = new RequestException($this->errorMessage, $request, $this->response);
+            if (class_exists(ResponseException::class)) {
+                $requestException = new ResponseException($this->errorMessage, $request, $this->response);
+            } else {
+                $requestException = new RequestException($this->errorMessage, $request, $this->response);
+            }
             throw new ApiResponseException($requestException);
         } elseif ($this->isObp) {
             $this->response = (object) [
