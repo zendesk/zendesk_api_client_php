@@ -68,18 +68,21 @@ trait MultipartUpload
             $stream = new LazyOpenStream($params['file'], 'r');
         }
 
+        $part = [
+            'name'     => $this->getUploadName(),
+            'contents' => $stream
+        ];
+
+        if (is_string($filename)) {
+            $part['filename'] = $filename;
+        }
+
         $response = Http::send(
             $this->client,
             $route,
             [
                 'method'    => $this->getUploadRequestMethod(),
-                'multipart' => [
-                    [
-                        'name'     => $this->getUploadName(),
-                        'contents' => $stream,
-                        'filename' => $filename
-                    ]
-                ]
+                'multipart' => [$part]
             ]
         );
 

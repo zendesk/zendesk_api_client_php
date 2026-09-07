@@ -4,6 +4,7 @@ namespace Zendesk\API\Exceptions;
 
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Exception\ResponseException;
 use GuzzleHttp\Exception\ServerException;
 
 /**
@@ -22,6 +23,9 @@ class ApiResponseException extends \Exception
     {
         $message = $e->getMessage();
 
+        $hasResponse = $e instanceof ResponseException
+            || (is_callable([$e, 'hasResponse']) && $e->hasResponse());
+
         if ($e instanceof ClientException) {
             $response           = $e->getResponse();
             $responseBody       = $response->getBody()->getContents();
@@ -29,7 +33,7 @@ class ApiResponseException extends \Exception
             $message .= ' [details] ' . $this->errorDetails;
         } elseif ($e instanceof ServerException) {
             $message .= ' [details] Zendesk may be experiencing internal issues or undergoing scheduled maintenance.';
-        } elseif (! $e->hasResponse()) {
+        } elseif (! $hasResponse) {
             $request = $e->getRequest();
             // Unsuccessful response, log what we can
             $message .= ' [url] ' . $request->getUri();

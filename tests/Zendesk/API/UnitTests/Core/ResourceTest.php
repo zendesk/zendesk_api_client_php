@@ -3,9 +3,11 @@
 namespace Zendesk\API\UnitTests\Core;
 
 use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\AppendStream;
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\LazyOpenStream;
+use GuzzleHttp\Psr7\Utils;
 use Zendesk\API\UnitTests\BasicTest;
 
 /**
@@ -366,6 +368,30 @@ class ResourceTest extends BasicTest
 
         $params = [
             'file' => new LazyOpenStream(getcwd() . '/tests/assets/UK.png', 'r')
+        ];
+
+        $this->dummyResource->upload($params);
+
+        $this->assertLastRequestIs(
+            [
+                'method' => 'POST',
+                'endpoint' => 'dummy_resource/uploads.json',
+                'multipart' => true,
+            ]
+        );
+    }
+
+    /**
+     * Test multipart upload with streams that have no file uri
+     */
+    public function testUploadStreamWithoutUriMultiPart()
+    {
+        $this->mockAPIResponses([
+            new Response(200, [], '')
+        ]);
+
+        $params = [
+            'file' => new AppendStream([Utils::streamFor('test file contents')])
         ];
 
         $this->dummyResource->upload($params);
