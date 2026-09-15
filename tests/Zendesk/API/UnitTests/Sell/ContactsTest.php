@@ -41,9 +41,10 @@ class ContactsTest extends BasicTest
 
         $encodedQueryParams = [];
         foreach ($queryParams as $key => $value) {
-            // Encode the 'phone' query param's whitespace
+            // Encode the 'phone' query param's whitespace and leading plus sign
+            // (guzzlehttp/psr7 >= 2.12 percent-encodes '+' in query values)
             if ($key === 'phone') {
-                $value = str_replace(' ', '%20', $value);
+                $value = str_replace([' ', '+'], ['%20', '%2B'], $value);
             }
             $encodedQueryParams[$key] = $value;
         }
