@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "31fa158544eca39cf5c3ba157f38a120",
+    "content-hash": "0dcb9b49bef66279abb8e50a5f60120b",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
@@ -339,28 +339,28 @@
         },
         {
             "name": "mmucklo/inflect",
-            "version": "v0.3.0",
+            "version": "v2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mmucklo/inflect.git",
-                "reference": "b665bcd3d4c23b6aa1990b6405ff96dd437689e9"
+                "reference": "a5bba462e1e686847013dc7c3859f9f3e2ad9c34"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mmucklo/inflect/zipball/b665bcd3d4c23b6aa1990b6405ff96dd437689e9",
-                "reference": "b665bcd3d4c23b6aa1990b6405ff96dd437689e9",
+                "url": "https://api.github.com/repos/mmucklo/inflect/zipball/a5bba462e1e686847013dc7c3859f9f3e2ad9c34",
+                "reference": "a5bba462e1e686847013dc7c3859f9f3e2ad9c34",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.17"
+                "php": ">=8.1"
             },
             "require-dev": {
-                "phpunit/phpunit": "3.7.*"
+                "phpunit/phpunit": "^10.5"
             },
             "type": "library",
             "autoload": {
-                "psr-0": {
-                    "Inflect": "src/"
+                "psr-4": {
+                    "Inflect\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -369,12 +369,12 @@
             ],
             "authors": [
                 {
-                    "name": "Sho Kuwamoto",
-                    "email": "sho@kuwamoto.org"
-                },
-                {
                     "name": "Matthew J. Mucklo",
                     "email": "mmucklo@gmail.com"
+                },
+                {
+                    "name": "Sho Kuwamoto",
+                    "email": "sho@kuwamoto.org"
                 }
             ],
             "description": "inflect - a memoizing inflector for php",
@@ -387,9 +387,9 @@
             ],
             "support": {
                 "issues": "https://github.com/mmucklo/inflect/issues",
-                "source": "https://github.com/mmucklo/inflect/tree/v0.3.0"
+                "source": "https://github.com/mmucklo/inflect/tree/v2.0.0"
             },
-            "time": "2015-05-16T04:16:08+00:00"
+            "time": "2026-04-13T04:54:38+00:00"
         },
         {
             "name": "psr/http-client",
